@@ -6,8 +6,8 @@ import { IconName } from 'src/types/ui';
 
 import { styles } from './Input.style';
 import { getFontColor, getInputContainerStyles, getTextInputStyles } from './Input.utils';
-import Icon from '../Icon/Icon';
-import Text from '../Text/Text';
+import Icon from '../../Icon/Icon';
+import Text from '../../Text/Text';
 
 type Props = TextInputProps & {
   label?: string;

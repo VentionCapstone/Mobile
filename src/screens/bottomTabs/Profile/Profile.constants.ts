@@ -15,7 +15,13 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
         label: 'Notifications',
         iconName: IconName.Notifications,
         screen: 'Account',
-        loggedInOnly: false,
+        loggedInOnly: true,
+      },
+      {
+        label: 'My Accommodations',
+        iconName: IconName.Notifications,
+        screen: 'MyAccommodations',
+        loggedInOnly: true,
       },
       {
         label: 'Theme',

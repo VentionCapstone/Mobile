@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { paragraph3, title1, RED_200 } from 'src/styles';
+import { paragraph3, paragraph1, RED_200 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    ...title1,
+    ...paragraph1,
   },
   inputContainer: {
     flexDirection: 'row',

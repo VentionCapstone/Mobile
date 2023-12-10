@@ -9,4 +9,6 @@ export type RootStackParamList = {
   };
   Account?: undefined;
   ChangeTheme?: undefined;
+  MyAccommodations?: undefined;
+  CreateAccommodation?: undefined;
 };
