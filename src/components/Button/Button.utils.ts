@@ -1,6 +1,6 @@
 import { TextStyle, ViewStyle } from 'react-native';
-import { FONT_SIZES, SIZES } from 'src/styles';
-import { ThemeColorProps } from 'src/theme/types';
+import { BUTTON_SIZES } from 'src/styles';
+import { ThemeColors } from 'src/types';
 
 import { ButtonType } from './Button.types';
 
@@ -8,7 +8,7 @@ type GetBackgroundProps = {
   type: ButtonType;
   pressed?: boolean;
   disabled?: boolean;
-  colors?: ThemeColorProps;
+  colors?: ThemeColors;
 };
 
 const getBackgroundColor = ({
@@ -33,15 +33,10 @@ type GetBorderColorProps = {
   type: ButtonType;
   pressed?: boolean;
   disabled?: boolean;
-  colors?: ThemeColorProps;
+  colors?: ThemeColors;
 };
 
-const getBorderColor = ({
-  type,
-  pressed,
-  disabled,
-  colors,
-}: GetBorderColorProps): string | undefined => {
+const getBorderColor = ({ type, pressed, colors }: GetBorderColorProps): string | undefined => {
   switch (type) {
     case ButtonType.PRIMARY:
       if (pressed) return colors?.secondaryButtonBackground;
@@ -57,7 +52,7 @@ const getBorderColor = ({
 };
 
 type GetIconStylesProps = {
-  size?: SIZES;
+  size?: BUTTON_SIZES;
   type: ButtonType;
   disabled?: boolean;
   pressed?: boolean;
@@ -67,12 +62,12 @@ const getIconStyles = ({ type, disabled, pressed, size }: GetIconStylesProps): T
   const color = getFontColor({ type, disabled, pressed });
 
   switch (size) {
-    case SIZES.SM:
-      return { fontSize: FONT_SIZES.MD };
-    case SIZES.MD:
-      return { fontSize: FONT_SIZES.LG };
-    case SIZES.LG:
-      return { fontSize: FONT_SIZES.XL };
+    case BUTTON_SIZES.SM:
+      return { fontSize: 18 };
+    case BUTTON_SIZES.MD:
+      return { fontSize: 20 };
+    case BUTTON_SIZES.LG:
+      return { fontSize: 24 };
     default:
       break;
   }
@@ -86,7 +81,7 @@ type GetFontColorProps = {
   type: ButtonType;
   disabled?: boolean;
   pressed?: boolean;
-  colors?: ThemeColorProps;
+  colors?: ThemeColors;
 };
 
 const getFontColor = ({
@@ -119,12 +114,12 @@ type GetFontStyleProps = {
   type: ButtonType;
   disabled?: boolean;
   pressed?: boolean;
-  size?: SIZES;
-  colors?: ThemeColorProps;
+  size?: BUTTON_SIZES;
+  colors?: ThemeColors;
 };
 
 const getFontStyles = ({ type, pressed, disabled, size, colors }: GetFontStyleProps): TextStyle => {
-  let fontSize = FONT_SIZES.SM;
+  let fontSize = 16;
 
   if (pressed && size !== undefined) {
     fontSize -= 2;
@@ -133,14 +128,14 @@ const getFontStyles = ({ type, pressed, disabled, size, colors }: GetFontStylePr
   const color = getFontColor({ type, disabled, pressed, colors });
 
   switch (size) {
-    case SIZES.SM:
-      fontSize = FONT_SIZES.SM;
+    case BUTTON_SIZES.SM:
+      fontSize = 16;
       break;
-    case SIZES.MD:
-      fontSize = FONT_SIZES.MD;
+    case BUTTON_SIZES.MD:
+      fontSize = 18;
       break;
-    case SIZES.LG:
-      fontSize = FONT_SIZES.LG;
+    case BUTTON_SIZES.LG:
+      fontSize = 22;
       break;
     default:
       break;
@@ -155,7 +150,7 @@ const getFontStyles = ({ type, pressed, disabled, size, colors }: GetFontStylePr
 };
 
 type GetButtonSizesProps = {
-  size?: SIZES;
+  size?: BUTTON_SIZES;
   pressed: boolean;
   width?: number;
   height?: number;
@@ -163,11 +158,11 @@ type GetButtonSizesProps = {
 
 const getButtonSizes = ({ size, pressed, width, height }: GetButtonSizesProps): ViewStyle => {
   switch (size) {
-    case SIZES.SM:
+    case BUTTON_SIZES.SM:
       return { width, height: height ? height : 40, paddingHorizontal: 16 };
-    case SIZES.MD:
+    case BUTTON_SIZES.MD:
       return { width, height: height ? height : 48, paddingHorizontal: 24 };
-    case SIZES.LG:
+    case BUTTON_SIZES.LG:
       return { width, height: height ? height : 56, paddingHorizontal: 32 };
     default:
       return {};
@@ -179,8 +174,8 @@ type GetButtonStylesProps = {
   disabled?: boolean;
   pressed: boolean;
   type: ButtonType;
-  size?: SIZES;
-  colors?: ThemeColorProps;
+  size?: BUTTON_SIZES;
+  colors?: ThemeColors;
   width?: number;
   height?: number;
 };

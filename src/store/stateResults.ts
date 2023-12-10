@@ -1,4 +1,4 @@
-import { StateType } from '../types';
+import { StateType } from 'src/types';
 
 export const onPending = (state: StateType) => {
   state.pending = true;

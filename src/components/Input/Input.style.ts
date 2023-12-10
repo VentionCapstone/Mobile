@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { FONT_SIZES, RED_200 } from 'src/styles';
+import { paragraph3, title1, RED_200 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,8 +7,7 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    fontSize: FONT_SIZES.MD,
-    fontWeight: '500',
+    ...title1,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -33,8 +32,8 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     color: RED_200,
-    fontSize: FONT_SIZES.XS,
     alignSelf: 'flex-start',
     marginLeft: 10,
+    ...paragraph3,
   },
 });

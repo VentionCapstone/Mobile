@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
+import { getColors } from 'src/store/selectors';
 import { GREY_400 } from 'src/styles';
-import { useTheme } from 'src/theme';
 import { IconName } from 'src/types/ui';
 
 import { LanguagesProps, languages } from './LanguageSelector.constants';
@@ -16,7 +17,7 @@ type Props = {
 };
 
 const LanguageSelector = ({ onSelect }: Props) => {
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<LanguagesProps | null>(languages[0]);
 
@@ -32,7 +33,7 @@ const LanguageSelector = ({ onSelect }: Props) => {
         onPress={() => setModalVisible(true)}
         style={[styles.selectorButton, { backgroundColor: colors.secondaryBackground }]}
       >
-        <Text>{selectedLanguage?.name}</Text>
+        <Text style={styles.selectedLanguage}>{selectedLanguage?.name}</Text>
         <Icon name={IconName.ChevronDown} size={20} />
       </TouchableOpacity>
 
@@ -40,7 +41,7 @@ const LanguageSelector = ({ onSelect }: Props) => {
         {languages.map((option: LanguagesProps) => (
           <TouchableOpacity
             key={option.code}
-            style={[styles.radioWrapper, { backgroundColor: colors.secondaryBackground }]}
+            style={styles.radioContainer}
             onPress={() => handleLanguageSelect(option)}
           >
             <Icon

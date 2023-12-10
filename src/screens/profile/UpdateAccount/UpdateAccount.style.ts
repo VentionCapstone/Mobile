@@ -1,5 +1,5 @@
-import { StyleSheet, Platform } from 'react-native';
-import { WHITE_100 } from 'src/styles';
+import { StyleSheet } from 'react-native';
+import { WHITE_100, LEVEL_1, title1, paragraph1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   header: {
@@ -8,27 +8,19 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    ...title1,
   },
-  profileImageWrapper: {
+  description: {
+    ...paragraph1,
+  },
+  profileImageContainer: {
     width: 250,
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
+    ...LEVEL_1,
   },
-  iconWrapper: {
+  iconContainer: {
     width: 200,
     height: 200,
     borderRadius: 100,
@@ -51,37 +43,19 @@ export const styles = StyleSheet.create({
     padding: 6,
     gap: 10,
     borderRadius: 20,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
+    ...LEVEL_1,
   },
   label: {
     fontWeight: 'bold',
     marginTop: 20,
   },
-  radioWrapper: {
+  radioContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 5,
   },
   radioLabel: {
     marginLeft: 8,
-  },
-  countrySelectorWrapper: {
-    height: 50,
-    paddingHorizontal: 10,
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderRadius: 15,
-    marginTop: 10,
   },
   textAreaStyles: {
     textAlignVertical: 'top',

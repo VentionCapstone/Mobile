@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { paragraph1 } from 'src/styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    fontSize: 16,
+    ...paragraph1,
   },
 });
 

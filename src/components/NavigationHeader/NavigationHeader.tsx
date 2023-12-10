@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { View, TouchableOpacity } from 'react-native';
-import { useTheme } from 'src/theme';
+import { useSelector } from 'react-redux';
+import { getColors } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './NavigationHeader.style';
@@ -16,7 +17,7 @@ interface Props {
 
 const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: Props) => {
   const navigation = useNavigation();
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
 
   const handleBackPress = () => {
     if (leftComponent) {

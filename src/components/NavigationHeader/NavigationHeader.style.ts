@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES } from 'src/styles';
+import { title2 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,8 +18,7 @@ export const styles = StyleSheet.create({
     gap: 20,
   },
   title: {
-    fontSize: FONT_SIZES.XL,
-    fontWeight: '500',
+    ...title2,
   },
   rightContainer: {
     flexDirection: 'row',

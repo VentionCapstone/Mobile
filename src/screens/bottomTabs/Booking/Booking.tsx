@@ -1,11 +1,11 @@
-import { View } from 'react-native';
 import { Text } from 'src/components';
+import { ScreenTemplate } from 'src/components/templates';
 
 const Booking = () => {
   return (
-    <View>
+    <ScreenTemplate>
       <Text>BookingScreen</Text>
-    </View>
+    </ScreenTemplate>
   );
 };
 

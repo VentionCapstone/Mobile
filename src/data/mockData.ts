@@ -1,24 +1,37 @@
-import { ThemeType } from 'src/theme/types';
-import { ProfileFormValues, GenderType, LanguageType } from 'src/types';
+import { Gender, Language, ThemeType } from 'src/types';
 
-export const user: ProfileFormValues = {
+type User = {
+  userId: string;
+  photoUrl: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  gender: Gender;
+  country: string;
+  description: string;
+  language: Language;
+  uiTheme: ThemeType;
+};
+
+export const user: User = {
+  userId: '1',
   photoUrl: '',
   firstName: 'Testbek',
   lastName: 'Tester',
   phoneNumber: '915552599',
-  gender: GenderType.Male,
+  gender: Gender.Male,
   country: '',
   description: 'lorem',
-  language: LanguageType.English,
+  language: Language.English,
   uiTheme: ThemeType.Light,
 };
 
-export type AccountInfoProps = {
+export type AccountInfo = {
   label: string;
   value: string;
 };
 
-export const accountInfos: AccountInfoProps[] = [
+export const accountInfos: AccountInfo[] = [
   {
     label: 'Firstname',
     value: 'John',

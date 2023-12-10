@@ -1,12 +1,12 @@
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
-import { WHITE_200 } from 'src/styles';
-import { SIZES } from 'src/styles/containers';
-import { useTheme } from 'src/theme';
+import { useSelector } from 'react-redux';
+import { getColors } from 'src/store/selectors';
+import { BUTTON_SIZES, WHITE_200 } from 'src/styles';
 import { IconName } from 'src/types/ui';
 
 import styles from './Button.styles';
 import { ButtonType } from './Button.types';
-import { getButtonStyles, getFontColor, getFontStyles, getIconStyles } from './Button.utils';
+import { getButtonStyles, getFontStyles, getIconStyles } from './Button.utils';
 import Icon from '../Icon/Icon';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
   marginVertical?: number;
   title: string;
   type?: ButtonType;
-  size?: SIZES;
+  size?: BUTTON_SIZES;
   width?: number;
   height?: number;
   style?: any;
@@ -31,12 +31,13 @@ const Button = ({
   onPress,
   title,
   type = ButtonType.PRIMARY,
-  size = SIZES.MD,
+  size = BUTTON_SIZES.MD,
   width,
   height,
   style,
 }: Props) => {
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
+
   const handlePress = () => {
     if (disabled || isLoading) return;
     onPress();
@@ -71,7 +72,7 @@ const Button = ({
             )}
 
             {!isLoading && leftIcon && (
-              <View style={styles.iconWrapper}>
+              <View style={styles.iconContainer}>
                 <Icon
                   name={leftIcon}
                   style={getIconStyles({ type, disabled, pressed, size })}

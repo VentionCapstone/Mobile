@@ -31,3 +31,8 @@ export enum ButtonType {
   Secondary = 'secondary',
   Tertiary = 'tertiary',
 }
+
+export enum ThemeType {
+  Light = 'LIGHT',
+  Dark = 'DARK',
+}

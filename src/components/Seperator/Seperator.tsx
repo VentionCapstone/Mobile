@@ -1,10 +1,11 @@
 import { View } from 'react-native';
-import { useTheme } from 'src/theme';
+import { useSelector } from 'react-redux';
+import { getColors } from 'src/store/selectors';
 
 import { styles } from './Seperator.style';
 
 const Seperator = () => {
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
 
   return <View style={[styles.seperator, { backgroundColor: colors.border }]} />;
 };

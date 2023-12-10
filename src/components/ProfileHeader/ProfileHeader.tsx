@@ -1,15 +1,14 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, Image, View } from 'react-native';
-import { FONT_SIZES } from 'src/styles';
-import { useTheme } from 'src/theme';
+import { useSelector } from 'react-redux';
+import { RootStackParamList } from 'src/navigation';
+import { getAccountDetails, getColors } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import styles from './ProfileHeader.style';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
-import { user } from 'src/data';
-import { RootStackParamList } from 'src/navigation';
 
 interface Props {
   isLoggedIn: boolean;
@@ -17,7 +16,8 @@ interface Props {
 
 const ProfileHeader = ({ isLoggedIn }: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
+  const user = useSelector(getAccountDetails);
 
   return (
     <View style={{ paddingVertical: 15 }}>
@@ -30,15 +30,15 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
             </Text>
           </View>
 
-          <View style={styles.redirectAuthWrapper}>
+          <View style={styles.redirectAuthContainer}>
             <Button
               title="Signin"
               onPress={() => {
                 console.log('redirect to signin!');
               }}
             />
-            <View style={styles.redirectAuthTextWrapper}>
-              <Text style={{ fontSize: FONT_SIZES.SM }}>Don't have an account yet?</Text>
+            <View style={styles.redirectAuthContainer}>
+              <Text>Don't have an account yet?</Text>
               <Text style={{ textDecorationLine: 'underline' }}>signup</Text>
             </View>
           </View>
@@ -47,7 +47,7 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
 
       {isLoggedIn && (
         <View style={styles.loggedInHeader}>
-          <View style={styles.titleWrapper}>
+          <View style={styles.titleContainer}>
             <Text style={styles.title}>Profile</Text>
             <Icon name={IconName.Notifications} size={26} />
           </View>
@@ -69,11 +69,10 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
                   <Icon name={IconName.Person} size={60} />
                 )}
               </View>
+
               <View>
-                <Text style={styles.fullname}>
-                  {user.firstName} {user.lastName}
-                </Text>
-                <Text style={styles.description}>show profile</Text>
+                <Text style={styles.accountName}>Tester Testerov</Text>
+                <Text style={styles.description}>tap to create</Text>
               </View>
             </View>
 

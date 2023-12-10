@@ -1,7 +1,7 @@
-import { ProfileFormValues } from 'src/types';
+import { UpdateAccountFormValues } from 'src/types';
 import { ACCOUNT_NAME_MIN_LENGTH, isAccountNameValid, isPhoneNumberValid } from 'src/utils';
 
-const validateForm = (values: ProfileFormValues): Record<string, string> => {
+const validateForm = (values: UpdateAccountFormValues): Record<string, string> => {
   const errors: Record<string, string> = {};
 
   if (!isAccountNameValid(values.firstName)) {

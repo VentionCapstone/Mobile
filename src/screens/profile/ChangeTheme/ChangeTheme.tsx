@@ -1,50 +1,50 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { View, TouchableOpacity, StatusBar } from 'react-native';
-import { Button, Icon, Text } from 'src/components';
+import { useSelector } from 'react-redux';
+import { Icon, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
-import { useTheme } from 'src/theme';
-import { ThemeType } from 'src/theme/types';
+import { useAppDispatch } from 'src/store';
+import { getColors, getIsDarkMode } from 'src/store/selectors';
+import { themeActions } from 'src/store/slices';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './ChangeTheme.style';
 
 const ChangeTheme = () => {
-  const [isSelected, setIsSelected] = useState<boolean>(false);
-  const { setScheme, colors, isDark } = useTheme();
+  const dispatch = useAppDispatch();
+  const isDark = useSelector(getIsDarkMode);
+  const colors = useSelector(getColors);
+
+  const enableLightTheme = () => {
+    dispatch(themeActions.setTheme('light'));
+  };
+
+  const enableDarkTheme = () => {
+    dispatch(themeActions.setTheme('dark'));
+  };
 
   useEffect(() => {
-    setIsSelected(isDark);
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
   }, [isDark]);
-
-  const changeTheme = () => {
-    const selectedTheme = isSelected ? ThemeType.Dark : ThemeType.Light;
-    AsyncStorage.setItem('theme', selectedTheme);
-
-    setScheme(selectedTheme);
-  };
 
   return (
     <ScreenTemplate>
       <View style={styles.container}>
         <TouchableOpacity
-          style={[styles.radioWrapper, { backgroundColor: colors.secondaryBackground }]}
-          onPress={() => setIsSelected(true)}
+          style={[styles.radioContainer, { backgroundColor: colors.secondaryBackground }]}
+          onPress={enableDarkTheme}
         >
-          <Icon name={isSelected ? IconName.RadioButtonsOn : IconName.RadioButtonsOff} />
+          <Icon name={isDark ? IconName.RadioButtonsOn : IconName.RadioButtonsOff} />
           <Text style={styles.radioLabel}>Dark theme</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.radioWrapper, { backgroundColor: colors.secondaryBackground }]}
-          onPress={() => setIsSelected(false)}
+          style={[styles.radioContainer, { backgroundColor: colors.secondaryBackground }]}
+          onPress={enableLightTheme}
         >
-          <Icon name={isSelected ? IconName.RadioButtonsOff : IconName.RadioButtonsOn} />
+          <Icon name={isDark ? IconName.RadioButtonsOff : IconName.RadioButtonsOn} />
           <Text style={styles.radioLabel}>Light theme</Text>
         </TouchableOpacity>
-
-        <Button title="Save" onPress={changeTheme} marginVertical={20} />
       </View>
     </ScreenTemplate>
   );

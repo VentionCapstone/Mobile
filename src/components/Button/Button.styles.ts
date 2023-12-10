@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
-  iconWrapper: {
+  iconContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

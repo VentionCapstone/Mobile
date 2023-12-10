@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     gap: 10,
     padding: 15,
   },
-  radioWrapper: {
+  radioContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     height: 60,

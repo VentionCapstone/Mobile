@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
-import { TextInput, TextInputProps, View, TouchableWithoutFeedback } from 'react-native';
-import { useTheme } from 'src/theme';
+import { TextInput, TextInputProps, View, TouchableWithoutFeedback, ViewStyle } from 'react-native';
+import { useSelector } from 'react-redux';
+import { getColors } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './Input.style';
-import { getFontColor, getInputWrapperStyles, getTextInputStyles } from './Input.utils';
+import { getFontColor, getInputContainerStyles, getTextInputStyles } from './Input.utils';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
 
@@ -13,11 +14,13 @@ type Props = TextInputProps & {
   leftIcon?: IconName;
   rightIcon?: IconName;
   error?: string;
+  style?: ViewStyle | undefined;
+  innerStyle?: TextInputProps;
 };
 
-const Input = ({ label, leftIcon, rightIcon, error, ...props }: Props) => {
+const Input = ({ label, leftIcon, rightIcon, error, style, innerStyle, ...props }: Props) => {
   const [isFocused, setIsFocused] = React.useState(false);
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
 
   const inputRef = useRef<TextInput>(null);
 
@@ -40,12 +43,12 @@ const Input = ({ label, leftIcon, rightIcon, error, ...props }: Props) => {
       <View style={styles.container}>
         {label && <Text style={styles.label}>{label}</Text>}
 
-        <View style={getInputWrapperStyles({ error, colors, isFocused })}>
+        <View style={[getInputContainerStyles({ error, colors, isFocused }), style]}>
           {leftIcon && <Icon name={leftIcon} style={styles.leftIcon} iconSet="material" />}
 
           <TextInput
             ref={inputRef}
-            style={getTextInputStyles({ error, colors, isFocused })}
+            style={[getTextInputStyles({ error, colors, isFocused }), innerStyle]}
             placeholderTextColor={getFontColor({ error, colors, isFocused })}
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}

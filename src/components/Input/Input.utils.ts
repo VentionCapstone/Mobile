@@ -1,13 +1,13 @@
 import { TextStyle, ViewStyle } from 'react-native';
 import { PRIMARY_BLUE_200, RED_100, RED_200 } from 'src/styles';
-import { ThemeColorProps } from 'src/theme/types';
+import { ThemeColors } from 'src/types';
 
 import { styles } from './Input.style';
 
 type GetFontColorProps = {
   isFocused: boolean;
   error: string | undefined;
-  colors: ThemeColorProps;
+  colors: ThemeColors;
 };
 
 export const getFontColor = ({ isFocused, error, colors }: GetFontColorProps): string => {
@@ -23,7 +23,7 @@ export const getFontColor = ({ isFocused, error, colors }: GetFontColorProps): s
 type GetTextInputStylesProps = {
   isFocused: boolean;
   error: string | undefined;
-  colors: ThemeColorProps;
+  colors: ThemeColors;
 };
 
 export const getTextInputStyles = ({
@@ -44,7 +44,7 @@ export const getTextInputStyles = ({
 type GetBorderColorProps = {
   isFocused: boolean;
   error: string | undefined;
-  colors: ThemeColorProps;
+  colors: ThemeColors;
 };
 
 export const getBorderColor = ({ isFocused, error, colors }: GetBorderColorProps): string => {
@@ -54,33 +54,33 @@ export const getBorderColor = ({ isFocused, error, colors }: GetBorderColorProps
   return colors.secondaryBackground;
 };
 
-type GetInputWrapperStylesProps = {
+type GetInputContainerStyles = {
   isFocused: boolean;
   error: string | undefined;
-  colors: ThemeColorProps;
+  colors: ThemeColors;
 };
 
-export const getInputWrapperStyles = ({
+export const getInputContainerStyles = ({
   isFocused,
   error,
   colors,
-}: GetInputWrapperStylesProps): ViewStyle => {
+}: GetInputContainerStyles): ViewStyle => {
   const borderColor = getBorderColor({ isFocused, error, colors });
   const backgroundColor = colors.secondaryBackground;
 
-  const inputWrapperStyles = {
+  const inputContainerStyles = {
     ...styles.inputContainer,
     borderColor,
     backgroundColor,
   };
 
-  return inputWrapperStyles;
+  return inputContainerStyles;
 };
 
 type GetFontStyles = {
   isFocused: boolean;
   error: string | undefined;
-  colors: ThemeColorProps;
+  colors: ThemeColors;
 };
 
 export const getFontStyles = ({ isFocused, error, colors }: GetFontStyles): TextStyle => {

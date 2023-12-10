@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { View as DefaultView, ViewStyle, StyleProp } from 'react-native';
-import { useTheme } from 'src/theme';
+import { useSelector } from 'react-redux';
+import { getColors } from 'src/store/selectors';
 
 type ViewProps = {
   children: ReactNode;
@@ -9,7 +10,7 @@ type ViewProps = {
 };
 
 const ThemedView = ({ children, style, bgColor }: ViewProps) => {
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
 
   const viewStyles: StyleProp<ViewStyle>[] = [
     style,

@@ -1,64 +1,56 @@
 import { useState, useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { AsyncThunks, getUserError, getUserLoading, useAppDispatch, userActions } from 'src/api';
-import {
-  CountrySelector,
-  Input,
-  NavigationHeader,
-  ProfileImageUploader,
-  Text,
-} from 'src/components';
-import Icon from 'src/components/Icon/Icon';
-import LanguageSelector from 'src/components/Modals/LanguageSelector/LanguageSelector';
+import { CountrySelector, Icon, Input, ProfileImageUploader, Text } from 'src/components';
+import { LanguageSelector } from 'src/components/Modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
-import { ThemeType } from 'src/theme/types';
-import {
-  CountryOptions,
-  ProfileFormValues,
-  GenderOptionsProps,
-  GenderType,
-  LanguageType,
-} from 'src/types';
-import { IconName } from 'src/types/ui';
+import { useAppDispatch } from 'src/store';
+import { getAccountError, getAccountLoader } from 'src/store/selectors';
+import { accountActions } from 'src/store/slices';
+import { AsyncThunks } from 'src/store/thunks';
+import { CreateAccountFormValues } from 'src/types';
+import { GenderOptionsProps, Country, Gender, Language, CountryOption } from 'src/types/common';
+import { IconName, ThemeType } from 'src/types/ui';
 import { ACCOUNT_NAME_MAX_LENGTH, UZBEK_PHONE_NUMBER_LENGTH } from 'src/utils';
 
-import { styles } from './CreateProfile.style';
+import { styles } from './CreateAccount.style';
 import { validateForm } from './CreateProfile.utils';
 
 const genderOptions = [
-  { label: 'Male', value: GenderType.Male },
-  { label: 'Female', value: GenderType.Female },
+  { label: 'Male', value: Gender.Male },
+  { label: 'Female', value: Gender.Female },
 ];
 
-const CreateProfileForm = () => {
+const CreateAccountForm = () => {
   const dispatch = useAppDispatch();
-  const userError = useSelector(getUserError);
-  const loading = useSelector(getUserLoading);
-  const userId = '1';
+  const accountError = useSelector(getAccountError);
+  const loading = useSelector(getAccountLoader);
 
-  const [photo, setPhoto] = useState<string>('');
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
-  const [formValues, setFormValues] = useState<ProfileFormValues>({
+  const [formValues, setFormValues] = useState<CreateAccountFormValues>({
     firstName: '',
     lastName: '',
     phoneNumber: '',
-    gender: GenderType.Male,
+    gender: Gender.Male,
     description: '',
-    country: CountryOptions.UZBEKISTAN,
-    language: LanguageType.English,
+    country: Country.UZBEKISTAN,
+    language: Language.English,
     uiTheme: ThemeType.Light,
   });
 
   const formIsValid = Object.keys(validationErrors).length === 0;
 
-  const handleInputChange = (fieldName: keyof ProfileFormValues, text: string) => {
+  const handleInputChange = (fieldName: keyof CreateAccountFormValues, text: string) => {
     setFormValues({ ...formValues, [fieldName]: text });
   };
 
-  const handleCountrySelect = (country: string) => {
-    setFormValues({ ...formValues, country });
+  const handleCountrySelect = (country: CountryOption) => {
+    setFormValues({ ...formValues, country: country.name });
+  };
+
+  const handlePhotoSelect = (photoUrl: string) => {
+    setFormValues({ ...formValues, photoUrl });
   };
 
   const handleLanguageSelect = (language: string) => {
@@ -69,7 +61,7 @@ const CreateProfileForm = () => {
     setFormInteracted(true);
 
     if (formIsValid) {
-      await dispatch(AsyncThunks.createProfile({ ...formValues, photoUrl: photo, userId }));
+      await dispatch(AsyncThunks.createAccount(formValues));
     }
   };
 
@@ -81,7 +73,7 @@ const CreateProfileForm = () => {
   }, [formValues, formInteracted]);
 
   useEffect(() => {
-    dispatch(userActions.clearError());
+    dispatch(accountActions.clearError());
   }, []);
 
   return (
@@ -90,10 +82,10 @@ const CreateProfileForm = () => {
         onSubmit={handleOnSubmit}
         formIsValid={formIsValid}
         loading={loading}
-        error={formInteracted && formIsValid ? userError : null}
+        error={formInteracted && formIsValid ? accountError : null}
       >
         <View style={styles.header}>
-          <ProfileImageUploader value={photo} setValue={setPhoto} />
+          <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
         </View>
 
         <View style={{ gap: 10 }}>
@@ -138,7 +130,7 @@ const CreateProfileForm = () => {
         {genderOptions.map((option: GenderOptionsProps) => (
           <TouchableOpacity
             key={option.value}
-            style={styles.radioWrapper}
+            style={styles.radioContainer}
             onPress={() => handleInputChange('gender', option.value)}
           >
             <Icon
@@ -172,4 +164,4 @@ const CreateProfileForm = () => {
   );
 };
 
-export default CreateProfileForm;
+export default CreateAccountForm;

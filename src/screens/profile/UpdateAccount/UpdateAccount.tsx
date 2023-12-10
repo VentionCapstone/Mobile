@@ -1,46 +1,50 @@
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { AsyncThunks, getUserError, getUserLoading, useAppDispatch, userActions } from 'src/api';
 import { CountrySelector, Icon, ProfileImageUploader, Input, Text } from 'src/components';
 import { LanguageSelector } from 'src/components/Modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { user } from 'src/data';
-import { useTheme } from 'src/theme';
-import { ProfileFormValues, GenderOptionsProps, GenderType } from 'src/types';
+import { useAppDispatch } from 'src/store';
+import { getAccountError, getAccountLoader } from 'src/store/selectors';
+import { accountActions } from 'src/store/slices';
+import { AsyncThunks } from 'src/store/thunks';
+import { UpdateAccountFormValues } from 'src/types';
+import { CountryOption, Gender, GenderOptionsProps } from 'src/types/common';
 import { IconName } from 'src/types/ui';
 import { ACCOUNT_NAME_MAX_LENGTH, UZBEK_PHONE_NUMBER_LENGTH } from 'src/utils';
 
-import { styles } from './UpdateProfile.style';
-import { validateForm } from './UpdateProfile.utils';
+import { styles } from './UpdateAccount.style';
+import { validateForm } from './UpdateAccount.utils';
 
 const genderOptions = [
-  { label: 'Male', value: GenderType.Male },
-  { label: 'Female', value: GenderType.Female },
+  { label: 'Male', value: Gender.Male },
+  { label: 'Female', value: Gender.Female },
 ];
 
-const UpdateProfile = () => {
+const UpdateAccount = () => {
   const dispatch = useAppDispatch();
-  const { colors } = useTheme();
-  const userError = useSelector(getUserError);
-  const loading = useSelector(getUserLoading);
+  const userError = useSelector(getAccountError);
+  const loading = useSelector(getAccountLoader);
   const userId = '1';
 
-  const [formValues, setFormValues] = useState<ProfileFormValues>(user);
+  const [formValues, setFormValues] = useState<UpdateAccountFormValues>(user);
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
-  const [photo, setPhoto] = useState('');
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   const formIsValid = Object.keys(validationErrors).length === 0;
 
-  const handleInputChange = (fieldName: keyof ProfileFormValues, text: string) => {
+  const handleInputChange = (fieldName: keyof UpdateAccountFormValues, text: string) => {
     setValidationErrors({});
     setFormValues({ ...formValues, [fieldName]: text });
   };
 
-  const handleCountrySelect = (country: string) => {
-    setValidationErrors({});
-    setFormValues({ ...formValues, country });
+  const handleCountrySelect = (country: CountryOption) => {
+    setFormValues({ ...formValues, country: country.name });
+  };
+
+  const handlePhotoSelect = (photoUrl: string) => {
+    setFormValues({ ...formValues, photoUrl });
   };
 
   const handleLanguageSelect = (language: string) => {
@@ -52,7 +56,7 @@ const UpdateProfile = () => {
     setFormInteracted(true);
 
     if (formIsValid) {
-      await dispatch(AsyncThunks.createProfile({ ...formValues, photoUrl: photo, userId }));
+      await dispatch(AsyncThunks.updateAccount({ ...formValues, userId }));
     }
   };
 
@@ -64,7 +68,7 @@ const UpdateProfile = () => {
   }, [formValues, formInteracted]);
 
   useEffect(() => {
-    dispatch(userActions.clearError());
+    dispatch(accountActions.clearError());
   }, []);
 
   return (
@@ -76,7 +80,7 @@ const UpdateProfile = () => {
         error={formInteracted && formIsValid ? userError : null}
       >
         <View style={styles.header}>
-          <ProfileImageUploader value={photo} setValue={setPhoto} />
+          <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
         </View>
 
         <View>
@@ -121,7 +125,7 @@ const UpdateProfile = () => {
         {genderOptions.map((option: GenderOptionsProps) => (
           <TouchableOpacity
             key={option.value}
-            style={styles.radioWrapper}
+            style={styles.radioContainer}
             onPress={() => handleInputChange('gender', option.value)}
           >
             <Icon
@@ -148,11 +152,11 @@ const UpdateProfile = () => {
           placeholder="Enter your description"
           value={formValues.description}
           onChangeText={(text) => handleInputChange('description', text)}
-          style={[styles.textAreaStyles, { color: colors.text }]}
+          innerStyle={styles.textAreaStyles}
         />
       </FormTemplate>
     </ScreenTemplate>
   );
 };
 
-export default UpdateProfile;
+export default UpdateAccount;

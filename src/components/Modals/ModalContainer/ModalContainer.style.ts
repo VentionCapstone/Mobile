@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, WHITE } from 'src/styles';
+import { paragraph1, WHITE } from 'src/styles';
 
 export const styles = StyleSheet.create({
   modalContainer: {
@@ -22,8 +22,7 @@ export const styles = StyleSheet.create({
     padding: 4,
   },
   closeButtonText: {
-    fontSize: FONT_SIZES.LG,
-    fontWeight: 'bold',
     color: 'blue',
+    ...paragraph1,
   },
 });

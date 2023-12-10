@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES } from 'src/styles';
+import { paragraph1, paragraph2, title3 } from 'src/styles';
 
 const styles = StyleSheet.create({
   header: {
@@ -12,23 +12,17 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   subTitle: {
-    fontSize: FONT_SIZES.LG,
-    fontWeight: '300',
+    ...paragraph1,
   },
-  redirectAuthWrapper: {
+  redirectAuthContainer: {
     gap: 20,
   },
-  redirectAuthTextWrapper: {
-    flexDirection: 'row',
-    gap: 2,
-  },
-
   loggedInHeader: {
     height: 140,
     justifyContent: 'space-around',
     gap: 50,
   },
-  titleWrapper: {
+  titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -59,13 +53,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  fullname: {
-    fontWeight: '500',
-    fontSize: FONT_SIZES.MD,
+  accountName: {
+    ...title3,
   },
   description: {
-    fontSize: FONT_SIZES.SM,
-    fontWeight: '300',
+    ...paragraph2,
   },
 });
 

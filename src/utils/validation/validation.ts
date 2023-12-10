@@ -5,11 +5,11 @@ import {
   UZBEK_PHONE_NUMBER_LENGTH,
 } from './validation.constants';
 
-const isAccountNameValid = (name: string): boolean => {
+const isAccountNameValid = (name: string | undefined): boolean => {
   return !!name && name.length >= ACCOUNT_NAME_MIN_LENGTH && name.length <= ACCOUNT_NAME_MAX_LENGTH;
 };
 
-const isPasswordValid = (password: string): boolean => {
+const isPasswordValid = (password: string | undefined): boolean => {
   return !!password && password.length >= PASSWORD_MIN_LENGTH;
 };
 

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES } from 'src/styles';
+import { title1, title3, paragraph1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   header: {
@@ -8,23 +8,25 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: FONT_SIZES.XXL,
-    fontWeight: '500',
+    ...title1,
+  },
+  description: {
+    ...paragraph1,
   },
   label: {
-    fontWeight: '500',
+    ...title3,
     marginTop: 20,
   },
-  radioWrapper: {
+  radioContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 5,
   },
   radioLabel: {
     marginLeft: 8,
-    fontSize: FONT_SIZES.SM,
+    fontSize: 16,
   },
-  countrySelectorWrapper: {
+  countrySelectorContainer: {
     height: 50,
     paddingHorizontal: 10,
     justifyContent: 'center',

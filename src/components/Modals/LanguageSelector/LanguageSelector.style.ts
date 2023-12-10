@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY_400 } from 'src/styles';
+import { GREY_400, paragraph1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   selectorButton: {
@@ -14,7 +14,10 @@ export const styles = StyleSheet.create({
   languageItem: {
     padding: 15,
   },
-  radioWrapper: {
+  selectedLanguage: {
+    ...paragraph1,
+  },
+  radioContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 5,
@@ -25,5 +28,6 @@ export const styles = StyleSheet.create({
   radioLabel: {
     marginLeft: 8,
     color: GREY_400,
+    ...paragraph1,
   },
 });

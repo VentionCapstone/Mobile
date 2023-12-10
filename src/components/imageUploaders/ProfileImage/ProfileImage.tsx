@@ -1,31 +1,39 @@
-import { TouchableOpacity, Image, View, Pressable, Text } from 'react-native';
+import { useState } from 'react';
+import { TouchableOpacity, Image, View, Pressable, Text, Alert } from 'react-native';
+import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
-import { useTheme } from 'src/theme';
+import { getColors } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './ProfileImage.style';
 import { pickImage } from './ProfileImage.utils';
 
 interface Props {
-  value: string;
-  setValue: (photo: string) => void;
+  onPhotoSelect: (photo: string) => void;
 }
 
-const ProfileImageUploader = ({ value, setValue }: Props) => {
-  const { colors } = useTheme();
+const ProfileImageUploader = ({ onPhotoSelect }: Props) => {
+  const colors = useSelector(getColors);
+
+  const [photo, setPhoto] = useState<string | undefined>('');
 
   const handlePickImage = async () => {
-    const selectedImage = await pickImage();
-    selectedImage && setValue(selectedImage);
+    const selectedPhoto = await pickImage();
+
+    if (selectedPhoto) {
+      setPhoto(selectedPhoto);
+    } else {
+      Alert.alert('Error', 'Could not pick an image');
+    }
   };
 
   return (
-    <View style={styles.profileImageWrapper}>
+    <View style={styles.profileImageContainer}>
       <TouchableOpacity style={{ width: '100%', alignItems: 'center' }}>
-        {value ? (
-          <Image source={{ uri: value }} style={styles.profileImage} />
+        {photo ? (
+          <Image source={{ uri: photo }} style={styles.profileImage} />
         ) : (
-          <View style={[styles.iconWrapper, { backgroundColor: colors.secondaryBackground }]}>
+          <View style={[styles.iconContainer, { backgroundColor: colors.secondaryBackground }]}>
             <Icon name={IconName.PersonOutline} size={80} />
           </View>
         )}

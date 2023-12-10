@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES } from 'src/styles';
+import { title1, paragraph1 } from 'src/styles';
 import { HORIZONTAL_24_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -14,15 +14,13 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   title: {
-    fontSize: FONT_SIZES.XXL,
-    fontWeight: '500',
+    ...title1,
   },
   label: {
     fontWeight: '400',
   },
   value: {
-    fontSize: FONT_SIZES.SM,
-    fontWeight: '300',
+    ...paragraph1,
   },
   rightComponent: {
     flexDirection: 'row',
@@ -32,6 +30,6 @@ export const styles = StyleSheet.create({
   },
   edit: {
     textDecorationLine: 'underline',
-    fontSize: FONT_SIZES.LG,
+    ...title1,
   },
 });

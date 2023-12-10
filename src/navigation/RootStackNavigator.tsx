@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationHeader } from 'src/components';
 import { Account, ChangeTheme, CreateProfile, UpdateProfile } from 'src/screens';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
 import { RootStackParamList } from './RootStackNavigator.types';
-import { NavigationHeader } from 'src/components';
 
 const RootRouterStack = createStackNavigator<RootStackParamList>();
 

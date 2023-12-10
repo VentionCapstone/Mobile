@@ -1,6 +1,7 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { ViewStyle } from 'react-native';
-import { useTheme } from 'src/theme';
+import { useSelector } from 'react-redux';
+import { getColors } from 'src/store/selectors';
 import { IconSet, IconName } from 'src/types/ui';
 
 type IconProps = {
@@ -12,7 +13,8 @@ type IconProps = {
 };
 
 const Icon = ({ name, size = 24, color, style, iconSet = 'ionicons' }: IconProps) => {
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
+
   const iconColor = color || colors.icon;
 
   switch (iconSet) {

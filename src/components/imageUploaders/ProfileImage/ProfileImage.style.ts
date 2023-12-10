@@ -2,13 +2,13 @@ import { StyleSheet } from 'react-native';
 import { WHITE_100, LEVEL_1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
-  profileImageWrapper: {
+  profileImageContainer: {
     width: 250,
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  iconWrapper: {
+  iconContainer: {
     width: 200,
     aspectRatio: 1,
     borderRadius: 100,

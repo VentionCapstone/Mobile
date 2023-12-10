@@ -1,5 +1,5 @@
 export const ENDPOINTS = {
-  profile: {
+  account: {
     create: '/users/profile',
     update: '/users/profile',
   },

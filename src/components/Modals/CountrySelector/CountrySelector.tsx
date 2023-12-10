@@ -1,37 +1,33 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, FlatList } from 'react-native';
+import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
-import { GREY_400 } from 'src/styles';
-import { useTheme } from 'src/theme';
-import { CountryOptions } from 'src/types';
+import { getColors } from 'src/store/selectors';
+import { Country, CountryOption } from 'src/types/common';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './CountrySelector.style';
 import ModalContainer from '../ModalContainer/ModalContainer';
 
-interface Country {
-  name: CountryOptions;
-}
-
-const countries: Country[] = [
-  { name: CountryOptions.UZBEKISTAN },
-  { name: CountryOptions.KAZAKHSTAN },
-];
+const countries: CountryOption[] = [{ name: Country.UZBEKISTAN }, { name: Country.KAZAKHSTAN }];
 
 type Props = {
-  onSelect: (country: string) => void;
+  onSelect: (country: CountryOption) => void;
 };
 
 const CountrySelector = ({ onSelect }: Props) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<CountryOptions>(CountryOptions.UZBEKISTAN);
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
 
-  const handleCountrySelect = (country: Country) => {
-    setSelectedCountry(country.name);
-    onSelect(country.name);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<CountryOption>({
+    name: Country.UZBEKISTAN,
+  });
+
+  const handleCountrySelect = (country: CountryOption) => {
+    setSelectedCountry(country);
+    onSelect(country);
     setModalVisible(false);
   };
 
@@ -41,7 +37,7 @@ const CountrySelector = ({ onSelect }: Props) => {
         style={[styles.selectorButton, { backgroundColor: colors.secondaryBackground }]}
         onPress={() => setModalVisible(true)}
       >
-        <Text>{selectedCountry}</Text>
+        <Text style={styles.selectedCountry}>{selectedCountry.name}</Text>
         <Icon name={IconName.ChevronDown} size={20} />
       </TouchableOpacity>
 
@@ -51,7 +47,7 @@ const CountrySelector = ({ onSelect }: Props) => {
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.countryItem} onPress={() => handleCountrySelect(item)}>
-              <Text color={GREY_400}>{item.name}</Text>
+              <Text style={styles.optionText}>{item.name}</Text>
             </TouchableOpacity>
           )}
         />

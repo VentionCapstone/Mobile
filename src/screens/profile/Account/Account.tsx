@@ -1,15 +1,16 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Button, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
-import { RootStackParamList } from 'src/navigation';
-import { useTheme } from 'src/theme';
 import { accountInfos } from 'src/data/mockData';
+import { RootStackParamList } from 'src/navigation';
+import { getColors } from 'src/store/selectors';
 
 import { styles } from './Account.style';
 
 const Account = () => {
-  const { colors } = useTheme();
+  const colors = useSelector(getColors);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
