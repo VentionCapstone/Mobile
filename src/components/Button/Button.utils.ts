@@ -36,13 +36,20 @@ type GetBorderColorProps = {
   colors?: ThemeColors;
 };
 
-const getBorderColor = ({ type, pressed, colors }: GetBorderColorProps): string | undefined => {
+const getBorderColor = ({
+  type,
+  pressed,
+  colors,
+  disabled,
+}: GetBorderColorProps): string | undefined => {
   switch (type) {
     case ButtonType.PRIMARY:
       if (pressed) return colors?.secondaryButtonBackground;
+      if (disabled) return colors?.secondaryBackground;
       return colors?.buttonBackground;
     case ButtonType.SECONDARY:
       if (pressed) return colors?.border;
+      if (disabled) return colors?.border;
       return colors?.border;
     case ButtonType.TERTIARY:
       return 'transparent';

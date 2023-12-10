@@ -39,7 +39,7 @@ const DatePicker = ({ value, placeholder, label, width, onDateChange, error }: P
           {
             width,
             backgroundColor: colors.secondaryBackground,
-            borderColor: error && RED_200,
+            borderColor: error ? RED_200 : 'transparent',
           },
         ]}
         onPress={() => setShowDatePicker(true)}
