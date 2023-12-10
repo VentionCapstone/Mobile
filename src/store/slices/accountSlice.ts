@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { user } from 'src/data/mockData';
 import { onError, onPending } from 'src/store/stateResults';
 import { Account, StateType } from 'src/types';
 

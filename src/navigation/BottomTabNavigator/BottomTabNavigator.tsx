@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
+import { NavigationHeader } from 'src/components';
 import { Booking, Explore, Profile, Wishlist } from 'src/screens';
 import { getColors } from 'src/store/selectors';
 
 import { BottomTabParamList } from './BottomTabNavigator.types';
 import { getTabBarIcon, getTabBarStyles } from './BottomTabNavigator.utils';
-import { NavigationHeader } from 'src/components';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -25,21 +25,21 @@ const BottomTabNavigator = () => {
         name="Explore"
         component={Explore}
         options={{
-          header: () => <NavigationHeader title="Explore" />,
+          header: () => <NavigationHeader title="Explore" leftComponent={false} />,
         }}
       />
       <BottomTab.Screen
         name="Wishlist"
         component={Wishlist}
         options={{
-          header: () => <NavigationHeader title="Wishlist" />,
+          header: () => <NavigationHeader title="Wishlist" leftComponent={false} />,
         }}
       />
       <BottomTab.Screen
         name="Booking"
         component={Booking}
         options={{
-          header: () => <NavigationHeader title="Booking" />,
+          header: () => <NavigationHeader title="Booking" leftComponent={false} />,
         }}
       />
       <BottomTab.Screen
