@@ -1,0 +1,46 @@
+import {
+  GREY_300,
+  GREY_400,
+  GREY_500,
+  PRIMARY_BLUE_100,
+  PRIMARY_BLUE_200,
+  RED,
+  RED_100,
+  RED_300,
+  TOMATO_100,
+  WHITE,
+  WHITE_100,
+  WHITE_200,
+} from './colors';
+
+export const lightColors = {
+  text: GREY_400,
+  background: WHITE,
+  secondaryBackground: WHITE_100,
+  tint: TOMATO_100,
+  icon: GREY_300,
+  border: WHITE_200,
+  borderTint: PRIMARY_BLUE_100,
+  error: RED_100,
+  placeholder: GREY_300,
+  buttonBackground: GREY_500,
+  secondaryButtonBackground: GREY_300,
+  buttonTextColor: GREY_500,
+  errorBackground: RED,
+};
+
+export const darkColors = {
+  text: WHITE_200,
+  background: GREY_500,
+  secondaryBackground: GREY_400,
+  tint: TOMATO_100,
+  icon: WHITE_200,
+  border: GREY_300,
+  borderTint: PRIMARY_BLUE_200,
+  error: RED_100,
+  placeholder: GREY_300,
+  buttonBackground: WHITE_100,
+  secondaryButtonBackground: WHITE_200,
+  buttonTextColor: WHITE_100,
+  errorBackground: RED_300,
+};
