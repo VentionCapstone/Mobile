@@ -5,7 +5,7 @@ import { Button } from 'src/components/Button';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
-import { RED_300 } from 'src/styles';
+import { RED_200, RED_300 } from 'src/styles';
 import { ErrorResponseType } from 'src/types';
 import { IconName } from 'src/types/ui';
 
@@ -36,7 +36,7 @@ const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error }
         {error && (
           <View style={[styles.errorContainer, { backgroundColor: colors.errorBackground }]}>
             <View style={styles.errorIconContainer}>
-              <Icon name={IconName.Error} iconSet="material" color={RED_300} size={20} />
+              <Icon name={IconName.Error} iconSet="material" color={RED_200} size={20} />
               <Text style={styles.label}>Error!</Text>
             </View>
             <Text style={styles.errorMessage}>{error?.message}</Text>

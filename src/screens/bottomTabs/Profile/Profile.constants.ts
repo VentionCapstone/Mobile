@@ -19,7 +19,7 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
       },
       {
         label: 'My Accommodations',
-        iconName: IconName.Notifications,
+        iconName: IconName.List,
         screen: 'MyAccommodations',
         loggedInOnly: true,
       },

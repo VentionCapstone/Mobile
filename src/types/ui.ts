@@ -22,6 +22,7 @@ export enum IconName {
   Back = 'arrow-back-outline',
   Edit = 'edit',
   Error = 'error-outline',
+  List = 'ios-list',
 }
 
 export type IconSet = 'ionicons' | 'material';

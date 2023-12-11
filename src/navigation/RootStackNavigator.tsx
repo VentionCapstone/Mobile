@@ -8,6 +8,7 @@ import {
   CreateProfile,
   MyAccommodations,
   UpdateProfile,
+  AddAccommodationImage,
 } from 'src/screens';
 import { BUTTON_SIZES } from 'src/styles';
 import { ButtonType } from 'src/types';
@@ -69,6 +70,11 @@ const RootStackNavigator = () => {
         name="CreateAccommodation"
         component={CreateAccommodation}
         options={{ header: () => <NavigationHeader title="Create Accommodation" /> }}
+      />
+      <RootRouterStack.Screen
+        name="AddAccommodationImage"
+        component={AddAccommodationImage}
+        options={{ header: () => <NavigationHeader /> }}
       />
     </RootRouterStack.Navigator>
   );

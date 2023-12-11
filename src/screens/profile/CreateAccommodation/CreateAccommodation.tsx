@@ -11,10 +11,13 @@ import { AccommodationFormValues } from 'src/types';
 
 import { styles } from './CreateAccommodation.style';
 import { validateForm } from './CreateAccommodation.utils';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from 'src/navigation';
 
 const CreateAccommodation = () => {
   const dispatch = useAppDispatch();
   const accommodationError = useSelector(getAccommodationError);
+  const naviagtion = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -41,6 +44,11 @@ const CreateAccommodation = () => {
 
   const handleOnSubmit = async () => {
     setFormInteracted(true);
+    const userId = '1';
+
+    naviagtion.navigate('AddAccommodationImage', {
+      userId,
+    });
 
     if (formIsValid) {
       await dispatch(AsyncThunks.createAccommodation(formValues));
@@ -115,6 +123,7 @@ const CreateAccommodation = () => {
 
         <Input
           label="Address"
+          value={formValues.address}
           onChangeText={(value) => handleInputChange('address', value)}
           error={validationErrors.address}
         />
