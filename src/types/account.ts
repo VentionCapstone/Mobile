@@ -21,7 +21,7 @@ export interface CreateAccountFormValues {
   gender?: Gender;
   description?: string;
   country?: string;
-  language?: Language;
+  language?: string;
   photoUrl?: string | undefined;
   uiTheme?: ThemeType;
 }

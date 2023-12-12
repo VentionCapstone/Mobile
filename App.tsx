@@ -1,21 +1,20 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { useEffect } from 'react';
 import { StatusBar } from 'react-native';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import RootRouter from 'src/navigation/RootStackNavigator';
 import { store } from 'src/store';
-import { getIsDarkMode } from 'src/store/selectors';
+import { GREY_400, WHITE } from 'src/styles';
 
 export default function App() {
-  // const isDark = useSelector(getIsDarkMode);
-
-  // useEffect(() => {
-  //   StatusBar.setBarStyle(isDark ? 'dark-content' : 'light-content');
-  // }, [isDark]);
+  const isDark = store.getState().theme.isDark;
 
   return (
     <NavigationContainer>
       <Provider store={store}>
+        <StatusBar
+          barStyle={isDark ? 'light-content' : 'dark-content'}
+          backgroundColor={isDark ? GREY_400 : WHITE}
+        />
         <RootRouter />
       </Provider>
     </NavigationContainer>

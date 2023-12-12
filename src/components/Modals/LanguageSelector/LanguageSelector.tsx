@@ -8,7 +8,7 @@ import { getColors } from 'src/store/selectors';
 import { GREY_400 } from 'src/styles';
 import { IconName } from 'src/types/ui';
 
-import { LanguagesProps, languages } from './LanguageSelector.constants';
+import { Language, languages } from './LanguageSelector.constants';
 import { styles } from './LanguageSelector.style';
 import ModalContainer from '../ModalContainer/ModalContainer';
 
@@ -19,9 +19,9 @@ type Props = {
 const LanguageSelector = ({ onSelect }: Props) => {
   const colors = useSelector(getColors);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<LanguagesProps | null>(languages[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(languages[0]);
 
-  const handleLanguageSelect = (lang: LanguagesProps) => {
+  const handleLanguageSelect = (lang: Language) => {
     setSelectedLanguage(lang);
     onSelect(lang.code);
     setModalVisible(false);
@@ -38,7 +38,7 @@ const LanguageSelector = ({ onSelect }: Props) => {
       </TouchableOpacity>
 
       <ModalContainer visible={modalVisible} onClose={() => setModalVisible(false)}>
-        {languages.map((option: LanguagesProps) => (
+        {languages.map((option: Language) => (
           <TouchableOpacity
             key={option.code}
             style={styles.radioContainer}
