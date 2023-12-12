@@ -32,14 +32,22 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
 
           <View style={styles.redirectAuthContainer}>
             <Button
-              title="Signin"
+              title="Sign In"
               onPress={() => {
                 console.log('redirect to signin!');
+                navigation.navigate('Signin');
               }}
             />
             <View style={styles.redirectAuthContainer}>
               <Text>Don't have an account yet?</Text>
-              <Text style={{ textDecorationLine: 'underline' }}>signup</Text>
+              <Button
+                title="Sign Up"
+                type="secondary"
+                onPress={() => {
+                  console.log('redirect to signup!');
+                  navigation.navigate('Signup');
+                }}
+              />
             </View>
           </View>
         </View>

@@ -14,6 +14,24 @@ export interface Account {
   uiTheme?: ThemeType;
 }
 
+export interface AuthState {
+  userId: string;
+  accessToken: string | null;
+  refreshToken: string | null;
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+  error: string | null;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+export interface SignUpCredentials {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface CreateAccountFormValues {
   firstName?: string;
   lastName?: string;
