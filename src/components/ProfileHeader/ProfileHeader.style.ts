@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native';
 import { paragraph1, paragraph2, title3 } from 'src/styles';
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 10,
+  },
   header: {
     height: 280,
     justifyContent: 'center',

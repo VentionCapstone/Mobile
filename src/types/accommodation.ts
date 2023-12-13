@@ -8,5 +8,4 @@ export interface AccommodationFormValues {
   availableFrom: string;
   availableTo: string;
   description: string;
-  address: any;
 }

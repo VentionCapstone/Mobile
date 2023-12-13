@@ -20,6 +20,7 @@ export enum IconName {
   Phone = 'local-phone',
   Person = 'person',
   Back = 'arrow-back-outline',
+  BackChevron = 'chevron-back',
   Edit = 'edit',
   Error = 'error-outline',
   List = 'ios-list',

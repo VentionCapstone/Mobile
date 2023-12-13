@@ -31,16 +31,16 @@ const NavigationListItem = ({ item }: Props) => {
         styles.container,
         {
           backgroundColor: pressed ? colors.secondaryBackground : colors.background,
+          borderBottomColor: colors.border,
         },
       ]}
     >
-      <View style={styles.leftContainer}>
-        {iconName && <Icon name={iconName} />}
+      {iconName && <Icon name={iconName} style={styles.leftIcon} />}
 
+      <View style={styles.rightContainer}>
         <Text style={[styles.label, { marginLeft: iconName ? 14 : 0 }]}>{label}</Text>
+        {showIconRight && <Icon name={IconName.ChevronForward} />}
       </View>
-
-      {showIconRight && <Icon name={IconName.ChevronForward} />}
     </Pressable>
   );
 };

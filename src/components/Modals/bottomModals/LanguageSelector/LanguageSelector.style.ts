@@ -27,7 +27,6 @@ export const styles = StyleSheet.create({
   },
   radioLabel: {
     marginLeft: 8,
-    color: GREY_400,
     ...paragraph1,
   },
 });

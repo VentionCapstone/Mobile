@@ -1,18 +1,18 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { DatePicker, Input, NumericInput } from 'src/components';
+import { Address, DatePicker, Input, NumericInput } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccommodationError } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { AccommodationFormValues } from 'src/types';
+import { AddressValues } from 'src/types';
 
 import { styles } from './CreateAccommodation.style';
 import { validateForm } from './CreateAccommodation.utils';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from 'src/navigation';
 
 const CreateAccommodation = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +29,6 @@ const CreateAccommodation = () => {
     availableFrom: '',
     availableTo: '',
     description: '',
-    address: '',
   });
 
   const formIsValid = Object.keys(validationErrors).length === 0;
@@ -42,6 +41,10 @@ const CreateAccommodation = () => {
     setFormValues({ ...formValues, [fieldName]: value });
   };
 
+  const handleSelectAddress = (addressValues: AddressValues) => {
+    setFormValues({ ...formValues });
+  };
+
   const handleOnSubmit = async () => {
     setFormInteracted(true);
     const userId = '1';
@@ -51,7 +54,9 @@ const CreateAccommodation = () => {
     });
 
     if (formIsValid) {
-      await dispatch(AsyncThunks.createAccommodation(formValues));
+      // await dispatch(
+      //   AsyncThunks.createAccommodation({ accommodation: formValues, address: address })
+      // );
     }
   };
 
@@ -121,12 +126,7 @@ const CreateAccommodation = () => {
           error={validationErrors.squareMeters}
         />
 
-        <Input
-          label="Address"
-          value={formValues.address}
-          onChangeText={(value) => handleInputChange('address', value)}
-          error={validationErrors.address}
-        />
+        <Address onSelect={handleSelectAddress} />
 
         <Input
           multiline

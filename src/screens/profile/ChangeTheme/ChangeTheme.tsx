@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { View, TouchableOpacity, StatusBar } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Icon, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
@@ -22,10 +21,6 @@ const ChangeTheme = () => {
   const enableDarkTheme = () => {
     dispatch(themeActions.setTheme('dark'));
   };
-
-  useEffect(() => {
-    StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
-  }, [isDark]);
 
   return (
     <ScreenTemplate>

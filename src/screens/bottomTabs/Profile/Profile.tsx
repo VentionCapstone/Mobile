@@ -10,7 +10,7 @@ const Profile = () => {
   const isLoggedIn = true;
 
   return (
-    <ScreenTemplate headerShown={false} style={styles.container}>
+    <ScreenTemplate headerShown={false}>
       <ProfileHeader isLoggedIn={isLoggedIn} />
 
       <NavigationList sections={ACCOUNT_SECTIONS} />
@@ -23,6 +23,7 @@ const Profile = () => {
           size={BUTTON_SIZES.SM}
           type={ButtonType.SECONDARY}
           onPress={() => console.log('logout')}
+          style={styles.logoutButton}
         />
       )}
     </ScreenTemplate>

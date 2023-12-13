@@ -20,7 +20,6 @@ const NavigationList = ({ options, sections }: Props) => {
     <SectionList
       keyExtractor={(item, index) => item.label + index}
       style={styles.container}
-      ItemSeparatorComponent={() => <Seperator />}
       sections={data}
       scrollEnabled={false}
       alwaysBounceVertical={false}

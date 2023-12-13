@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY_400, paragraph1 } from 'src/styles';
+import { paragraph1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   selectorButton: {
@@ -20,6 +20,5 @@ export const styles = StyleSheet.create({
   },
   optionText: {
     ...paragraph1,
-    color: GREY_400,
   },
 });

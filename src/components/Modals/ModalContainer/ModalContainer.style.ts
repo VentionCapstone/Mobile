@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { paragraph1, WHITE } from 'src/styles';
 
 export const styles = StyleSheet.create({
-  modalContainer: {
+  centralModalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -24,5 +24,20 @@ export const styles = StyleSheet.create({
   closeButtonText: {
     color: 'blue',
     ...paragraph1,
+  },
+
+  bottomModalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  bottomModalContent: {
+    backgroundColor: WHITE,
+    padding: 25,
+    paddingVertical: 35,
+    borderRadius: 10,
+    width: '100%',
+    maxHeight: '80%',
   },
 });

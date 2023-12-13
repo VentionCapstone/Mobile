@@ -17,7 +17,16 @@ export interface UpdateProfileParams extends CreateProfileParams {
   userId: string;
 }
 
-export interface CreateAccommodationparams {
+export interface AddressValues {
+  street: string;
+  city: string;
+  country: string;
+  zipCode: number;
+  lattitude?: number;
+  longtitude?: number;
+}
+
+export interface AccommodationValues {
   thumbnailUrl?: string;
   previewImgUrl?: string;
   squareMeters: number;
@@ -27,7 +36,11 @@ export interface CreateAccommodationparams {
   availableFrom: string;
   availableTo: string;
   description: string;
-  address: any;
+}
+
+export interface CreateAccommodationparams {
+  accommodation: AccommodationValues;
+  address: AddressValues;
 }
 
 export interface UpdateAccommodationparams extends CreateAccommodationparams {

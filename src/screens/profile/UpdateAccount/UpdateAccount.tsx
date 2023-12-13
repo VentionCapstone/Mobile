@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { CountrySelector, Icon, ProfileImageUploader, Input, Text } from 'src/components';
-import { LanguageSelector } from 'src/components/Modals';
+import {
+  CountrySelector,
+  LanguageSelector,
+  Icon,
+  ProfileImageUploader,
+  Input,
+  Text,
+} from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { user } from 'src/data';
 import { useAppDispatch } from 'src/store';

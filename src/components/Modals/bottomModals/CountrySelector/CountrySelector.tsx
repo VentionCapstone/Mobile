@@ -9,7 +9,7 @@ import { Country, CountryOption } from 'src/types/common';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './CountrySelector.style';
-import ModalContainer from '../ModalContainer/ModalContainer';
+import ModalContainer from '../../ModalContainer/ModalContainer';
 
 const countries: CountryOption[] = [{ name: Country.UZBEKISTAN }, { name: Country.KAZAKHSTAN }];
 
@@ -41,7 +41,7 @@ const CountrySelector = ({ onSelect }: Props) => {
         <Icon name={IconName.ChevronDown} size={20} />
       </TouchableOpacity>
 
-      <ModalContainer visible={modalVisible} onClose={() => setModalVisible(false)}>
+      <ModalContainer bottomModal visible={modalVisible} onClose={() => setModalVisible(false)}>
         <FlatList
           data={countries}
           keyExtractor={(item) => item.name}

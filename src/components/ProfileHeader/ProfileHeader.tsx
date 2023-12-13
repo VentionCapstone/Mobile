@@ -20,7 +20,7 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
   const user = useSelector(getAccountDetails);
 
   return (
-    <View style={{ paddingVertical: 15 }}>
+    <View style={styles.container}>
       {!isLoggedIn && (
         <View style={styles.header}>
           <View style={{ gap: 4 }}>

@@ -20,9 +20,7 @@ const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: 
   const colors = useSelector(getColors);
 
   const handleBackPress = () => {
-    if (leftComponent) {
-      navigation.goBack();
-    }
+    navigation.goBack();
   };
 
   return (
@@ -30,7 +28,7 @@ const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: 
       <View style={styles.leftContainer}>
         {leftComponent && (
           <TouchableOpacity onPress={handleBackPress}>
-            <Icon name={IconName.Back} size={30} />
+            <Icon name={IconName.BackChevron} size={30} />
           </TouchableOpacity>
         )}
         <Text style={styles.title}>{title}</Text>

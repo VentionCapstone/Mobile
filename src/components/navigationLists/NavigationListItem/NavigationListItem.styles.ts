@@ -6,14 +6,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
   },
-  leftContainer: {
+  rightContainer: {
+    width: '95%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   label: {
     ...paragraph1,
+  },
+  leftIcon: {
+    marginLeft: 10,
   },
 });
 

@@ -56,11 +56,10 @@ const Button = ({
             type,
             size,
             colors,
-            width,
             height,
           });
 
-          return [styles.pressable, buttonStyles, style, { width: width && '100%' }];
+          return [styles.pressable, buttonStyles, style, { width: width || 'auto' }];
         }}
       >
         {({ pressed }) => (
