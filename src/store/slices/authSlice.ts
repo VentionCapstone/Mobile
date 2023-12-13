@@ -1,12 +1,11 @@
-// authReducer.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState } from 'src/types';
+import { AuthState, ErrorResponseType } from 'src/types';
 
 const initialState: AuthState = {
-  userId: '',
+  id: '',
   accessToken: null,
   refreshToken: null,
-  loading: 'idle',
+  loading: false,
   error: null,
 };
 
@@ -16,20 +15,20 @@ const authSlice = createSlice({
   reducers: {
     setTokens: (
       state,
-      action: PayloadAction<{ userId: string; accessToken: string; refreshToken: string }>
+      action: PayloadAction<{ id: string; accessToken: string; refreshToken: string }>
     ) => {
-      state.userId = action.payload.userId;
+      state.id = action.payload.id;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },
-    setLoading: (state, action: PayloadAction<'idle' | 'pending' | 'succeeded' | 'failed'>) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    setError: (state, action: PayloadAction<string | null>) => {
+    setError: (state, action: PayloadAction<ErrorResponseType | undefined | null>) => {
       state.error = action.payload;
     },
     logout: (state) => {
-      state.userId = '';
+      state.id = '';
       state.accessToken = null;
       state.refreshToken = null;
     },

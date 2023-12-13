@@ -1,59 +1,64 @@
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Input, Button, Text, Seperator } from 'src/components';
-import { ScreenTemplate } from 'src/components/templates';
+import { Input, Button, Text, Seperator, ButtonType } from 'src/components';
+import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
-import { RootState } from 'src/store';
+import { AppDispatch, RootState } from 'src/store';
+import { setError } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
+
+import styles from '../auth.styles';
 
 const Signin = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+  });
 
   const handleSignin = () => {
-    console.log('Signing in...');
-    dispatch(AsyncThunks.signIn({ email, password }));
+    if (credentials.email || credentials.password) {
+      console.log('Signing in...');
+      dispatch(AsyncThunks.signIn(credentials));
+    } else {
+      setError({ message: 'Please enter your email and password' });
+    }
   };
 
   return (
     <ScreenTemplate>
-      <View style={{ padding: 20 }}>
-        <Text style={{ fontSize: 30, marginTop: 20 }}>Welcome back!</Text>
+      <FormTemplate loading={loading} onSubmit={handleSignin} error={error}>
+        <Text style={styles.head}>Welcome back!</Text>
+        <Text style={styles.description}>
+          Sign in to your account and plan your next journey with us
+        </Text>
         <Input
-          style={{ marginTop: 30, height: 60 }}
+          style={styles.input}
+          value={credentials.email}
+          onChangeText={(text) => setCredentials({ ...credentials, email: text })}
           placeholder="Enter your email"
-          value={email}
-          onChangeText={setEmail}
         />
         <Input
-          style={{ marginBottom: 10, height: 60 }}
+          style={styles.input}
           placeholder="Enter your password"
           secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        <Button
-          style={{ marginTop: 10, marginBottom: 10, height: 60 }}
-          title={loading === 'pending' ? <ActivityIndicator /> : 'Sign In'}
-          onPress={handleSignin}
+          value={credentials.password}
+          onChangeText={(text) => setCredentials({ ...credentials, password: text })}
         />
         <Seperator />
-        <Text style={{ marginTop: 20 }}>Don't have an account yet?</Text>
-        {error && <Text style={{ color: 'red' }}>{error}</Text>}
+        <Text style={styles.toggleText}>Don't have an account yet?</Text>
         <Button
-          style={{ marginTop: 10, marginBottom: 10, height: 60 }}
-          type="secondary"
+          style={{ marginTop: 10, marginBottom: 10, height: 45 }}
+          type={ButtonType.SECONDARY}
           title="Sign Up"
           onPress={() => {
             navigation.navigate('Signup');
           }}
         />
-      </View>
+      </FormTemplate>
     </ScreenTemplate>
   );
 };

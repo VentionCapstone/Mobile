@@ -1,4 +1,5 @@
 import { Gender, Language } from './common';
+import { ErrorResponseType } from './store';
 import { ThemeType } from './ui';
 
 export interface Account {
@@ -15,11 +16,11 @@ export interface Account {
 }
 
 export interface AuthState {
-  userId: string;
+  id: string;
   accessToken: string | null;
   refreshToken: string | null;
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
-  error: string | null;
+  loading: boolean;
+  error: ErrorResponseType | undefined | null;
 }
 
 export interface LoginCredentials {

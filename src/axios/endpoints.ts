@@ -6,6 +6,6 @@ export const ENDPOINTS = {
   auth: {
     signin: '/auth/signin',
     signup: '/auth/signup',
-    signout: 'auth/signout',
+    signout: '/auth/signout',
   },
 };

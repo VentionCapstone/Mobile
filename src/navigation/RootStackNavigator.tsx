@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationHeader } from 'src/components';
 import { Account, ChangeTheme, CreateProfile, Signin, Signup, UpdateProfile } from 'src/screens';
+import VerifyEmail from 'src/screens/auth/VerifyEmail/VerifyEmail';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
 import { RootStackParamList } from './RootStackNavigator.types';
@@ -43,6 +44,11 @@ const RootStackNavigator = () => {
         name="Signup"
         component={Signup}
         options={{ header: () => <NavigationHeader title="Sign Up" /> }}
+      />
+      <RootRouterStack.Screen
+        name="VerifyEmail"
+        component={VerifyEmail}
+        options={{ header: () => <NavigationHeader title="Verification" /> }}
       />
     </RootRouterStack.Navigator>
   );

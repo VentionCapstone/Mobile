@@ -9,17 +9,15 @@ export const signUpThunk = createAsyncThunk(
   'auth/signup',
   async (credentials: SignUpCredentials, { dispatch }) => {
     try {
-      dispatch(setLoading('pending'));
+      dispatch(setLoading(false));
       const response = await axiosInstance.post(ENDPOINTS.auth.signup, credentials);
       if (response.status === 201) {
-        dispatch(setLoading('succeeded'));
+        dispatch(setLoading(false));
       }
     } catch (error) {
       console.log(error);
-      dispatch(setError('Sign up failed'));
-      dispatch(setLoading('failed'));
-    } finally {
-      dispatch(setLoading('idle'));
+      dispatch(setError({ message: 'Sign up failed' }));
+      dispatch(setLoading(false));
     }
   }
 );
@@ -28,41 +26,37 @@ export const signInThunk = createAsyncThunk(
   'auth/signin',
   async (credentials: LoginCredentials, { dispatch }) => {
     try {
-      dispatch(setLoading('pending'));
+      dispatch(setLoading(true));
       const response = await axiosInstance.post(ENDPOINTS.auth.signin, credentials);
-      const { userId, accessToken, refreshToken } = response.data;
+      const { id, accessToken, refreshToken } = response.data;
 
       await AsyncStorage.setItem('accessToken', accessToken);
       await AsyncStorage.setItem('refreshToken', refreshToken);
 
-      dispatch(setTokens({ userId, accessToken, refreshToken }));
-      dispatch(setLoading('succeeded'));
-    } catch (error) {
-      console.log(error);
-      dispatch(setError('Authentication failed'));
-      dispatch(setLoading('failed'));
-    } finally {
-      dispatch(setLoading('idle'));
+      dispatch(setTokens({ id, accessToken, refreshToken }));
+      dispatch(setLoading(false));
+    } catch (e: any) {
+      console.log(e);
+      dispatch(setError({ message: 'Authentication failed' }));
+      dispatch(setLoading(false));
     }
   }
 );
 
 export const signOutThunk = createAsyncThunk('auth/signout', async (_, { dispatch }) => {
   try {
-    dispatch(setLoading('pending'));
+    dispatch(setLoading(true));
     const response = await axiosInstance.post(ENDPOINTS.auth.signout);
     if (response.status === 200) {
       await AsyncStorage.removeItem('accessToken');
       await AsyncStorage.removeItem('refreshToken');
       dispatch(logout());
-      dispatch(setLoading('succeeded'));
+      dispatch(setLoading(false));
     }
   } catch (error) {
     console.log(error);
-    dispatch(setError('Sign out failed'));
-    dispatch(setLoading('failed'));
-  } finally {
-    dispatch(setLoading('idle'));
+    dispatch(setError({ message: 'Sign out failed' }));
+    dispatch(setLoading(false));
   }
 });
 
@@ -70,24 +64,22 @@ export const refreshTokensThunk = createAsyncThunk(
   'auth/refresh',
   async (_, { dispatch, getState }) => {
     try {
-      dispatch(setLoading('pending'));
+      dispatch(setLoading(true));
 
-      const { userId, refreshToken } = (getState() as RootState).auth as AuthState;
+      const { id, refreshToken } = (getState() as RootState).auth as AuthState;
 
-      const response = await axiosInstance.post(`/auth/${userId}/refresh`, { refreshToken });
+      const response = await axiosInstance.post(`/auth/${id}/refresh`, { refreshToken });
 
       const { accessToken, newRefreshToken } = response.data;
 
       await AsyncStorage.setItem('accessToken', accessToken);
       await AsyncStorage.setItem('refreshToken', newRefreshToken);
 
-      dispatch(setTokens({ userId, accessToken, refreshToken: newRefreshToken }));
-      dispatch(setLoading('succeeded'));
+      dispatch(setTokens({ id, accessToken, refreshToken: newRefreshToken }));
+      dispatch(setLoading(false));
     } catch (error) {
       console.log(error);
       dispatch(logout());
-    } finally {
-      dispatch(setLoading('idle'));
     }
   }
 );
