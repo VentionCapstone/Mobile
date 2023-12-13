@@ -19,18 +19,19 @@ export interface AuthState {
   id: string;
   accessToken: string | null;
   refreshToken: string | null;
-  loading: boolean;
+  pending: boolean;
   error: ErrorResponseType | undefined | null;
 }
 
-export interface LoginCredentials {
+
+export interface SignInParams {
   email: string;
   password: string;
 }
-export interface SignUpCredentials {
+export interface SignUpParams {
   email: string;
   password: string;
-  confirmPassword: string;
+  confirm_password: string;
 }
 
 export interface CreateAccountFormValues {

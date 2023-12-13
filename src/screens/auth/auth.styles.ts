@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   input: {
     height: 50,
   },
@@ -15,6 +19,11 @@ const styles = StyleSheet.create({
   },
   toggleText: {
     marginVertical: 20,
+    fontSize: 15,
+  },
+  link: {
+    marginVertical: 20,
+    marginHorizontal: 5,
     fontSize: 15,
   },
 });

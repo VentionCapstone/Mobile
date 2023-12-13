@@ -1,39 +1,62 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, ErrorResponseType } from 'src/types';
+import { createSlice } from '@reduxjs/toolkit';
+import { AuthState } from 'src/types';
+
+import { AsyncThunks } from '../thunks';
 
 const initialState: AuthState = {
   id: '',
   accessToken: null,
   refreshToken: null,
-  loading: false,
+  pending: false,
   error: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    setTokens: (
-      state,
-      action: PayloadAction<{ id: string; accessToken: string; refreshToken: string }>
-    ) => {
+  reducers: {},
+  extraReducers: (builder) => {
+    // Sign in reducers
+    builder.addCase(AsyncThunks.signIn.pending, (state) => {
+      state.pending = true;
+    });
+    builder.addCase(AsyncThunks.signIn.fulfilled, (state, action) => {
+      state.pending = false;
       state.id = action.payload.id;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
-    },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-    setError: (state, action: PayloadAction<ErrorResponseType | undefined | null>) => {
+    });
+    builder.addCase(AsyncThunks.signIn.rejected, (state, action) => {
       state.error = action.payload;
-    },
-    logout: (state) => {
+      state.pending = false;
+    });
+    //Sign up reducers
+    builder.addCase(AsyncThunks.signUp.pending, (state) => {
+      state.pending = true;
+    });
+    builder.addCase(AsyncThunks.signUp.fulfilled, (state) => {
+      state.pending = false;
+    });
+    builder.addCase(AsyncThunks.signUp.rejected, (state, action) => {
+      state.error = action.payload;
+      state.pending = false;
+    });
+    //Sign Out reducers
+    builder.addCase(AsyncThunks.signOut.pending, (state) => {
+      state.pending = true;
+    });
+    builder.addCase(AsyncThunks.signOut.fulfilled, (state, action) => {
+      state.pending = false;
       state.id = '';
-      state.accessToken = null;
-      state.refreshToken = null;
-    },
+      state.accessToken = '';
+      state.refreshToken = '';
+    });
+    builder.addCase(AsyncThunks.signOut.rejected, (state, action) => {
+      state.error = action.payload;
+      state.pending = false;
+    });
   },
 });
 
-export const { setTokens, setLoading, setError, logout } = authSlice.actions;
+export const authActions = authSlice.actions;
 export const authReducer = authSlice.reducer;

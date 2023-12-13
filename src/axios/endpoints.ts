@@ -7,5 +7,6 @@ export const ENDPOINTS = {
     signin: '/auth/signin',
     signup: '/auth/signup',
     signout: '/auth/signout',
+    refresh: (id: string) => `/auth/${id}/refresh`,
   },
 };

@@ -1,23 +1,27 @@
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Input, Button, Text, Seperator, ButtonType } from 'src/components';
+import { View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { Input, Text, Seperator } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
-import { AppDispatch, RootState } from 'src/store';
+import { useAppDispatch } from 'src/store';
+import { getAuthError, getAuthLoading } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 
 import styles from '../auth.styles';
 
 const Signup = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { loading, error } = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch<AppDispatch>();
+
+  const dispatch = useAppDispatch();
+  const loading = useSelector(getAuthLoading);
+  const error = useSelector(getAuthError);
 
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
+    confirm_password: '',
   });
 
   const handleSignup = () => {
@@ -34,7 +38,7 @@ const Signup = () => {
     });
   };
 
-  const isPasswordMatch = credentials.password === credentials.confirmPassword;
+  const isPasswordMatch = credentials.password === credentials.confirm_password;
 
   return (
     <ScreenTemplate>
@@ -58,21 +62,22 @@ const Signup = () => {
           style={styles.input}
           placeholder="Confirm Password"
           secureTextEntry
-          value={credentials.confirmPassword}
+          value={credentials.confirm_password}
           onChangeText={(text) => handleInputChange('confirmPassword', text)}
         />
         {!isPasswordMatch && <Text style={{ color: 'red' }}>Passwords do not match</Text>}
         <Seperator />
-        <Text style={styles.toggleText}>Already have an account?</Text>
-        <Button
-          style={{ marginTop: 10, marginBottom: 10, height: 45 }}
-          title="Sign In"
-          type={ButtonType.SECONDARY}
-          onPress={() => {
-            navigation.navigate('Main');
-            navigation.navigate('Signin');
-          }}
-        />
+        <View style={styles.container}>
+          <Text style={styles.toggleText}>Already have an account?</Text>
+          <Text
+            style={styles.link}
+            onPress={() => {
+              navigation.navigate('Signin');
+            }}
+          >
+            Sign In
+          </Text>
+        </View>
       </FormTemplate>
     </ScreenTemplate>
   );

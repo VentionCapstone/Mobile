@@ -6,6 +6,7 @@ import { getAccountDetails, getColors } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import styles from './ProfileHeader.style';
+import { ButtonType } from '../Button';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
@@ -42,7 +43,7 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
               <Text>Don't have an account yet?</Text>
               <Button
                 title="Sign Up"
-                type="secondary"
+                type={ButtonType.SECONDARY}
                 onPress={() => {
                   console.log('redirect to signup!');
                   navigation.navigate('Signup');
