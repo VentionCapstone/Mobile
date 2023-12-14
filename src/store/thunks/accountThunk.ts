@@ -23,7 +23,8 @@ export const updateAccountThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.put(ENDPOINTS.account.update, params);
+    const userId = '213';
+    const response = await axiosInstance.put(ENDPOINTS.account.update(userId), params);
 
     return response.data;
   } catch (error: any) {

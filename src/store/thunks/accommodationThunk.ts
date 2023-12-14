@@ -1,10 +1,10 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
-import { CreateAccommodationparams, ErrorResponseType, UpdateAccommodationparams } from 'src/types';
+import { CreateAccommodationParams, ErrorResponseType, UpdateAccommodationParams } from 'src/types';
 
 export const createAccommodationThunk: AsyncThunkPayloadCreator<
   any,
-  CreateAccommodationparams,
+  CreateAccommodationParams,
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
@@ -12,21 +12,25 @@ export const createAccommodationThunk: AsyncThunkPayloadCreator<
 
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response.data.error);
   }
 };
 
 export const updateAccommodationThunk: AsyncThunkPayloadCreator<
   any,
-  UpdateAccommodationparams,
+  UpdateAccommodationParams,
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.put(ENDPOINTS.accommodation.update('1'), params);
+    const accommodationId = '1';
+    const response = await axiosInstance.put(
+      ENDPOINTS.accommodation.update(accommodationId),
+      params
+    );
 
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response.data.error);
   }
 };
 

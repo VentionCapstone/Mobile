@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { RED_200, paragraph1, paragraph2 } from 'src/styles';
+import { RED_200, paragraph1, paragraph2, paragraph3 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   openDateButton: {
@@ -20,5 +20,7 @@ export const styles = StyleSheet.create({
     color: RED_200,
     alignSelf: 'flex-start',
     marginLeft: 10,
+    marginTop: 4,
+    ...paragraph3,
   },
 });

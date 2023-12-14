@@ -10,6 +10,6 @@ export type RootStackParamList = {
   Account?: undefined;
   ChangeTheme?: undefined;
   MyAccommodations?: undefined;
-  CreateAccommodation?: { userId: string };
+  CreateAccommodation?: { userId?: string };
   AddAccommodationImage?: any;
 };

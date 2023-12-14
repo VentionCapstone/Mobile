@@ -21,28 +21,28 @@ export interface AddressValues {
   street: string;
   city: string;
   country: string;
-  zipCode: number;
-  lattitude?: number;
-  longtitude?: number;
+  zipCode: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface AccommodationValues {
   thumbnailUrl?: string;
   previewImgUrl?: string;
-  squareMeters: number;
-  numberOfRooms: number;
-  price: number;
-  availibility: boolean;
+  squareMeters: number | null;
+  numberOfRooms: number | null;
+  price: number | null;
+  availability: boolean;
   availableFrom: string;
   availableTo: string;
   description: string;
 }
 
-export interface CreateAccommodationparams {
+export interface CreateAccommodationParams {
   accommodation: AccommodationValues;
   address: AddressValues;
 }
 
-export interface UpdateAccommodationparams extends CreateAccommodationparams {
+export interface UpdateAccommodationParams extends CreateAccommodationParams {
   accommodationId: string;
 }

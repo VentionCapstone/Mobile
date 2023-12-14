@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Button, NavigationHeader } from 'src/components';
+import { Button, ButtonType, NavigationHeader } from 'src/components';
 import {
   Account,
   ChangeTheme,
@@ -11,7 +11,6 @@ import {
   AddAccommodationImage,
 } from 'src/screens';
 import { BUTTON_SIZES } from 'src/styles';
-import { ButtonType } from 'src/types';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
 import { RootStackParamList } from './RootStackNavigator.types';
@@ -58,7 +57,7 @@ const RootStackNavigator = () => {
                 <Button
                   title="create"
                   size={BUTTON_SIZES.SM}
-                  type={ButtonType.Secondary}
+                  type={ButtonType.SECONDARY}
                   onPress={() => navigation.navigate('CreateAccommodation')}
                 />
               }

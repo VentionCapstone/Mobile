@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ScrollView, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { ScrollView, KeyboardAvoidingView, Platform, ViewStyle, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'src/components/Button';
 import Icon from 'src/components/Icon/Icon';
@@ -17,9 +17,10 @@ interface Props {
   onSubmit: () => void;
   loading?: boolean;
   error?: ErrorResponseType | null;
+  style?: ViewStyle;
 }
 
-const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error }: Props) => {
+const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error, style }: Props) => {
   const colors = useSelector(getColors);
 
   return (
@@ -28,8 +29,9 @@ const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error }
       style={styles.container}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContainer}
+        contentContainerStyle={[styles.scrollContainer, style]}
         keyboardShouldPersistTaps="handled"
+        style={styles.scrollView}
       >
         {children}
 
@@ -47,7 +49,7 @@ const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error }
           title="Submit"
           isLoading={loading}
           disabled={!formIsValid}
-          marginVertical={30}
+          marginVertical={10}
           onPress={onSubmit}
         />
       </ScrollView>

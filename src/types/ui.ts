@@ -1,5 +1,5 @@
 export enum IconName {
-  Search = 'search-outline',
+  Search = 'search',
   Heart = 'heart-outline',
   PersonOutline = 'person-outline',
   PersonCircle = 'person-circle-outline',
@@ -24,15 +24,10 @@ export enum IconName {
   Edit = 'edit',
   Error = 'error-outline',
   List = 'ios-list',
+  Location = 'location',
 }
 
 export type IconSet = 'ionicons' | 'material';
-
-export enum ButtonType {
-  Primary = 'primary',
-  Secondary = 'secondary',
-  Tertiary = 'tertiary',
-}
 
 export enum ThemeType {
   Light = 'LIGHT',

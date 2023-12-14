@@ -8,6 +8,7 @@ import { styles } from './Input.style';
 import { getFontColor, getInputContainerStyles, getTextInputStyles } from './Input.utils';
 import Icon from '../../Icon/Icon';
 import Text from '../../Text/Text';
+import { RED_100 } from 'src/styles';
 
 type Props = TextInputProps & {
   label?: string;
@@ -21,6 +22,7 @@ type Props = TextInputProps & {
 const Input = ({ label, leftIcon, rightIcon, error, style, innerStyle, ...props }: Props) => {
   const [isFocused, setIsFocused] = React.useState(false);
   const colors = useSelector(getColors);
+  const placeholderColor = error ? RED_100 : colors.placeholder;
 
   const inputRef = useRef<TextInput>(null);
 
@@ -49,7 +51,7 @@ const Input = ({ label, leftIcon, rightIcon, error, style, innerStyle, ...props 
           <TextInput
             ref={inputRef}
             style={[getTextInputStyles({ error, colors, isFocused }), innerStyle]}
-            placeholderTextColor={getFontColor({ error, colors, isFocused })}
+            placeholderTextColor={placeholderColor}
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}
             {...props}

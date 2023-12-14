@@ -42,6 +42,18 @@ const isRoomCountValid = (roomCount: number): boolean => {
   return !!roomCount;
 };
 
+const isCityValid = (city: string): boolean => {
+  return !!city;
+};
+
+const isStreetValid = (street: string): boolean => {
+  return !!street;
+};
+
+const isZipCodeValid = (zipCode: number): boolean => {
+  return !!zipCode;
+};
+
 export {
   isAccountNameValid,
   isPasswordValid,
@@ -52,4 +64,7 @@ export {
   isPriceValid,
   isAreaValid,
   isRoomCountValid,
+  isCityValid,
+  isStreetValid,
+  isZipCodeValid,
 };

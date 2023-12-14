@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { paragraph1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -21,8 +22,13 @@ export const styles = StyleSheet.create({
   inputRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 4,
   },
   availabilityText: {
     fontSize: 16,
+  },
+  addressLabel: {
+    ...paragraph1,
   },
 });

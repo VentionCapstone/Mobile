@@ -1,10 +1,10 @@
-export interface AccommodationFormValues {
+export interface CreateAccommodationValues {
   thumbnailUrl?: string;
   previewImgUrl?: string;
-  squareMeters: number;
-  numberOfRooms: number;
-  price: number;
-  availibility: boolean;
+  squareMeters: number | null;
+  numberOfRooms: number | null;
+  price: number | null;
+  availability: boolean;
   availableFrom: string;
   availableTo: string;
   description: string;

@@ -1,15 +1,13 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Address, DatePicker, Input, NumericInput } from 'src/components';
+import { AddressSelector, DatePicker, Input, NumericInput, Text } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
-import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccommodationError } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { AddressValues } from 'src/types';
+import { AddressValues, CreateAccommodationValues } from 'src/types';
 
 import { styles } from './CreateAccommodation.style';
 import { validateForm } from './CreateAccommodation.utils';
@@ -17,17 +15,17 @@ import { validateForm } from './CreateAccommodation.utils';
 const CreateAccommodation = () => {
   const dispatch = useAppDispatch();
   const accommodationError = useSelector(getAccommodationError);
-  const naviagtion = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [formValues, setFormValues] = useState<AccommodationFormValues>({
-    squareMeters: 0,
-    numberOfRooms: 0,
-    price: 0,
-    availibility: true,
+  const [addressValues, setAddressValues] = useState<AddressValues>();
+  const [formValues, setFormValues] = useState<CreateAccommodationValues>({
+    squareMeters: null,
+    numberOfRooms: null,
+    price: null,
     availableFrom: '',
     availableTo: '',
+    availability: true,
     description: '',
   });
 
@@ -37,27 +35,33 @@ const CreateAccommodation = () => {
     setFormValues({ ...formValues, [fieldName]: selectedDate });
   };
 
-  const handleInputChange = (fieldName: keyof AccommodationFormValues, value: string | number) => {
+  const handleSelectAddressValues = (values: AddressValues) => {
+    setAddressValues(values);
+  };
+
+  const handleInputChange = (
+    fieldName: keyof CreateAccommodationValues,
+    value: string | number
+  ) => {
     setFormValues({ ...formValues, [fieldName]: value });
   };
 
-  const handleSelectAddress = (addressValues: AddressValues) => {
-    setFormValues({ ...formValues });
+  const mockAddressValues = {
+    country: 'Uzb',
+    city: 'Urgit',
+    street: 'Huvaydo',
+    zipCode: '12123',
+    longitude: 0,
+    latitude: 0,
   };
 
   const handleOnSubmit = async () => {
     setFormInteracted(true);
-    const userId = '1';
+    await dispatch(
+      AsyncThunks.createAccommodation({ accommodation: formValues, address: mockAddressValues })
+    );
 
-    naviagtion.navigate('AddAccommodationImage', {
-      userId,
-    });
-
-    if (formIsValid) {
-      // await dispatch(
-      //   AsyncThunks.createAccommodation({ accommodation: formValues, address: address })
-      // );
-    }
+    console.log(accommodationError);
   };
 
   useEffect(() => {
@@ -69,7 +73,7 @@ const CreateAccommodation = () => {
         dispatch(accommodationActions.clearError());
       }
     }
-  }, [formValues, formInteracted, dispatch]);
+  }, [formValues, formInteracted]);
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
@@ -126,13 +130,14 @@ const CreateAccommodation = () => {
           error={validationErrors.squareMeters}
         />
 
-        <Address onSelect={handleSelectAddress} />
+        <Text style={styles.addressLabel}>Address</Text>
+        <AddressSelector onSelect={handleSelectAddressValues} />
 
         <Input
           multiline
           numberOfLines={4}
           label="Description"
-          placeholder="enter additional information"
+          placeholder="describe your accommodation"
           innerStyle={styles.textArea}
           onChangeText={(value) => handleInputChange('description', value)}
           error={validationErrors.description}

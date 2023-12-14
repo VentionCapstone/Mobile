@@ -9,9 +9,14 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 15,
   },
+  scrollView: {
+    flex: 1,
+    width: '100%',
+  },
   errorContainer: {
     borderRadius: 8,
     minHeight: 60,
+    marginTop: 20,
     backgroundColor: RED_300,
     padding: 10,
   },

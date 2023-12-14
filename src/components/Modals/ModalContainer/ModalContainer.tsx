@@ -1,12 +1,11 @@
 import React, { ReactNode } from 'react';
-import { Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Modal, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
-import { GREY_400 } from 'src/styles';
+import { getColors } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './ModalContainer.style';
-import { useSelector } from 'react-redux';
-import { getColors } from 'src/store/selectors';
 
 interface ModalContainerProps {
   visible: boolean;
@@ -20,9 +19,6 @@ const ModalContainer = ({ visible, onClose, children, bottomModal }: ModalContai
 
   return (
     <Modal animationType="fade" transparent visible={visible} onRequestClose={onClose}>
-      <TouchableWithoutFeedback onBlur={onClose}>
-        <View />
-      </TouchableWithoutFeedback>
       {!bottomModal && (
         <View style={styles.centralModalContainer}>
           <View style={[styles.modalContent, { backgroundColor: colors.secondaryBackground }]}>
@@ -36,9 +32,7 @@ const ModalContainer = ({ visible, onClose, children, bottomModal }: ModalContai
 
       {bottomModal && (
         <View style={styles.bottomModalContainer}>
-          <View
-            style={[styles.bottomModalContent, { backgroundColor: colors.secondaryBackground }]}
-          >
+          <View style={[styles.bottomModalContent, { backgroundColor: colors.background }]}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Icon name={IconName.Close} size={30} />
             </TouchableOpacity>

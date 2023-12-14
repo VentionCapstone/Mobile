@@ -7,7 +7,6 @@ import Text from './Text/Text';
 import ThemedView from './ThemedView/ThemedView';
 import ProfileImageUploader from './imageUploaders/ProfileImage/ProfileImage';
 import { Input, NumericInput } from './inputs';
-import { LanguageSelector, CountrySelector, Address } from './modals/centerModals';
 
 export {
   Button,
@@ -21,9 +20,7 @@ export {
   NavigationHeader,
   ProfileImageUploader,
   DatePicker,
-  LanguageSelector,
-  CountrySelector,
-  Address,
 };
 
 export * from './navigationLists';
+export * from './modals';
