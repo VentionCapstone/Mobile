@@ -11,10 +11,13 @@ import { AddressValues, CreateAccommodationValues } from 'src/types';
 
 import { styles } from './CreateAccommodation.style';
 import { validateForm } from './CreateAccommodation.utils';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from 'src/navigation';
 
 const CreateAccommodation = () => {
   const dispatch = useAppDispatch();
   const accommodationError = useSelector(getAccommodationError);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -48,7 +51,7 @@ const CreateAccommodation = () => {
 
   const mockAddressValues = {
     country: 'Uzb',
-    city: 'Urgit',
+    city: 'Urgut',
     street: 'Huvaydo',
     zipCode: '12123',
     longitude: 0,
@@ -57,11 +60,18 @@ const CreateAccommodation = () => {
 
   const handleOnSubmit = async () => {
     setFormInteracted(true);
-    await dispatch(
+    const response: any = await dispatch(
       AsyncThunks.createAccommodation({ accommodation: formValues, address: mockAddressValues })
     );
 
-    console.log(accommodationError);
+    // const { id } = response;
+
+    //mock
+    const id = '9b2ce24e-a16f-47f7-a396-dca66a8d5c60';
+
+    if (response.success) {
+      navigation.navigate('AddAccommodationImage', { accommodationId: id });
+    }
   };
 
   useEffect(() => {

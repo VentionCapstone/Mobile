@@ -8,6 +8,7 @@ export const createAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
+    console.log(params);
     const response = await axiosInstance.post(ENDPOINTS.accommodation.create, params);
 
     return response.data;
@@ -40,10 +41,39 @@ export const deleteAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (accommodationId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.delete(ENDPOINTS.accommodation.delete('1'));
+    const response = await axiosInstance.delete(ENDPOINTS.accommodation.delete(accommodationId));
 
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);
+  }
+};
+
+export const uploadAccommodationImageThunk: AsyncThunkPayloadCreator<
+  any,
+  any,
+  { rejectValue: ErrorResponseType }
+> = async (params, { rejectWithValue }) => {
+  try {
+    // const accommodationId = '9b2ce24e-a16f-47f7-a396-dca66a8d5c60';
+    const { accommodationId, imageData } = params;
+
+    const formData = new FormData();
+    formData.append('file', imageData as any);
+
+    const response = await axiosInstance.post(
+      ENDPOINTS.accommodation.uploadImage(accommodationId),
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.log(error.response.data);
+    return rejectWithValue(error.response.data.error);
   }
 };

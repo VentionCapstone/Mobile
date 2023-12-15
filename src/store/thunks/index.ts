@@ -4,6 +4,7 @@ import {
   createAccommodationThunk,
   deleteAccommodationThunk,
   updateAccommodationThunk,
+  uploadAccommodationImageThunk,
 } from './accommodationThunk';
 import { createAccountThunk, updateAccountThunk } from './accountThunk';
 
@@ -14,4 +15,8 @@ export const AsyncThunks = {
   createAccommodation: createAsyncThunk('createAccommodationThunk', createAccommodationThunk),
   updateAccommodation: createAsyncThunk('updateAccommodationThunk', updateAccommodationThunk),
   deleteAccommodation: createAsyncThunk('deleteAccommodationThunk', deleteAccommodationThunk),
+  uploadAccommodationImage: createAsyncThunk(
+    'uploadAccommodationImageThunk',
+    uploadAccommodationImageThunk
+  ),
 };

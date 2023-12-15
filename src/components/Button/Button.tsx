@@ -18,7 +18,7 @@ interface Props {
   title: string;
   type?: ButtonType;
   size?: BUTTON_SIZES;
-  width?: number;
+  width?: number | string;
   height?: number;
   style?: any;
 }

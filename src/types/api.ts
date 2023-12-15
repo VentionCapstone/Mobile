@@ -1,3 +1,4 @@
+import { CreateAccommodationValues } from './accommodation';
 import { Gender } from './common';
 import { ThemeType } from './ui';
 
@@ -26,23 +27,39 @@ export interface AddressValues {
   longitude?: number;
 }
 
-export interface AccommodationValues {
-  thumbnailUrl?: string;
-  previewImgUrl?: string;
-  squareMeters: number | null;
-  numberOfRooms: number | null;
-  price: number | null;
-  availability: boolean;
-  availableFrom: string;
-  availableTo: string;
-  description: string;
-}
-
 export interface CreateAccommodationParams {
-  accommodation: AccommodationValues;
+  accommodation: CreateAccommodationValues;
   address: AddressValues;
 }
 
 export interface UpdateAccommodationParams extends CreateAccommodationParams {
   accommodationId: string;
+}
+
+export interface UploadAccommodationImageParams {
+  uri: string;
+  type: string;
+  name: string;
+}
+
+export interface Accommodation {
+  accommodation: {
+    thumbnailUrl: string;
+    previewImgUrl: string;
+    squareMeters: number;
+    numberOfRooms: number;
+    price: number;
+    availability: boolean;
+    availableFrom: string;
+    availableTo: string;
+    description: string;
+  };
+  address: {
+    street: string;
+    city: string;
+    country: string;
+    zipCode: string;
+    latitude: number;
+    longitude: number;
+  };
 }

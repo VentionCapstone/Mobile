@@ -7,6 +7,7 @@ export const ENDPOINTS = {
   accommodation: {
     create: '/accommodation/create',
     update: (accommodationId: string) => `/accommodation/update/${accommodationId}`,
+    uploadImage: (accommodationId: string) => `/accommodation/file/${accommodationId}`,
     delete: (accommodationId: string) => `/accommodation/delete/${accommodationId}`,
     getAll: '/accommodations',
     getOne: (accommodationId: string) => `/accommodation/get/${accommodationId}`,
