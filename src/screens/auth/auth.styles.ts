@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
+    color: 'black',
   },
   head: {
     fontSize: 35,
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginHorizontal: 5,
     fontSize: 15,
+    textDecorationLine: 'underline',
   },
 });
 

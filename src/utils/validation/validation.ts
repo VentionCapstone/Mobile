@@ -11,15 +11,15 @@ const isAccountNameValid = (name: string | undefined): boolean => {
 
 const isEmailNameValid = (email: string): boolean => {
   const pattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return pattern.test(email);
+  return email.length === 0 || pattern.test(email);
 };
 
 const isPasswordMatches = (password: string, confirmPassword: string): boolean => {
-  return password === confirmPassword;
+  return confirmPassword === password;
 };
 
-const isPasswordValid = (password: string | undefined): boolean => {
-  return !!password && password.length >= PASSWORD_MIN_LENGTH;
+const isPasswordValid = (password: string): boolean => {
+  return password.length === 0 || password.length >= PASSWORD_MIN_LENGTH;
 };
 
 const isPhoneNumberValid = (phoneNumber: string): boolean => {

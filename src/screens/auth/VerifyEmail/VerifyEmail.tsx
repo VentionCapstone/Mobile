@@ -1,9 +1,11 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Text, Input, Button } from 'src/components';
+import { Text, Button, ButtonType } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
+
+import styles from './VerifyEmail.style';
 
 const VerifyEmail = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -13,8 +15,15 @@ const VerifyEmail = () => {
 
   return (
     <ScreenTemplate>
-      <View>
-        <Text>Validation placeholder</Text>
+      <View style={styles.container}>
+        <Text style={styles.text}>Link sent to your email</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.text}>You can </Text>
+        <Text style={styles.text} onPress={() => navigation.navigate('Signin')}>
+          sign in
+        </Text>
+        <Text style={styles.text}> after verification</Text>
       </View>
     </ScreenTemplate>
   );

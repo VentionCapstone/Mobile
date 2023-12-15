@@ -35,7 +35,6 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
             <Button
               title="Sign In"
               onPress={() => {
-                console.log('redirect to signin!');
                 navigation.navigate('Signin');
               }}
             />
@@ -45,7 +44,6 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
                 title="Sign Up"
                 type={ButtonType.SECONDARY}
                 onPress={() => {
-                  console.log('redirect to signup!');
                   navigation.navigate('Signup');
                 }}
               />

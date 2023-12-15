@@ -28,7 +28,6 @@ const Profile = () => {
           type={ButtonType.SECONDARY}
           onPress={() => {
             dispatch(AsyncThunks.signOut());
-            console.log('proceeding with logout');
           }}
         />
       )}

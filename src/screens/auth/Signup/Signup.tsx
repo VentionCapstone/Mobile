@@ -6,8 +6,8 @@ import { Input, Text } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
-import { getAuthError, getAuthLoading } from 'src/store/selectors';
-import { authActions } from 'src/store/slices';
+import { getAccountError, getAccountLoader, getResult } from 'src/store/selectors';
+import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 
 import { validateForm } from './Signup.utils';
@@ -17,11 +17,11 @@ const Signup = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const dispatch = useAppDispatch();
-  const loading = useSelector(getAuthLoading);
-  const authError = useSelector(getAuthError);
+  const loading = useSelector(getAccountLoader);
+  const authError = useSelector(getAccountError);
+  const authResult = useSelector(getResult);
 
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [formInteracted, setFormInteracted] = useState<boolean>(false);
 
   const [credentials, setCredentials] = useState({
     email: '',
@@ -31,13 +31,13 @@ const Signup = () => {
 
   const formIsValid = Object.keys(validationErrors).length === 0;
 
-  const handleSignup = () => {
-    setFormInteracted(true);
+  const handleSignup = async () => {
     if (formIsValid) {
-      console.log('Signing up...');
-      dispatch(AsyncThunks.signUp(credentials));
-      console.log('redirecting to verify email');
-      navigation.navigate('VerifyEmail');
+      await dispatch(AsyncThunks.signUp(credentials));
+      if (authResult) {
+        dispatch(accountActions.clearError());
+        navigation.navigate('VerifyEmail');
+      }
     }
   };
 
@@ -48,17 +48,13 @@ const Signup = () => {
     });
   };
 
-  const isPasswordMatch = credentials.password === credentials.confirm_password;
+  useEffect(() => {
+    const errors = validateForm(credentials);
+    setValidationErrors(errors);
+  }, [credentials]);
 
   useEffect(() => {
-    if (formInteracted) {
-      const errors = validateForm(credentials);
-      setValidationErrors(errors);
-    }
-  }, [credentials, formInteracted]);
-
-  useEffect(() => {
-    dispatch(authActions.clearError());
+    dispatch(accountActions.clearError());
   }, []);
 
   return (
@@ -66,7 +62,7 @@ const Signup = () => {
       <FormTemplate
         loading={loading}
         onSubmit={handleSignup}
-        error={formInteracted && formIsValid ? authError : null}
+        error={formIsValid ? authError : null}
         formIsValid={formIsValid}
       >
         <Text style={styles.head}>Hello, stranger!</Text>
@@ -94,7 +90,6 @@ const Signup = () => {
           onChangeText={(text) => handleInputChange('confirm_password', text)}
           error={validationErrors.confirm_password}
         />
-        {!isPasswordMatch && <Text style={{ color: 'red' }}>Passwords do not match</Text>}
         <View style={styles.container}>
           <Text style={styles.toggleText}>Already have an account?</Text>
           <Text

@@ -17,7 +17,7 @@ const validateForm = (values: SignUpParams): Record<string, string> => {
   }
 
   if (!isPasswordMatches(values.password, values.confirm_password)) {
-    errors.confirmPassword = 'Passwords do not match';
+    errors.confirm_password = 'Passwords do not match';
   }
 
   return errors;
