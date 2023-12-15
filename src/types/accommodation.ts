@@ -1,4 +1,5 @@
 export interface CreateAccommodationValues {
+  ownerId?: string;
   thumbnailUrl?: string;
   previewImgUrl?: string;
   squareMeters: number | null;

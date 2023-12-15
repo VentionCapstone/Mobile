@@ -1,6 +1,8 @@
 import {
   ACCOUNT_NAME_MAX_LENGTH,
   ACCOUNT_NAME_MIN_LENGTH,
+  ADDRESS_INFO_MAX_LENGTH,
+  ADDRESS_ZIPCODE_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   UZBEK_PHONE_NUMBER_LENGTH,
 } from './validation.constants';
@@ -18,10 +20,6 @@ const isPhoneNumberValid = (phoneNumber: string): boolean => {
   return regex.test(phoneNumber);
 };
 
-const isAddressValid = (address: any): boolean => {
-  return !!address;
-};
-
 const isAvailableFromValid = (checkIn: string): boolean => {
   return !!checkIn;
 };
@@ -30,16 +28,20 @@ const isAvailableToValid = (checkOut: string): boolean => {
   return !!checkOut;
 };
 
-const isPriceValid = (price: number): boolean => {
+const isPriceValid = (price: number | null): boolean => {
   return !!price;
 };
 
-const isAreaValid = (area: number): boolean => {
+const isAreaValid = (area: number | null): boolean => {
   return !!area;
 };
 
-const isRoomCountValid = (roomCount: number): boolean => {
+const isRoomCountValid = (roomCount: number | null): boolean => {
   return !!roomCount;
+};
+
+const isCountryValid = (city: string): boolean => {
+  return !!city;
 };
 
 const isCityValid = (city: string): boolean => {
@@ -50,7 +52,11 @@ const isStreetValid = (street: string): boolean => {
   return !!street;
 };
 
-const isZipCodeValid = (zipCode: number): boolean => {
+const isSteetValid = (street: string): boolean => {
+  return !!street;
+};
+
+const isZipCodeValid = (zipCode: string): boolean => {
   return !!zipCode;
 };
 
@@ -58,12 +64,13 @@ export {
   isAccountNameValid,
   isPasswordValid,
   isPhoneNumberValid,
-  isAddressValid,
+  isSteetValid,
   isAvailableFromValid,
   isAvailableToValid,
   isPriceValid,
   isAreaValid,
   isRoomCountValid,
+  isCountryValid,
   isCityValid,
   isStreetValid,
   isZipCodeValid,

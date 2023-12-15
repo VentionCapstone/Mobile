@@ -1,8 +1,10 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { AddressSelector, DatePicker, Input, NumericInput, Text } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccommodationError } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
@@ -11,8 +13,6 @@ import { AddressValues, CreateAccommodationValues } from 'src/types';
 
 import { styles } from './CreateAccommodation.style';
 import { validateForm } from './CreateAccommodation.utils';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from 'src/navigation';
 
 const CreateAccommodation = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ const CreateAccommodation = () => {
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [addressValues, setAddressValues] = useState<AddressValues>();
+  const [addressValues, setAddressValues] = useState<AddressValues | undefined>();
   const [formValues, setFormValues] = useState<CreateAccommodationValues>({
     squareMeters: null,
     numberOfRooms: null,
@@ -58,20 +58,29 @@ const CreateAccommodation = () => {
     latitude: 0,
   };
 
+  const ownerId = '619d621c-b393-4c5e-8abe-babfac232f6a';
+
   const handleOnSubmit = async () => {
     setFormInteracted(true);
-    const response: any = await dispatch(
-      AsyncThunks.createAccommodation({ accommodation: formValues, address: mockAddressValues })
+
+    // if (!addressValues) {
+    //   alert('address should be filled!');
+    // }
+
+    const response = await dispatch(
+      AsyncThunks.createAccommodation({
+        accommodation: { ...formValues, ownerId },
+        address: mockAddressValues,
+      })
     );
 
     // const { id } = response;
-
     //mock
     const id = '9b2ce24e-a16f-47f7-a396-dca66a8d5c60';
 
-    if (response.success) {
-      navigation.navigate('AddAccommodationImage', { accommodationId: id });
-    }
+    // if (response.success) {
+    navigation.navigate('AddAccommodationImage', { accommodationId: id });
+    // }
   };
 
   useEffect(() => {
@@ -98,7 +107,7 @@ const CreateAccommodation = () => {
       >
         <View style={styles.inputRow}>
           <DatePicker
-            label="Check-in*"
+            label="Available from*"
             placeholder="yyyy/mm/dd"
             value={formValues.availableFrom}
             onDateChange={(selectedDate) => handleDateChange('availableFrom', selectedDate)}
@@ -106,7 +115,7 @@ const CreateAccommodation = () => {
             error={validationErrors.availableFrom}
           />
           <DatePicker
-            label="Check-out*"
+            label="Available to*"
             placeholder="yyyy/mm/dd"
             value={formValues.availableTo}
             onDateChange={(selectedDate) => handleDateChange('availableTo', selectedDate)}

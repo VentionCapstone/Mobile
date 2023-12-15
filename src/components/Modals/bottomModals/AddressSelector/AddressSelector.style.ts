@@ -5,7 +5,7 @@ import { HORIZONTAL_20_PERCENT } from 'src/utils';
 export const styles = StyleSheet.create({
   mapContainer: {
     width: '100%',
-    height: '70%',
+    height: '40%',
     alignItems: 'center',
   },
   searchInputContainer: {
@@ -19,7 +19,6 @@ export const styles = StyleSheet.create({
   },
   addressContainer: {
     paddingHorizontal: HORIZONTAL_20_PERCENT,
-    gap: 20,
   },
   addressDescriptionContainer: {
     marginTop: 20,
@@ -47,5 +46,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
+  },
+  saveButton: {
+    marginBottom: 20,
   },
 });

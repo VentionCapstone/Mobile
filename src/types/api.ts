@@ -29,7 +29,7 @@ export interface AddressValues {
 
 export interface CreateAccommodationParams {
   accommodation: CreateAccommodationValues;
-  address: AddressValues;
+  address: AddressValues | undefined;
 }
 
 export interface UpdateAccommodationParams extends CreateAccommodationParams {

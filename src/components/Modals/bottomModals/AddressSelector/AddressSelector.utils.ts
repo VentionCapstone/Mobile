@@ -1,7 +1,28 @@
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
-import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
+import Geocoder from 'react-native-geocoding';
+import { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { AddressValues } from 'src/types';
+import { isCityValid, isCountryValid, isStreetValid, isZipCodeValid } from 'src/utils';
+
+const GEOCODER_API_KEY = process.env.EXPO_PUBLIC_GEOCODER_API_KEY ?? '';
+
+Geocoder.init(GEOCODER_API_KEY);
+
+const getCoordinatesByCity = async (city: string) => {
+  try {
+    if (city) {
+      const response = await Geocoder.from(city);
+      const { lat, lng } = response.results[0].geometry.location;
+      return { latitude: lat, longitude: lng };
+    }
+
+    return null;
+  } catch (error: any) {
+    Alert.alert('Error', 'Error getting coordinates by city: ' + error?.message);
+    return null;
+  }
+};
 
 const getCurrentLocation = async (): Promise<Location.LocationObject | null> => {
   const { status } = await Location.requestForegroundPermissionsAsync();
@@ -14,37 +35,60 @@ const getCurrentLocation = async (): Promise<Location.LocationObject | null> => 
   return await Location.getCurrentPositionAsync({});
 };
 
-const handlePlaceSelected = (
-  data: GooglePlaceData,
+const getAddressInfo = (
   details: GooglePlaceDetail | null,
-  setAddressValues: (values: AddressValues) => void,
-  onSelect: (values: AddressValues) => void
+  initialLongitude: number,
+  initialLatitude: number
 ) => {
-  if (details) {
-    const { address_components, geometry } = details;
-
-    const city =
-      address_components.find((component) => component.types.includes('locality'))?.long_name || '';
-    const street =
-      address_components.find((component) => component.types.includes('route'))?.long_name || '';
-    const zipCode =
-      address_components.find((component) => component.types.includes('postal_code'))?.long_name ||
-      '';
-    const country =
-      address_components.find((component) => component.types.includes('country'))?.long_name || '';
-
-    const addressValues: AddressValues = {
-      country,
-      city,
-      street,
-      zipCode,
-      longitude: geometry.location.lng,
-      latitude: geometry.location.lat,
+  if (!details) {
+    return {
+      city: '',
+      country: '',
+      latitude: initialLatitude,
+      longitude: initialLongitude,
     };
-
-    setAddressValues(addressValues);
-    onSelect(addressValues);
   }
+
+  const { address_components, geometry } = details;
+
+  const cityComponent = address_components.find((component) =>
+    component.types.includes('locality')
+  );
+  const countryComponent = address_components.find((component) =>
+    component.types.includes('country')
+  );
+
+  const city = cityComponent?.long_name || '';
+  const country = countryComponent?.long_name || '';
+
+  return {
+    city,
+    country,
+    latitude: geometry.location.lat || initialLatitude,
+    longitude: geometry.location.lng || initialLongitude,
+  };
 };
 
-export { getCurrentLocation, handlePlaceSelected };
+const validation = (addressvalues: AddressValues): Record<string, string> => {
+  const errors: Record<string, string> = {};
+
+  if (!isCountryValid(addressvalues.country)) {
+    errors.country = 'country required';
+  }
+
+  if (!isZipCodeValid(addressvalues.zipCode)) {
+    errors.zipCode = 'zip code required';
+  }
+
+  if (!isCityValid(addressvalues.city)) {
+    errors.city = 'city required';
+  }
+
+  if (!isStreetValid(addressvalues.street)) {
+    errors.street = 'street required';
+  }
+
+  return errors;
+};
+
+export { getCurrentLocation, getAddressInfo, validation, getCoordinatesByCity };

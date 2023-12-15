@@ -1,6 +1,6 @@
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import {
   GooglePlaceData,
   GooglePlaceDetail,
@@ -8,50 +8,119 @@ import {
 } from 'react-native-google-places-autocomplete';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { Icon, Text, ThemedView } from 'src/components';
+import { Button, Icon, Input, Text, ThemedView } from 'src/components';
 import { getColors } from 'src/store/selectors';
 import { AddressValues, IconName } from 'src/types';
-import { GOOGLE_API_KEY } from 'src/utils';
+import { ADDRESS_INFO_MAX_LENGTH, ADDRESS_ZIPCODE_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AddressSelector.style';
-import { getCurrentLocation, handlePlaceSelected } from './AddressSelector.utils';
+import {
+  getAddressInfo,
+  getCoordinatesByCity,
+  getCurrentLocation,
+  validation,
+} from './AddressSelector.utils';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
 interface Props {
   onSelect: (values: AddressValues) => void;
 }
 
+const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
+
 const AddressSelector = ({ onSelect }: Props) => {
   const colors = useSelector(getColors);
+
+  const [formInteracted, setFormInteracted] = useState<boolean>(false);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [currentLocation, setCurrentLocation] = useState<Location.LocationObject | null>(null);
 
-  const latitude = currentLocation?.coords.latitude || 0;
-  const longitude = currentLocation?.coords.longitude || 0;
+  const initialLatitude = currentLocation?.coords.latitude || 0;
+  const initialLongitude = currentLocation?.coords.longitude || 0;
 
   const [addressValues, setAddressValues] = useState<AddressValues>({
     country: '',
     city: '',
     street: '',
     zipCode: '',
-    longitude,
-    latitude,
+    latitude: initialLatitude,
+    longitude: initialLongitude,
   });
 
-  const initialRegion: Region = {
-    latitude,
-    longitude,
+  const { country, city, street, zipCode } = addressValues;
+  const formIsValid = Object.keys(validationErrors).length === 0;
+
+  const [initialRegion, setInitialRegion] = useState<Region>({
+    latitude: initialLatitude,
+    longitude: initialLongitude,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
+  });
+
+  const handleInputChange = (fieldName: keyof AddressValues, text: string) => {
+    setAddressValues((prevValues) => ({
+      ...prevValues,
+      [fieldName]: text,
+    }));
   };
 
   const handleSearch = async (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
-    handlePlaceSelected(data, details, setAddressValues, onSelect);
+    if (details) {
+      const { city, country, longitude, latitude } = getAddressInfo(
+        details,
+        initialLatitude,
+        initialLongitude
+      );
+
+      setAddressValues({
+        ...addressValues,
+        city,
+        country,
+        longitude,
+        latitude,
+      });
+    }
   };
+
+  const handleOnSave = async () => {
+    setFormInteracted(true);
+
+    if (formIsValid) {
+      if (addressValues.latitude && addressValues.longitude) {
+        onSelect(addressValues);
+      } else {
+        const coordinates = await getCoordinatesByCity(city);
+
+        if (coordinates) {
+          onSelect({
+            ...addressValues,
+            latitude: coordinates.latitude || initialLatitude,
+            longitude: coordinates.longitude || initialLongitude,
+          });
+        }
+      }
+
+      setModalVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    const errors = validation(addressValues);
+
+    if (formInteracted) {
+      setValidationErrors(errors);
+    }
+  }, [addressValues, formInteracted]);
 
   useEffect(() => {
     getCurrentLocation().then((location) => {
       setCurrentLocation(location);
+      setInitialRegion((prevRegion) => ({
+        ...prevRegion,
+        latitude: location?.coords.latitude || prevRegion.latitude,
+        longitude: location?.coords.longitude || prevRegion.longitude,
+      }));
     });
   }, []);
 
@@ -63,7 +132,9 @@ const AddressSelector = ({ onSelect }: Props) => {
       >
         <View style={styles.row}>
           <Icon name={IconName.Location} size={26} color={colors.placeholder} />
-          <Text style={[styles.labelText, { color: colors.placeholder }]}>location</Text>
+          <Text style={[styles.labelText, { color: colors.placeholder }]}>
+            {city && street ? `${city}, ${street}` : 'location'}
+          </Text>
         </View>
 
         <Icon name={IconName.ChevronForward} />
@@ -83,10 +154,11 @@ const AddressSelector = ({ onSelect }: Props) => {
             query={{
               key: GOOGLE_API_KEY,
               language: 'en',
+              components: 'country:uz|country:kz|country:ru',
+              types: ['(cities)'],
             }}
           />
         </View>
-
         <MapView style={styles.mapContainer} region={initialRegion} provider={PROVIDER_GOOGLE}>
           {currentLocation && (
             <Marker
@@ -99,12 +171,53 @@ const AddressSelector = ({ onSelect }: Props) => {
           )}
         </MapView>
 
-        <View style={styles.addressContainer}>
+        <ScrollView contentContainerStyle={styles.addressContainer}>
           <View style={styles.addressDescriptionContainer}>
             <Icon name={IconName.Location} />
             <Text style={styles.label}>Address</Text>
           </View>
-        </View>
+
+          <Input
+            label="Country"
+            placeholder="enter country"
+            value={country}
+            maxLength={ADDRESS_INFO_MAX_LENGTH}
+            onChangeText={(text) => handleInputChange('country', text)}
+            error={validationErrors.country}
+          />
+          <Input
+            label="City"
+            placeholder="enter city"
+            value={city}
+            maxLength={ADDRESS_INFO_MAX_LENGTH}
+            onChangeText={(text) => handleInputChange('city', text)}
+            error={validationErrors.city}
+          />
+          <Input
+            label="Street"
+            placeholder="enter street"
+            value={street}
+            maxLength={ADDRESS_INFO_MAX_LENGTH}
+            onChangeText={(text) => handleInputChange('street', text)}
+            error={validationErrors.street}
+          />
+          <Input
+            label="Zip code"
+            placeholder="enter zip code"
+            value={zipCode}
+            keyboardType="numeric"
+            maxLength={ADDRESS_ZIPCODE_MAX_LENGTH}
+            onChangeText={(text) => handleInputChange('zipCode', text)}
+            error={validationErrors.zipCode}
+          />
+
+          <Button
+            title="Save"
+            onPress={handleOnSave}
+            style={styles.saveButton}
+            marginVertical={30}
+          />
+        </ScrollView>
       </ModalContainer>
     </ThemedView>
   );

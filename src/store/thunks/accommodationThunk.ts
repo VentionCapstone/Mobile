@@ -13,6 +13,7 @@ export const createAccommodationThunk: AsyncThunkPayloadCreator<
 
     return response.data;
   } catch (error: any) {
+    console.log(error.response.data);
     return rejectWithValue(error.response.data.error);
   }
 };
