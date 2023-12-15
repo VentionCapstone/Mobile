@@ -1,5 +1,4 @@
 import { Gender, Language } from './common';
-import { ErrorResponseType } from './store';
 import { ThemeType } from './ui';
 
 export interface Account {
@@ -13,25 +12,6 @@ export interface Account {
   language?: Language;
   photoUrl?: string | undefined;
   uiTheme?: ThemeType;
-}
-
-export interface AuthState {
-  id: string;
-  accessToken: string | null;
-  refreshToken: string | null;
-  pending: boolean;
-  error: ErrorResponseType | undefined | null;
-}
-
-
-export interface SignInParams {
-  email: string;
-  password: string;
-}
-export interface SignUpParams {
-  email: string;
-  password: string;
-  confirm_password: string;
 }
 
 export interface CreateAccountFormValues {

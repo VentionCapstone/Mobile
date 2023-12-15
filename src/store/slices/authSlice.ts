@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthState } from 'src/types';
 
@@ -5,8 +6,7 @@ import { AsyncThunks } from '../thunks';
 
 const initialState: AuthState = {
   id: '',
-  accessToken: null,
-  refreshToken: null,
+  tokens: null,
   pending: false,
   error: null,
 };
@@ -14,7 +14,12 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     // Sign in reducers
     builder.addCase(AsyncThunks.signIn.pending, (state) => {
@@ -23,8 +28,7 @@ const authSlice = createSlice({
     builder.addCase(AsyncThunks.signIn.fulfilled, (state, action) => {
       state.pending = false;
       state.id = action.payload.id;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+      AsyncStorage.setItem('tokens', JSON.stringify(action.payload.tokens));
     });
     builder.addCase(AsyncThunks.signIn.rejected, (state, action) => {
       state.error = action.payload;
@@ -48,8 +52,7 @@ const authSlice = createSlice({
     builder.addCase(AsyncThunks.signOut.fulfilled, (state, action) => {
       state.pending = false;
       state.id = '';
-      state.accessToken = '';
-      state.refreshToken = '';
+      AsyncStorage.removeItem('tokens');
     });
     builder.addCase(AsyncThunks.signOut.rejected, (state, action) => {
       state.error = action.payload;
