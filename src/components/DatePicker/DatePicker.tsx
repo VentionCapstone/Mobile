@@ -52,19 +52,21 @@ const DatePicker = ({ value, placeholder, label, width, onDateChange, error }: P
       {error && <Text style={styles.errorText}>{error}</Text>}
 
       {showDatePicker && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={value ? new Date(value) : new Date()}
-          mode="date"
-          is24Hour
-          style={{ width: '100%' }}
-          display="default"
-          onChange={(event, selectedDate) => {
-            if (event.type === 'set' && selectedDate) {
-              handleDateChange(selectedDate);
-            }
-          }}
-        />
+        <View style={{ width: '90%' }}>
+          <DateTimePicker
+            is24Hour
+            mode="date"
+            display="default"
+            testID="dateTimePicker"
+            value={value ? new Date(value) : new Date()}
+            minimumDate={new Date()}
+            onChange={(event, selectedDate) => {
+              if (event.type === 'set' && selectedDate) {
+                handleDateChange(selectedDate);
+              }
+            }}
+          />
+        </View>
       )}
     </View>
   );

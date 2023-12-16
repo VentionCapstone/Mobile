@@ -12,10 +12,8 @@ const initialState: AccommodationStateType = {
   result: null,
 };
 
-const SLICE_NAME = 'accommodation';
-
 const accommodationSlice = createSlice({
-  name: SLICE_NAME,
+  name: 'accommodation',
   initialState,
   reducers: {
     reset: () => initialState,
@@ -40,17 +38,17 @@ const accommodationSlice = createSlice({
     builder.addCase(AsyncThunks.updateAccommodation.rejected, onError);
 
     builder.addCase(AsyncThunks.deleteAccommodation.pending, onPending);
-    builder.addCase(AsyncThunks.deleteAccommodation.fulfilled, (state, action) => {
+    builder.addCase(AsyncThunks.deleteAccommodation.fulfilled, (state) => {
       state.pending = false;
     });
     builder.addCase(AsyncThunks.deleteAccommodation.rejected, onError);
 
-    builder.addCase(AsyncThunks.uploadAccommodationImage.pending, onPending);
-    builder.addCase(AsyncThunks.uploadAccommodationImage.fulfilled, (state, action) => {
+    builder.addCase(AsyncThunks.addAccommodationImage.pending, onPending);
+    builder.addCase(AsyncThunks.addAccommodationImage.fulfilled, (state, action) => {
       state.pending = false;
       state.result = action.payload;
     });
-    builder.addCase(AsyncThunks.uploadAccommodationImage.rejected, onError);
+    builder.addCase(AsyncThunks.addAccommodationImage.rejected, onError);
   },
 });
 

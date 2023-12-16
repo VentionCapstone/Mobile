@@ -20,6 +20,11 @@ const styles = StyleSheet.create({
   redirectAuthContainer: {
     gap: 20,
   },
+  redirectAuthText: {
+    gap: 20,
+    flex: 1,
+    flexDirection: 'row',
+  },
   loggedInHeader: {
     height: 140,
     justifyContent: 'space-around',

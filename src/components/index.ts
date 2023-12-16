@@ -1,3 +1,4 @@
+import showAlert from './alert';
 import { ButtonType, Button } from './Button';
 import DatePicker from './DatePicker/DatePicker';
 import Icon from './Icon/Icon';
@@ -9,6 +10,7 @@ import ProfileImageUploader from './imageUploaders/ProfileImage/ProfileImage';
 import { Input, NumericInput } from './inputs';
 
 export {
+  showAlert,
   Button,
   ButtonType,
   ProfileHeader,

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Modal, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import { getColors } from 'src/store/selectors';

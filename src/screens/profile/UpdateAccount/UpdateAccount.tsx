@@ -1,12 +1,18 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Icon, ProfileImageUploader, Input, Text } from 'src/components';
+import { Icon, ProfileImageUploader, Input, Text, showAlert } from 'src/components';
 import { LanguageSelector, CountrySelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
-import { user } from 'src/data';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader } from 'src/store/selectors';
+import {
+  getAccountError,
+  getAccountInfos,
+  getAccountLoader,
+  getUserDetails,
+} from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
@@ -24,16 +30,30 @@ const genderOptions = [
 
 const UpdateAccount = () => {
   const dispatch = useAppDispatch();
-  const userError = useSelector(getAccountError);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
+  const userError = useSelector(getAccountError);
+  const userDetails = useSelector(getUserDetails);
 
-  const [formValues, setFormValues] = useState<UpdateAccountFormValues>(user);
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [formValues, setFormValues] = useState<UpdateAccountFormValues>({
+    firstName: userDetails?.firstName,
+    lastName: userDetails?.lastName,
+    phoneNumber: userDetails?.Profile.phoneNumber || '',
+    gender: userDetails?.Profile.gender || undefined,
+    description: userDetails?.Profile.description || '',
+    country: userDetails?.Profile.country,
+    language: userDetails?.Profile.language,
+    imageUrl: userDetails?.Profile.imageUrl || undefined,
+    uiTheme: userDetails?.Profile.uiTheme || undefined,
+  });
+
+  const profileId = userDetails?.Profile.id;
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
-  const handleInputChange = (fieldName: keyof UpdateAccountFormValues, text: string) => {
+  const handleInputChange = (fieldName: string, text: string) => {
     setValidationErrors({});
     setFormValues({ ...formValues, [fieldName]: text });
   };
@@ -42,12 +62,11 @@ const UpdateAccount = () => {
     setFormValues({ ...formValues, country: country.name });
   };
 
-  const handlePhotoSelect = (photoUrl: string) => {
-    setFormValues({ ...formValues, photoUrl });
+  const handlePhotoSelect = (imageUrl: string) => {
+    setFormValues({ ...formValues, imageUrl });
   };
 
   const handleLanguageSelect = (language: string) => {
-    setValidationErrors({});
     setFormValues({ ...formValues, language });
   };
 
@@ -57,7 +76,14 @@ const UpdateAccount = () => {
 
     if (Object.keys(errors).length === 0) {
       dispatch(accountActions.clearError());
-      await dispatch(AsyncThunks.updateAccount(formValues));
+      const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
+
+      if (!response.payload.error) {
+        showAlert('success', {
+          message: 'Account details updated successfully!',
+          onOkPressed: () => navigation.navigate('Profile'),
+        });
+      }
     } else {
       setValidationErrors(errors);
     }

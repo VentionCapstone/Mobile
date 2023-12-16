@@ -1,4 +1,5 @@
 import {
+  BLACK,
   GREY_300,
   GREY_400,
   GREY_500,
@@ -31,8 +32,8 @@ export const lightColors = {
 
 export const darkColors = {
   text: WHITE_200,
-  background: GREY_500,
-  secondaryBackground: GREY_400,
+  background: BLACK,
+  secondaryBackground: GREY_500,
   tint: TOMATO_100,
   icon: WHITE_200,
   border: GREY_300,

@@ -2,22 +2,28 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, Image, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
-import { getAccountDetails, getColors } from 'src/store/selectors';
+import { getColors, getIsGuestAccount, getUserDetails } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import styles from './ProfileHeader.style';
+import { ButtonType } from '../Button';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
 
-interface Props {
-  isLoggedIn: boolean;
-}
-
-const ProfileHeader = ({ isLoggedIn }: Props) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const colors = useSelector(getColors);
-  const user = useSelector(getAccountDetails);
+  const user = useSelector(getUserDetails);
+  const isGuestUser = useSelector(getIsGuestAccount);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const handlePressed = () => {
+    if (isGuestUser) {
+      navigation.navigate('CreateProfile');
+    } else {
+      navigation.navigate('Account');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -32,14 +38,20 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
 
           <View style={styles.redirectAuthContainer}>
             <Button
-              title="Signin"
+              title="Sign In"
               onPress={() => {
-                console.log('redirect to signin!');
+                navigation.navigate('Signin');
               }}
             />
             <View style={styles.redirectAuthContainer}>
               <Text>Don't have an account yet?</Text>
-              <Text style={{ textDecorationLine: 'underline' }}>signup</Text>
+              <Button
+                title="Sign Up"
+                type={ButtonType.SECONDARY}
+                onPress={() => {
+                  navigation.navigate('Signup');
+                }}
+              />
             </View>
           </View>
         </View>
@@ -54,14 +66,14 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
 
           <TouchableOpacity
             style={[styles.accountHeader, { borderBottomColor: colors.border }]}
-            onPress={() => navigation.navigate('CreateProfile')}
+            onPress={handlePressed}
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
-                {user?.photoUrl ? (
+                {user?.Profile.imageUrl ? (
                   <Image
                     source={{
-                      uri: user.photoUrl,
+                      uri: user.Profile.imageUrl,
                     }}
                     style={styles.image}
                   />
@@ -71,8 +83,12 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
               </View>
 
               <View>
-                <Text style={styles.accountName}>Tester Testerov</Text>
-                <Text style={styles.description}>tap to create</Text>
+                <Text style={styles.accountName}>
+                  {user ? `${user.firstName} ${user.lastName}` : 'User'}
+                </Text>
+                <Text style={styles.description}>
+                  {isGuestUser ? 'tap to create' : 'show profile'}
+                </Text>
               </View>
             </View>
 

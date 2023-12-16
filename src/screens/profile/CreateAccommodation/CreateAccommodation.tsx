@@ -7,7 +7,7 @@ import { AddressSelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationError } from 'src/store/selectors';
+import { getAccommodationError, getAccommodationLoader } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { AddressValues, CreateAccommodationValues } from 'src/types';
@@ -19,6 +19,7 @@ const CreateAccommodation = () => {
   const dispatch = useAppDispatch();
   const accommodationError = useSelector(getAccommodationError);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const loading = useSelector(getAccommodationLoader);
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -80,8 +81,8 @@ const CreateAccommodation = () => {
         })
       );
 
-      const { id } = response.payload.data;
       if (response && response.payload.success) {
+        const { id } = response.payload.data;
         navigation.navigate('AddAccommodationImage', { accommodationId: id });
       }
     } else {
@@ -105,6 +106,7 @@ const CreateAccommodation = () => {
       <FormTemplate
         onSubmit={handleOnSubmit}
         formIsValid={formIsValid}
+        loading={loading}
         error={formIsValid ? accommodationError : undefined}
       >
         <View style={styles.inputRow}>

@@ -1,9 +1,11 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Icon, Input, ProfileImageUploader, Text } from 'src/components';
+import { Icon, Input, ProfileImageUploader, Text, showAlert } from 'src/components';
 import { LanguageSelector, CountrySelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccountError, getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
@@ -14,7 +16,7 @@ import { IconName, ThemeType } from 'src/types/ui';
 import { ACCOUNT_NAME_MAX_LENGTH, UZBEK_PHONE_NUMBER_LENGTH } from 'src/utils';
 
 import { styles } from './CreateAccount.style';
-import { validateForm } from './CreateProfile.utils';
+import { validateForm } from './CreateAccount.utils';
 
 const genderOptions = [
   { label: 'Male', value: Gender.Male },
@@ -23,6 +25,7 @@ const genderOptions = [
 
 const CreateAccountForm = () => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const accountError = useSelector(getAccountError);
   const loading = useSelector(getAccountLoader);
 
@@ -49,8 +52,8 @@ const CreateAccountForm = () => {
     setFormValues({ ...formValues, country: country.name });
   };
 
-  const handlePhotoSelect = (photoUrl: string) => {
-    setFormValues({ ...formValues, photoUrl });
+  const handlePhotoSelect = (imageUrl: string) => {
+    setFormValues({ ...formValues, imageUrl });
   };
 
   const handleLanguageSelect = (language: string) => {
@@ -63,7 +66,13 @@ const CreateAccountForm = () => {
 
     if (Object.keys(errors).length === 0) {
       dispatch(accountActions.clearError());
-      await dispatch(AsyncThunks.createAccount(formValues));
+      const response = await dispatch(AsyncThunks.createAccount(formValues));
+      if (!response.payload.error) {
+        showAlert('success', {
+          message: 'Successfully created!',
+          onOkPressed: () => navigation.navigate('Profile'),
+        });
+      }
     } else {
       setValidationErrors(errors);
     }

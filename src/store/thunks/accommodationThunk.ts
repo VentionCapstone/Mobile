@@ -8,12 +8,11 @@ export const createAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    console.log(params);
     const response = await axiosInstance.post(ENDPOINTS.accommodation.create, params);
 
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(error.response.data.error);
+    return rejectWithValue(error.response.data);
   }
 };
 
@@ -23,15 +22,16 @@ export const updateAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const accommodationId = '1';
-    const response = await axiosInstance.put(
-      ENDPOINTS.accommodation.update(accommodationId),
-      params
-    );
+    const { accommodationId, accommodation, address } = params;
+
+    const response = await axiosInstance.put(ENDPOINTS.accommodation.update(accommodationId), {
+      accommodation,
+      address,
+    });
 
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(error.response.data.error);
+    return rejectWithValue(error.response.data);
   }
 };
 
@@ -49,7 +49,7 @@ export const deleteAccommodationThunk: AsyncThunkPayloadCreator<
   }
 };
 
-export const uploadAccommodationImageThunk: AsyncThunkPayloadCreator<
+export const addAccommodationImageThunk: AsyncThunkPayloadCreator<
   any,
   any,
   { rejectValue: ErrorResponseType }
@@ -73,6 +73,6 @@ export const uploadAccommodationImageThunk: AsyncThunkPayloadCreator<
     return response.data;
   } catch (error: any) {
     console.log(error.response.data);
-    return rejectWithValue(error.response.data.error);
+    return rejectWithValue(error.response.data);
   }
 };

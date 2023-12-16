@@ -10,3 +10,12 @@ export interface CreateAccommodationValues {
   availableTo: string;
   description: string;
 }
+
+export interface AddressValues {
+  street: string;
+  city: string;
+  country: string;
+  zipCode: string;
+  latitude?: number;
+  longitude?: number;
+}

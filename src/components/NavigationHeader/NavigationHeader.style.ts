@@ -4,6 +4,7 @@ import { title3 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

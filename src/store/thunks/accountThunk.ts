@@ -12,7 +12,7 @@ export const createAccountThunk: AsyncThunkPayloadCreator<
 
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(error.response.data.error);
+    return rejectWithValue(error.response.data);
   }
 };
 
@@ -22,12 +22,25 @@ export const updateAccountThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const userId = '4debc13f-56b9-4fdf-9c0f-008c205405a8';
-    const response = await axiosInstance.patch(ENDPOINTS.account.update(userId), params);
+    const { id, formValues } = params;
 
+    const response = await axiosInstance.patch(ENDPOINTS.account.update(id), formValues);
     return response.data;
   } catch (error: any) {
     console.log(error.response.data);
-    return rejectWithValue(error.response.data.error);
+    return rejectWithValue(error.response.data);
+  }
+};
+
+export const getAccountDetailsThunk: AsyncThunkPayloadCreator<
+  any,
+  string | null,
+  { rejectValue: ErrorResponseType }
+> = async (userId, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(ENDPOINTS.account.getProfile(userId));
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response.data);
   }
 };

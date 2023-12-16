@@ -1,7 +1,7 @@
 import * as Location from 'expo-location';
-import { Alert } from 'react-native';
 import Geocoder from 'react-native-geocoding';
 import { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
+import showAlert from 'src/components/alert';
 import { AddressValues } from 'src/types';
 import { isCityValid, isCountryValid, isStreetValid, isZipCodeValid } from 'src/utils';
 
@@ -19,7 +19,10 @@ const getCoordinatesByCity = async (city: string) => {
 
     return null;
   } catch (error: any) {
-    Alert.alert('Error', 'Error getting coordinates by city: ' + error?.message);
+    showAlert('error', {
+      title: 'Error getting coordinates',
+      message: error?.message,
+    });
     return null;
   }
 };
@@ -28,7 +31,9 @@ const getCurrentLocation = async (): Promise<Location.LocationObject | null> => 
   const { status } = await Location.requestForegroundPermissionsAsync();
 
   if (status !== 'granted') {
-    Alert.alert('Permission to access location was denied');
+    showAlert('error', {
+      message: 'Permission to access location was denied',
+    });
     return null;
   }
 

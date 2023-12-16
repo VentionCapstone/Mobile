@@ -1,8 +1,8 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, View, Alert, Image } from 'react-native';
+import { useEffect, useState } from 'react';
+import { TouchableOpacity, View, Image } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, Icon, Text } from 'src/components';
+import { Button, Icon, Text, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -41,23 +41,21 @@ const AddAccommodationImage = ({ route }: any) => {
     };
 
     const response = await dispatch(
-      AsyncThunks.uploadAccommodationImage({
+      AsyncThunks.addAccommodationImage({
         accommodationId,
         imageData,
       })
     );
 
     if (response && !response.payload?.success) {
-      Alert.alert('Error!', 'Image upload failed. Please try again.');
+      showAlert('error', {
+        message: 'Image upload failed. Please try again.',
+      });
     } else {
-      Alert.alert('Success!', 'Accommodation created successfully!', [
-        {
-          text: 'OK',
-          onPress: () => {
-            navigation.navigate('MyAccommodations');
-          },
-        },
-      ]);
+      showAlert('success', {
+        message: 'Accommodation created successfully!',
+        onOkPressed: () => navigation.navigate('MyAccommodations'),
+      });
     }
   };
 

@@ -1,6 +1,29 @@
-import { CreateAccommodationValues } from './accommodation';
+import { AddressValues, CreateAccommodationValues } from './accommodation';
 import { Gender } from './common';
 import { ThemeType } from './ui';
+
+export interface Profile {
+  id: string;
+  phoneNumber: string;
+  imageUrl: string;
+  gender: any;
+  country: string;
+  language: string;
+  uiTheme: any;
+  description: string;
+  userId: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  isVerified: boolean;
+  isEmailVerified: boolean;
+  actiovationLink: string;
+  Profile: Profile;
+}
 
 export interface CreateProfileParams {
   firstName?: string;
@@ -10,21 +33,13 @@ export interface CreateProfileParams {
   description?: string;
   country?: string;
   language?: string;
-  photoUrl?: string | undefined;
+  imageUrl?: string | undefined;
   uiTheme?: ThemeType;
 }
 
-export interface UpdateProfileParams extends CreateProfileParams {
-  userId: string;
-}
-
-export interface AddressValues {
-  street: string;
-  city: string;
-  country: string;
-  zipCode: string;
-  latitude?: number;
-  longitude?: number;
+export interface UpdateProfileParams {
+  id: any;
+  formValues: CreateProfileParams;
 }
 
 export interface CreateAccommodationParams {
@@ -34,12 +49,6 @@ export interface CreateAccommodationParams {
 
 export interface UpdateAccommodationParams extends CreateAccommodationParams {
   accommodationId: string;
-}
-
-export interface UploadAccommodationImageParams {
-  uri: string;
-  type: string;
-  name: string;
 }
 
 export interface Accommodation {

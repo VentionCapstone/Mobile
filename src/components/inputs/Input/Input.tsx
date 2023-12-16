@@ -2,13 +2,13 @@ import React, { useRef } from 'react';
 import { TextInput, TextInputProps, View, TouchableWithoutFeedback, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getColors } from 'src/store/selectors';
+import { RED_100 } from 'src/styles';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './Input.style';
-import { getFontColor, getInputContainerStyles, getTextInputStyles } from './Input.utils';
+import { getInputContainerStyles, getTextInputStyles } from './Input.utils';
 import Icon from '../../Icon/Icon';
 import Text from '../../Text/Text';
-import { RED_100 } from 'src/styles';
 
 type Props = TextInputProps & {
   label?: string;

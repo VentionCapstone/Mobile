@@ -2,7 +2,7 @@ import { Gender, Language, ThemeType } from 'src/types';
 
 type User = {
   userId: string;
-  photoUrl: string;
+  imageUrl: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -15,7 +15,7 @@ type User = {
 
 export const user: User = {
   userId: '1',
-  photoUrl: '',
+  imageUrl: '',
   firstName: 'Testbek',
   lastName: 'Tester',
   phoneNumber: '915552599',

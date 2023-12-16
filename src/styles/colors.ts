@@ -6,6 +6,8 @@ export const GREY_300 = '#737373';
 export const GREY_400 = '#3b3b3b';
 export const GREY_500 = '#18191A';
 
+export const BLACK = '#000000';
+
 export const RED = '#f5e4e4';
 export const RED_100 = '#FF9A9A';
 export const RED_200 = '#F57878';
