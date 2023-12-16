@@ -28,7 +28,7 @@ const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: 
       <View style={styles.leftContainer}>
         {leftComponent && (
           <TouchableOpacity onPress={handleBackPress}>
-            <Icon name={IconName.BackChevron} size={30} />
+            <Icon name={IconName.BackChevron} size={32} />
           </TouchableOpacity>
         )}
         <Text style={styles.title}>{title}</Text>

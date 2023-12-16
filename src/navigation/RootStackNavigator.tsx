@@ -74,6 +74,7 @@ const RootStackNavigator = () => {
               rightComponent={
                 <Button
                   title="create"
+                  height={35}
                   size={BUTTON_SIZES.SM}
                   type={ButtonType.SECONDARY}
                   onPress={() => navigation.navigate('CreateAccommodation')}

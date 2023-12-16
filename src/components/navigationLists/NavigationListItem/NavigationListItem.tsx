@@ -35,7 +35,9 @@ const NavigationListItem = ({ item }: Props) => {
         },
       ]}
     >
-      {iconName && <Icon name={iconName} style={styles.leftIcon} />}
+      <View style={styles.leftIconContainer}>
+        {iconName && <Icon name={iconName} style={styles.leftIcon} />}
+      </View>
 
       <View style={styles.rightContainer}>
         <Text style={[styles.label, { marginLeft: iconName ? 14 : 0 }]}>{label}</Text>

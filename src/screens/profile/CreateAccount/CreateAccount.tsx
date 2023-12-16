@@ -45,7 +45,9 @@ const CreateAccountForm = () => {
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
   const handleInputChange = (fieldName: keyof CreateAccountFormValues, text: string) => {
-    setFormValues({ ...formValues, [fieldName]: text });
+    const sanitizedText = text.replace(/\s{6,}/g, ' ');
+
+    setFormValues({ ...formValues, [fieldName]: sanitizedText });
   };
 
   const handleCountrySelect = (country: CountryOption) => {
@@ -170,7 +172,7 @@ const CreateAccountForm = () => {
           placeholder="Enter your description"
           value={formValues.description}
           onChangeText={(text: string) => handleInputChange('description', text)}
-          style={styles.textAreaStyles}
+          innerStyle={styles.textAreaStyles}
         />
       </FormTemplate>
     </ScreenTemplate>

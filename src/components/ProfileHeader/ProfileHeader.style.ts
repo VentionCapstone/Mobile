@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { paragraph1, paragraph2, title3 } from 'src/styles';
+import { HORIZONTAL_16_PERCENT } from 'src/utils';
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: HORIZONTAL_16_PERCENT,
   },
   header: {
     height: 280,

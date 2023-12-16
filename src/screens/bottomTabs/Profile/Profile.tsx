@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationList, ProfileHeader, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { AppDispatch } from 'src/store';
-import { getAccountInfos, getIsLoggedIn, getUserDetails, getUserId } from 'src/store/selectors';
+import { getAccountInfos, getIsLoggedIn, getUserId } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
 
@@ -33,7 +33,6 @@ const Profile = () => {
 
   useEffect(() => {
     if (accountDetails === null && isLoggedIn) {
-      console.log('called');
       getAccountDetails();
     }
   }, [isLoggedIn]);

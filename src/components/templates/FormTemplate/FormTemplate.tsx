@@ -5,7 +5,7 @@ import { Button } from 'src/components/Button';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
-import { RED_200, RED_300 } from 'src/styles';
+import { RED_200 } from 'src/styles';
 import { ErrorResponseType } from 'src/types';
 import { IconName } from 'src/types/ui';
 
@@ -49,7 +49,7 @@ const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error, 
           title="Submit"
           isLoading={loading}
           disabled={!formIsValid}
-          marginVertical={10}
+          marginVertical={15}
           onPress={onSubmit}
         />
       </ScrollView>

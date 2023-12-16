@@ -54,8 +54,9 @@ const UpdateAccount = () => {
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
   const handleInputChange = (fieldName: string, text: string) => {
-    setValidationErrors({});
-    setFormValues({ ...formValues, [fieldName]: text });
+    const sanitizedText = text.replace(/\s{6,}/g, ' ');
+
+    setFormValues({ ...formValues, [fieldName]: sanitizedText });
   };
 
   const handleCountrySelect = (country: CountryOption) => {

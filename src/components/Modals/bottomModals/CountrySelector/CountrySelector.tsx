@@ -11,7 +11,11 @@ import { IconName } from 'src/types/ui';
 import { styles } from './CountrySelector.style';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
-const countries: CountryOption[] = [{ name: Country.UZBEKISTAN }, { name: Country.KAZAKHSTAN }];
+const countries: CountryOption[] = [
+  { name: Country.UZBEKISTAN },
+  { name: Country.RUSSIA },
+  { name: Country.KAZAKHSTAN },
+];
 
 type Props = {
   onSelect: (country: CountryOption) => void;

@@ -103,10 +103,9 @@ const AddressSelector = ({ onSelect, addressError, setAddressError }: Props) => 
             latitude: coordinates.latitude || initialLatitude,
             longitude: coordinates.longitude || initialLongitude,
           });
+          setModalVisible(false);
         }
       }
-
-      setModalVisible(false);
     }
   };
 

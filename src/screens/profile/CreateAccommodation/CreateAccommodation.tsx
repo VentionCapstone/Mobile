@@ -49,35 +49,26 @@ const CreateAccommodation = () => {
     fieldName: keyof CreateAccommodationValues,
     value: string | number
   ) => {
-    setFormValues({ ...formValues, [fieldName]: value });
-  };
+    const sanitizedValue = typeof value === 'string' ? value.replace(/\s{6,}/g, ' ') : value;
 
-  const mockAddressValues = {
-    country: 'Uzb',
-    city: 'Urgut',
-    street: 'Huvaydo',
-    zipCode: '12123',
-    longitude: 0,
-    latitude: 0,
+    setFormValues({ ...formValues, [fieldName]: sanitizedValue });
   };
-
-  const thumbnailUrl = 'https://example.com';
 
   const handleOnSubmit = async () => {
     setFormInteracted(true);
     const errors = validateForm(formValues);
 
     if (Object.keys(errors).length === 0) {
-      // if (addressValues === undefined) {
-      //   setAddressError(true);
-      //   return;
-      // }
+      if (addressValues === undefined) {
+        setAddressError(true);
+        return;
+      }
 
       dispatch(accommodationActions.clearError());
       const response = await dispatch(
         AsyncThunks.createAccommodation({
-          accommodation: { ...formValues, thumbnailUrl },
-          address: mockAddressValues,
+          accommodation: formValues,
+          address: addressValues,
         })
       );
 

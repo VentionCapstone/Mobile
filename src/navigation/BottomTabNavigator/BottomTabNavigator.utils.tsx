@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { Icon } from 'src/components';
 import { ThemeColors } from 'src/types';
 import { IconName } from 'src/types/ui';
@@ -22,9 +22,9 @@ export const getTabBarIcon = (routeName: string, color: string): React.JSX.Eleme
 
 export const getTabBarStyles = (colors: ThemeColors) => ({
   tabBarStyle: {
-    height: Platform.OS === 'ios' ? 90 : 60,
+    height: Platform.OS === 'ios' ? 80 : 70,
     paddingBottom: 8,
-    paddingTop: 6,
+    paddingTop: 10,
     backgroundColor: colors.background,
   },
   tabBarLabelStyle: {
