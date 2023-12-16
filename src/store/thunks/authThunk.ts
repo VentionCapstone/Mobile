@@ -1,7 +1,9 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
-import { ErrorResponseType, SignInParams, SignUpParams } from 'src/types';
+import { ErrorResponseType, SignInParams, SignUpParams, VerificationParams } from 'src/types';
+
+import { RootState } from '..';
 
 export const signInThunk: AsyncThunkPayloadCreator<
   any,
@@ -33,6 +35,19 @@ export const signUpThunk: AsyncThunkPayloadCreator<
   }
 };
 
+export const verifyThunk: AsyncThunkPayloadCreator<
+  any,
+  VerificationParams,
+  { rejectValue: ErrorResponseType }
+> = async (params, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.put(ENDPOINTS.auth.verify, params);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response.data);
+  }
+};
+
 export const signOutThunk: AsyncThunkPayloadCreator<
   any,
   undefined,
@@ -52,17 +67,16 @@ export const signOutThunk: AsyncThunkPayloadCreator<
 export const refreshThunk: AsyncThunkPayloadCreator<
   any,
   undefined,
-  { rejectValue: ErrorResponseType }
-> = async (_, { rejectWithValue }) => {
+  { state: RootState; rejectValue: ErrorResponseType }
+> = async (_, { rejectWithValue, getState }) => {
   try {
-    const id = 'somestring';
-    const response = await axiosInstance.get(ENDPOINTS.auth.refresh(id));
+    const userId = getState().account.user_id ?? '';
+    const response = await axiosInstance.get(ENDPOINTS.auth.refresh(userId));
 
     await SecureStore.setItemAsync('accessToken', response.data.tokens.access_token);
     await SecureStore.setItemAsync('refreshToken', response.data.tokens.refresh_token);
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response.data.error);
   }
 };

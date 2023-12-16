@@ -1,9 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import { accountReducer, themeReducer, authReducer } from './slices';
+import { accountReducer, themeReducer } from './slices';
 
 const rootReducer = combineReducers({
-  auth: authReducer,
   account: accountReducer,
   theme: themeReducer,
 });

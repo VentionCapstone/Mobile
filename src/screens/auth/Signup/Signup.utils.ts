@@ -1,16 +1,11 @@
 import { SignUpParams } from 'src/types';
-import {
-  PASSWORD_MIN_LENGTH,
-  isEmailNameValid,
-  isPasswordMatches,
-  isPasswordValid,
-} from 'src/utils';
+import { PASSWORD_MIN_LENGTH, isEmailValid, isPasswordMatches, isPasswordValid } from 'src/utils';
 
 const validateForm = (values: SignUpParams): Record<string, string> => {
   const errors: Record<string, string> = {};
 
-  if (!isEmailNameValid(values.email)) {
-    errors.email = `Please input email adress. Hint: example@email.org`;
+  if (!isEmailValid(values.email)) {
+    errors.email = 'Enter valid email';
   }
   if (!isPasswordValid(values.password)) {
     errors.password = `Password should be at least ${PASSWORD_MIN_LENGTH} characters long`;

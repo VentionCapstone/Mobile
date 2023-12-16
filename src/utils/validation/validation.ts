@@ -9,17 +9,19 @@ const isAccountNameValid = (name: string | undefined): boolean => {
   return !!name && name.length >= ACCOUNT_NAME_MIN_LENGTH && name.length <= ACCOUNT_NAME_MAX_LENGTH;
 };
 
-const isEmailNameValid = (email: string): boolean => {
-  const pattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return email.length === 0 || pattern.test(email);
+const isEmailValid = (email: string): boolean => {
+  const lowercasedEmail = email.toLowerCase();
+  const emailPattern: RegExp = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+
+  return emailPattern.test(lowercasedEmail);
 };
 
 const isPasswordMatches = (password: string, confirmPassword: string): boolean => {
-  return confirmPassword === password;
+  return !!confirmPassword && confirmPassword === password;
 };
 
 const isPasswordValid = (password: string): boolean => {
-  return password.length === 0 || password.length >= PASSWORD_MIN_LENGTH;
+  return !!password && password.length >= PASSWORD_MIN_LENGTH;
 };
 
 const isPhoneNumberValid = (phoneNumber: string): boolean => {
@@ -27,10 +29,4 @@ const isPhoneNumberValid = (phoneNumber: string): boolean => {
   return regex.test(phoneNumber);
 };
 
-export {
-  isEmailNameValid,
-  isPasswordMatches,
-  isAccountNameValid,
-  isPasswordValid,
-  isPhoneNumberValid,
-};
+export { isEmailValid, isPasswordMatches, isAccountNameValid, isPasswordValid, isPhoneNumberValid };

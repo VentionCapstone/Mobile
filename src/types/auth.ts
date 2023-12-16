@@ -7,3 +7,7 @@ export interface SignUpParams {
   password: string;
   confirm_password: string;
 }
+
+export interface VerificationParams {
+  email: string;
+}

@@ -1,12 +1,12 @@
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Input, Text } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader, getResult } from 'src/store/selectors';
+import { getAccountError, getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 
@@ -14,44 +14,46 @@ import { validateForm } from './Signup.utils';
 import styles from '../auth.styles';
 
 const Signup = () => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
   const authError = useSelector(getAccountError);
-  const authResult = useSelector(getResult);
-
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-
-  const [credentials, setCredentials] = useState({
+  const [formInteracted, setFormInteracted] = useState<boolean>(false);
+  const [formValues, setFormValues] = useState({
     email: '',
     password: '',
     confirm_password: '',
   });
 
-  const formIsValid = Object.keys(validationErrors).length === 0;
+  const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormValues({ ...formValues, [field]: value });
+  };
 
   const handleSignup = async () => {
-    if (formIsValid) {
-      await dispatch(AsyncThunks.signUp(credentials));
-      if (authResult) {
-        dispatch(accountActions.clearError());
+    setFormInteracted(true);
+    const errors = validateForm(formValues);
+
+    if (Object.keys(errors).length === 0) {
+      dispatch(accountActions.clearError());
+      const response = await dispatch(AsyncThunks.signUp(formValues));
+
+      if (!response.payload?.error) {
         navigation.navigate('VerifyEmail');
       }
+    } else {
+      setValidationErrors(errors);
     }
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setCredentials({
-      ...credentials,
-      [field]: value,
-    });
-  };
-
   useEffect(() => {
-    const errors = validateForm(credentials);
-    setValidationErrors(errors);
-  }, [credentials]);
+    if (formInteracted) {
+      const errors = validateForm(formValues);
+      setValidationErrors(errors);
+    }
+  }, [formValues]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
@@ -62,32 +64,33 @@ const Signup = () => {
       <FormTemplate
         loading={loading}
         onSubmit={handleSignup}
-        error={formIsValid ? authError : null}
+        error={authError}
         formIsValid={formIsValid}
       >
         <Text style={styles.head}>Hello, stranger!</Text>
         <Text style={styles.description}>Discover new places and start your next journey</Text>
+
         <Input
           style={styles.input}
           placeholder="Enter your email"
-          value={credentials.email}
-          onChangeText={(text) => handleInputChange('email', text)}
+          value={formValues.email}
+          onChangeText={(text: string) => handleInputChange('email', text)}
           error={validationErrors.email}
         />
         <Input
           style={styles.input}
           placeholder="Enter Password"
           secureTextEntry
-          value={credentials.password}
-          onChangeText={(text) => handleInputChange('password', text)}
+          value={formValues.password}
+          onChangeText={(text: string) => handleInputChange('password', text)}
           error={validationErrors.password}
         />
         <Input
           style={styles.input}
           placeholder="Confirm Password"
           secureTextEntry
-          value={credentials.confirm_password}
-          onChangeText={(text) => handleInputChange('confirm_password', text)}
+          value={formValues.confirm_password}
+          onChangeText={(text: string) => handleInputChange('confirm_password', text)}
           error={validationErrors.confirm_password}
         />
         <View style={styles.container}>
