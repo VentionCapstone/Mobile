@@ -1,13 +1,17 @@
+import { useDispatch } from 'react-redux';
 import { Button, NavigationList, ProfileHeader } from 'src/components';
 import { ButtonType } from 'src/components/Button';
 import { ScreenTemplate } from 'src/components/templates';
+import { AppDispatch } from 'src/store';
+import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
 
 import { ACCOUNT_SECTIONS } from './Profile.constants';
 import styles from './Profile.style';
 
 const Profile = () => {
-  const isLoggedIn = true;
+  const isLoggedIn = false;
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <ScreenTemplate headerShown={false} style={styles.container}>
@@ -22,7 +26,9 @@ const Profile = () => {
           title="Log out"
           size={BUTTON_SIZES.SM}
           type={ButtonType.SECONDARY}
-          onPress={() => console.log('logout')}
+          onPress={() => {
+            dispatch(AsyncThunks.signOut());
+          }}
         />
       )}
     </ScreenTemplate>

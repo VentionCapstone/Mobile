@@ -4,7 +4,7 @@ import { title2 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
-    height: 60,
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

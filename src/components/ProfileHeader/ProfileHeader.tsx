@@ -6,6 +6,7 @@ import { getAccountDetails, getColors } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import styles from './ProfileHeader.style';
+import { ButtonType } from '../Button';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
@@ -32,14 +33,20 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
 
           <View style={styles.redirectAuthContainer}>
             <Button
-              title="Signin"
+              title="Sign In"
               onPress={() => {
-                console.log('redirect to signin!');
+                navigation.navigate('Signin');
               }}
             />
             <View style={styles.redirectAuthContainer}>
               <Text>Don't have an account yet?</Text>
-              <Text style={{ textDecorationLine: 'underline' }}>signup</Text>
+              <Button
+                title="Sign Up"
+                type={ButtonType.SECONDARY}
+                onPress={() => {
+                  navigation.navigate('Signup');
+                }}
+              />
             </View>
           </View>
         </View>
