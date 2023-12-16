@@ -13,7 +13,6 @@ export const createAccommodationThunk: AsyncThunkPayloadCreator<
 
     return response.data;
   } catch (error: any) {
-    console.log(error.response.data);
     return rejectWithValue(error.response.data.error);
   }
 };
@@ -56,7 +55,6 @@ export const uploadAccommodationImageThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    // const accommodationId = '9b2ce24e-a16f-47f7-a396-dca66a8d5c60';
     const { accommodationId, imageData } = params;
 
     const formData = new FormData();

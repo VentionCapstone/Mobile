@@ -23,4 +23,3 @@ export {
 };
 
 export * from './navigationLists';
-export * from './modals';

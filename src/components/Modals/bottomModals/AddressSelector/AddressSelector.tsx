@@ -10,6 +10,7 @@ import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import { Button, Icon, Input, Text, ThemedView } from 'src/components';
 import { getColors } from 'src/store/selectors';
+import { RED_200 } from 'src/styles';
 import { AddressValues, IconName } from 'src/types';
 import { ADDRESS_INFO_MAX_LENGTH, ADDRESS_ZIPCODE_MAX_LENGTH } from 'src/utils';
 
@@ -18,17 +19,19 @@ import {
   getAddressInfo,
   getCoordinatesByCity,
   getCurrentLocation,
-  validation,
+  validateForm,
 } from './AddressSelector.utils';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
 interface Props {
   onSelect: (values: AddressValues) => void;
+  addressError: boolean;
+  setAddressError: (value: boolean) => void;
 }
 
 const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
 
-const AddressSelector = ({ onSelect }: Props) => {
+const AddressSelector = ({ onSelect, addressError, setAddressError }: Props) => {
   const colors = useSelector(getColors);
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
@@ -49,7 +52,7 @@ const AddressSelector = ({ onSelect }: Props) => {
   });
 
   const { country, city, street, zipCode } = addressValues;
-  const formIsValid = Object.keys(validationErrors).length === 0;
+  const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
   const [initialRegion, setInitialRegion] = useState<Region>({
     latitude: initialLatitude,
@@ -85,10 +88,12 @@ const AddressSelector = ({ onSelect }: Props) => {
 
   const handleOnSave = async () => {
     setFormInteracted(true);
+    const errors = validateForm(addressValues);
 
-    if (formIsValid) {
+    if (Object.keys(errors).length === 0) {
       if (addressValues.latitude && addressValues.longitude) {
         onSelect(addressValues);
+        setAddressError(false);
       } else {
         const coordinates = await getCoordinatesByCity(city);
 
@@ -106,12 +111,11 @@ const AddressSelector = ({ onSelect }: Props) => {
   };
 
   useEffect(() => {
-    const errors = validation(addressValues);
-
     if (formInteracted) {
+      const errors = validateForm(addressValues);
       setValidationErrors(errors);
     }
-  }, [addressValues, formInteracted]);
+  }, [addressValues]);
 
   useEffect(() => {
     getCurrentLocation().then((location) => {
@@ -127,17 +131,27 @@ const AddressSelector = ({ onSelect }: Props) => {
   return (
     <ThemedView>
       <TouchableOpacity
-        style={[styles.addressLabel, { backgroundColor: colors.secondaryBackground }]}
+        style={[
+          styles.addressLabel,
+          {
+            backgroundColor: colors.secondaryBackground,
+            borderColor: addressError ? RED_200 : 'transparent',
+          },
+        ]}
         onPress={() => setModalVisible(true)}
       >
         <View style={styles.row}>
-          <Icon name={IconName.Location} size={26} color={colors.placeholder} />
-          <Text style={[styles.labelText, { color: colors.placeholder }]}>
+          <Icon
+            name={IconName.Location}
+            size={26}
+            color={addressError ? RED_200 : colors.placeholder}
+          />
+          <Text style={[styles.labelText, { color: addressError ? RED_200 : colors.placeholder }]}>
             {city && street ? `${city}, ${street}` : 'location'}
           </Text>
         </View>
 
-        <Icon name={IconName.ChevronForward} />
+        <Icon name={IconName.ChevronForward} color={addressError ? RED_200 : colors.placeholder} />
       </TouchableOpacity>
 
       <ModalContainer bottomModal visible={modalVisible} onClose={() => setModalVisible(false)}>
@@ -182,7 +196,7 @@ const AddressSelector = ({ onSelect }: Props) => {
             placeholder="enter country"
             value={country}
             maxLength={ADDRESS_INFO_MAX_LENGTH}
-            onChangeText={(text) => handleInputChange('country', text)}
+            onChangeText={(text: string) => handleInputChange('country', text)}
             error={validationErrors.country}
           />
           <Input
@@ -190,7 +204,7 @@ const AddressSelector = ({ onSelect }: Props) => {
             placeholder="enter city"
             value={city}
             maxLength={ADDRESS_INFO_MAX_LENGTH}
-            onChangeText={(text) => handleInputChange('city', text)}
+            onChangeText={(text: string) => handleInputChange('city', text)}
             error={validationErrors.city}
           />
           <Input
@@ -198,7 +212,7 @@ const AddressSelector = ({ onSelect }: Props) => {
             placeholder="enter street"
             value={street}
             maxLength={ADDRESS_INFO_MAX_LENGTH}
-            onChangeText={(text) => handleInputChange('street', text)}
+            onChangeText={(text: string) => handleInputChange('street', text)}
             error={validationErrors.street}
           />
           <Input
@@ -207,7 +221,7 @@ const AddressSelector = ({ onSelect }: Props) => {
             value={zipCode}
             keyboardType="numeric"
             maxLength={ADDRESS_ZIPCODE_MAX_LENGTH}
-            onChangeText={(text) => handleInputChange('zipCode', text)}
+            onChangeText={(text: string) => handleInputChange('zipCode', text)}
             error={validationErrors.zipCode}
           />
 
@@ -216,6 +230,7 @@ const AddressSelector = ({ onSelect }: Props) => {
             onPress={handleOnSave}
             style={styles.saveButton}
             marginVertical={30}
+            disabled={!formIsValid}
           />
         </ScrollView>
       </ModalContainer>

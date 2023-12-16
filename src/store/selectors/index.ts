@@ -9,3 +9,4 @@ export const getColors = (state: RootState) => state.theme.colors;
 export const getIsDarkMode = (state: RootState) => state.theme.isDark;
 
 export const getAccommodationError = (state: RootState) => state.accommodation.error;
+export const getAccommodationLoader = (state: RootState) => state.accommodation.pending;

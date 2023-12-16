@@ -5,7 +5,6 @@ import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
 import { getColors } from 'src/store/selectors';
-import { GREY_400 } from 'src/styles';
 import { IconName } from 'src/types/ui';
 
 import { Language, languages } from './LanguageSelector.constants';

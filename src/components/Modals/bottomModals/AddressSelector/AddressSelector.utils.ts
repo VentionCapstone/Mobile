@@ -69,7 +69,7 @@ const getAddressInfo = (
   };
 };
 
-const validation = (addressvalues: AddressValues): Record<string, string> => {
+const validateForm = (addressvalues: AddressValues): Record<string, string> => {
   const errors: Record<string, string> = {};
 
   if (!isCountryValid(addressvalues.country)) {
@@ -91,4 +91,4 @@ const validation = (addressvalues: AddressValues): Record<string, string> => {
   return errors;
 };
 
-export { getCurrentLocation, getAddressInfo, validation, getCoordinatesByCity };
+export { getCurrentLocation, getAddressInfo, validateForm, getCoordinatesByCity };

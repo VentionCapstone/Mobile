@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import {
-  CountrySelector,
-  LanguageSelector,
-  Icon,
-  Input,
-  ProfileImageUploader,
-  Text,
-} from 'src/components';
+import { Icon, Input, ProfileImageUploader, Text } from 'src/components';
+import { LanguageSelector, CountrySelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { useAppDispatch } from 'src/store';
 import { getAccountError, getAccountLoader } from 'src/store/selectors';
@@ -45,7 +39,7 @@ const CreateAccountForm = () => {
     uiTheme: ThemeType.Light,
   });
 
-  const formIsValid = Object.keys(validationErrors).length === 0;
+  const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
   const handleInputChange = (fieldName: keyof CreateAccountFormValues, text: string) => {
     setFormValues({ ...formValues, [fieldName]: text });
@@ -65,9 +59,13 @@ const CreateAccountForm = () => {
 
   const handleOnSubmit = async () => {
     setFormInteracted(true);
+    const errors = validateForm(formValues);
 
-    if (formIsValid) {
+    if (Object.keys(errors).length === 0) {
+      dispatch(accountActions.clearError());
       await dispatch(AsyncThunks.createAccount(formValues));
+    } else {
+      setValidationErrors(errors);
     }
   };
 
@@ -76,7 +74,7 @@ const CreateAccountForm = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues, formInteracted]);
+  }, [formValues]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
@@ -88,7 +86,7 @@ const CreateAccountForm = () => {
         onSubmit={handleOnSubmit}
         formIsValid={formIsValid}
         loading={loading}
-        error={formInteracted && formIsValid ? accountError : null}
+        error={accountError}
       >
         <View style={styles.header}>
           <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
@@ -106,7 +104,7 @@ const CreateAccountForm = () => {
           error={validationErrors.firstName}
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
-          onChangeText={(text) => handleInputChange('firstName', text)}
+          onChangeText={(text: string) => handleInputChange('firstName', text)}
           placeholder="Enter your firstname"
           value={formValues.firstName}
         />
@@ -115,7 +113,7 @@ const CreateAccountForm = () => {
           error={validationErrors.lastName}
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
-          onChangeText={(text) => handleInputChange('lastName', text)}
+          onChangeText={(text: string) => handleInputChange('lastName', text)}
           placeholder="Enter your lastname"
           value={formValues.lastName}
         />
@@ -126,7 +124,7 @@ const CreateAccountForm = () => {
           keyboardType="number-pad"
           leftIcon={IconName.Phone}
           maxLength={UZBEK_PHONE_NUMBER_LENGTH}
-          onChangeText={(text) => handleInputChange('phoneNumber', text)}
+          onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           placeholder="Enter your number"
           value={formValues.phoneNumber}
           underlineColorAndroid="transparent"
@@ -162,7 +160,7 @@ const CreateAccountForm = () => {
           numberOfLines={4}
           placeholder="Enter your description"
           value={formValues.description}
-          onChangeText={(text) => handleInputChange('description', text)}
+          onChangeText={(text: string) => handleInputChange('description', text)}
           style={styles.textAreaStyles}
         />
       </FormTemplate>

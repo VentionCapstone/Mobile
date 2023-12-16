@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View, Alert, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, Icon, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationError, getColors } from 'src/store/selectors';
+import { getAccommodationError, getAccommodationLoader, getColors } from 'src/store/selectors';
+import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { RED_200 } from 'src/styles';
 import { IconName } from 'src/types';
@@ -16,9 +19,10 @@ const AddAccommodationImage = ({ route }: any) => {
   const { accommodationId } = route.params;
 
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getColors);
+  const loading = useSelector(getAccommodationLoader);
   const imageError = useSelector(getAccommodationError);
-
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleOpenGallery = async () => {
@@ -30,18 +34,36 @@ const AddAccommodationImage = ({ route }: any) => {
   };
 
   const handleSaveImage = async () => {
-    if (!selectedImage) {
-      Alert.alert('Please select an image before saving.');
-      return;
-    }
     const imageData = {
       uri: selectedImage,
       name: 'image.jpg',
       type: 'image/jpeg',
     };
 
-    await dispatch(AsyncThunks.uploadAccommodationImage({ accommodationId, imageData }));
+    const response = await dispatch(
+      AsyncThunks.uploadAccommodationImage({
+        accommodationId,
+        imageData,
+      })
+    );
+
+    if (response && !response.payload?.success) {
+      Alert.alert('Error!', 'Image upload failed. Please try again.');
+    } else {
+      Alert.alert('Success!', 'Accommodation created successfully!', [
+        {
+          text: 'OK',
+          onPress: () => {
+            navigation.navigate('MyAccommodations');
+          },
+        },
+      ]);
+    }
   };
+
+  useEffect(() => {
+    dispatch(accommodationActions.clearError());
+  }, []);
 
   return (
     <ScreenTemplate>
@@ -66,7 +88,13 @@ const AddAccommodationImage = ({ route }: any) => {
           </View>
         )}
 
-        <Button title="Save" onPress={handleSaveImage} width="100%" />
+        <Button
+          title="Save"
+          width="100%"
+          onPress={handleSaveImage}
+          isLoading={loading}
+          disabled={!selectedImage}
+        />
       </View>
     </ScreenTemplate>
   );
