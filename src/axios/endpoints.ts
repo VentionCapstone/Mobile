@@ -15,7 +15,7 @@ export const ENDPOINTS = {
     uploadImage: (accommodationId: string) => `/accommodation/file/${accommodationId}`,
     delete: (accommodationId: string) => `/accommodation/delete/${accommodationId}`,
     getAll: '/accommodations',
-    getOne: (accommodationId: string) => `/accommodation/get/${accommodationId}`,
+    getById: (accommodationId: string) => `/accommodation/get/${accommodationId}`,
   },
   auth: {
     signin: '/auth/signin',
