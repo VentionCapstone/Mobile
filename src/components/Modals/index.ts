@@ -1,4 +1,5 @@
-import CountrySelector from './CountrySelector/CountrySelector';
-import LanguageSelector from './LanguageSelector/LanguageSelector';
+import AddressSelector from './bottomModals/AddressSelector/AddressSelector';
+import CountrySelector from './bottomModals/CountrySelector/CountrySelector';
+import LanguageSelector from './bottomModals/LanguageSelector/LanguageSelector';
 
-export { LanguageSelector, CountrySelector };
+export { AddressSelector, CountrySelector, LanguageSelector };

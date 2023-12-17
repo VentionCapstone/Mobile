@@ -5,12 +5,11 @@ import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
 import { getColors } from 'src/store/selectors';
-import { GREY_400 } from 'src/styles';
 import { IconName } from 'src/types/ui';
 
 import { Language, languages } from './LanguageSelector.constants';
 import { styles } from './LanguageSelector.style';
-import ModalContainer from '../ModalContainer/ModalContainer';
+import ModalContainer from '../../ModalContainer/ModalContainer';
 
 type Props = {
   onSelect: (lang: string) => void;
@@ -37,7 +36,7 @@ const LanguageSelector = ({ onSelect }: Props) => {
         <Icon name={IconName.ChevronDown} size={20} />
       </TouchableOpacity>
 
-      <ModalContainer visible={modalVisible} onClose={() => setModalVisible(false)}>
+      <ModalContainer bottomModal visible={modalVisible} onClose={() => setModalVisible(false)}>
         {languages.map((option: Language) => (
           <TouchableOpacity
             key={option.code}
@@ -50,7 +49,6 @@ const LanguageSelector = ({ onSelect }: Props) => {
                   ? IconName.RadioButtonsOn
                   : IconName.RadioButtonsOff
               }
-              color={GREY_400}
             />
             <Text style={styles.radioLabel}>{option.name}</Text>
           </TouchableOpacity>

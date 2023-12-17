@@ -12,7 +12,6 @@ export const createAccountThunk: AsyncThunkPayloadCreator<
 
     return response.data;
   } catch (error: any) {
-    console.log(error);
     return rejectWithValue(error.response.data);
   }
 };
@@ -23,8 +22,23 @@ export const updateAccountThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.put(ENDPOINTS.account.update, params);
+    const { id, formValues } = params;
 
+    const response = await axiosInstance.patch(ENDPOINTS.account.update(id), formValues);
+    return response.data;
+  } catch (error: any) {
+    console.log(error.response.data);
+    return rejectWithValue(error.response.data);
+  }
+};
+
+export const getAccountDetailsThunk: AsyncThunkPayloadCreator<
+  any,
+  string | null,
+  { rejectValue: ErrorResponseType }
+> = async (userId, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(ENDPOINTS.account.getProfile(userId));
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);

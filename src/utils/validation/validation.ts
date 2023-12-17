@@ -17,11 +17,11 @@ const isEmailValid = (email: string): boolean => {
 };
 
 const isPasswordMatches = (password: string, confirmPassword: string): boolean => {
-  return !!confirmPassword && confirmPassword === password;
+  return confirmPassword === password;
 };
 
 const isPasswordValid = (password: string): boolean => {
-  return !!password && password.length >= PASSWORD_MIN_LENGTH;
+  return password.length >= PASSWORD_MIN_LENGTH;
 };
 
 const isPhoneNumberValid = (phoneNumber: string): boolean => {
@@ -29,4 +29,60 @@ const isPhoneNumberValid = (phoneNumber: string): boolean => {
   return regex.test(phoneNumber);
 };
 
-export { isEmailValid, isPasswordMatches, isAccountNameValid, isPasswordValid, isPhoneNumberValid };
+const isAvailableFromValid = (checkIn: string): boolean => {
+  return !!checkIn;
+};
+
+const isAvailableToValid = (checkOut: string): boolean => {
+  return !!checkOut;
+};
+
+const isPriceValid = (price: number | null): boolean => {
+  return !!price;
+};
+
+const isAreaValid = (area: number | null): boolean => {
+  return !!area;
+};
+
+const isRoomCountValid = (roomCount: number | null): boolean => {
+  return !!roomCount;
+};
+
+const isCountryValid = (city: string): boolean => {
+  return !!city;
+};
+
+const isCityValid = (city: string): boolean => {
+  return !!city;
+};
+
+const isStreetValid = (street: string): boolean => {
+  return !!street;
+};
+
+const isSteetValid = (street: string): boolean => {
+  return !!street;
+};
+
+const isZipCodeValid = (zipCode: string): boolean => {
+  return !!zipCode;
+};
+
+export {
+  isEmailValid,
+  isPasswordMatches,
+  isAccountNameValid,
+  isPasswordValid,
+  isPhoneNumberValid,
+  isSteetValid,
+  isAvailableFromValid,
+  isAvailableToValid,
+  isPriceValid,
+  isAreaValid,
+  isRoomCountValid,
+  isCountryValid,
+  isCityValid,
+  isStreetValid,
+  isZipCodeValid,
+};

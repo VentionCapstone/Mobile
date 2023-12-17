@@ -5,9 +5,10 @@ export type RootStackParamList = {
   VerifyEmail?: undefined;
   Profile?: undefined;
   CreateProfile?: undefined;
-  UpdateProfile?: {
-    userId: string;
-  };
+  UpdateProfile?: undefined;
   Account?: undefined;
   ChangeTheme?: undefined;
+  MyAccommodations?: undefined;
+  CreateAccommodation?: { userId?: string };
+  AddAccommodationImage?: any;
 };

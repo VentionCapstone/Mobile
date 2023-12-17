@@ -1,11 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { title1 } from 'src/styles';
-import { HORIZONTAL_24_PERCENT } from 'src/utils/ui/ui.constants';
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: HORIZONTAL_24_PERCENT,
-  },
   sectionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -20,6 +16,9 @@ const styles = StyleSheet.create({
   },
   labelText: {
     ...title1,
+  },
+  logoutButton: {
+    marginLeft: 10,
   },
 });
 

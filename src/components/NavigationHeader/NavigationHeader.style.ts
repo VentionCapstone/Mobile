@@ -1,26 +1,26 @@
 import Constants from 'expo-constants';
 import { StyleSheet } from 'react-native';
-import { title2 } from 'src/styles';
+import { title3 } from 'src/styles';
+import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
-    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: HORIZONTAL_12_PERCENT,
     paddingTop: Constants.statusBarHeight,
-    paddingBottom: 10,
   },
   leftContainer: {
-    height: 60,
+    height: 50,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 20,
+    justifyContent: 'center',
+    gap: 5,
   },
   title: {
-    ...title2,
+    ...title3,
   },
   rightContainer: {
     flexDirection: 'row',
