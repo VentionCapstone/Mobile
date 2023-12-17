@@ -6,6 +6,7 @@ import {
   deleteAccommodationThunk,
   updateAccommodationThunk,
   addAccommodationImageThunk,
+  getAccommodationThunk,
 } from './accommodationThunk';
 import { createAccountThunk, getAccountDetailsThunk, updateAccountThunk } from './accountThunk';
 import { getUserDetailsThunk } from './userThunk';
@@ -19,6 +20,7 @@ export const AsyncThunks = {
   updateAccommodation: createAsyncThunk('updateAccommodationThunk', updateAccommodationThunk),
   deleteAccommodation: createAsyncThunk('deleteAccommodationThunk', deleteAccommodationThunk),
   addAccommodationImage: createAsyncThunk('AddAccommodationImageThunk', addAccommodationImageThunk),
+  getAccommodation: createAsyncThunk('getAccommodationThunk', getAccommodationThunk),
 
   signUp: createAsyncThunk('signUpThunk', signUpThunk),
   signIn: createAsyncThunk('signInThunk', signInThunk),

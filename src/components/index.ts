@@ -5,6 +5,7 @@ import NavigationHeader from './NavigationHeader/NavigationHeader';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
 import Text from './Text/Text';
 import ThemedView from './ThemedView/ThemedView';
+import { MyAccommodationListItem } from './accommodationList';
 import showAlert from './alert';
 import ProfileImageUploader from './imageUploaders/ProfileImage/ProfileImage';
 import { Input, NumericInput } from './inputs';
@@ -18,6 +19,7 @@ export {
   ProfileHeader,
   Text,
   ThemedView,
+  MyAccommodationListItem,
   showAlert,
   ProfileImageUploader,
   Input,

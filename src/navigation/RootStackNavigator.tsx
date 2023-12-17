@@ -12,6 +12,7 @@ import {
   Signin,
   Signup,
   VerifyEmail,
+  UpdateAccommodation,
 } from 'src/screens';
 import { BUTTON_SIZES } from 'src/styles';
 
@@ -88,6 +89,11 @@ const RootStackNavigator = () => {
         name="CreateAccommodation"
         component={CreateAccommodation}
         options={{ header: () => <NavigationHeader title="Create Accommodation" /> }}
+      />
+      <RootRouterStack.Screen
+        name="UpdateAccommodation"
+        component={UpdateAccommodation}
+        options={{ header: () => <NavigationHeader title="Edit Accommodation" /> }}
       />
       <RootRouterStack.Screen
         name="AddAccommodationImage"

@@ -37,6 +37,12 @@ const accommodationSlice = createSlice({
     });
     builder.addCase(AsyncThunks.updateAccommodation.rejected, onError);
 
+    builder.addCase(AsyncThunks.getAccommodation.pending, onPending);
+    builder.addCase(AsyncThunks.getAccommodation.fulfilled, (state, action) => {
+      state.pending = false;
+    });
+    builder.addCase(AsyncThunks.getAccommodation.rejected, onError);
+
     builder.addCase(AsyncThunks.deleteAccommodation.pending, onPending);
     builder.addCase(AsyncThunks.deleteAccommodation.fulfilled, (state) => {
       state.pending = false;

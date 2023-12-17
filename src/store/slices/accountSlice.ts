@@ -46,6 +46,7 @@ const accountSlice = createSlice({
     builder.addCase(AsyncThunks.getAccountDetails.pending, onPending);
     builder.addCase(AsyncThunks.getAccountDetails.fulfilled, (state, action) => {
       state.pending = false;
+      state.isGuest = false;
       state.result = action.payload.data;
     });
     builder.addCase(AsyncThunks.getAccountDetails.rejected, onError);

@@ -23,11 +23,10 @@ export const updateAccountThunk: AsyncThunkPayloadCreator<
 > = async (params, { rejectWithValue }) => {
   try {
     const { id, formValues } = params;
-
     const response = await axiosInstance.patch(ENDPOINTS.account.update(id), formValues);
+
     return response.data;
   } catch (error: any) {
-    console.log(error.response.data);
     return rejectWithValue(error.response.data);
   }
 };
@@ -39,6 +38,7 @@ export const getAccountDetailsThunk: AsyncThunkPayloadCreator<
 > = async (userId, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get(ENDPOINTS.account.getProfile(userId));
+
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);

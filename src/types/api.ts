@@ -44,7 +44,7 @@ export interface UpdateProfileParams {
 
 export interface CreateAccommodationParams {
   accommodation: CreateAccommodationValues;
-  address: AddressValues | undefined;
+  Address: AddressValues;
 }
 
 export interface UpdateAccommodationParams extends CreateAccommodationParams {
@@ -52,18 +52,18 @@ export interface UpdateAccommodationParams extends CreateAccommodationParams {
 }
 
 export interface Accommodation {
-  accommodation: {
-    thumbnailUrl: string;
-    previewImgUrl: string;
-    squareMeters: number;
-    numberOfRooms: number;
-    price: number;
-    availability: boolean;
-    availableFrom: string;
-    availableTo: string;
-    description: string;
-  };
-  address: {
+  id: string;
+  thumbnailUrl: string;
+  previewImgUrl: string;
+  squareMeters: number;
+  numberOfRooms: number;
+  price: number;
+  availability: boolean;
+  availableFrom: string;
+  availableTo: string;
+  description: string;
+  Address: {
+    addressId: string;
     street: string;
     city: string;
     country: string;

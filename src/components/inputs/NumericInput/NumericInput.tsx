@@ -7,9 +7,18 @@ type Props = {
   style?: any;
   error?: string;
   onChangeText: (value: any) => void;
+  maxLength?: number;
 };
 
-const NumericInput = ({ label, value, placeholder, style, error, onChangeText }: Props) => {
+const NumericInput = ({
+  label,
+  value,
+  placeholder,
+  style,
+  error,
+  onChangeText,
+  maxLength,
+}: Props) => {
   const handleTextChange = (text: string) => {
     const numericValue = parseFloat(text);
 
@@ -21,6 +30,7 @@ const NumericInput = ({ label, value, placeholder, style, error, onChangeText }:
       label={label}
       placeholder={placeholder || '0'}
       keyboardType="numeric"
+      maxLength={maxLength}
       value={value !== null ? value.toString() : ''}
       onChangeText={handleTextChange}
       style={style}

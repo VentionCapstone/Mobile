@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationList, ProfileHeader, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { AppDispatch } from 'src/store';
-import { getAccountInfos, getIsLoggedIn, getUserId } from 'src/store/selectors';
+import { getAccountInfos, getIsGuestAccount, getIsLoggedIn, getUserId } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
 
@@ -13,6 +13,7 @@ import { ACCOUNT_SECTIONS } from './Profile.constants';
 const Profile = () => {
   const userId = useSelector(getUserId);
   const isLoggedIn = useSelector(getIsLoggedIn);
+  const isGuestUser = useSelector(getIsGuestAccount);
   const accountDetails = useSelector(getAccountInfos);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -26,8 +27,12 @@ const Profile = () => {
     const response = await dispatch(AsyncThunks.getUserDetails(userId));
 
     if (!response.payload.error) {
-      const { id } = response.payload.data.Profile;
-      await dispatch(AsyncThunks.getAccountDetails(id));
+      const user = response.payload.data;
+
+      if (user.Profile) {
+        const { id } = user.Profile;
+        await dispatch(AsyncThunks.getAccountDetails(id));
+      }
     }
   };
 
@@ -35,7 +40,7 @@ const Profile = () => {
     if (accountDetails === null && isLoggedIn) {
       getAccountDetails();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, isGuestUser]);
 
   return (
     <ScreenTemplate headerShown={false}>

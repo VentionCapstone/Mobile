@@ -10,3 +10,7 @@ export const UZBEK_PHONE_NUMBER_LENGTH = 9;
 
 export const ADDRESS_INFO_MAX_LENGTH = 60;
 export const ADDRESS_ZIPCODE_MAX_LENGTH = 10;
+
+export const AREA_MAX_LENGTH = 10;
+export const PRICE_MAX_LENGTH = 10;
+export const ROOMS_MAX_LENGTH = 10;

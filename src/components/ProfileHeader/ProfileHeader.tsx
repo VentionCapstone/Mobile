@@ -70,7 +70,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
-                {user?.Profile.imageUrl ? (
+                {user?.Profile && user.Profile.imageUrl ? (
                   <Image
                     source={{
                       uri: user.Profile.imageUrl,
@@ -84,7 +84,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
 
               <View>
                 <Text style={styles.accountName}>
-                  {user ? `${user.firstName} ${user.lastName}` : 'User'}
+                  {user?.Profile ? `${user.firstName} ${user.lastName}` : user?.email}
                 </Text>
                 <Text style={styles.description}>
                   {isGuestUser ? 'tap to create' : 'show profile'}

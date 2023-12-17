@@ -27,13 +27,13 @@ interface Props {
   onSelect: (values: AddressValues) => void;
   addressError: boolean;
   setAddressError: (value: boolean) => void;
+  existingAddress?: AddressValues;
 }
 
 const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
 
-const AddressSelector = ({ onSelect, addressError, setAddressError }: Props) => {
+const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddress }: Props) => {
   const colors = useSelector(getColors);
-
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -42,14 +42,18 @@ const AddressSelector = ({ onSelect, addressError, setAddressError }: Props) => 
   const initialLatitude = currentLocation?.coords.latitude || 0;
   const initialLongitude = currentLocation?.coords.longitude || 0;
 
-  const [addressValues, setAddressValues] = useState<AddressValues>({
+  const initialAddressValues: AddressValues = {
     country: '',
     city: '',
     street: '',
     zipCode: '',
     latitude: initialLatitude,
     longitude: initialLongitude,
-  });
+  };
+
+  const [addressValues, setAddressValues] = useState<AddressValues>(
+    existingAddress || initialAddressValues
+  );
 
   const { country, city, street, zipCode } = addressValues;
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
@@ -127,6 +131,10 @@ const AddressSelector = ({ onSelect, addressError, setAddressError }: Props) => 
     });
   }, []);
 
+  useEffect(() => {
+    setAddressValues(existingAddress || initialAddressValues);
+  }, [existingAddress]);
+
   return (
     <ThemedView>
       <TouchableOpacity
@@ -146,7 +154,7 @@ const AddressSelector = ({ onSelect, addressError, setAddressError }: Props) => 
             color={addressError ? RED_200 : colors.placeholder}
           />
           <Text style={[styles.labelText, { color: addressError ? RED_200 : colors.placeholder }]}>
-            {city && street ? `${city}, ${street}` : 'location'}
+            {city && street ? `${city}, ${country}` : 'location'}
           </Text>
         </View>
 

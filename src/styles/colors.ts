@@ -17,5 +17,5 @@ export const TOMATO = '#f77159';
 export const TOMATO_100 = '#FF6347';
 
 export const WHITE = '#FFFFFF';
-export const WHITE_100 = '#fcfcfc';
+export const WHITE_100 = '#f5f5f5';
 export const WHITE_200 = '#bfbfbf';

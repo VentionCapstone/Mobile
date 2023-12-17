@@ -11,6 +11,8 @@ export interface CreateAccommodationValues {
   description: string;
 }
 
+export interface UpdateAccommodationValues extends CreateAccommodationValues {}
+
 export interface AddressValues {
   street: string;
   city: string;

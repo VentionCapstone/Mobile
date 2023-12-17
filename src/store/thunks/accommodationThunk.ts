@@ -22,11 +22,11 @@ export const updateAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const { accommodationId, accommodation, address } = params;
+    const { accommodationId, accommodation, Address } = params;
 
     const response = await axiosInstance.put(ENDPOINTS.accommodation.update(accommodationId), {
       accommodation,
-      address,
+      Address,
     });
 
     return response.data;
@@ -73,6 +73,20 @@ export const addAccommodationImageThunk: AsyncThunkPayloadCreator<
     return response.data;
   } catch (error: any) {
     console.log(error.response.data);
+    return rejectWithValue(error.response.data);
+  }
+};
+
+export const getAccommodationThunk: AsyncThunkPayloadCreator<
+  any,
+  string,
+  { rejectValue: ErrorResponseType }
+> = async (accommodationId, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(ENDPOINTS.accommodation.getById(accommodationId));
+
+    return response.data;
+  } catch (error: any) {
     return rejectWithValue(error.response.data);
   }
 };

@@ -25,6 +25,8 @@ export enum IconName {
   Error = 'error-outline',
   List = 'ios-list',
   Location = 'location',
+  Delete = 'delete-outline',
+  Image = 'image-outline',
 }
 
 export type IconSet = 'ionicons' | 'material';
