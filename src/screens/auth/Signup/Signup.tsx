@@ -8,7 +8,7 @@ import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
 import { getAccountError, getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
-import { AsyncThunks } from 'src/store/thunks';
+// import { AsyncThunks } from 'src/store/thunks';
 
 import { validateForm } from './Signup.utils';
 import styles from '../auth.styles';
@@ -33,19 +33,19 @@ const Signup = () => {
   };
 
   const handleSignup = async () => {
-    setFormInteracted(true);
-    const errors = validateForm(formValues);
+    // setFormInteracted(true);
+    // const errors = validateForm(formValues);
 
-    if (Object.keys(errors).length === 0) {
-      dispatch(accountActions.clearError());
-      const response = await dispatch(AsyncThunks.signUp(formValues));
+    // if (Object.keys(errors).length === 0) {
+    //   dispatch(accountActions.clearError());
+    //   const response = await dispatch(AsyncThunks.signUp(formValues));
 
-      if (!response.payload?.error) {
-        navigation.navigate('VerifyEmail');
-      }
-    } else {
-      setValidationErrors(errors);
-    }
+    //   if (!response.payload?.error) {
+    navigation.navigate('VerifyEmail', { email: formValues.email });
+    // }
+    // } else {
+    //   setValidationErrors(errors);
+    // }
   };
 
   useEffect(() => {

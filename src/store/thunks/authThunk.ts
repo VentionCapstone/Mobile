@@ -35,7 +35,7 @@ export const signUpThunk: AsyncThunkPayloadCreator<
   }
 };
 
-export const verifyThunk: AsyncThunkPayloadCreator<
+export const verifyEmailThunk: AsyncThunkPayloadCreator<
   any,
   VerificationParams,
   { rejectValue: ErrorResponseType }

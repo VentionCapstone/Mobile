@@ -58,6 +58,13 @@ const accountSlice = createSlice({
       state.result = action.payload;
     });
     builder.addCase(AsyncThunks.signUp.rejected, onError);
+    // Verification reducers
+    builder.addCase(AsyncThunks.verifyEmail.pending, onPending);
+    builder.addCase(AsyncThunks.verifyEmail.fulfilled, (state, action) => {
+      state.pending = false;
+      state.result = action.payload;
+    });
+    builder.addCase(AsyncThunks.verifyEmail.rejected, onError);
     //Sign Out reducers
     builder.addCase(AsyncThunks.signOut.pending, onPending);
     builder.addCase(AsyncThunks.signOut.fulfilled, (state, action) => {

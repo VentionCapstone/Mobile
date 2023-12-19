@@ -2,7 +2,7 @@ export type RootStackParamList = {
   Main: undefined;
   Signup?: undefined;
   Signin?: undefined;
-  VerifyEmail?: undefined;
+  VerifyEmail?: { email: string };
   Profile?: undefined;
   CreateProfile?: undefined;
   UpdateProfile?: {
