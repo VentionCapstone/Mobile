@@ -41,7 +41,6 @@ const VerifyEmail = ({ route }: any) => {
   };
 
   useEffect(() => {
-    console.log(route.params);
     verification();
   }, []);
 
