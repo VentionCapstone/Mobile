@@ -1,6 +1,7 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
-import { ENDPOINTS, axiosInstance } from 'src/axios';
+import { axiosInstance } from 'src/axios/axiosInstance';
+import ENDPOINTS from 'src/axios/endpoints';
 import { SecureStoreKeys } from 'src/config/secrets';
 import { ErrorResponseType, SignInParams, SignUpParams, VerificationParams } from 'src/types';
 
@@ -65,11 +66,12 @@ export const signOutThunk: AsyncThunkPayloadCreator<
 > = async (_, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(ENDPOINTS.auth.signout);
+
     await SecureStore.deleteItemAsync(SecureStoreKeys.ACCESS_TOKEN);
     await SecureStore.deleteItemAsync(SecureStoreKeys.REFRESH_TOKEN);
+
     return response.data;
   } catch (error: any) {
-    console.log(error.response.data);
     return rejectWithValue(error.response.data);
   }
 };

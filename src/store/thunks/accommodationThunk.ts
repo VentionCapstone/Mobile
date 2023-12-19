@@ -1,5 +1,6 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
-import { ENDPOINTS, axiosInstance } from 'src/axios';
+import { axiosInstance } from 'src/axios/axiosInstance';
+import ENDPOINTS from 'src/axios/endpoints';
 import { CreateAccommodationParams, ErrorResponseType, UpdateAccommodationParams } from 'src/types';
 
 export const createAccommodationThunk: AsyncThunkPayloadCreator<
@@ -22,11 +23,11 @@ export const updateAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const { accommodationId, accommodation, Address } = params;
+    const { accommodationId, accommodation, address } = params;
 
     const response = await axiosInstance.put(ENDPOINTS.accommodation.update(accommodationId), {
       accommodation,
-      Address,
+      address,
     });
 
     return response.data;
@@ -72,7 +73,6 @@ export const addAccommodationImageThunk: AsyncThunkPayloadCreator<
 
     return response.data;
   } catch (error: any) {
-    console.log(error.response.data);
     return rejectWithValue(error.response.data);
   }
 };
@@ -84,6 +84,20 @@ export const getAccommodationThunk: AsyncThunkPayloadCreator<
 > = async (accommodationId, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get(ENDPOINTS.accommodation.getById(accommodationId));
+
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response.data);
+  }
+};
+
+export const getMyAccommodationsThunk: AsyncThunkPayloadCreator<
+  any,
+  undefined,
+  { rejectValue: ErrorResponseType }
+> = async (_, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(ENDPOINTS.accommodation.getMyAccommodations);
 
     return response.data;
   } catch (error: any) {

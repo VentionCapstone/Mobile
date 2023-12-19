@@ -1,3 +1,5 @@
+import { Accommodation } from 'src/types';
+
 export type RootStackParamList = {
   Main: undefined;
   Signup?: undefined;
@@ -10,6 +12,6 @@ export type RootStackParamList = {
   ChangeTheme?: undefined;
   MyAccommodations?: undefined;
   CreateAccommodation?: { userId: string };
-  UpdateAccommodation?: { accommodationId: string };
+  UpdateAccommodation?: { accommodation: Accommodation };
   AddAccommodationImage?: any;
 };

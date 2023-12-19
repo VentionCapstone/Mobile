@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import { Alert, AlertButton } from 'react-native';
 
 type AlertType = 'error' | 'success' | 'warning';
 
@@ -10,17 +10,23 @@ interface AlertOptions {
 }
 
 const showAlert = (type: AlertType, options: AlertOptions): void => {
-  const { title, message, onOkPressed } = options;
+  const { title, message, onOkPressed, onCancelPressed } = options;
+
+  const buttons: AlertButton[] = [{ text: 'OK', onPress: onOkPressed }];
+
+  if (onCancelPressed) {
+    buttons.push({ text: 'Cancel', onPress: onCancelPressed, style: 'cancel' });
+  }
 
   switch (type) {
     case 'error':
-      Alert.alert(title || 'Error!', message, [{ text: 'OK', onPress: onOkPressed }]);
+      Alert.alert(title || 'Error!', message, buttons);
       break;
     case 'success':
-      Alert.alert(title || 'Success!', message, [{ text: 'OK', onPress: onOkPressed }]);
+      Alert.alert(title || 'Success!', message, buttons);
       break;
     case 'warning':
-      Alert.alert(title || 'Warning!', message, [{ text: 'OK', onPress: onOkPressed }]);
+      Alert.alert(title || 'Warning!', message, buttons);
       break;
     default:
       break;

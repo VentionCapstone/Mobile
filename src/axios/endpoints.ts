@@ -1,4 +1,4 @@
-export const ENDPOINTS = {
+const ENDPOINTS = {
   account: {
     create: '/users/profile',
     update: (userId: string) => `/users/profile/${userId}`,
@@ -16,6 +16,7 @@ export const ENDPOINTS = {
     delete: (accommodationId: string) => `/accommodation/delete/${accommodationId}`,
     getAll: '/accommodations',
     getById: (accommodationId: string) => `/accommodation/get/${accommodationId}`,
+    getMyAccommodations: `/accommodation/getAll`,
   },
   auth: {
     signin: '/auth/signin',
@@ -25,3 +26,5 @@ export const ENDPOINTS = {
     verify: '/auth/verify',
   },
 };
+
+export default ENDPOINTS;

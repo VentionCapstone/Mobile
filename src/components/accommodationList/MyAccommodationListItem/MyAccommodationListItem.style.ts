@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { title3 } from 'src/styles';
+import { paragraph1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     borderRadius: 10,
     overflow: 'hidden',
+    marginBottom: 10,
+    height: 100,
+    maxHeight: 140,
   },
   imageContainer: {
     flex: 1,
@@ -13,7 +16,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   thumbnail: {
-    flex: 1,
     width: '100%',
     height: undefined,
     aspectRatio: 1,
@@ -27,8 +29,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  location: {
-    ...title3,
+  city: {
+    ...paragraph1,
+  },
+  country: {
+    ...paragraph1,
+    fontWeight: '500',
   },
   priceContainer: {
     flexDirection: 'row',
@@ -38,7 +44,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   price: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   buttonsContainer: {
@@ -47,7 +53,7 @@ export const styles = StyleSheet.create({
   },
   actionButton: {
     borderRadius: 5,
-    padding: 5,
-    marginHorizontal: 5,
+    padding: 4,
+    marginHorizontal: 4,
   },
 });

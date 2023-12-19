@@ -44,7 +44,7 @@ export interface UpdateProfileParams {
 
 export interface CreateAccommodationParams {
   accommodation: CreateAccommodationValues;
-  Address: AddressValues;
+  address: AddressValues;
 }
 
 export interface UpdateAccommodationParams extends CreateAccommodationParams {
@@ -62,7 +62,8 @@ export interface Accommodation {
   availableFrom: string;
   availableTo: string;
   description: string;
-  Address: {
+  ownerId: string;
+  address: {
     addressId: string;
     street: string;
     city: string;

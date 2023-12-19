@@ -15,10 +15,10 @@ import { validateForm } from './Signin.utils';
 import styles from '../auth.styles';
 
 const Signin = () => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const dispatch = useAppDispatch();
-  const loading = useSelector(getAccountLoader);
   const authError = useSelector(getAccountError);
+  const loading = useSelector(getAccountLoader);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<SignInParams>({

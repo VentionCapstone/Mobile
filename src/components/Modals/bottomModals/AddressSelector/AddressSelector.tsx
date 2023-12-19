@@ -21,7 +21,7 @@ import {
   getCurrentLocation,
   validateForm,
 } from './AddressSelector.utils';
-import ModalContainer from '../../ModalContainer/ModalContainer';
+import ModalContainer from '../ModalContainer/ModalContainer';
 
 interface Props {
   onSelect: (values: AddressValues) => void;

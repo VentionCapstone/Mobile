@@ -9,6 +9,7 @@ import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
 
 import { ACCOUNT_SECTIONS } from './Profile.constants';
+import { accommodationActions, accountActions } from 'src/store/slices';
 
 const Profile = () => {
   const userId = useSelector(getUserId);
@@ -17,9 +18,22 @@ const Profile = () => {
   const accountDetails = useSelector(getAccountInfos);
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleLogOut = () => {
-    showAlert('error', {
-      message: 'Failed to log out!',
+  const handleLogOut = async () => {
+    showAlert('warning', {
+      message: 'Are you sure you want to log out?',
+      onOkPressed: async () => {
+        const response = await dispatch(AsyncThunks.signOut());
+
+        if (!response.payload.error) {
+          dispatch(accommodationActions.reset());
+          dispatch(accountActions.reset());
+        } else {
+          showAlert('error', {
+            message: 'Failed to log out!',
+          });
+        }
+      },
+      onCancelPressed: () => {},
     });
   };
 

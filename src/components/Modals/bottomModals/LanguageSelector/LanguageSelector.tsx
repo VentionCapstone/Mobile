@@ -9,7 +9,7 @@ import { IconName } from 'src/types/ui';
 
 import { Language, languages } from './LanguageSelector.constants';
 import { styles } from './LanguageSelector.style';
-import ModalContainer from '../../ModalContainer/ModalContainer';
+import ModalContainer from '../ModalContainer/ModalContainer';
 
 type Props = {
   onSelect: (lang: string) => void;

@@ -18,21 +18,14 @@ const UpdateAccommodation = ({ route }: { route: any }) => {
   const dispatch = useAppDispatch();
   const accommodationError = useSelector(getAccommodationError);
   const loading = useSelector(getAccommodationLoader);
+  const existingAccommodation: Accommodation = route.params.accommodation;
+  const existingAddress: AddressValues = existingAccommodation.address;
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [addressError, setAddressError] = useState<boolean>(false);
   const [addressValues, setAddressValues] = useState<AddressValues | undefined>();
-  const [existingAddress, setExistingAddress] = useState<AddressValues | undefined>();
-  const [formValues, setFormValues] = useState<UpdateAccommodationValues>({
-    squareMeters: null,
-    numberOfRooms: null,
-    price: null,
-    availableFrom: '',
-    availableTo: '',
-    availability: true,
-    description: '',
-  });
+  const [formValues, setFormValues] = useState<UpdateAccommodationValues>(existingAccommodation);
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
@@ -63,18 +56,21 @@ const UpdateAccommodation = ({ route }: { route: any }) => {
         return;
       }
 
-      dispatch(accommodationActions.clearError());
       const response = await dispatch(
         AsyncThunks.updateAccommodation({
-          accommodationId: route.params.accommodationId,
+          accommodationId: existingAccommodation.id,
           accommodation: formValues,
-          Address: addressValues,
+          address: addressValues,
         })
       );
 
       if (response && response.payload.success) {
         showAlert('success', {
           message: 'Accommodation updated successfully!',
+        });
+      } else {
+        showAlert('error', {
+          message: 'Something went wrong!',
         });
       }
     } else {
@@ -90,25 +86,7 @@ const UpdateAccommodation = ({ route }: { route: any }) => {
   }, [formValues]);
 
   useEffect(() => {
-    const fetchAccommodationData = async () => {
-      const response = await dispatch(AsyncThunks.getAccommodation(route.params.accommodationId));
-
-      if (response) {
-        const existingAccommodation: Accommodation = response.payload.data;
-        setExistingAddress(existingAccommodation.Address);
-        setFormValues({
-          ...formValues,
-          squareMeters: existingAccommodation.squareMeters,
-          numberOfRooms: existingAccommodation.numberOfRooms,
-          price: existingAccommodation.price,
-          availableFrom: existingAccommodation.availableFrom,
-          availableTo: existingAccommodation.availableTo,
-          description: existingAccommodation.description,
-        });
-      }
-    };
-
-    fetchAccommodationData();
+    dispatch(accommodationActions.clearError());
   }, []);
 
   return (

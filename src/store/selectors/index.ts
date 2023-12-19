@@ -12,5 +12,6 @@ export const getIsDarkMode = (state: RootState) => state.theme.isDark;
 
 export const getAccommodationError = (state: RootState) => state.accommodation.error;
 export const getAccommodationLoader = (state: RootState) => state.accommodation.pending;
+export const getMyAccommodations = (state: RootState) => state.accommodation.result;
 
 export const getUserDetails = (state: RootState) => state.user.result;

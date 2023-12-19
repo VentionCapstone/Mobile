@@ -3,27 +3,33 @@ import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
-import { GREY_300, RED_100 } from 'src/styles';
+import { RED_100 } from 'src/styles';
 import { Accommodation, IconName } from 'src/types';
 
 import { styles } from './MyAccommodationListItem.style';
 
 type Props = {
   accommodationDetails: Accommodation;
-  onEdit: (accommodationId: string) => void;
+  onEdit: (accommodation: Accommodation) => void;
   onDelete: (accommodationId: string) => void;
 };
 
 const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit }: Props) => {
   const colors = useSelector(getColors);
+  const { id, price, thumbnailUrl, address } = accommodationDetails;
 
-  const { id, price, thumbnailUrl } = accommodationDetails;
-  const { city, country } = accommodationDetails.Address;
+  const combinedLocationText = `${address.city}, ${address.country}`;
+  const locationText =
+    address.city.length + address.country.length <= 40
+      ? `${address.city}, ${address.country}`
+      : `${combinedLocationText.substring(0, 24)}...`;
 
   return (
-    <View style={[styles.card, { backgroundColor: colors.secondaryBackground }]}>
+    <TouchableOpacity style={[styles.card, { backgroundColor: colors.secondaryBackground }]}>
       <View style={styles.imageContainer}>
-        {thumbnailUrl && (
+        {!thumbnailUrl || thumbnailUrl === 'none' ? (
+          <Icon name={IconName.Image} size={70} color="#b9b9b9" />
+        ) : (
           <Image
             source={{
               uri: thumbnailUrl,
@@ -31,13 +37,11 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit }: Pro
             style={styles.thumbnail}
           />
         )}
-
-        {!thumbnailUrl && <Icon name={IconName.Image} size={110} color={GREY_300} />}
       </View>
       <View style={styles.descriptionContainer}>
         <View style={styles.titleContainer}>
           <Icon name={IconName.Location} size={20} />
-          <Text style={styles.location}>{`${city} ${country}`}</Text>
+          <Text style={styles.city}>{locationText}</Text>
         </View>
 
         <View style={styles.priceContainer}>
@@ -47,7 +51,10 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit }: Pro
         </View>
 
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.actionButton} onPress={() => onEdit(id)}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => onEdit(accommodationDetails)}
+          >
             <Icon name={IconName.Edit} iconSet="material" size={20} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={() => onDelete(id)}>
@@ -55,7 +62,7 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit }: Pro
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

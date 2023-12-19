@@ -2,7 +2,7 @@ import { Gender } from './common';
 import { ThemeType } from './ui';
 
 export interface Account {
-  id?: string;
+  id: string;
   phoneNumber?: string;
   imageUrl?: string | undefined;
   gender?: Gender;
@@ -10,7 +10,7 @@ export interface Account {
   uiTheme?: ThemeType;
   description?: string;
   language?: string;
-  userId?: string;
+  userId: string;
 }
 
 export interface CreateAccountFormValues {

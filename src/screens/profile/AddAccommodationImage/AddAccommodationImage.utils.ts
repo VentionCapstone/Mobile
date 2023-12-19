@@ -1,9 +1,12 @@
 import * as ImagePicker from 'expo-image-picker';
+import { showAlert } from 'src/components';
 
 export const openImagePicker = async () => {
   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
   if (status !== 'granted') {
-    console.log('Permission to access media library was denied');
+    showAlert('error', {
+      message: 'Permission to access media library was denied',
+    });
     return null;
   }
 

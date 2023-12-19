@@ -79,8 +79,6 @@ const UpdateAccount = () => {
       dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
 
-      console.log(response);
-
       if (!response.payload.error) {
         showAlert('success', {
           message: 'Account details updated successfully!',
