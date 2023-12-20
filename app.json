@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Mobile",
-    "slug": "airbnb-clone",
+    "slug": "airbnb",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,9 +26,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "84649822-f131-4ec8-a26e-5b0418832d3a"
+        "projectId": "b36c9be7-241c-40ae-8c7a-97bed1a3d395"
       }
     },
-    "owner": "melievkh"
+    "owner": "ventioncapstone"
   }
 }
