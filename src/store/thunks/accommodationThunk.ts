@@ -8,7 +8,7 @@ export const createAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(ENDPOINTS.accommodation.create, params);
+    const response = await axiosInstance.post(ENDPOINTS.createAccomodation, params);
 
     return response.data;
   } catch (error: any) {
@@ -24,7 +24,7 @@ export const updateAccommodationThunk: AsyncThunkPayloadCreator<
   try {
     const { accommodationId, accommodation, address } = params;
 
-    const response = await axiosInstance.put(ENDPOINTS.accommodation.update(accommodationId), {
+    const response = await axiosInstance.put(ENDPOINTS.updateAccomodation(accommodationId), {
       accommodation,
       address,
     });
@@ -41,7 +41,7 @@ export const deleteAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (accommodationId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.delete(ENDPOINTS.accommodation.delete(accommodationId));
+    const response = await axiosInstance.delete(ENDPOINTS.deleteAccomodation(accommodationId));
 
     return response.data;
   } catch (error: any) {
@@ -61,7 +61,7 @@ export const addAccommodationImageThunk: AsyncThunkPayloadCreator<
     formData.append('file', imageData as any);
 
     const response = await axiosInstance.post(
-      ENDPOINTS.accommodation.uploadImage(accommodationId),
+      ENDPOINTS.uploadAccomodationImage(accommodationId),
       formData,
       {
         headers: {
@@ -82,7 +82,7 @@ export const getAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (accommodationId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(ENDPOINTS.accommodation.getById(accommodationId));
+    const response = await axiosInstance.get(ENDPOINTS.getAccomodationById(accommodationId));
 
     return response.data;
   } catch (error: any) {
@@ -96,7 +96,7 @@ export const getMyAccommodationsThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (_, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(ENDPOINTS.accommodation.getMyAccommodations);
+    const response = await axiosInstance.get(ENDPOINTS.getMyAccommodations);
 
     return response.data;
   } catch (error: any) {

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { refreshThunk, signInThunk, signOutThunk, signUpThunk } from 'src/store/thunks/authThunk';
+import { signInThunk, signOutThunk, signUpThunk } from 'src/store/thunks/authThunk';
 
 import {
   createAccommodationThunk,
@@ -13,6 +13,10 @@ import { createAccountThunk, getAccountDetailsThunk, updateAccountThunk } from '
 import { getUserDetailsThunk } from './userThunk';
 
 export const AsyncThunks = {
+  signUp: createAsyncThunk('signUpThunk', signUpThunk),
+  signIn: createAsyncThunk('signInThunk', signInThunk),
+  signOut: createAsyncThunk('signOutThunk', signOutThunk),
+
   createAccount: createAsyncThunk('createAccountThunk', createAccountThunk),
   updateAccount: createAsyncThunk('updateAccountThunk', updateAccountThunk),
   getAccountDetails: createAsyncThunk('getAccountDetailsThunk', getAccountDetailsThunk),
@@ -23,11 +27,6 @@ export const AsyncThunks = {
   addAccommodationImage: createAsyncThunk('AddAccommodationImageThunk', addAccommodationImageThunk),
   getAccommodation: createAsyncThunk('getAccommodationThunk', getAccommodationThunk),
   getMyAccommodations: createAsyncThunk('getAccommodationsThunk', getMyAccommodationsThunk),
-
-  signUp: createAsyncThunk('signUpThunk', signUpThunk),
-  signIn: createAsyncThunk('signInThunk', signInThunk),
-  signOut: createAsyncThunk('signOutThunk', signOutThunk),
-  refresh: createAsyncThunk('refreshThunk', refreshThunk),
 
   getUserDetails: createAsyncThunk('getUserDetailsThunk', getUserDetailsThunk),
 };

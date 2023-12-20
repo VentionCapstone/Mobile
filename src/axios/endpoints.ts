@@ -1,30 +1,23 @@
 const ENDPOINTS = {
-  account: {
-    create: '/users/profile',
-    update: (userId: string) => `/users/profile/${userId}`,
-    getProfile: (userId: string | null) => `/users/profile/${userId}`,
-  },
+  signin: '/auth/signin',
+  signup: '/auth/signup',
+  signout: '/auth/signout',
+  refresh: (id: string) => `/auth/${id}/refresh`,
+  verify: '/auth/verify',
 
-  user: {
-    getUser: (userId: string | null) => `/users/${userId}`,
-  },
+  createProfile: '/users/profile',
+  updateProfile: (userId: string) => `/users/profile/${userId}`,
+  getProfile: (userId: string | null) => `/users/profile/${userId}`,
 
-  accommodation: {
-    create: '/accommodation/create',
-    update: (accommodationId: string) => `/accommodation/update/${accommodationId}`,
-    uploadImage: (accommodationId: string) => `/accommodation/file/${accommodationId}`,
-    delete: (accommodationId: string) => `/accommodation/delete/${accommodationId}`,
-    getAll: '/accommodations',
-    getById: (accommodationId: string) => `/accommodation/get/${accommodationId}`,
-    getMyAccommodations: `/accommodation/getAll`,
-  },
-  auth: {
-    signin: '/auth/signin',
-    signup: '/auth/signup',
-    signout: '/auth/signout',
-    refresh: (id: string) => `/auth/${id}/refresh`,
-    verify: '/auth/verify',
-  },
+  getUserDetails: (userId: string | null) => `/users/${userId}`,
+
+  createAccomodation: '/accommodation/create',
+  updateAccomodation: (accommodationId: string) => `/accommodation/update/${accommodationId}`,
+  getMyAccommodations: `/accommodation/getAll`,
+  uploadAccomodationImage: (accommodationId: string) => `/accommodation/file/${accommodationId}`,
+  deleteAccomodation: (accommodationId: string) => `/accommodation/delete/${accommodationId}`,
+  getAllAccomodations: '/accommodations',
+  getAccomodationById: (accommodationId: string) => `/accommodation/get/${accommodationId}`,
 };
 
 export default ENDPOINTS;

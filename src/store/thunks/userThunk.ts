@@ -8,7 +8,7 @@ export const getUserDetailsThunk: AsyncThunkPayloadCreator<
   { rejectValue: ErrorResponseType }
 > = async (userId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(ENDPOINTS.user.getUser(userId));
+    const response = await axiosInstance.get(ENDPOINTS.getUserDetails(userId));
 
     return response.data;
   } catch (error: any) {
