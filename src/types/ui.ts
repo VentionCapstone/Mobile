@@ -1,5 +1,5 @@
 export enum IconName {
-  Search = 'search',
+  Search = 'search-outline',
   Heart = 'heart-outline',
   PersonOutline = 'person-outline',
   PersonCircle = 'person-circle-outline',
@@ -27,6 +27,8 @@ export enum IconName {
   Location = 'location',
   Delete = 'delete-outline',
   Image = 'images-outline',
+  Login = 'ios-log-in-outline',
+  Logout = 'ios-log-out-outline',
 }
 
 export type IconSet = 'ionicons' | 'material';

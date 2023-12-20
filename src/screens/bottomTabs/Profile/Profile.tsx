@@ -5,11 +5,11 @@ import { Button, ButtonType, NavigationList, ProfileHeader, showAlert } from 'sr
 import { ScreenTemplate } from 'src/components/templates';
 import { AppDispatch } from 'src/store';
 import { getAccountInfos, getIsGuestAccount, getIsLoggedIn, getUserId } from 'src/store/selectors';
+import { accommodationActions, accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
 
 import { ACCOUNT_SECTIONS } from './Profile.constants';
-import { accommodationActions, accountActions } from 'src/store/slices';
 
 const Profile = () => {
   const userId = useSelector(getUserId);

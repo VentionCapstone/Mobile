@@ -1,6 +1,5 @@
-import Constants from 'expo-constants';
-import { StyleSheet } from 'react-native';
-import { title3 } from 'src/styles';
+import { Platform, StyleSheet } from 'react-native';
+import { title2 } from 'src/styles';
 import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -10,17 +9,19 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     paddingHorizontal: HORIZONTAL_12_PERCENT,
-    paddingTop: Constants.statusBarHeight,
   },
   leftContainer: {
-    height: 50,
+    height: Platform.OS === 'ios' ? 90 : 60,
+    justifyContent: 'flex-end',
+  },
+  leftInnerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 5,
+    marginBottom: 5,
+    gap: 10,
   },
   title: {
-    ...title3,
+    ...title2,
   },
   rightContainer: {
     flexDirection: 'row',

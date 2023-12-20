@@ -1,6 +1,5 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
-import { axiosInstance } from 'src/axios/axiosInstance';
-import ENDPOINTS from 'src/axios/endpoints';
+import { ENDPOINTS, axiosInstance } from 'src/axios';
 import { CreateAccommodationParams, ErrorResponseType, UpdateAccommodationParams } from 'src/types';
 
 export const createAccommodationThunk: AsyncThunkPayloadCreator<

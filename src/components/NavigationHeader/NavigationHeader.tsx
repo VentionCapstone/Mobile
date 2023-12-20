@@ -26,12 +26,14 @@ const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: 
   return (
     <ThemedView style={[styles.container, { borderBottomColor: colors.border }]}>
       <View style={styles.leftContainer}>
-        {leftComponent && (
-          <TouchableOpacity onPress={handleBackPress}>
-            <Icon name={IconName.BackChevron} size={32} />
-          </TouchableOpacity>
-        )}
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.leftInnerContainer}>
+          {leftComponent && (
+            <TouchableOpacity onPress={handleBackPress}>
+              <Icon name={IconName.BackChevron} size={32} />
+            </TouchableOpacity>
+          )}
+          <Text style={styles.title}>{title}</Text>
+        </View>
       </View>
 
       {rightComponent ? <View style={styles.rightContainer}>{rightComponent}</View> : ''}

@@ -1,7 +1,6 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
-import { axiosInstance } from 'src/axios/axiosInstance';
-import ENDPOINTS from 'src/axios/endpoints';
+import { ENDPOINTS, axiosInstance } from 'src/axios';
 import { SecureStoreKeys } from 'src/config/secrets';
 import { ErrorResponseType, SignInParams, SignUpParams, VerificationParams } from 'src/types';
 

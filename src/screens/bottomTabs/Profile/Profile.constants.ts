@@ -32,7 +32,7 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
       {
         label: 'Language',
         iconName: IconName.Language,
-        screen: 'Account',
+        screen: 'ChangeTheme',
         loggedInOnly: false,
       },
     ],

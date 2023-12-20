@@ -2,7 +2,6 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { SecureStoreKeys } from 'src/config/secrets';
 
-import { refreshTokens } from './api';
 import ENDPOINTS from './endpoints';
 
 const BASE_URL = 'http://192.168.43.129:3000/api';
@@ -66,3 +65,31 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+const refreshTokens = async (userId: string | null) => {
+  const refreshToken = await SecureStore.getItemAsync(SecureStoreKeys.REFRESH_TOKEN);
+
+  if (refreshToken) {
+    try {
+      if (userId) {
+        const response = await axiosInstance.get(ENDPOINTS.auth.refresh(userId), {
+          headers: { Authorization: `Bearer ${refreshToken}` },
+        });
+
+        const { data } = response;
+        if (data?.accessToken && data?.refreshToken) {
+          await SecureStore.setItemAsync(SecureStoreKeys.ACCESS_TOKEN, data.accessToken);
+          await SecureStore.setItemAsync(SecureStoreKeys.REFRESH_TOKEN, data.refreshToken);
+        }
+
+        return data;
+      }
+
+      return null;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return null;
+};
