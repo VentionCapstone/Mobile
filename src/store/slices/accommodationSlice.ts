@@ -16,6 +16,10 @@ const accommodationSlice = createSlice({
   name: 'accommodation',
   initialState,
   reducers: {
+    updateAccommodations: (state, action) => {
+      state.result = action.payload;
+    },
+
     reset: () => initialState,
 
     clearError: (state) => {

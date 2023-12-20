@@ -9,5 +9,11 @@ module.exports = {
         ignoreExternal: true,
       },
     ],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 };

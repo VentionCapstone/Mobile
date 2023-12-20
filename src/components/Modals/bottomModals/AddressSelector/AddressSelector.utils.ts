@@ -3,7 +3,6 @@ import Geocoder from 'react-native-geocoding';
 import { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import showAlert from 'src/components/alert';
 import { AddressValues } from 'src/types';
-import { isCityValid, isCountryValid, isStreetValid, isZipCodeValid } from 'src/utils';
 
 const GEOCODER_API_KEY = process.env.EXPO_PUBLIC_GEOCODER_API_KEY ?? '';
 
@@ -74,22 +73,22 @@ const getAddressInfo = (
   };
 };
 
-const validateForm = (addressvalues: AddressValues): Record<string, string> => {
+const validateForm = (addressValues: AddressValues): Record<string, string> => {
   const errors: Record<string, string> = {};
 
-  if (!isCountryValid(addressvalues.country)) {
+  if (!addressValues.country.length) {
     errors.country = 'country required';
   }
 
-  if (!isZipCodeValid(addressvalues.zipCode)) {
+  if (!addressValues.zipCode.length) {
     errors.zipCode = 'zip code required';
   }
 
-  if (!isCityValid(addressvalues.city)) {
+  if (!addressValues.city.length) {
     errors.city = 'city required';
   }
 
-  if (!isStreetValid(addressvalues.street)) {
+  if (!addressValues.street.length) {
     errors.street = 'street required';
   }
 

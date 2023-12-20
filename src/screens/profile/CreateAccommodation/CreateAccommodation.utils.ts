@@ -1,31 +1,24 @@
 import { CreateAccommodationValues } from 'src/types';
-import {
-  isAreaValid,
-  isAvailableFromValid,
-  isAvailableToValid,
-  isPriceValid,
-  isRoomCountValid,
-} from 'src/utils';
 
 const validateForm = (formValues: CreateAccommodationValues): Record<string, string> => {
   const errors: Record<string, string> = {};
 
-  if (!isAvailableFromValid(formValues.availableFrom)) {
+  if (!formValues.availableFrom.length) {
     errors.availableFrom = 'Check-in date required';
   }
-  if (!isAvailableToValid(formValues.availableTo)) {
+  if (!formValues.availableTo.length) {
     errors.availableTo = 'Check-out date required';
   }
 
-  if (!isPriceValid(formValues.price)) {
+  if (!formValues.price) {
     errors.price = 'Price required';
   }
 
-  if (!isRoomCountValid(formValues.numberOfRooms)) {
+  if (!formValues.numberOfRooms) {
     errors.numberOfRooms = 'Room count required';
   }
 
-  if (!isAreaValid(formValues.squareMeters)) {
+  if (!formValues.squareMeters) {
     errors.squareMeters = 'Area required';
   }
 

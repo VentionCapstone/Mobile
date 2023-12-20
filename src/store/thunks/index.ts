@@ -21,12 +21,12 @@ export const AsyncThunks = {
   updateAccount: createAsyncThunk('updateAccountThunk', updateAccountThunk),
   getAccountDetails: createAsyncThunk('getAccountDetailsThunk', getAccountDetailsThunk),
 
+  getUserDetails: createAsyncThunk('getUserDetailsThunk', getUserDetailsThunk),
+
   createAccommodation: createAsyncThunk('createAccommodationThunk', createAccommodationThunk),
   updateAccommodation: createAsyncThunk('updateAccommodationThunk', updateAccommodationThunk),
   deleteAccommodation: createAsyncThunk('deleteAccommodationThunk', deleteAccommodationThunk),
   addAccommodationImage: createAsyncThunk('AddAccommodationImageThunk', addAccommodationImageThunk),
   getAccommodation: createAsyncThunk('getAccommodationThunk', getAccommodationThunk),
   getMyAccommodations: createAsyncThunk('getAccommodationsThunk', getMyAccommodationsThunk),
-
-  getUserDetails: createAsyncThunk('getUserDetailsThunk', getUserDetailsThunk),
 };

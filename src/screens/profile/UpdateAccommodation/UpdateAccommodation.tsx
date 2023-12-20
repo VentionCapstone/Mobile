@@ -19,7 +19,7 @@ const UpdateAccommodation = ({ route }: { route: any }) => {
   const accommodationError = useSelector(getAccommodationError);
   const loading = useSelector(getAccommodationLoader);
   const existingAccommodation: Accommodation = route.params.accommodation;
-  const existingAddress: AddressValues = existingAccommodation.address;
+  const existingAddress = existingAccommodation.address;
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});

@@ -107,9 +107,9 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
             latitude: coordinates.latitude || initialLatitude,
             longitude: coordinates.longitude || initialLongitude,
           });
-          setModalVisible(false);
         }
       }
+      setModalVisible(false);
     }
   };
 
@@ -170,6 +170,9 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
                 { backgroundColor: colors.secondaryBackground, color: colors.text },
               ],
             }}
+            textInputProps={{
+              placeholderTextColor: colors.placeholder,
+            }}
             placeholder="Search"
             onPress={handleSearch}
             query={{
@@ -180,6 +183,7 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
             }}
           />
         </View>
+
         <MapView style={styles.mapContainer} region={initialRegion} provider={PROVIDER_GOOGLE}>
           {currentLocation && (
             <Marker
@@ -187,7 +191,7 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
                 latitude: currentLocation.coords.latitude,
                 longitude: currentLocation.coords.longitude,
               }}
-              title="Me"
+              title="here"
             />
           )}
         </MapView>

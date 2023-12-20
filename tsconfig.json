@@ -6,6 +6,6 @@
     "paths": {
       "src/*": ["src/*"]
     },
-    "types": ["react", "react-native"]
+    "types": ["react", "react-native", "node"]
   }
 }

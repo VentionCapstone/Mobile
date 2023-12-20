@@ -7,11 +7,12 @@ import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccommodationLoader, getMyAccommodations } from 'src/store/selectors';
+import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
+import { GREY_300 } from 'src/styles';
 import { Accommodation } from 'src/types';
 
 import { styles } from './MyAccommodations.style';
-import { GREY_300 } from 'src/styles';
 
 const MyAccommodations = () => {
   const dispatch = useAppDispatch();
@@ -29,12 +30,16 @@ const MyAccommodations = () => {
       onOkPressed: async () => {
         const response = await dispatch(AsyncThunks.deleteAccommodation(accommodationId));
 
-        if (response.payload.success) {
-          fetchMyAccommodations();
-        } else {
+        if (!response.payload.success) {
           showAlert('error', {
             message: 'Failed to delete. Please, try again!',
           });
+        } else {
+          const updatedAccommodations = myAccommodations?.filter(
+            (accommodation) => accommodation.id !== accommodationId
+          );
+
+          dispatch(accommodationActions.updateAccommodations(updatedAccommodations));
         }
       },
       onCancelPressed: () => {},
@@ -72,10 +77,9 @@ const MyAccommodations = () => {
           ))
         )}
 
-        {!loader ||
-          (myAccommodations?.length === 0 && (
-            <Text style={styles.noAccommodationsText}>You don't have any accommodations!</Text>
-          ))}
+        {!loader && myAccommodations?.length === 0 && (
+          <Text style={styles.noAccommodationsText}>You don't have any accommodations!</Text>
+        )}
       </ScrollView>
     </ScreenTemplate>
   );
