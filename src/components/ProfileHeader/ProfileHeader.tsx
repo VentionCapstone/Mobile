@@ -2,7 +2,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, Image, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
-import { getAccountDetails, getColors } from 'src/store/selectors';
+import { getColors, getIsGuestAccount, getUserDetails } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
 import styles from './ProfileHeader.style';
@@ -11,17 +11,22 @@ import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
 
-interface Props {
-  isLoggedIn: boolean;
-}
-
-const ProfileHeader = ({ isLoggedIn }: Props) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const colors = useSelector(getColors);
-  const user = useSelector(getAccountDetails);
+  const user = useSelector(getUserDetails);
+  const isGuestUser = useSelector(getIsGuestAccount);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const handlePressed = () => {
+    if (isGuestUser) {
+      navigation.navigate('CreateProfile');
+    } else {
+      navigation.navigate('Account');
+    }
+  };
 
   return (
-    <View style={{ paddingVertical: 15 }}>
+    <View style={styles.container}>
       {!isLoggedIn && (
         <View style={styles.header}>
           <View style={{ gap: 4 }}>
@@ -61,14 +66,14 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
 
           <TouchableOpacity
             style={[styles.accountHeader, { borderBottomColor: colors.border }]}
-            onPress={() => navigation.navigate('CreateProfile')}
+            onPress={handlePressed}
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
-                {user?.photoUrl ? (
+                {user?.Profile && user.Profile.imageUrl ? (
                   <Image
                     source={{
-                      uri: user.photoUrl,
+                      uri: user.Profile.imageUrl,
                     }}
                     style={styles.image}
                   />
@@ -78,8 +83,12 @@ const ProfileHeader = ({ isLoggedIn }: Props) => {
               </View>
 
               <View>
-                <Text style={styles.accountName}>Tester Testerov</Text>
-                <Text style={styles.description}>tap to create</Text>
+                <Text style={styles.accountName}>
+                  {user?.Profile ? `${user.firstName} ${user.lastName}` : user?.email}
+                </Text>
+                <Text style={styles.description}>
+                  {isGuestUser ? 'tap to create' : 'show profile'}
+                </Text>
               </View>
             </View>
 

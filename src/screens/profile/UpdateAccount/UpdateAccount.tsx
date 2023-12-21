@@ -1,12 +1,13 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { CountrySelector, Icon, ProfileImageUploader, Input, Text } from 'src/components';
-import { LanguageSelector } from 'src/components/Modals';
+import { Icon, ProfileImageUploader, Input, Text, showAlert } from 'src/components';
+import { CountrySelector, LanguageSelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
-import { user } from 'src/data';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader } from 'src/store/selectors';
+import { getAccountError, getAccountLoader, getUserDetails } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
@@ -24,39 +25,63 @@ const genderOptions = [
 
 const UpdateAccount = () => {
   const dispatch = useAppDispatch();
-  const userError = useSelector(getAccountError);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
-  const userId = '1';
+  const userError = useSelector(getAccountError);
+  const userDetails = useSelector(getUserDetails);
 
-  const [formValues, setFormValues] = useState<UpdateAccountFormValues>(user);
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [formValues, setFormValues] = useState<UpdateAccountFormValues>({
+    firstName: userDetails?.firstName,
+    lastName: userDetails?.lastName,
+    phoneNumber: userDetails?.Profile.phoneNumber || '',
+    gender: userDetails?.Profile.gender || undefined,
+    description: userDetails?.Profile.description || '',
+    country: userDetails?.Profile.country,
+    language: userDetails?.Profile.language,
+    imageUrl: userDetails?.Profile.imageUrl || undefined,
+    uiTheme: userDetails?.Profile.uiTheme || undefined,
+  });
 
-  const formIsValid = Object.keys(validationErrors).length === 0;
+  const profileId = userDetails?.Profile.id;
 
-  const handleInputChange = (fieldName: keyof UpdateAccountFormValues, text: string) => {
-    setValidationErrors({});
-    setFormValues({ ...formValues, [fieldName]: text });
+  const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
+
+  const handleInputChange = (fieldName: string, text: string) => {
+    const sanitizedText = text.replace(/\s{6,}/g, ' ');
+
+    setFormValues({ ...formValues, [fieldName]: sanitizedText });
   };
 
   const handleCountrySelect = (country: CountryOption) => {
     setFormValues({ ...formValues, country: country.name });
   };
 
-  const handlePhotoSelect = (photoUrl: string) => {
-    setFormValues({ ...formValues, photoUrl });
+  const handlePhotoSelect = (imageUrl: string) => {
+    setFormValues({ ...formValues, imageUrl });
   };
 
   const handleLanguageSelect = (language: string) => {
-    setValidationErrors({});
     setFormValues({ ...formValues, language });
   };
 
   const handleOnSubmit = async () => {
     setFormInteracted(true);
+    const errors = validateForm(formValues);
 
-    if (formIsValid) {
-      await dispatch(AsyncThunks.updateAccount({ ...formValues, userId }));
+    if (Object.keys(errors).length === 0) {
+      dispatch(accountActions.clearError());
+      const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
+
+      if (!response.payload.error) {
+        showAlert('success', {
+          message: 'Account details updated successfully!',
+          onOkPressed: () => navigation.navigate('Profile'),
+        });
+      }
+    } else {
+      setValidationErrors(errors);
     }
   };
 
@@ -65,7 +90,7 @@ const UpdateAccount = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues, formInteracted]);
+  }, [formValues]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
@@ -95,7 +120,7 @@ const UpdateAccount = () => {
           error={validationErrors.firstName}
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
-          onChangeText={(text) => handleInputChange('firstName', text)}
+          onChangeText={(text: string) => handleInputChange('firstName', text)}
           placeholder="Enter your firstname"
           value={formValues.firstName}
         />
@@ -104,7 +129,7 @@ const UpdateAccount = () => {
           error={validationErrors.lastName}
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
-          onChangeText={(text) => handleInputChange('lastName', text)}
+          onChangeText={(text: string) => handleInputChange('lastName', text)}
           placeholder="Enter your lastname"
           value={formValues.lastName}
         />
@@ -115,7 +140,7 @@ const UpdateAccount = () => {
           keyboardType="number-pad"
           leftIcon={IconName.Phone}
           maxLength={UZBEK_PHONE_NUMBER_LENGTH}
-          onChangeText={(text) => handleInputChange('phoneNumber', text)}
+          onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           placeholder="Enter your number"
           value={formValues.phoneNumber}
           underlineColorAndroid="transparent"
@@ -151,7 +176,7 @@ const UpdateAccount = () => {
           numberOfLines={4}
           placeholder="Enter your description"
           value={formValues.description}
-          onChangeText={(text) => handleInputChange('description', text)}
+          onChangeText={(text: string) => handleInputChange('description', text)}
           innerStyle={styles.textAreaStyles}
         />
       </FormTemplate>

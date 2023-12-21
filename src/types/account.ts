@@ -1,17 +1,16 @@
-import { Gender, Language } from './common';
+import { Gender } from './common';
 import { ThemeType } from './ui';
 
 export interface Account {
-  firstName?: string;
-  lastName?: string;
-  phoneNumber: string;
-  email?: string;
+  id: string;
+  phoneNumber?: string;
+  imageUrl?: string | undefined;
   gender?: Gender;
-  description?: string;
   country?: string;
-  language?: Language;
-  photoUrl?: string | undefined;
   uiTheme?: ThemeType;
+  description?: string;
+  language?: string;
+  userId: string;
 }
 
 export interface CreateAccountFormValues {
@@ -22,10 +21,8 @@ export interface CreateAccountFormValues {
   description?: string;
   country?: string;
   language?: string;
-  photoUrl?: string | undefined;
+  imageUrl?: string | undefined;
   uiTheme?: ThemeType;
 }
 
-export interface UpdateAccountFormValues extends CreateAccountFormValues {
-  userId: string;
-}
+export interface UpdateAccountFormValues extends CreateAccountFormValues {}

@@ -12,9 +12,11 @@ export const getTabBarIcon = (routeName: string, color: string): React.JSX.Eleme
     case 'Wishlist':
       return <Icon name={IconName.Heart} size={26} color={color} />;
     case 'Booking':
-      return <AntDesign name="book" size={24} color={color} />;
+      return <AntDesign name="book" size={23} color={color} />;
     case 'Profile':
       return <Icon name={IconName.PersonCircle} size={26} color={color} />;
+    case 'Login':
+      return <Icon name={IconName.Login} size={28} color={color} />;
     default:
       return <Icon name={IconName.Add} size={26} color={color} />;
   }
@@ -22,13 +24,13 @@ export const getTabBarIcon = (routeName: string, color: string): React.JSX.Eleme
 
 export const getTabBarStyles = (colors: ThemeColors) => ({
   tabBarStyle: {
-    height: Platform.OS === 'ios' ? 90 : 60,
-    paddingBottom: 8,
-    paddingTop: 6,
+    height: Platform.OS === 'ios' ? 85 : 60,
     backgroundColor: colors.background,
+    paddingTop: 10,
   },
   tabBarLabelStyle: {
-    fontSize: 12,
+    fontSize: 11,
+    marginBottom: 5,
   },
   tabBarInactiveTintColor: colors.icon,
   tabBarActiveTintColor: colors.tint,

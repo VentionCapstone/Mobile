@@ -1,5 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import { SignUpParams } from 'src/types';
+import { SignUpParams, Accommodation } from 'src/types';
+
 
 export type RootStackParamList = {
   Main: undefined;
@@ -8,11 +9,13 @@ export type RootStackParamList = {
   VerifyEmail: { data: SignUpParams };
   Profile?: undefined;
   CreateProfile?: undefined;
-  UpdateProfile?: {
-    userId: string;
-  };
+  UpdateProfile?: undefined;
   Account?: undefined;
   ChangeTheme?: undefined;
+  MyAccommodations?: undefined;
+  CreateAccommodation?: { userId: string };
+  UpdateAccommodation?: { accommodation: Accommodation };
+  AddAccommodationImage?: any;
 };
 
 export type Props = StackScreenProps<RootStackParamList, 'VerifyEmail'>;

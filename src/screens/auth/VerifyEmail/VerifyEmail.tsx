@@ -26,6 +26,7 @@ const VerifyEmail = ({ route }: Props) => {
     }
   }, [optionalMessage]);
 
+
   useEffect(() => {
     verification();
   }, []);

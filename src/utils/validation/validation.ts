@@ -17,11 +17,11 @@ const isEmailValid = (email: string): boolean => {
 };
 
 const isPasswordMatches = (password: string, confirmPassword: string): boolean => {
-  return !!confirmPassword && confirmPassword === password;
+  return confirmPassword === password;
 };
 
 const isPasswordValid = (password: string): boolean => {
-  return !!password && password.length >= PASSWORD_MIN_LENGTH;
+  return password.length >= PASSWORD_MIN_LENGTH;
 };
 
 const isPhoneNumberValid = (phoneNumber: string): boolean => {

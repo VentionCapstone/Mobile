@@ -15,7 +15,13 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
         label: 'Notifications',
         iconName: IconName.Notifications,
         screen: 'Account',
-        loggedInOnly: false,
+        loggedInOnly: true,
+      },
+      {
+        label: 'My Accommodations',
+        iconName: IconName.List,
+        screen: 'MyAccommodations',
+        loggedInOnly: true,
       },
       {
         label: 'Theme',
@@ -26,7 +32,7 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
       {
         label: 'Language',
         iconName: IconName.Language,
-        screen: 'Account',
+        screen: 'ChangeTheme',
         loggedInOnly: false,
       },
     ],

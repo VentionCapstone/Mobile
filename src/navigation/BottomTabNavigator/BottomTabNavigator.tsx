@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
 import { NavigationHeader } from 'src/components';
 import { Booking, Explore, Profile, Wishlist } from 'src/screens';
-import { getColors } from 'src/store/selectors';
+import { getColors, getIsLoggedIn } from 'src/store/selectors';
 
 import { BottomTabParamList } from './BottomTabNavigator.types';
 import { getTabBarIcon, getTabBarStyles } from './BottomTabNavigator.utils';
@@ -10,6 +10,7 @@ import { getTabBarIcon, getTabBarStyles } from './BottomTabNavigator.utils';
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator = () => {
+  const isLoggedIn = useSelector(getIsLoggedIn);
   const colors = useSelector(getColors);
   const styles = getTabBarStyles(colors);
 
@@ -43,7 +44,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <BottomTab.Screen
-        name="Profile"
+        name={isLoggedIn ? 'Profile' : 'Login'}
         component={Profile}
         options={{
           headerShown: false,

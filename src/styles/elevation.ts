@@ -1,7 +1,7 @@
 import { GREY_500 } from './colors';
 
 const LEVEL_1 = {
-  elevation: 4,
+  elevation: 3,
   shadowColor: GREY_500,
   shadowOffset: {
     width: 0,
