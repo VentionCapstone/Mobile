@@ -9,6 +9,7 @@ import styles from './VerifyEmail.style';
 
 const VerifyEmail = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   useEffect(() => {
     console.log('Link sent');
   }, []);

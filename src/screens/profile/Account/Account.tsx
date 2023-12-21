@@ -3,32 +3,57 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
-import { accountInfos } from 'src/data/mockData';
 import { RootStackParamList } from 'src/navigation';
-import { getColors } from 'src/store/selectors';
+import { getAccountInfos, getColors, getIsGuestAccount, getUserDetails } from 'src/store/selectors';
 
 import { styles } from './Account.style';
 
 const Account = () => {
   const colors = useSelector(getColors);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const isGuestUser = useSelector(getIsGuestAccount);
+  const user = useSelector(getUserDetails);
 
   return (
     <ScreenTemplate>
-      <View style={styles.container}>
-        {accountInfos.map((item, index) => (
-          <View style={[styles.card, { borderBottomColor: colors.border }]} key={index}>
-            <Text style={styles.label}>{item.label}</Text>
-            <Text style={styles.value}>{item.value}</Text>
-          </View>
-        ))}
+      {isGuestUser && (
+        <View style={styles.redirectContainer}>
+          <Text style={styles.redirectToCreateText}>You don't have an account.</Text>
 
-        <Button
-          title="Edit"
-          marginVertical={30}
-          onPress={() => navigation.navigate('UpdateProfile', { userId: '2' })}
-        />
-      </View>
+          <Button title="Create Account" onPress={() => navigation.navigate('CreateProfile')} />
+        </View>
+      )}
+
+      {!isGuestUser && (
+        <View style={styles.container}>
+          <View style={[styles.card, { borderBottomColor: colors.border }]}>
+            <Text style={styles.label}>Firstname</Text>
+            <Text style={styles.value}>{user?.firstName}</Text>
+          </View>
+          <View style={[styles.card, { borderBottomColor: colors.border }]}>
+            <Text style={styles.label}>Lastname</Text>
+            <Text style={styles.value}>{user?.lastName}</Text>
+          </View>
+          <View style={[styles.card, { borderBottomColor: colors.border }]}>
+            <Text style={styles.label}>Phone number</Text>
+            <Text style={styles.value}>{user?.Profile.phoneNumber}</Text>
+          </View>
+          <View style={[styles.card, { borderBottomColor: colors.border }]}>
+            <Text style={styles.label}>Email</Text>
+            <Text style={styles.value}>{user?.email}</Text>
+          </View>
+          <View style={[styles.card, { borderBottomColor: colors.border }]}>
+            <Text style={styles.label}>Country</Text>
+            <Text style={styles.value}>{user?.Profile.country}</Text>
+          </View>
+
+          <Button
+            title="Edit"
+            marginVertical={30}
+            onPress={() => navigation.navigate('UpdateProfile')}
+          />
+        </View>
+      )}
     </ScreenTemplate>
   );
 };

@@ -2,8 +2,8 @@ import { TextStyle } from 'react-native';
 
 export const title1: TextStyle = {
   fontSize: 24,
-  lineHeight: 29,
-  fontWeight: '700',
+  lineHeight: 24,
+  fontWeight: '600',
 };
 
 export const title2: TextStyle = {
@@ -13,8 +13,8 @@ export const title2: TextStyle = {
 };
 
 export const title3: TextStyle = {
-  fontSize: 18,
-  lineHeight: 20,
+  fontSize: 17,
+  lineHeight: 18,
   fontWeight: '500',
 };
 

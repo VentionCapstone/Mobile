@@ -1,9 +1,11 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { CountrySelector, Icon, Input, ProfileImageUploader, Text } from 'src/components';
-import { LanguageSelector } from 'src/components/Modals';
+import { Icon, Input, ProfileImageUploader, Text, showAlert } from 'src/components';
+import { LanguageSelector, CountrySelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccountError, getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
@@ -14,7 +16,7 @@ import { IconName, ThemeType } from 'src/types/ui';
 import { ACCOUNT_NAME_MAX_LENGTH, UZBEK_PHONE_NUMBER_LENGTH } from 'src/utils';
 
 import { styles } from './CreateAccount.style';
-import { validateForm } from './CreateProfile.utils';
+import { validateForm } from './CreateAccount.utils';
 
 const genderOptions = [
   { label: 'Male', value: Gender.Male },
@@ -23,6 +25,7 @@ const genderOptions = [
 
 const CreateAccountForm = () => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const accountError = useSelector(getAccountError);
   const loading = useSelector(getAccountLoader);
 
@@ -39,18 +42,20 @@ const CreateAccountForm = () => {
     uiTheme: ThemeType.Light,
   });
 
-  const formIsValid = Object.keys(validationErrors).length === 0;
+  const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
   const handleInputChange = (fieldName: keyof CreateAccountFormValues, text: string) => {
-    setFormValues({ ...formValues, [fieldName]: text });
+    const sanitizedText = text.replace(/\s{6,}/g, ' ');
+
+    setFormValues({ ...formValues, [fieldName]: sanitizedText });
   };
 
   const handleCountrySelect = (country: CountryOption) => {
     setFormValues({ ...formValues, country: country.name });
   };
 
-  const handlePhotoSelect = (photoUrl: string) => {
-    setFormValues({ ...formValues, photoUrl });
+  const handlePhotoSelect = (imageUrl: string) => {
+    setFormValues({ ...formValues, imageUrl });
   };
 
   const handleLanguageSelect = (language: string) => {
@@ -59,9 +64,19 @@ const CreateAccountForm = () => {
 
   const handleOnSubmit = async () => {
     setFormInteracted(true);
+    const errors = validateForm(formValues);
 
-    if (formIsValid) {
-      await dispatch(AsyncThunks.createAccount(formValues));
+    if (Object.keys(errors).length === 0) {
+      dispatch(accountActions.clearError());
+      const response = await dispatch(AsyncThunks.createAccount(formValues));
+      if (!response.payload.error) {
+        showAlert('success', {
+          message: 'Successfully created!',
+          onOkPressed: () => navigation.navigate('Profile'),
+        });
+      }
+    } else {
+      setValidationErrors(errors);
     }
   };
 
@@ -70,7 +85,7 @@ const CreateAccountForm = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues, formInteracted]);
+  }, [formValues]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
@@ -82,7 +97,7 @@ const CreateAccountForm = () => {
         onSubmit={handleOnSubmit}
         formIsValid={formIsValid}
         loading={loading}
-        error={formInteracted && formIsValid ? accountError : null}
+        error={accountError}
       >
         <View style={styles.header}>
           <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
@@ -100,7 +115,7 @@ const CreateAccountForm = () => {
           error={validationErrors.firstName}
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
-          onChangeText={(text) => handleInputChange('firstName', text)}
+          onChangeText={(text: string) => handleInputChange('firstName', text)}
           placeholder="Enter your firstname"
           value={formValues.firstName}
         />
@@ -109,7 +124,7 @@ const CreateAccountForm = () => {
           error={validationErrors.lastName}
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
-          onChangeText={(text) => handleInputChange('lastName', text)}
+          onChangeText={(text: string) => handleInputChange('lastName', text)}
           placeholder="Enter your lastname"
           value={formValues.lastName}
         />
@@ -120,7 +135,7 @@ const CreateAccountForm = () => {
           keyboardType="number-pad"
           leftIcon={IconName.Phone}
           maxLength={UZBEK_PHONE_NUMBER_LENGTH}
-          onChangeText={(text) => handleInputChange('phoneNumber', text)}
+          onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           placeholder="Enter your number"
           value={formValues.phoneNumber}
           underlineColorAndroid="transparent"
@@ -156,8 +171,8 @@ const CreateAccountForm = () => {
           numberOfLines={4}
           placeholder="Enter your description"
           value={formValues.description}
-          onChangeText={(text) => handleInputChange('description', text)}
-          style={styles.textAreaStyles}
+          onChangeText={(text: string) => handleInputChange('description', text)}
+          innerStyle={styles.textAreaStyles}
         />
       </FormTemplate>
     </ScreenTemplate>

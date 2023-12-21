@@ -20,17 +20,18 @@ export enum IconName {
   Phone = 'local-phone',
   Person = 'person',
   Back = 'arrow-back-outline',
+  BackChevron = 'chevron-back',
   Edit = 'edit',
   Error = 'error-outline',
+  List = 'ios-list',
+  Location = 'location',
+  Delete = 'delete-outline',
+  Image = 'images-outline',
+  Login = 'ios-log-in-outline',
+  Logout = 'ios-log-out-outline',
 }
 
 export type IconSet = 'ionicons' | 'material';
-
-export enum ButtonType {
-  Primary = 'primary',
-  Secondary = 'secondary',
-  Tertiary = 'tertiary',
-}
 
 export enum ThemeType {
   Light = 'LIGHT',

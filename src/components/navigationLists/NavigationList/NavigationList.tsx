@@ -1,7 +1,8 @@
 import React from 'react';
 import { SectionList } from 'react-native';
-import Seperator from 'src/components/Seperator/Seperator';
+import { useSelector } from 'react-redux';
 import Text from 'src/components/Text/Text';
+import { getIsLoggedIn } from 'src/store/selectors';
 import { NavigationListOption, NavigationListSection } from 'src/types/navigationList';
 
 import styles from './NavigationList.styles';
@@ -14,16 +15,21 @@ interface Props {
 }
 
 const NavigationList = ({ options, sections }: Props) => {
-  const data: NavigationListSection[] = getSections({ options, sections });
+  const originalData: NavigationListSection[] = getSections({ options, sections });
+  const isLoggedIn = useSelector(getIsLoggedIn);
+
+  const filteredData = originalData.map((section) => ({
+    ...section,
+    data: section.data.filter((item) => !item.loggedInOnly || isLoggedIn),
+  }));
 
   return (
     <SectionList
-      keyExtractor={(item, index) => item.label + index}
-      style={styles.container}
-      ItemSeparatorComponent={() => <Seperator />}
-      sections={data}
+      sections={filteredData}
       scrollEnabled={false}
+      style={styles.container}
       alwaysBounceVertical={false}
+      keyExtractor={(item, index) => item.label + index}
       renderItem={({ item }) => {
         return <NavigationListItem item={item} />;
       }}

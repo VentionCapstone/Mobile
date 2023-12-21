@@ -40,28 +40,34 @@ const accountSlice = createSlice({
     builder.addCase(AsyncThunks.updateAccount.pending, onPending);
     builder.addCase(AsyncThunks.updateAccount.fulfilled, (state, action) => {
       state.pending = false;
+      state.result = action.payload;
     });
     builder.addCase(AsyncThunks.updateAccount.rejected, onError);
-    // Sign In reducers
+
+    builder.addCase(AsyncThunks.getAccountDetails.pending, onPending);
+    builder.addCase(AsyncThunks.getAccountDetails.fulfilled, (state, action) => {
+      state.pending = false;
+      state.isGuest = false;
+      state.result = action.payload.data;
+    });
+    builder.addCase(AsyncThunks.getAccountDetails.rejected, onError);
+
     builder.addCase(AsyncThunks.signIn.pending, onPending);
     builder.addCase(AsyncThunks.signIn.fulfilled, (state, action) => {
       state.pending = false;
-      state.user_id = action.payload.user_id;
       state.isLoggedIn = true;
-      state.isGuest = false;
+      state.user_id = action.payload.id;
     });
     builder.addCase(AsyncThunks.signIn.rejected, onError);
-    //Sign Up reducers
+
     builder.addCase(AsyncThunks.signUp.pending, onPending);
     builder.addCase(AsyncThunks.signUp.fulfilled, (state, action) => {
       state.pending = false;
-      state.result = action.payload;
     });
     builder.addCase(AsyncThunks.signUp.rejected, onError);
-    //Sign Out reducers
+
     builder.addCase(AsyncThunks.signOut.pending, onPending);
     builder.addCase(AsyncThunks.signOut.fulfilled, (state, action) => {
-      state.result = action.payload;
       state.pending = false;
       state.user_id = null;
       state.isLoggedIn = false;

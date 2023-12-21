@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { TouchableOpacity, Image, View, Pressable, Text, Alert } from 'react-native';
+import { TouchableOpacity, Image, View, Pressable, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
+import showAlert from 'src/components/alert';
 import { getColors } from 'src/store/selectors';
 import { IconName } from 'src/types/ui';
 
@@ -23,7 +24,7 @@ const ProfileImageUploader = ({ onPhotoSelect }: Props) => {
     if (selectedPhoto) {
       setPhoto(selectedPhoto);
     } else {
-      Alert.alert('Error', 'Could not pick an image');
+      showAlert('error', { message: 'Could not pick an image' });
     }
   };
 

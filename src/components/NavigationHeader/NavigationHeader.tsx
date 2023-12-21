@@ -20,20 +20,20 @@ const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: 
   const colors = useSelector(getColors);
 
   const handleBackPress = () => {
-    if (leftComponent) {
-      navigation.goBack();
-    }
+    navigation.goBack();
   };
 
   return (
     <ThemedView style={[styles.container, { borderBottomColor: colors.border }]}>
       <View style={styles.leftContainer}>
-        {leftComponent && (
-          <TouchableOpacity onPress={handleBackPress}>
-            <Icon name={IconName.Back} size={30} />
-          </TouchableOpacity>
-        )}
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.leftInnerContainer}>
+          {leftComponent && (
+            <TouchableOpacity onPress={handleBackPress}>
+              <Icon name={IconName.BackChevron} size={32} />
+            </TouchableOpacity>
+          )}
+          <Text style={styles.title}>{title}</Text>
+        </View>
       </View>
 
       {rightComponent ? <View style={styles.rightContainer}>{rightComponent}</View> : ''}

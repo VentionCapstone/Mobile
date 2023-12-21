@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Mobile",
-    "slug": "Mobile",
+    "slug": "airbnb",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,6 +23,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b36c9be7-241c-40ae-8c7a-97bed1a3d395"
+      }
+    },
+    "owner": "ventioncapstone"
   }
 }
