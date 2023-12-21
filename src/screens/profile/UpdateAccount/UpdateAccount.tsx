@@ -3,16 +3,11 @@ import { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Icon, ProfileImageUploader, Input, Text, showAlert } from 'src/components';
-import { LanguageSelector, CountrySelector } from 'src/components/modals';
+import { CountrySelector, LanguageSelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import {
-  getAccountError,
-  getAccountInfos,
-  getAccountLoader,
-  getUserDetails,
-} from 'src/store/selectors';
+import { getAccountError, getAccountLoader, getUserDetails } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';

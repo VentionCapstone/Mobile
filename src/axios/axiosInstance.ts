@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
     }
 
     if (config.url && config.url.includes(ENDPOINTS.signout) && refreshToken) {
-      config.headers['X-Refresh-Token'] = refreshToken;
+      config.headers['refresh-token'] = refreshToken;
     }
 
     return config;
