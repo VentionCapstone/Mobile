@@ -17,7 +17,7 @@ const BottomTabNavigator = () => {
   return (
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color }) => getTabBarIcon(route.name, color),
+        tabBarIcon: ({ color, focused }) => getTabBarIcon({ route, color, focused }),
         ...styles,
       })}
       initialRouteName="Explore"
@@ -26,21 +26,21 @@ const BottomTabNavigator = () => {
         name="Explore"
         component={Explore}
         options={{
-          header: () => <NavigationHeader title="Explore" leftComponent={false} />,
+          header: () => <NavigationHeader title="Explore" showBackButton={false} />,
         }}
       />
       <BottomTab.Screen
         name="Wishlist"
         component={Wishlist}
         options={{
-          header: () => <NavigationHeader title="Wishlist" leftComponent={false} />,
+          header: () => <NavigationHeader title="Wishlist" showBackButton={false} />,
         }}
       />
       <BottomTab.Screen
         name="Booking"
         component={Booking}
         options={{
-          header: () => <NavigationHeader title="Booking" leftComponent={false} />,
+          header: () => <NavigationHeader title="Booking" showBackButton={false} />,
         }}
       />
       <BottomTab.Screen

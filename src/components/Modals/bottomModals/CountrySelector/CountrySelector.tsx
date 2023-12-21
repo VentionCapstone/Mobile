@@ -9,7 +9,7 @@ import { Country, CountryOption } from 'src/types/common';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './CountrySelector.style';
-import ModalContainer from '../ModalContainer/ModalContainer';
+import ModalContainer from '../../ModalContainer/ModalContainer';
 
 const countries: CountryOption[] = [
   { name: Country.UZBEKISTAN },

@@ -15,11 +15,15 @@ const validateForm = (formValues: CreateAccommodationValues): Record<string, str
   }
 
   if (!formValues.numberOfRooms) {
-    errors.numberOfRooms = 'Room count required';
+    errors.numberOfRooms = 'Number of rooms required';
   }
 
   if (!formValues.squareMeters) {
     errors.squareMeters = 'Area required';
+  }
+
+  if (!formValues.allowedNumberOfPeople) {
+    errors.allowedNumberOfPeople = 'Number of people required';
   }
 
   return errors;

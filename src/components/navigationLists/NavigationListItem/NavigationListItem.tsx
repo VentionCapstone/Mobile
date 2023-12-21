@@ -31,7 +31,6 @@ const NavigationListItem = ({ item }: Props) => {
         styles.container,
         {
           backgroundColor: pressed ? colors.secondaryBackground : colors.background,
-          borderBottomColor: colors.border,
         },
       ]}
     >

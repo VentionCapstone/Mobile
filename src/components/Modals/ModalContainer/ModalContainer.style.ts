@@ -11,9 +11,9 @@ export const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: WHITE,
     padding: 25,
-    paddingVertical: 35,
-    borderRadius: 10,
-    width: '80%',
+    paddingVertical: 40,
+    borderRadius: 15,
+    width: '90%',
   },
   closeButton: {
     position: 'absolute',

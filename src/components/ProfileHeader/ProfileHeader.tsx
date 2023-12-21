@@ -61,7 +61,6 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         <View style={styles.loggedInHeader}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Profile</Text>
-            <Icon name={IconName.Notifications} size={26} />
           </View>
 
           <TouchableOpacity
@@ -70,10 +69,10 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
-                {user?.Profile && user.Profile.imageUrl ? (
+                {user?.profile.imageUrl ? (
                   <Image
                     source={{
-                      uri: user.Profile.imageUrl,
+                      uri: user.profile.imageUrl,
                     }}
                     style={styles.image}
                   />
@@ -84,7 +83,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
 
               <View>
                 <Text style={styles.accountName}>
-                  {user?.Profile ? `${user.firstName} ${user.lastName}` : user?.email}
+                  {user?.profile ? `${user.firstName} ${user.lastName}` : user?.email}
                 </Text>
                 <Text style={styles.description}>
                   {isGuestUser ? 'tap to create' : 'show profile'}

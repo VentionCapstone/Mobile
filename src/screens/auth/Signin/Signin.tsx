@@ -13,6 +13,7 @@ import { SignInParams } from 'src/types';
 
 import { validateForm } from './Signin.utils';
 import styles from '../auth.styles';
+import { EMAIL_MAX_LENGTH } from 'src/utils';
 
 const Signin = () => {
   const dispatch = useAppDispatch();
@@ -40,7 +41,7 @@ const Signin = () => {
       dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.signIn(formValues));
 
-      if (!response.payload?.error) {
+      if (response?.payload.success) {
         navigation.navigate('Main');
       }
     } else {
@@ -74,15 +75,16 @@ const Signin = () => {
         <Input
           style={styles.input}
           value={formValues.email}
+          maxLength={EMAIL_MAX_LENGTH}
           placeholder="Enter your email"
-          onChangeText={(text: any) => handleInputChange('email', text)}
+          onChangeText={(text: string) => handleInputChange('email', text)}
           error={validationErrors.email}
         />
         <Input
           style={styles.input}
           value={formValues.password}
           placeholder="Enter your password"
-          onChangeText={(text: any) => handleInputChange('password', text)}
+          onChangeText={(text: string) => handleInputChange('password', text)}
           error={validationErrors.password}
           secureTextEntry
         />

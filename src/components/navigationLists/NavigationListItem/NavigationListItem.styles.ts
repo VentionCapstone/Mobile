@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 14,
-    borderBottomWidth: 1,
   },
   rightContainer: {
     width: '90%',

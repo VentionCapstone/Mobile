@@ -1,13 +1,15 @@
+import { ViewStyle } from 'react-native';
+
 import Input from '../Input/Input';
 
 type Props = {
   label?: string;
   value: number | null;
   placeholder?: string;
-  style?: any;
   error?: string;
-  onChangeText: (value: any) => void;
+  onChangeText: (value: number | null) => void;
   maxLength?: number;
+  style?: ViewStyle | undefined;
 };
 
 const NumericInput = ({

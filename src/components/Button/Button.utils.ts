@@ -125,10 +125,16 @@ type GetFontStyleProps = {
   colors?: ThemeColors;
 };
 
-const getFontStyles = ({ type, pressed, disabled, size, colors }: GetFontStyleProps): TextStyle => {
+const getFontStyles = ({
+  type,
+  pressed = false,
+  disabled = false,
+  size,
+  colors,
+}: GetFontStyleProps): TextStyle => {
   let fontSize = 16;
 
-  if (pressed && size !== undefined) {
+  if (pressed && size) {
     fontSize -= 2;
   }
 

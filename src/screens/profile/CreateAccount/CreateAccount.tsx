@@ -13,7 +13,7 @@ import { AsyncThunks } from 'src/store/thunks';
 import { CreateAccountFormValues } from 'src/types';
 import { GenderOptionsProps, Country, Gender, Language, CountryOption } from 'src/types/common';
 import { IconName, ThemeType } from 'src/types/ui';
-import { ACCOUNT_NAME_MAX_LENGTH, UZBEK_PHONE_NUMBER_LENGTH } from 'src/utils';
+import { ACCOUNT_NAME_MAX_LENGTH, PHONE_NUMBER_LENGTH } from 'src/utils';
 
 import { styles } from './CreateAccount.style';
 import { validateForm } from './CreateAccount.utils';
@@ -69,7 +69,7 @@ const CreateAccountForm = () => {
     if (Object.keys(errors).length === 0) {
       dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.createAccount(formValues));
-      if (!response.payload.error) {
+      if (response?.payload.success) {
         showAlert('success', {
           message: 'Successfully created!',
           onOkPressed: () => navigation.navigate('Profile'),
@@ -134,7 +134,7 @@ const CreateAccountForm = () => {
           error={validationErrors.phoneNumber}
           keyboardType="number-pad"
           leftIcon={IconName.Phone}
-          maxLength={UZBEK_PHONE_NUMBER_LENGTH}
+          maxLength={PHONE_NUMBER_LENGTH}
           onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           placeholder="Enter your number"
           value={formValues.phoneNumber}

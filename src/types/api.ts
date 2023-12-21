@@ -6,10 +6,10 @@ export interface Profile {
   id: string;
   phoneNumber: string;
   imageUrl: string;
-  gender: any;
+  gender: Gender;
   country: string;
   language: string;
-  uiTheme: any;
+  uiTheme: ThemeType;
   description: string;
   userId: string;
 }
@@ -22,7 +22,7 @@ export interface User {
   isVerified: boolean;
   isEmailVerified: boolean;
   actiovationLink: string;
-  Profile: Profile;
+  profile: Profile;
 }
 
 export interface CreateProfileParams {
@@ -38,7 +38,7 @@ export interface CreateProfileParams {
 }
 
 export interface UpdateProfileParams {
-  id: any;
+  id: string | undefined;
   formValues: CreateProfileParams;
 }
 
@@ -58,13 +58,13 @@ export interface Accommodation {
   squareMeters: number;
   numberOfRooms: number;
   price: number;
-  availability: boolean;
+  allowedNumberOfPeople: number;
   availableFrom: string;
   availableTo: string;
   description: string;
   ownerId: string;
   address: {
-    addressId: string;
+    id: string;
     street: string;
     city: string;
     country: string;

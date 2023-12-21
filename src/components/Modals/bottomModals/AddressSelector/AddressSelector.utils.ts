@@ -9,18 +9,16 @@ const GEOCODER_API_KEY = process.env.EXPO_PUBLIC_GEOCODER_API_KEY ?? '';
 Geocoder.init(GEOCODER_API_KEY);
 
 const getCoordinatesByCity = async (city: string) => {
-  try {
-    if (city) {
-      const response = await Geocoder.from(city);
-      const { lat, lng } = response.results[0].geometry.location;
-      return { latitude: lat, longitude: lng };
-    }
+  const response = await Geocoder.from(city);
 
-    return null;
-  } catch (error: any) {
+  if (response.results) {
+    const { lat, lng } = response.results[0].geometry.location;
+    return { latitude: lat, longitude: lng };
+  }
+
+  if (!response.results) {
     showAlert('error', {
-      title: 'Error getting coordinates',
-      message: error?.message,
+      message: 'Something went wrong!',
     });
     return null;
   }

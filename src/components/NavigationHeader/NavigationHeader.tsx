@@ -10,12 +10,12 @@ import Text from '../Text/Text';
 import ThemedView from '../ThemedView/ThemedView';
 
 interface Props {
-  leftComponent?: boolean;
+  showBackButton?: boolean;
   title?: string;
   rightComponent?: any;
 }
 
-const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: Props) => {
+const NavigationHeader = ({ showBackButton = true, title = '', rightComponent }: Props) => {
   const navigation = useNavigation();
   const colors = useSelector(getColors);
 
@@ -27,16 +27,16 @@ const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: 
     <ThemedView style={[styles.container, { borderBottomColor: colors.border }]}>
       <View style={styles.leftContainer}>
         <View style={styles.leftInnerContainer}>
-          {leftComponent && (
+          {showBackButton && (
             <TouchableOpacity onPress={handleBackPress}>
-              <Icon name={IconName.BackChevron} size={32} />
+              <Icon name={IconName.BackChevron} size={28} />
             </TouchableOpacity>
           )}
           <Text style={styles.title}>{title}</Text>
         </View>
       </View>
 
-      {rightComponent ? <View style={styles.rightContainer}>{rightComponent}</View> : ''}
+      {rightComponent && <View style={styles.rightContainer}>{rightComponent}</View>}
     </ThemedView>
   );
 };

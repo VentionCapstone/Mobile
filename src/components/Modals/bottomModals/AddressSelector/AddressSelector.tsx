@@ -8,7 +8,7 @@ import {
 } from 'react-native-google-places-autocomplete';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { Button, Icon, Input, Text, ThemedView } from 'src/components';
+import { Button, Icon, Input, Text, ThemedView, showAlert } from 'src/components';
 import { getColors } from 'src/store/selectors';
 import { RED_200 } from 'src/styles';
 import { AddressValues, IconName } from 'src/types';
@@ -21,7 +21,7 @@ import {
   getCurrentLocation,
   validateForm,
 } from './AddressSelector.utils';
-import ModalContainer from '../ModalContainer/ModalContainer';
+import ModalContainer from '../../ModalContainer/ModalContainer';
 
 interface Props {
   onSelect: (values: AddressValues) => void;
@@ -47,8 +47,8 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
     city: '',
     street: '',
     zipCode: '',
-    latitude: initialLatitude,
-    longitude: initialLongitude,
+    latitude: null,
+    longitude: null,
   };
 
   const [addressValues, setAddressValues] = useState<AddressValues>(
@@ -72,7 +72,7 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
     }));
   };
 
-  const handleSearch = async (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
+  const handleSearch = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
     if (details) {
       const { city, country, longitude, latitude } = getAddressInfo(
         details,
@@ -94,22 +94,33 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
     setFormInteracted(true);
     const errors = validateForm(addressValues);
 
+    if (Object.keys(errors).length) {
+      setValidationErrors(errors);
+      return;
+    }
+
     if (Object.keys(errors).length === 0) {
       if (addressValues.latitude && addressValues.longitude) {
         onSelect(addressValues);
         setAddressError(false);
-      } else {
-        const coordinates = await getCoordinatesByCity(city);
-
-        if (coordinates) {
-          onSelect({
-            ...addressValues,
-            latitude: coordinates.latitude || initialLatitude,
-            longitude: coordinates.longitude || initialLongitude,
-          });
-        }
+        return;
       }
-      setModalVisible(false);
+
+      const coordinates = await getCoordinatesByCity(city);
+      if (coordinates) {
+        onSelect({
+          ...addressValues,
+          latitude: coordinates.latitude || initialLatitude,
+          longitude: coordinates.longitude || initialLongitude,
+        });
+        setModalVisible(false);
+      }
+
+      if (!coordinates) {
+        showAlert('error', {
+          message: 'Something went wrong! try again later',
+        });
+      }
     }
   };
 

@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation, Route } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, View, Image } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,11 @@ import { IconName } from 'src/types';
 import { styles } from './AddAccommodationImage.style';
 import { openImagePicker } from './AddAccommodationImage.utils';
 
-const AddAccommodationImage = ({ route }: any) => {
+interface Props {
+  route: Route<'AddAccommodationImage', { accommodationId: string }>;
+}
+
+const AddAccommodationImage = ({ route }: Props) => {
   const { accommodationId } = route.params;
 
   const dispatch = useAppDispatch();
@@ -47,7 +51,7 @@ const AddAccommodationImage = ({ route }: any) => {
       })
     );
 
-    if (response && !response.payload?.success) {
+    if (!response?.payload.success) {
       showAlert('error', {
         message: 'Image upload failed. Please try again.',
       });

@@ -2,16 +2,20 @@ import { Accommodation } from 'src/types';
 
 export type RootStackParamList = {
   Main: undefined;
-  Signup?: undefined;
-  Signin?: undefined;
-  VerifyEmail?: undefined;
-  Profile?: undefined;
-  CreateProfile?: undefined;
-  UpdateProfile?: undefined;
-  Account?: undefined;
-  ChangeTheme?: undefined;
-  MyAccommodations?: undefined;
+
+  Signin: undefined;
+  Signup: undefined;
+  VerifyEmail: undefined;
+
+  Account: undefined;
+  AddAccommodationImage: { accommodationId: string };
   CreateAccommodation?: { userId: string };
-  UpdateAccommodation?: { accommodation: Accommodation };
-  AddAccommodationImage?: any;
+  CreateProfile: undefined;
+  ChangeTheme: undefined;
+  ChangeLanguage: undefined;
+  MyAccommodations: undefined;
+  Notifications: undefined;
+  Profile: undefined;
+  UpdateProfile: undefined;
+  UpdateAccommodation: { accommodation: Accommodation };
 };

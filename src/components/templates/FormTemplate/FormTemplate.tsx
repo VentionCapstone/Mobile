@@ -26,6 +26,7 @@ const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error, 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
       style={styles.container}
     >
       <ScrollView

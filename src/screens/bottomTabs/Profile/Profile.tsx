@@ -24,7 +24,7 @@ const Profile = () => {
       onOkPressed: async () => {
         const response = await dispatch(AsyncThunks.signOut());
 
-        if (!response.payload.error) {
+        if (response?.payload.success) {
           dispatch(accommodationActions.reset());
           dispatch(accountActions.reset());
         } else {
@@ -40,18 +40,18 @@ const Profile = () => {
   const getAccountDetails = async () => {
     const response = await dispatch(AsyncThunks.getUserDetails(userId));
 
-    if (!response.payload.error) {
+    if (response?.payload.success) {
       const user = response.payload.data;
 
-      if (user.Profile) {
-        const { id } = user.Profile;
+      if (user.profile) {
+        const { id } = user.profile;
         await dispatch(AsyncThunks.getAccountDetails(id));
       }
     }
   };
 
   useEffect(() => {
-    if (accountDetails === null && isLoggedIn) {
+    if (!accountDetails && isLoggedIn) {
       getAccountDetails();
     }
   }, [isLoggedIn, isGuestUser]);

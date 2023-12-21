@@ -66,7 +66,6 @@ const MyAccommodations = () => {
         {loader ? (
           <ActivityIndicator size="large" color={GREY_300} />
         ) : (
-          myAccommodations &&
           myAccommodations?.map((acc) => (
             <MyAccommodationListItem
               accommodationDetails={acc}
