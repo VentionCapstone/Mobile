@@ -1,8 +1,11 @@
+import { StackScreenProps } from '@react-navigation/stack';
+import { SignUpParams } from 'src/types';
+
 export type RootStackParamList = {
   Main: undefined;
   Signup?: undefined;
   Signin?: undefined;
-  VerifyEmail?: { email: string };
+  VerifyEmail: { data: SignUpParams };
   Profile?: undefined;
   CreateProfile?: undefined;
   UpdateProfile?: {
@@ -11,3 +14,5 @@ export type RootStackParamList = {
   Account?: undefined;
   ChangeTheme?: undefined;
 };
+
+export type Props = StackScreenProps<RootStackParamList, 'VerifyEmail'>;

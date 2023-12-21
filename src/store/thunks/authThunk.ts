@@ -1,7 +1,7 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
-import { ErrorResponseType, SignInParams, SignUpParams, VerificationParams } from 'src/types';
+import { ErrorResponseType, SignInParams, SignUpParams } from 'src/types';
 
 import { RootState } from '..';
 
@@ -37,11 +37,11 @@ export const signUpThunk: AsyncThunkPayloadCreator<
 
 export const verifyEmailThunk: AsyncThunkPayloadCreator<
   any,
-  VerificationParams,
+  SignUpParams,
   { rejectValue: ErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.put(ENDPOINTS.auth.verify, params);
+    const response = await axiosInstance.put(ENDPOINTS.auth.verify, params.email);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);
