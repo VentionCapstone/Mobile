@@ -6,7 +6,7 @@ import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
 import { RED_200 } from 'src/styles';
-import { ErrorResponseType } from 'src/types';
+import { ApiErrorResponseType } from 'src/types';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './FormTemplate.style';
@@ -16,7 +16,7 @@ interface Props {
   formIsValid?: boolean;
   onSubmit: () => void;
   loading?: boolean;
-  error?: ErrorResponseType | null;
+  error?: ApiErrorResponseType | null;
   style?: ViewStyle;
 }
 
@@ -42,7 +42,7 @@ const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error, 
               <Icon name={IconName.Error} iconSet="material" color={RED_200} size={20} />
               <Text style={styles.label}>Error!</Text>
             </View>
-            <Text style={styles.errorMessage}>{error?.message}</Text>
+            <Text style={styles.errorMessage}>{error.error.message}</Text>
           </View>
         )}
 

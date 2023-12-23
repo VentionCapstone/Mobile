@@ -73,7 +73,7 @@ const UpdateAccommodation = ({ route }: Props) => {
         })
       );
 
-      if (response?.payload.success) {
+      if (response.payload?.success) {
         showAlert('success', {
           message: 'Accommodation updated successfully!',
         });

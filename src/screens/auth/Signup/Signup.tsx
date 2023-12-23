@@ -41,7 +41,7 @@ const Signup = () => {
       dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.signUp(formValues));
 
-      if (response?.payload.success) {
+      if (response.payload?.success) {
         navigation.navigate('VerifyEmail');
       }
     } else {

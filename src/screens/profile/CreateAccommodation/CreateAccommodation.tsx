@@ -76,7 +76,7 @@ const CreateAccommodation = () => {
         })
       );
 
-      if (response?.payload.success) {
+      if (response.payload?.success) {
         const { id } = response.payload.data;
         navigation.navigate('AddAccommodationImage', { accommodationId: id });
       }

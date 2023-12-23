@@ -35,16 +35,16 @@ const UpdateAccount = () => {
   const [formValues, setFormValues] = useState<UpdateAccountFormValues>({
     firstName: userDetails?.firstName,
     lastName: userDetails?.lastName,
-    phoneNumber: userDetails?.profile.phoneNumber || '',
-    gender: userDetails?.profile.gender || undefined,
-    description: userDetails?.profile.description || '',
-    country: userDetails?.profile.country,
-    language: userDetails?.profile.language,
-    imageUrl: userDetails?.profile.imageUrl || undefined,
-    uiTheme: userDetails?.profile.uiTheme || undefined,
+    phoneNumber: userDetails?.profile?.phoneNumber,
+    gender: userDetails?.profile?.gender,
+    description: userDetails?.profile?.description,
+    country: userDetails?.profile?.country,
+    language: userDetails?.profile?.language,
+    imageUrl: userDetails?.profile?.imageUrl,
+    uiTheme: userDetails?.profile?.uiTheme,
   });
 
-  const profileId = userDetails?.profile.id;
+  const profileId = userDetails?.profile?.id;
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
@@ -74,7 +74,7 @@ const UpdateAccount = () => {
       dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
 
-      if (response?.payload.success) {
+      if (response.payload?.success) {
         showAlert('success', {
           message: 'Account details updated successfully!',
           onOkPressed: () => navigation.navigate('Profile'),

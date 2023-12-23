@@ -67,9 +67,9 @@ const CreateAccountForm = () => {
     const errors = validateForm(formValues);
 
     if (Object.keys(errors).length === 0) {
-      dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.createAccount(formValues));
-      if (response?.payload.success) {
+
+      if (response.payload?.success) {
         showAlert('success', {
           message: 'Successfully created!',
           onOkPressed: () => navigation.navigate('Profile'),

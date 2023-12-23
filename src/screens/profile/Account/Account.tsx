@@ -40,7 +40,7 @@ const Account = () => {
           </View>
           <View style={[styles.card, { borderBottomColor: colors.border }]}>
             <Text style={styles.label}>Phone number</Text>
-            <Text style={styles.value}>{user?.profile.phoneNumber}</Text>
+            <Text style={styles.value}>{user?.profile?.phoneNumber}</Text>
           </View>
           <View style={[styles.card, { borderBottomColor: colors.border }]}>
             <Text style={styles.label}>Email</Text>
@@ -48,7 +48,7 @@ const Account = () => {
           </View>
           <View style={[styles.card, { borderBottomColor: colors.border }]}>
             <Text style={styles.label}>Country</Text>
-            <Text style={styles.value}>{user?.profile.country}</Text>
+            <Text style={styles.value}>{user?.profile?.country}</Text>
           </View>
 
           <Button

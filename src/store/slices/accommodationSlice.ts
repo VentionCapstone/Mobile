@@ -16,10 +16,6 @@ const accommodationSlice = createSlice({
   name: 'accommodation',
   initialState,
   reducers: {
-    updateAccommodations: (state, action) => {
-      state.result = action.payload;
-    },
-
     reset: () => initialState,
 
     clearError: (state) => {
@@ -53,15 +49,17 @@ const accommodationSlice = createSlice({
     builder.addCase(AsyncThunks.getMyAccommodations.rejected, onError);
 
     builder.addCase(AsyncThunks.deleteAccommodation.pending, onPending);
-    builder.addCase(AsyncThunks.deleteAccommodation.fulfilled, (state) => {
+    builder.addCase(AsyncThunks.deleteAccommodation.fulfilled, (state, action) => {
       state.pending = false;
+
+      const accommodationId = action.payload;
+      state.result = state.result?.filter((acc) => acc.id !== accommodationId);
     });
     builder.addCase(AsyncThunks.deleteAccommodation.rejected, onError);
 
     builder.addCase(AsyncThunks.addAccommodationImage.pending, onPending);
-    builder.addCase(AsyncThunks.addAccommodationImage.fulfilled, (state, action) => {
+    builder.addCase(AsyncThunks.addAccommodationImage.fulfilled, (state) => {
       state.pending = false;
-      state.result = action.payload;
     });
     builder.addCase(AsyncThunks.addAccommodationImage.rejected, onError);
   },

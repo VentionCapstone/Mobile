@@ -1,3 +1,16 @@
+export interface SignInResponse {
+  id: string;
+  tokens: {
+    access_token: string;
+    refresh_token: string;
+  };
+}
+
+export interface SignUpResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface SignInParams {
   email: string;
   password: string;

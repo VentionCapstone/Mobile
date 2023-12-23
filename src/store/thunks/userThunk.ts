@@ -1,11 +1,11 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
-import { ErrorResponseType } from 'src/types';
+import { ApiErrorResponseType, ApiSuccessResponseType, User } from 'src/types';
 
 export const getUserDetailsThunk: AsyncThunkPayloadCreator<
-  any,
-  string | null,
-  { rejectValue: ErrorResponseType }
+  ApiSuccessResponseType<User>,
+  string,
+  { rejectValue: ApiErrorResponseType }
 > = async (userId, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get(ENDPOINTS.getUserDetails(userId));

@@ -1,11 +1,17 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
-import { CreateAccommodationParams, ErrorResponseType, UpdateAccommodationParams } from 'src/types';
+import {
+  CreateAccommodationParams,
+  ApiErrorResponseType,
+  UpdateAccommodationParams,
+  ApiSuccessResponseType,
+  Accommodation,
+} from 'src/types';
 
 export const createAccommodationThunk: AsyncThunkPayloadCreator<
-  any,
+  ApiSuccessResponseType<Accommodation>,
   CreateAccommodationParams,
-  { rejectValue: ErrorResponseType }
+  { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(ENDPOINTS.createAccomodation, params);
@@ -17,9 +23,9 @@ export const createAccommodationThunk: AsyncThunkPayloadCreator<
 };
 
 export const updateAccommodationThunk: AsyncThunkPayloadCreator<
-  any,
+  ApiSuccessResponseType<Accommodation>,
   UpdateAccommodationParams,
-  { rejectValue: ErrorResponseType }
+  { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
     const { accommodationId, accommodation, address } = params;
@@ -36,23 +42,23 @@ export const updateAccommodationThunk: AsyncThunkPayloadCreator<
 };
 
 export const deleteAccommodationThunk: AsyncThunkPayloadCreator<
-  any,
   string,
-  { rejectValue: ErrorResponseType }
+  string,
+  { rejectValue: ApiErrorResponseType }
 > = async (accommodationId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.delete(ENDPOINTS.deleteAccomodation(accommodationId));
+    await axiosInstance.delete(ENDPOINTS.deleteAccomodation(accommodationId));
 
-    return response.data;
+    return accommodationId;
   } catch (error: any) {
     return rejectWithValue(error.response.data);
   }
 };
 
 export const addAccommodationImageThunk: AsyncThunkPayloadCreator<
+  ApiSuccessResponseType<Accommodation>,
   any,
-  any,
-  { rejectValue: ErrorResponseType }
+  { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
     const { accommodationId, imageData } = params;
@@ -77,9 +83,9 @@ export const addAccommodationImageThunk: AsyncThunkPayloadCreator<
 };
 
 export const getAccommodationThunk: AsyncThunkPayloadCreator<
-  any,
+  ApiSuccessResponseType<Accommodation>,
   string,
-  { rejectValue: ErrorResponseType }
+  { rejectValue: ApiErrorResponseType }
 > = async (accommodationId, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get(ENDPOINTS.getAccomodationById(accommodationId));
@@ -91,9 +97,9 @@ export const getAccommodationThunk: AsyncThunkPayloadCreator<
 };
 
 export const getMyAccommodationsThunk: AsyncThunkPayloadCreator<
-  any,
+  ApiSuccessResponseType<Accommodation[]>,
   undefined,
-  { rejectValue: ErrorResponseType }
+  { rejectValue: ApiErrorResponseType }
 > = async (_, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get(ENDPOINTS.getMyAccommodations);

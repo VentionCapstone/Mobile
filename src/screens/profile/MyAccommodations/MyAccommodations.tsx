@@ -7,7 +7,6 @@ import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccommodationLoader, getMyAccommodations } from 'src/store/selectors';
-import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { GREY_300 } from 'src/styles';
 import { Accommodation } from 'src/types';
@@ -28,19 +27,7 @@ const MyAccommodations = () => {
     showAlert('warning', {
       message: 'Are you sure to delete this accommodation?',
       onOkPressed: async () => {
-        const response = await dispatch(AsyncThunks.deleteAccommodation(accommodationId));
-
-        if (!response.payload.success) {
-          showAlert('error', {
-            message: 'Failed to delete. Please, try again!',
-          });
-        } else {
-          const updatedAccommodations = myAccommodations?.filter(
-            (accommodation) => accommodation.id !== accommodationId
-          );
-
-          dispatch(accommodationActions.updateAccommodations(updatedAccommodations));
-        }
+        await dispatch(AsyncThunks.deleteAccommodation(accommodationId));
       },
       onCancelPressed: () => {},
     });
@@ -49,7 +36,7 @@ const MyAccommodations = () => {
   const fetchMyAccommodations = async () => {
     const response = await dispatch(AsyncThunks.getMyAccommodations());
 
-    if (!response.payload.success) {
+    if (response.payload?.error) {
       showAlert('error', {
         message: 'Something went wrong!',
       });

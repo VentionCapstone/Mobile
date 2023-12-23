@@ -1,5 +1,5 @@
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Input, Text } from 'src/components';
@@ -10,10 +10,10 @@ import { getAccountError, getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { SignInParams } from 'src/types';
+import { EMAIL_MAX_LENGTH } from 'src/utils';
 
 import { validateForm } from './Signin.utils';
 import styles from '../auth.styles';
-import { EMAIL_MAX_LENGTH } from 'src/utils';
 
 const Signin = () => {
   const dispatch = useAppDispatch();
@@ -38,10 +38,9 @@ const Signin = () => {
     const errors = validateForm(formValues);
 
     if (Object.keys(errors).length === 0) {
-      dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.signIn(formValues));
 
-      if (response?.payload.success) {
+      if (!response.payload?.error) {
         navigation.navigate('Main');
       }
     } else {

@@ -51,14 +51,14 @@ const AddAccommodationImage = ({ route }: Props) => {
       })
     );
 
-    if (!response?.payload.success) {
-      showAlert('error', {
-        message: 'Image upload failed. Please try again.',
-      });
-    } else {
+    if (response.payload?.success) {
       showAlert('success', {
         message: 'Accommodation created successfully!',
         onOkPressed: () => navigation.navigate('MyAccommodations'),
+      });
+    } else {
+      showAlert('error', {
+        message: 'Image upload failed. Please try again.',
       });
     }
   };
@@ -86,7 +86,7 @@ const AddAccommodationImage = ({ route }: Props) => {
               <Icon name={IconName.Error} iconSet="material" color={RED_200} size={20} />
               <Text style={styles.label}>Error!</Text>
             </View>
-            <Text style={styles.errorMessage}>{imageError?.message}</Text>
+            <Text style={styles.errorMessage}>{imageError?.error.message}</Text>
           </View>
         )}
 

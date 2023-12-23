@@ -2,6 +2,20 @@ import { AddressValues, CreateAccommodationValues } from './accommodation';
 import { Gender } from './common';
 import { ThemeType } from './ui';
 
+export interface ApiErrorResponseType {
+  success: boolean;
+  error: {
+    error?: string;
+    message: string | string[];
+    statusCode?: number;
+  };
+}
+
+export interface ApiSuccessResponseType<T = any> {
+  success: boolean;
+  data: T;
+}
+
 export interface Profile {
   id: string;
   phoneNumber: string;
@@ -22,7 +36,18 @@ export interface User {
   isVerified: boolean;
   isEmailVerified: boolean;
   actiovationLink: string;
-  profile: Profile;
+  profile: Profile | null;
+}
+
+export interface ProfileResponseType {
+  id: string;
+  phoneNumber: string;
+  gender: string;
+  description: string;
+  country: string;
+  language: string;
+  imageUrl: string | undefined;
+  uiTheme: string;
 }
 
 export interface CreateProfileParams {

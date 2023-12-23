@@ -22,6 +22,8 @@ const Profile = () => {
     showAlert('warning', {
       message: 'Are you sure you want to log out?',
       onOkPressed: async () => {
+        dispatch(accommodationActions.reset());
+        dispatch(accountActions.reset());
         const response = await dispatch(AsyncThunks.signOut());
 
         if (response?.payload.success) {
@@ -38,14 +40,13 @@ const Profile = () => {
   };
 
   const getAccountDetails = async () => {
-    const response = await dispatch(AsyncThunks.getUserDetails(userId));
-
-    if (response?.payload.success) {
-      const user = response.payload.data;
+    if (userId) {
+      const response = await dispatch(AsyncThunks.getUserDetails(userId));
+      const user = response.payload?.data;
 
       if (user.profile) {
-        const { id } = user.profile;
-        await dispatch(AsyncThunks.getAccountDetails(id));
+        const profileId = user.profile.id;
+        await dispatch(AsyncThunks.getAccountDetails(profileId));
       }
     }
   };
