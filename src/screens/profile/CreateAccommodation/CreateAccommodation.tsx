@@ -7,17 +7,21 @@ import { AddressSelector, DateTimePicker } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationError, getAccommodationLoader } from 'src/store/selectors';
+import { getAccommodationLoader } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { AddressValues, CreateAccommodationValues } from 'src/types';
+import {
+  Accommodation,
+  AddressValues,
+  ApiSuccessResponseType,
+  CreateAccommodationValues,
+} from 'src/types';
 
 import { styles } from './CreateAccommodation.style';
 import { validateForm } from './CreateAccommodation.utils';
 
 const CreateAccommodation = () => {
   const dispatch = useAppDispatch();
-  const accommodationError = useSelector(getAccommodationError);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccommodationLoader);
 
@@ -77,7 +81,7 @@ const CreateAccommodation = () => {
       );
 
       if (response.payload?.success) {
-        const { id } = response.payload.data;
+        const { id } = (response.payload as ApiSuccessResponseType<Accommodation>).data;
         navigation.navigate('AddAccommodationImage', { accommodationId: id });
       }
     } else {
@@ -98,12 +102,7 @@ const CreateAccommodation = () => {
 
   return (
     <ScreenTemplate headerShown={false}>
-      <FormTemplate
-        onSubmit={handleOnSubmit}
-        formIsValid={formIsValid}
-        loading={loading}
-        error={formIsValid ? accommodationError : undefined}
-      >
+      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
         <View style={styles.inputRow}>
           <DateTimePicker
             width={180}

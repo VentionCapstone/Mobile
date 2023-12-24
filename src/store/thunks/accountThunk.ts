@@ -43,7 +43,10 @@ export const getAccountDetailsThunk: AsyncThunkPayloadCreator<
   { rejectValue: ApiErrorResponseType }
 > = async (userId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(ENDPOINTS.getProfile(userId));
+    const userResponse = await axiosInstance.get(ENDPOINTS.getUserDetails(userId));
+    const profileId = userResponse.data.data.profile.id;
+
+    const response = await axiosInstance.get(ENDPOINTS.getProfile(profileId));
 
     return response.data;
   } catch (error: any) {

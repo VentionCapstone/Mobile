@@ -56,7 +56,6 @@ const accountSlice = createSlice({
     builder.addCase(AsyncThunks.signIn.fulfilled, (state, action) => {
       state.pending = false;
       state.isLoggedIn = true;
-      console.log(action.payload);
       state.user_id = action.payload.id;
     });
     builder.addCase(AsyncThunks.signIn.rejected, onError);

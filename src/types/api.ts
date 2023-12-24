@@ -79,6 +79,7 @@ export interface UpdateAccommodationParams extends CreateAccommodationParams {
 export interface Accommodation {
   id: string;
   thumbnailUrl: string;
+  addressId: string;
   previewImgUrl: string;
   squareMeters: number;
   numberOfRooms: number;

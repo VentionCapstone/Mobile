@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { ScrollView, KeyboardAvoidingView, Platform, ViewStyle, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'src/components/Button';

@@ -1,10 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationList, ProfileHeader, showAlert } from 'src/components';
+import { Alert } from 'src/components/modals';
 import { ScreenTemplate } from 'src/components/templates';
 import { AppDispatch } from 'src/store';
-import { getAccountInfos, getIsGuestAccount, getIsLoggedIn, getUserId } from 'src/store/selectors';
+import {
+  getAccountError,
+  getAccountInfos,
+  getIsGuestAccount,
+  getIsLoggedIn,
+  getUserId,
+} from 'src/store/selectors';
 import { accommodationActions, accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
@@ -16,7 +23,10 @@ const Profile = () => {
   const isLoggedIn = useSelector(getIsLoggedIn);
   const isGuestUser = useSelector(getIsGuestAccount);
   const accountDetails = useSelector(getAccountInfos);
+  const userError = useSelector(getAccountError);
   const dispatch = useDispatch<AppDispatch>();
+
+  const [errorVisible, setErrorVisible] = useState<boolean>(false);
 
   const handleLogOut = async () => {
     showAlert('warning', {
@@ -29,33 +39,35 @@ const Profile = () => {
         if (response?.payload.success) {
           dispatch(accommodationActions.reset());
           dispatch(accountActions.reset());
-        } else {
-          showAlert('error', {
-            message: 'Failed to log out!',
-          });
         }
       },
       onCancelPressed: () => {},
     });
   };
 
+  console.log('call', userError);
   const getAccountDetails = async () => {
-    if (userId) {
-      const response = await dispatch(AsyncThunks.getUserDetails(userId));
-      const user = response.payload?.data;
+    if (!userId) return;
+    console.log('userid');
 
-      if (user.profile) {
-        const profileId = user.profile.id;
-        await dispatch(AsyncThunks.getAccountDetails(profileId));
-      }
-    }
+    await dispatch(AsyncThunks.getAccountDetails(userId));
   };
 
   useEffect(() => {
     if (!accountDetails && isLoggedIn) {
       getAccountDetails();
     }
-  }, [isLoggedIn, isGuestUser]);
+  }, [isLoggedIn, isGuestUser, userId]);
+
+  useEffect(() => {
+    if (userError) {
+      setErrorVisible(true);
+    }
+  }, [userError]);
+
+  useEffect(() => {
+    dispatch(accountActions.clearError());
+  }, []);
 
   return (
     <ScreenTemplate headerShown={false}>
@@ -74,6 +86,12 @@ const Profile = () => {
           />
         )}
       </View>
+
+      <Alert
+        visible={errorVisible}
+        message={userError?.error.message}
+        onClose={() => setErrorVisible(false)}
+      />
     </ScreenTemplate>
   );
 };

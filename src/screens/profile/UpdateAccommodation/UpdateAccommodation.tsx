@@ -1,12 +1,13 @@
-import { Route } from '@react-navigation/native';
+import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Input, NumericInput, Text, showAlert } from 'src/components';
 import { AddressSelector, DateTimePicker } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationError, getAccommodationLoader } from 'src/store/selectors';
+import { getAccommodationLoader } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { Accommodation, AddressValues, UpdateAccommodationValues } from 'src/types';
@@ -21,8 +22,8 @@ interface Props {
 
 const UpdateAccommodation = ({ route }: Props) => {
   const dispatch = useAppDispatch();
-  const accommodationError = useSelector(getAccommodationError);
   const loading = useSelector(getAccommodationLoader);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const existingAccommodation = route.params.accommodation;
   const existingAddress = existingAccommodation.address;
 
@@ -30,7 +31,17 @@ const UpdateAccommodation = ({ route }: Props) => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [addressError, setAddressError] = useState<boolean>(false);
   const [addressValues, setAddressValues] = useState<AddressValues | undefined>();
-  const [formValues, setFormValues] = useState<UpdateAccommodationValues>(existingAccommodation);
+  const [formValues, setFormValues] = useState<UpdateAccommodationValues>({
+    allowedNumberOfPeople: existingAccommodation.allowedNumberOfPeople,
+    availableTo: existingAccommodation.availableTo,
+    availableFrom: existingAccommodation.availableFrom,
+    description: existingAccommodation.description,
+    numberOfRooms: existingAccommodation.numberOfRooms,
+    price: existingAccommodation.price,
+    previewImgUrl: existingAccommodation.previewImgUrl,
+    squareMeters: existingAccommodation.squareMeters,
+    thumbnailUrl: existingAccommodation.thumbnailUrl,
+  });
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
@@ -77,6 +88,7 @@ const UpdateAccommodation = ({ route }: Props) => {
         showAlert('success', {
           message: 'Accommodation updated successfully!',
         });
+        navigation.navigate('MyAccommodations');
       }
     } else {
       setValidationErrors(errors);
@@ -96,12 +108,7 @@ const UpdateAccommodation = ({ route }: Props) => {
 
   return (
     <ScreenTemplate headerShown={false}>
-      <FormTemplate
-        onSubmit={handleOnSubmit}
-        formIsValid={formIsValid}
-        loading={loading}
-        error={formIsValid ? accommodationError : undefined}
-      >
+      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
         <View style={styles.inputRow}>
           <DateTimePicker
             width={180}

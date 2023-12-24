@@ -1,12 +1,19 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyAccommodationListItem, Text, showAlert } from 'src/components';
+import { Alert } from 'src/components/modals';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationLoader, getMyAccommodations } from 'src/store/selectors';
+import {
+  getAccommodationError,
+  getAccommodationLoader,
+  getMyAccommodations,
+  getMyAccommodationsError,
+} from 'src/store/selectors';
+import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { GREY_300 } from 'src/styles';
 import { Accommodation } from 'src/types';
@@ -17,7 +24,10 @@ const MyAccommodations = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const myAccommodations = useSelector(getMyAccommodations);
+  const accommodationError = useSelector(getAccommodationError);
+  const myAccommodationsError = useSelector(getMyAccommodationsError);
   const loader = useSelector(getAccommodationLoader);
+  const [errorVisible, setErrorVisible] = useState(false);
 
   const handleEdit = (accommodation: Accommodation) => {
     navigation.navigate('UpdateAccommodation', { accommodation });
@@ -34,18 +44,19 @@ const MyAccommodations = () => {
   };
 
   const fetchMyAccommodations = async () => {
-    const response = await dispatch(AsyncThunks.getMyAccommodations());
-
-    if (response.payload?.error) {
-      showAlert('error', {
-        message: 'Something went wrong!',
-      });
-    }
+    await dispatch(AsyncThunks.getMyAccommodations());
   };
 
   useEffect(() => {
+    dispatch(accommodationActions.clearError());
     fetchMyAccommodations();
   }, []);
+
+  useEffect(() => {
+    if (accommodationError || myAccommodationsError) {
+      setErrorVisible(true);
+    }
+  }, [accommodationError, myAccommodationsError]);
 
   return (
     <ScreenTemplate style={styles.container}>
@@ -66,6 +77,12 @@ const MyAccommodations = () => {
         {!loader && myAccommodations?.length === 0 && (
           <Text style={styles.noAccommodationsText}>You don't have any accommodations!</Text>
         )}
+
+        <Alert
+          visible={errorVisible}
+          message={accommodationError?.error.message || myAccommodationsError?.error.message}
+          onClose={() => setErrorVisible(false)}
+        />
       </ScrollView>
     </ScreenTemplate>
   );

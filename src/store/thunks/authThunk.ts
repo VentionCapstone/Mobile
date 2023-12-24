@@ -2,18 +2,10 @@ import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
 import { SecureStorageKey } from 'src/constants/storage';
-import {
-  ApiErrorResponseType,
-  ApiSuccessResponseType,
-  SignInParams,
-  SignInResponse,
-  SignUpParams,
-  SignUpResponse,
-  VerificationParams,
-} from 'src/types';
+import { ApiErrorResponseType, SignInParams, SignUpParams, VerificationParams } from 'src/types';
 
 export const signInThunk: AsyncThunkPayloadCreator<
-  SignInResponse,
+  any,
   SignInParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
@@ -40,7 +32,7 @@ export const signInThunk: AsyncThunkPayloadCreator<
 };
 
 export const signUpThunk: AsyncThunkPayloadCreator<
-  SignUpResponse,
+  any,
   SignUpParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {

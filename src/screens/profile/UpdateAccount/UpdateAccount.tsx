@@ -7,7 +7,7 @@ import { CountrySelector, LanguageSelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader, getUserDetails } from 'src/store/selectors';
+import { getAccountLoader, getUserDetails } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
@@ -27,7 +27,6 @@ const UpdateAccount = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
-  const userError = useSelector(getAccountError);
   const userDetails = useSelector(getUserDetails);
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
@@ -98,12 +97,7 @@ const UpdateAccount = () => {
 
   return (
     <ScreenTemplate>
-      <FormTemplate
-        onSubmit={handleOnSubmit}
-        formIsValid={formIsValid}
-        loading={loading}
-        error={formInteracted && formIsValid ? userError : null}
-      >
+      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
         <View style={styles.header}>
           <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
         </View>
