@@ -6,7 +6,7 @@ import { getColors } from 'src/store/selectors';
 import { RED_200, WHITE_100 } from 'src/styles';
 
 import { styles } from './DatePicker.style';
-import { getFormattedDate } from './DatePicker.utils';
+import { getFormattedDate, getInitialDate } from './DatePicker.utils';
 import Text from '../../../Text/Text';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
@@ -15,14 +15,12 @@ type Props = {
   width?: number;
   onDateChange: (selectedDate: string) => void;
   error?: string;
-  initialValue?: string;
+  initialValue?: string | undefined;
 };
 
 const DateTimePicker = ({ label, width, onDateChange, error, initialValue }: Props) => {
   const colors = useSelector(getColors);
-  const initialDate = initialValue
-    ? new Date(initialValue).toISOString().split('T')[0].replace(/-/g, '/') // yyyy-mm-dd
-    : '';
+  const initialDate = getInitialDate({ initialValue });
 
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);

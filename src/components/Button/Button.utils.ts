@@ -125,13 +125,7 @@ type GetFontStyleProps = {
   colors?: ThemeColors;
 };
 
-const getFontStyles = ({
-  type,
-  pressed = false,
-  disabled = false,
-  size,
-  colors,
-}: GetFontStyleProps): TextStyle => {
+const getFontStyles = ({ type, pressed, disabled, size, colors }: GetFontStyleProps): TextStyle => {
   let fontSize = 16;
 
   if (pressed && size) {
@@ -151,7 +145,7 @@ const getFontStyles = ({
       fontSize = 22;
       break;
     default:
-      break;
+      fontSize = 18;
   }
 
   const textColor = type === ButtonType.PRIMARY && colors?.background;

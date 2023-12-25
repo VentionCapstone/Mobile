@@ -15,4 +15,12 @@ const getFormattedDate = ({ value }: { value: string }) => {
   return formattedDate;
 };
 
-export { getFormattedDate };
+const getInitialDate = ({ initialValue }: { initialValue: string | undefined }) => {
+  const result = initialValue
+    ? new Date(initialValue).toISOString().split('T')[0].replace(/-/g, '/')
+    : '';
+
+  return result; // yyyy-mm-dd
+};
+
+export { getFormattedDate, getInitialDate };

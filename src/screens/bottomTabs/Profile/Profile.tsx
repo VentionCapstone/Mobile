@@ -45,10 +45,8 @@ const Profile = () => {
     });
   };
 
-  console.log('call', userError);
   const getAccountDetails = async () => {
     if (!userId) return;
-    console.log('userid');
 
     await dispatch(AsyncThunks.getAccountDetails(userId));
   };
