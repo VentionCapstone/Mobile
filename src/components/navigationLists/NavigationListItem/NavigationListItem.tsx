@@ -1,7 +1,8 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import { RootStackParamList } from 'src/navigation';
@@ -15,25 +16,24 @@ interface Props {
   item: NavigationListOption;
 }
 
-const NavigationListItem = ({ item }: Props) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+const NavigationListItem: React.FC<Props> = ({ item }) => {
   const colors = useSelector(getColors);
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { onPress, screen, label, iconName, showIconRight = true } = item;
+
+  const handlePress = () => {
+    if (onPress) onPress();
+    navigation.navigate(screen as any);
+  };
+
+  const containerStyle = {
+    backgroundColor: colors.secondaryBackground,
+  };
 
   return (
     <Pressable
-      onPress={() => {
-        if (onPress) onPress();
-        navigation.navigate(screen as any);
-      }}
-      style={({ pressed }) => [
-        styles.container,
-        {
-          backgroundColor: pressed ? colors.secondaryBackground : colors.background,
-          borderBottomColor: colors.border,
-        },
-      ]}
+      onPress={handlePress}
+      style={({ pressed }) => [styles.container, pressed && containerStyle]}
     >
       <View style={styles.leftIconContainer}>
         {iconName && <Icon name={iconName} style={styles.leftIcon} />}

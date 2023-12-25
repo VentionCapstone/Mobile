@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation, Route } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, View, Image } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,11 @@ import { IconName } from 'src/types';
 import { styles } from './AddAccommodationImage.style';
 import { openImagePicker } from './AddAccommodationImage.utils';
 
-const AddAccommodationImage = ({ route }: any) => {
+interface Props {
+  route: Route<'AddAccommodationImage', { accommodationId: string }>;
+}
+
+const AddAccommodationImage = ({ route }: Props) => {
   const { accommodationId } = route.params;
 
   const dispatch = useAppDispatch();
@@ -47,14 +51,14 @@ const AddAccommodationImage = ({ route }: any) => {
       })
     );
 
-    if (response && !response.payload?.success) {
-      showAlert('error', {
-        message: 'Image upload failed. Please try again.',
-      });
-    } else {
+    if (response.payload?.success) {
       showAlert('success', {
         message: 'Accommodation created successfully!',
         onOkPressed: () => navigation.navigate('MyAccommodations'),
+      });
+    } else {
+      showAlert('error', {
+        message: 'Image upload failed. Please try again.',
       });
     }
   };
@@ -82,7 +86,7 @@ const AddAccommodationImage = ({ route }: any) => {
               <Icon name={IconName.Error} iconSet="material" color={RED_200} size={20} />
               <Text style={styles.label}>Error!</Text>
             </View>
-            <Text style={styles.errorMessage}>{imageError?.message}</Text>
+            <Text style={styles.errorMessage}>{imageError?.error.message}</Text>
           </View>
         )}
 

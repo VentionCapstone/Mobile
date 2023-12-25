@@ -1,30 +1,30 @@
 import { Platform, StyleSheet } from 'react-native';
-import { title2 } from 'src/styles';
+import { title3 } from 'src/styles';
 import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
+    height: Platform.OS === 'ios' ? 120 : 100,
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     paddingHorizontal: HORIZONTAL_12_PERCENT,
   },
   leftContainer: {
-    height: Platform.OS === 'ios' ? 90 : 60,
     justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   leftInnerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
-    gap: 10,
+    marginBottom: 10,
+    gap: 6,
   },
   title: {
-    ...title2,
+    ...title3,
   },
   rightContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: 10,
   },
 });

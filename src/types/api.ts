@@ -2,14 +2,28 @@ import { AddressValues, CreateAccommodationValues } from './accommodation';
 import { Gender } from './common';
 import { ThemeType } from './ui';
 
+export interface ApiErrorResponseType {
+  success: boolean;
+  error: {
+    error?: string;
+    message: string | string[];
+    statusCode?: number;
+  };
+}
+
+export interface ApiSuccessResponseType<T = any> {
+  success: boolean;
+  data: T;
+}
+
 export interface Profile {
   id: string;
   phoneNumber: string;
   imageUrl: string;
-  gender: any;
+  gender: Gender;
   country: string;
   language: string;
-  uiTheme: any;
+  uiTheme: ThemeType;
   description: string;
   userId: string;
 }
@@ -22,7 +36,18 @@ export interface User {
   isVerified: boolean;
   isEmailVerified: boolean;
   actiovationLink: string;
-  Profile: Profile;
+  profile: Profile | null;
+}
+
+export interface ProfileResponseType {
+  id: string;
+  phoneNumber: string;
+  gender: string;
+  description: string;
+  country: string;
+  language: string;
+  imageUrl: string | undefined;
+  uiTheme: string;
 }
 
 export interface CreateProfileParams {
@@ -38,7 +63,7 @@ export interface CreateProfileParams {
 }
 
 export interface UpdateProfileParams {
-  id: any;
+  id: string | undefined;
   formValues: CreateProfileParams;
 }
 
@@ -54,17 +79,18 @@ export interface UpdateAccommodationParams extends CreateAccommodationParams {
 export interface Accommodation {
   id: string;
   thumbnailUrl: string;
+  addressId: string;
   previewImgUrl: string;
   squareMeters: number;
   numberOfRooms: number;
   price: number;
-  availability: boolean;
+  allowedNumberOfPeople: number;
   availableFrom: string;
   availableTo: string;
   description: string;
   ownerId: string;
   address: {
-    addressId: string;
+    id: string;
     street: string;
     city: string;
     country: string;

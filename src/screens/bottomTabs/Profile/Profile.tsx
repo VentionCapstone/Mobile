@@ -1,10 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationList, ProfileHeader, showAlert } from 'src/components';
+import { Alert } from 'src/components/modals';
 import { ScreenTemplate } from 'src/components/templates';
 import { AppDispatch } from 'src/store';
-import { getAccountInfos, getIsGuestAccount, getIsLoggedIn, getUserId } from 'src/store/selectors';
+import {
+  getAccountError,
+  getAccountInfos,
+  getIsGuestAccount,
+  getIsLoggedIn,
+  getUserId,
+} from 'src/store/selectors';
 import { accommodationActions, accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
@@ -16,21 +23,22 @@ const Profile = () => {
   const isLoggedIn = useSelector(getIsLoggedIn);
   const isGuestUser = useSelector(getIsGuestAccount);
   const accountDetails = useSelector(getAccountInfos);
+  const userError = useSelector(getAccountError);
   const dispatch = useDispatch<AppDispatch>();
+
+  const [errorVisible, setErrorVisible] = useState<boolean>(false);
 
   const handleLogOut = async () => {
     showAlert('warning', {
       message: 'Are you sure you want to log out?',
       onOkPressed: async () => {
+        dispatch(accommodationActions.reset());
+        dispatch(accountActions.reset());
         const response = await dispatch(AsyncThunks.signOut());
 
-        if (!response.payload.error) {
+        if (response?.payload.success) {
           dispatch(accommodationActions.reset());
           dispatch(accountActions.reset());
-        } else {
-          showAlert('error', {
-            message: 'Failed to log out!',
-          });
         }
       },
       onCancelPressed: () => {},
@@ -38,23 +46,26 @@ const Profile = () => {
   };
 
   const getAccountDetails = async () => {
-    const response = await dispatch(AsyncThunks.getUserDetails(userId));
+    if (!userId) return;
 
-    if (!response.payload.error) {
-      const user = response.payload.data;
-
-      if (user.Profile) {
-        const { id } = user.Profile;
-        await dispatch(AsyncThunks.getAccountDetails(id));
-      }
-    }
+    await dispatch(AsyncThunks.getAccountDetails(userId));
   };
 
   useEffect(() => {
-    if (accountDetails === null && isLoggedIn) {
+    if (!accountDetails && isLoggedIn) {
       getAccountDetails();
     }
-  }, [isLoggedIn, isGuestUser]);
+  }, [isLoggedIn, isGuestUser, userId]);
+
+  useEffect(() => {
+    if (userError) {
+      setErrorVisible(true);
+    }
+  }, [userError]);
+
+  useEffect(() => {
+    dispatch(accountActions.clearError());
+  }, []);
 
   return (
     <ScreenTemplate headerShown={false}>
@@ -73,6 +84,12 @@ const Profile = () => {
           />
         )}
       </View>
+
+      <Alert
+        visible={errorVisible}
+        message={userError?.error.message}
+        onClose={() => setErrorVisible(false)}
+      />
     </ScreenTemplate>
   );
 };

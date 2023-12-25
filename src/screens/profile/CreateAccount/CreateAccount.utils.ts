@@ -1,4 +1,4 @@
-import { CreateAccountFormValues } from 'src/types';
+import { CreateAccountFormValues, Gender } from 'src/types';
 import { ACCOUNT_NAME_MIN_LENGTH, isAccountNameValid, isPhoneNumberValid } from 'src/utils';
 
 const validateForm = (values: CreateAccountFormValues): Record<string, string> => {
@@ -18,4 +18,9 @@ const validateForm = (values: CreateAccountFormValues): Record<string, string> =
   return errors;
 };
 
-export { validateForm };
+const genderOptions = [
+  { label: 'Male', value: Gender.Male },
+  { label: 'Female', value: Gender.Female },
+];
+
+export { validateForm, genderOptions };

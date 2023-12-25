@@ -16,7 +16,7 @@ export interface Account {
 export interface CreateAccountFormValues {
   firstName?: string;
   lastName?: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   gender?: Gender;
   description?: string;
   country?: string;

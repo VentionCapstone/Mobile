@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { onError, onPending } from 'src/store/stateResults';
-import { Account, StateType } from 'src/types';
+import { ProfileResponseType, StateType } from 'src/types';
 
 import { AsyncThunks } from '../thunks';
 
-type AccountStateType = StateType<Account> & {
+type AccountStateType = StateType<ProfileResponseType | any> & {
   user_id: string | null;
   isLoggedIn: boolean;
   isGuest: boolean;
