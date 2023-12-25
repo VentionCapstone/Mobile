@@ -2,7 +2,7 @@ import {
   ACCOUNT_NAME_MAX_LENGTH,
   ACCOUNT_NAME_MIN_LENGTH,
   PASSWORD_MIN_LENGTH,
-  PHONE_NUMBER_LENGTH,
+  PHONE_NUMBER_MAX_LENGTH,
 } from './validation.constants';
 
 const isAccountNameValid = (name: string | undefined): boolean => {
@@ -30,7 +30,7 @@ const isPasswordValid = (password: string): boolean => {
 };
 
 const isPhoneNumberValid = (phoneNumber: string): boolean => {
-  const regex = new RegExp(`^[0-9]{${PHONE_NUMBER_LENGTH}}$`);
+  const regex = /^\+?[0-9]+$/;
   return regex.test(phoneNumber);
 };
 

@@ -8,7 +8,6 @@ import ThemedView from './ThemedView/ThemedView';
 import { MyAccommodationListItem } from './accommodationList';
 import showAlert from './alert';
 import ProfileImageUploader from './imageUploaders/ProfileImage/ProfileImage';
-import { Input, NumericInput } from './inputs';
 
 export {
   Button,
@@ -22,8 +21,6 @@ export {
   MyAccommodationListItem,
   showAlert,
   ProfileImageUploader,
-  Input,
-  NumericInput,
 };
 
 export * from './navigationLists';

@@ -17,6 +17,8 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const isGuestUser = useSelector(getIsGuestAccount);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  // console.log(user);
+
   const handlePressed = () => {
     if (isGuestUser) {
       navigation.navigate('CreateProfile');
@@ -69,7 +71,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
-                {user?.profile.imageUrl ? (
+                {user?.profile?.imageUrl ? (
                   <Image
                     source={{
                       uri: user.profile.imageUrl,

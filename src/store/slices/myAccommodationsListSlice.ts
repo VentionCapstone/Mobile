@@ -4,16 +4,16 @@ import { Accommodation, StateType } from 'src/types';
 import { onError, onPending } from '../stateResults';
 import { AsyncThunks } from '../thunks';
 
-type AccommodationStateType = StateType<Accommodation[]>;
+type MyAccommodationsStateType = StateType<Accommodation[]>;
 
-const initialState: AccommodationStateType = {
+const initialState: MyAccommodationsStateType = {
   error: null,
   pending: false,
   result: null,
 };
 
-const accommodationsListSlice = createSlice({
-  name: 'accommodationsList',
+const myAccommodationsListSlice = createSlice({
+  name: 'myAccommodationsList',
   initialState,
   reducers: {
     reset: () => initialState,
@@ -41,5 +41,5 @@ const accommodationsListSlice = createSlice({
   },
 });
 
-export const accommodationsListActions = accommodationsListSlice.actions;
-export const accommodationsListReducer = accommodationsListSlice.reducer;
+export const myAccommodationsListActions = myAccommodationsListSlice.actions;
+export const myAccommodationsListReducer = myAccommodationsListSlice.reducer;

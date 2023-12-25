@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -13,12 +13,18 @@ import ModalContainer from '../../ModalContainer/ModalContainer';
 
 type Props = {
   onSelect: (lang: string) => void;
+  value?: string;
 };
 
-const LanguageSelector = ({ onSelect }: Props) => {
+const LanguageSelector = ({ onSelect, value }: Props) => {
   const colors = useSelector(getColors);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(languages[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(null);
+
+  useEffect(() => {
+    const initialLanguage = languages.find((lang) => lang.code === value) || null;
+    setSelectedLanguage(initialLanguage);
+  }, [value]);
 
   const handleLanguageSelect = (lang: Language) => {
     setSelectedLanguage(lang);

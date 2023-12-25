@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: HORIZONTAL_16_PERCENT,
   },
   header: {
-    height: 280,
     justifyContent: 'center',
+    paddingVertical: 20,
     gap: 50,
   },
   title: {

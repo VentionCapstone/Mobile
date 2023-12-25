@@ -7,9 +7,9 @@ const ENDPOINTS = {
 
   createProfile: '/users/profile',
   updateProfile: (userId: string | undefined) => `/users/profile/${userId}`,
-  getProfile: (userId: string | null) => `/users/profile/${userId}`,
+  getProfile: (userId: string) => `/users/profile/${userId}`,
 
-  getUserDetails: (userId: string | null) => `/users/${userId}`,
+  getUserDetails: (userId: string) => `/users/${userId}`,
 
   createAccomodation: '/accommodations',
   updateAccomodation: (accommodationId: string) => `/accommodations/${accommodationId}`,

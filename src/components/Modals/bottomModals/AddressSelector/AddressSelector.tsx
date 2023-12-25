@@ -8,7 +8,8 @@ import {
 } from 'react-native-google-places-autocomplete';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { Button, Icon, Input, Text, ThemedView, showAlert } from 'src/components';
+import { Button, Icon, Text, ThemedView, showAlert } from 'src/components';
+import { Input } from 'src/components/inputs';
 import { getColors } from 'src/store/selectors';
 import { RED_200 } from 'src/styles';
 import { AddressValues, IconName } from 'src/types';

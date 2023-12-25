@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     ...title2,
     marginLeft: 20,
+    marginBottom: 10,
   },
   label: {
     ...paragraph1,

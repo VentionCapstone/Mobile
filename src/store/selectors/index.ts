@@ -14,8 +14,8 @@ export const getAccommodation = (state: RootState) => state.accommodation.result
 export const getAccommodationError = (state: RootState) => state.accommodation.error;
 export const getAccommodationLoader = (state: RootState) => state.accommodation.pending;
 
-export const getMyAccommodations = (state: RootState) => state.accommodationsList.result;
-export const getMyAccommodationsError = (state: RootState) => state.accommodationsList.error;
-export const getMyAccommodationsLoader = (state: RootState) => state.accommodationsList.pending;
+export const getMyAccommodations = (state: RootState) => state.myAccommodationsList.result;
+export const getMyAccommodationsError = (state: RootState) => state.myAccommodationsList.error;
+export const getMyAccommodationsLoader = (state: RootState) => state.myAccommodationsList.pending;
 
 export const getUserDetails = (state: RootState) => state.user.result;
