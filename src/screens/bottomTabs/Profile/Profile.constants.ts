@@ -14,7 +14,7 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
       {
         label: 'Notifications',
         iconName: IconName.Notifications,
-        screen: 'Notifications',
+        screen: 'NotificationSettings',
         loggedInOnly: true,
       },
       {

@@ -1,4 +1,3 @@
-import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import {
@@ -8,39 +7,34 @@ import {
 } from 'react-native-google-places-autocomplete';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { Button, Icon, Input, Text, ThemedView, showAlert } from 'src/components';
+import { Icon, Text, ThemedView, showAlert } from 'src/components';
 import { getColors } from 'src/store/selectors';
-import { RED_200 } from 'src/styles';
 import { AddressValues, IconName } from 'src/types';
-import { ADDRESS_INFO_MAX_LENGTH, ADDRESS_ZIPCODE_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AddressSelector.style';
-import {
-  getAddressInfo,
-  getCoordinatesByCity,
-  getCurrentLocation,
-  validateForm,
-} from './AddressSelector.utils';
+import { getAddressInfo, getPlaceDetails, validateForm } from './AddressSelector.utils';
+import AddressSelectorForm from './AddressSelectorForm';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
 interface Props {
   onSelect: (values: AddressValues) => void;
-  addressError: boolean;
-  setAddressError: (value: boolean) => void;
   existingAddress?: AddressValues;
 }
 
 const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
 
-const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddress }: Props) => {
+const AddressSelector = ({ onSelect, existingAddress }: Props) => {
   const colors = useSelector(getColors);
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [currentLocation, setCurrentLocation] = useState<Location.LocationObject | null>(null);
-
-  const initialLatitude = currentLocation?.coords.latitude || 0;
-  const initialLongitude = currentLocation?.coords.longitude || 0;
+  const [addressSelected, setAddressSelected] = useState<boolean>(false);
+  const [searchInputHeight, setSearchInputHeight] = useState<number>(300);
+  const [mapRegion, setMapRegion] = useState<Region | undefined>(undefined);
+  const [selectedCoordinates, setSelectedCoordinates] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   const initialAddressValues: AddressValues = {
     country: '',
@@ -55,15 +49,7 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
     existingAddress || initialAddressValues
   );
 
-  const { country, city, street, zipCode } = addressValues;
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
-
-  const [initialRegion, setInitialRegion] = useState<Region>({
-    latitude: initialLatitude,
-    longitude: initialLongitude,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
 
   const handleInputChange = (fieldName: keyof AddressValues, text: string) => {
     setAddressValues((prevValues) => ({
@@ -72,13 +58,28 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
     }));
   };
 
-  const handleSearch = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
+  const handleSearch = async (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
     if (details) {
-      const { city, country, longitude, latitude } = getAddressInfo(
-        details,
-        initialLatitude,
-        initialLongitude
-      );
+      const placeDetails = await getPlaceDetails(details.place_id);
+
+      if (!placeDetails) {
+        showAlert('error', {
+          message: 'Something went wrong!',
+        });
+        return;
+      }
+      setAddressSelected(true);
+      setSearchInputHeight(80);
+      const { city, country, latitude, longitude } = getAddressInfo({
+        placeDetails,
+      });
+      setSelectedCoordinates({ latitude, longitude });
+      setMapRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
 
       setAddressValues({
         ...addressValues,
@@ -100,27 +101,8 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
     }
 
     if (Object.keys(errors).length === 0) {
-      if (addressValues.latitude && addressValues.longitude) {
-        onSelect(addressValues);
-        setAddressError(false);
-        return;
-      }
-
-      const coordinates = await getCoordinatesByCity(city);
-      if (coordinates) {
-        onSelect({
-          ...addressValues,
-          latitude: coordinates.latitude || initialLatitude,
-          longitude: coordinates.longitude || initialLongitude,
-        });
-        setModalVisible(false);
-      }
-
-      if (!coordinates) {
-        showAlert('error', {
-          message: 'Something went wrong! try again later',
-        });
-      }
+      onSelect(addressValues);
+      setModalVisible(false);
     }
   };
 
@@ -132,18 +114,10 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
   }, [addressValues]);
 
   useEffect(() => {
-    getCurrentLocation().then((location) => {
-      setCurrentLocation(location);
-      setInitialRegion((prevRegion) => ({
-        ...prevRegion,
-        latitude: location?.coords.latitude || prevRegion.latitude,
-        longitude: location?.coords.longitude || prevRegion.longitude,
-      }));
-    });
-  }, []);
-
-  useEffect(() => {
     setAddressValues(existingAddress || initialAddressValues);
+    if (existingAddress) {
+      setSearchInputHeight(80);
+    }
   }, [existingAddress]);
 
   return (
@@ -153,38 +127,37 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
           styles.addressLabel,
           {
             backgroundColor: colors.secondaryBackground,
-            borderColor: addressError ? RED_200 : 'transparent',
+            borderColor: 'transparent',
           },
         ]}
         onPress={() => setModalVisible(true)}
       >
         <View style={styles.row}>
-          <Icon
-            name={IconName.Location}
-            size={26}
-            color={addressError ? RED_200 : colors.placeholder}
-          />
-          <Text style={[styles.labelText, { color: addressError ? RED_200 : colors.placeholder }]}>
-            {city && street ? `${city}, ${country}` : 'location'}
+          <Icon name={IconName.Location} size={26} color={colors.placeholder} />
+          <Text style={[styles.labelText, { color: colors.placeholder }]}>
+            {addressValues.city && addressValues.street
+              ? `${addressValues.city}, ${addressValues.country}`
+              : 'location'}
           </Text>
         </View>
 
-        <Icon name={IconName.ChevronForward} color={addressError ? RED_200 : colors.placeholder} />
+        <Icon name={IconName.ChevronForward} color={colors.placeholder} />
       </TouchableOpacity>
 
       <ModalContainer bottomModal visible={modalVisible} onClose={() => setModalVisible(false)}>
-        <View style={styles.searchInputContainer}>
+        <View style={[styles.searchInputContainer, { height: searchInputHeight }]}>
           <GooglePlacesAutocomplete
             styles={{
               textInput: [
                 styles.searchInput,
                 { backgroundColor: colors.secondaryBackground, color: colors.text },
               ],
+              listView: [styles.placesInputListView, { backgroundColor: colors.background }],
             }}
             textInputProps={{
               placeholderTextColor: colors.placeholder,
             }}
-            placeholder="Search"
+            placeholder="Search for address..."
             onPress={handleSearch}
             query={{
               key: GOOGLE_API_KEY,
@@ -195,65 +168,23 @@ const AddressSelector = ({ onSelect, addressError, setAddressError, existingAddr
           />
         </View>
 
-        <MapView style={styles.mapContainer} region={initialRegion} provider={PROVIDER_GOOGLE}>
-          {currentLocation && (
-            <Marker
-              coordinate={{
-                latitude: currentLocation.coords.latitude,
-                longitude: currentLocation.coords.longitude,
-              }}
-              title="here"
-            />
+        <ScrollView>
+          {selectedCoordinates && (
+            <MapView style={styles.mapContainer} provider={PROVIDER_GOOGLE} region={mapRegion}>
+              <Marker coordinate={selectedCoordinates} title="here" />
+            </MapView>
           )}
-        </MapView>
 
-        <ScrollView contentContainerStyle={styles.addressContainer}>
-          <View style={styles.addressDescriptionContainer}>
-            <Icon name={IconName.Location} />
-            <Text style={styles.label}>Address</Text>
-          </View>
-
-          <Input
-            label="Country"
-            placeholder="enter country"
-            value={country}
-            maxLength={ADDRESS_INFO_MAX_LENGTH}
-            onChangeText={(text: string) => handleInputChange('country', text)}
-            error={validationErrors.country}
-          />
-          <Input
-            label="City"
-            placeholder="enter city"
-            value={city}
-            maxLength={ADDRESS_INFO_MAX_LENGTH}
-            onChangeText={(text: string) => handleInputChange('city', text)}
-            error={validationErrors.city}
-          />
-          <Input
-            label="Street"
-            placeholder="enter street"
-            value={street}
-            maxLength={ADDRESS_INFO_MAX_LENGTH}
-            onChangeText={(text: string) => handleInputChange('street', text)}
-            error={validationErrors.street}
-          />
-          <Input
-            label="Zip code"
-            placeholder="enter zip code"
-            value={zipCode}
-            keyboardType="numeric"
-            maxLength={ADDRESS_ZIPCODE_MAX_LENGTH}
-            onChangeText={(text: string) => handleInputChange('zipCode', text)}
-            error={validationErrors.zipCode}
-          />
-
-          <Button
-            title="Save"
-            onPress={handleOnSave}
-            style={styles.saveButton}
-            marginVertical={30}
-            disabled={!formIsValid}
-          />
+          {addressSelected ||
+            (existingAddress && (
+              <AddressSelectorForm
+                handleInputChange={handleInputChange}
+                addressValues={addressValues}
+                validationErrors={validationErrors}
+                handleOnSave={handleOnSave}
+                formIsValid={formIsValid}
+              />
+            ))}
         </ScrollView>
       </ModalContainer>
     </ThemedView>

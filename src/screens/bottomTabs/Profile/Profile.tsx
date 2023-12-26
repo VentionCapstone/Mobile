@@ -63,7 +63,8 @@ const Profile = () => {
     const userProfile = (user.payload as ApiSuccessResponseType<User>).data.profile;
 
     if (userProfile) {
-      await dispatch(AsyncThunks.getAccountDetails(userId));
+      const profileId = userProfile.id;
+      await dispatch(AsyncThunks.getAccountDetails(profileId));
     }
   };
 

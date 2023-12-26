@@ -5,6 +5,7 @@ import { HORIZONTAL_16_PERCENT } from 'src/utils';
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: HORIZONTAL_16_PERCENT,
+    paddingVertical: 20,
   },
   header: {
     justifyContent: 'center',
@@ -12,8 +13,15 @@ const styles = StyleSheet.create({
     gap: 50,
   },
   title: {
-    fontSize: 32,
-    fontWeight: '600',
+    fontSize: 30,
+    fontWeight: '400',
+  },
+  notificationIcon: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
   },
   subTitle: {
     ...paragraph1,
@@ -27,7 +35,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   loggedInHeader: {
-    height: 180,
+    height: 140,
     justifyContent: 'flex-end',
     gap: 10,
   },
@@ -37,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   accountHeader: {
-    height: 90,
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

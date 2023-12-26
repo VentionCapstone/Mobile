@@ -4,11 +4,16 @@ import { title2, paragraph1 } from 'src/styles';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 40,
+    paddingVertical: 10,
+    alignItems: 'center',
   },
   sectionTitle: {
     ...title2,
-    marginLeft: 20,
+    alignSelf: 'flex-end',
+  },
+  titleContainer: {
+    backgroundColor: 'red',
+    alignSelf: 'flex-start',
   },
   label: {
     ...paragraph1,

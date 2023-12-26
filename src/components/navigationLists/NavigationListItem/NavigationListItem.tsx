@@ -1,5 +1,5 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { Pressable, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
@@ -24,14 +24,10 @@ const NavigationListItem = ({ item }: Props) => {
     navigation.navigate(screen as any);
   };
 
-  const containerStyle = {
-    backgroundColor: colors.secondaryBackground,
-  };
-
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={handlePress}
-      style={({ pressed }) => [styles.container, pressed && containerStyle]}
+      style={[styles.container, { backgroundColor: colors.secondaryBackground }]}
     >
       <View style={styles.leftIconContainer}>{iconName && <Icon name={iconName} />}</View>
 
@@ -39,7 +35,7 @@ const NavigationListItem = ({ item }: Props) => {
         <Text style={[styles.label, { marginLeft: iconName ? 14 : 0 }]}>{label}</Text>
         {showIconRight && <Icon name={IconName.ChevronForward} />}
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

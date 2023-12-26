@@ -14,7 +14,7 @@ const ENDPOINTS = {
   createAccomodation: '/accommodations',
   updateAccomodation: (accommodationId: string) => `/accommodations/${accommodationId}`,
   getMyAccommodations: `/accommodations/getAll`,
-  uploadAccomodationImage: (accommodationId: string) => `/accommodations/file/${accommodationId}`,
+  uploadAccomodationImage: (accommodationId: string) => `/accommodations/${accommodationId}/file`,
   deleteAccomodation: (accommodationId: string) => `/accommodations/${accommodationId}`,
   getAllAccomodations: '/accommodations',
   getAccomodationById: (accommodationId: string) => `/accommodations/${accommodationId}`,

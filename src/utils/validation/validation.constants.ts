@@ -12,6 +12,6 @@ export const ADDRESS_INFO_MAX_LENGTH = 20;
 export const ADDRESS_ZIPCODE_MAX_LENGTH = 10;
 
 export const AREA_MAX_LENGTH = 10;
-export const PRICE_MAX_LENGTH = 10;
-export const ROOMS_MAX_LENGTH = 10;
-export const PEOPLE_MAX_LENGTH = 10;
+export const PRICE_MAX_LENGTH = 9;
+export const ROOMS_MAX_LENGTH = 2;
+export const PEOPLE_MAX_LENGTH = 2;

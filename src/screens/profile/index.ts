@@ -5,6 +5,7 @@ import ChangeTheme from './ChangeTheme/ChangeTheme';
 import CreateAccommodation from './CreateAccommodation/CreateAccommodation';
 import CreateProfile from './CreateAccount/CreateAccount';
 import MyAccommodations from './MyAccommodations/MyAccommodations';
+import NotificationSettings from './NotificationSettings/NotificationSettings';
 import Notifications from './Notifications/Notifications';
 import UpdateAccommodation from './UpdateAccommodation/UpdateAccommodation';
 import UpdateProfile from './UpdateAccount/UpdateAccount';
@@ -17,6 +18,7 @@ export {
   CreateAccommodation,
   CreateProfile,
   MyAccommodations,
+  NotificationSettings,
   Notifications,
   UpdateAccommodation,
   UpdateProfile,

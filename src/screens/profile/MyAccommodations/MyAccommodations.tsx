@@ -28,6 +28,8 @@ const MyAccommodations = () => {
   const loader = useSelector(getAccommodationLoader);
   const [errorVisible, setErrorVisible] = useState(false);
 
+  const filteredAccommodations = myAccommodations?.filter((acc) => acc.isDeleted === false);
+
   const handleEdit = (accommodation: Accommodation) => {
     navigation.navigate('UpdateAccommodation', { accommodation });
   };
@@ -48,7 +50,9 @@ const MyAccommodations = () => {
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
-    fetchMyAccommodations();
+    if (!filteredAccommodations?.length) {
+      fetchMyAccommodations();
+    }
   }, []);
 
   useEffect(() => {
@@ -63,7 +67,7 @@ const MyAccommodations = () => {
         {loader ? (
           <ActivityIndicator size="large" color={GREY_300} />
         ) : (
-          myAccommodations?.map((acc) => (
+          filteredAccommodations?.map((acc) => (
             <MyAccommodationListItem
               accommodationDetails={acc}
               onDelete={handleDelete}
@@ -73,7 +77,7 @@ const MyAccommodations = () => {
           ))
         )}
 
-        {!loader && myAccommodations?.length === 0 && (
+        {!loader && filteredAccommodations?.length === 0 && (
           <Text style={styles.noAccommodationsText}>You don't have any accommodations!</Text>
         )}
 

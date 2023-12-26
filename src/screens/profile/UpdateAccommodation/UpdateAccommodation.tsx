@@ -35,8 +35,7 @@ const UpdateAccommodation = ({ route }: Props) => {
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [addressError, setAddressError] = useState<boolean>(false);
-  const [addressValues, setAddressValues] = useState<AddressValues | undefined>();
+  const [addressValues, setAddressValues] = useState<AddressValues | undefined>(existingAddress);
   const [formValues, setFormValues] = useState<UpdateAccommodationValues>({
     allowedNumberOfPeople: existingAccommodation.allowedNumberOfPeople,
     availableTo: existingAccommodation.availableTo,
@@ -78,7 +77,9 @@ const UpdateAccommodation = ({ route }: Props) => {
 
     if (Object.keys(errors).length === 0) {
       if (addressValues === undefined) {
-        setAddressError(true);
+        showAlert('error', {
+          message: 'You should add accommodation address',
+        });
         return;
       }
 
@@ -170,12 +171,7 @@ const UpdateAccommodation = ({ route }: Props) => {
         />
 
         <Text style={styles.addressLabel}>Address</Text>
-        <AddressSelector
-          onSelect={handleSelectAddressValues}
-          addressError={addressError}
-          setAddressError={setAddressError}
-          existingAddress={existingAddress}
-        />
+        <AddressSelector onSelect={handleSelectAddressValues} existingAddress={existingAddress} />
 
         <Input
           multiline
