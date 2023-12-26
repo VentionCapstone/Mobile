@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { title1, title2, paragraph1 } from 'src/styles';
+import { title1, title3, paragraph1 } from 'src/styles';
 import { HORIZONTAL_16_PERCENT, HORIZONTAL_24_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: HORIZONTAL_24_PERCENT,
   },
   redirectToCreateText: {
-    ...title2,
+    ...title3,
   },
   redirectContainer: {
     paddingHorizontal: HORIZONTAL_16_PERCENT,

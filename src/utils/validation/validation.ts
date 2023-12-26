@@ -2,7 +2,7 @@ import {
   ACCOUNT_NAME_MAX_LENGTH,
   ACCOUNT_NAME_MIN_LENGTH,
   PASSWORD_MIN_LENGTH,
-  UZBEK_PHONE_NUMBER_LENGTH,
+  PHONE_NUMBER_LENGTH,
 } from './validation.constants';
 
 const isAccountNameValid = (name: string | undefined): boolean => {
@@ -21,11 +21,16 @@ const isPasswordMatches = (password: string, confirmPassword: string): boolean =
 };
 
 const isPasswordValid = (password: string): boolean => {
-  return password.length >= PASSWORD_MIN_LENGTH;
+  if (password.length < PASSWORD_MIN_LENGTH) {
+    return false;
+  }
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])/;
+
+  return passwordRegex.test(password);
 };
 
 const isPhoneNumberValid = (phoneNumber: string): boolean => {
-  const regex = new RegExp(`^[0-9]{${UZBEK_PHONE_NUMBER_LENGTH}}$`);
+  const regex = new RegExp(`^[0-9]{${PHONE_NUMBER_LENGTH}}$`);
   return regex.test(phoneNumber);
 };
 

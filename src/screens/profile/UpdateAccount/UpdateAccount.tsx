@@ -7,13 +7,13 @@ import { CountrySelector, LanguageSelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader, getUserDetails } from 'src/store/selectors';
+import { getAccountLoader, getUserDetails } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
 import { CountryOption, Gender, GenderOptionsProps } from 'src/types/common';
 import { IconName } from 'src/types/ui';
-import { ACCOUNT_NAME_MAX_LENGTH, UZBEK_PHONE_NUMBER_LENGTH } from 'src/utils';
+import { ACCOUNT_NAME_MAX_LENGTH, PHONE_NUMBER_LENGTH } from 'src/utils';
 
 import { styles } from './UpdateAccount.style';
 import { validateForm } from './UpdateAccount.utils';
@@ -27,7 +27,6 @@ const UpdateAccount = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
-  const userError = useSelector(getAccountError);
   const userDetails = useSelector(getUserDetails);
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
@@ -35,16 +34,16 @@ const UpdateAccount = () => {
   const [formValues, setFormValues] = useState<UpdateAccountFormValues>({
     firstName: userDetails?.firstName,
     lastName: userDetails?.lastName,
-    phoneNumber: userDetails?.Profile.phoneNumber || '',
-    gender: userDetails?.Profile.gender || undefined,
-    description: userDetails?.Profile.description || '',
-    country: userDetails?.Profile.country,
-    language: userDetails?.Profile.language,
-    imageUrl: userDetails?.Profile.imageUrl || undefined,
-    uiTheme: userDetails?.Profile.uiTheme || undefined,
+    phoneNumber: userDetails?.profile?.phoneNumber,
+    gender: userDetails?.profile?.gender,
+    description: userDetails?.profile?.description,
+    country: userDetails?.profile?.country,
+    language: userDetails?.profile?.language,
+    imageUrl: userDetails?.profile?.imageUrl,
+    uiTheme: userDetails?.profile?.uiTheme,
   });
 
-  const profileId = userDetails?.Profile.id;
+  const profileId = userDetails?.profile?.id;
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
@@ -74,7 +73,7 @@ const UpdateAccount = () => {
       dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
 
-      if (!response.payload.error) {
+      if (response.payload?.success) {
         showAlert('success', {
           message: 'Account details updated successfully!',
           onOkPressed: () => navigation.navigate('Profile'),
@@ -98,12 +97,7 @@ const UpdateAccount = () => {
 
   return (
     <ScreenTemplate>
-      <FormTemplate
-        onSubmit={handleOnSubmit}
-        formIsValid={formIsValid}
-        loading={loading}
-        error={formInteracted && formIsValid ? userError : null}
-      >
+      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
         <View style={styles.header}>
           <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
         </View>
@@ -139,7 +133,7 @@ const UpdateAccount = () => {
           error={validationErrors.phoneNumber}
           keyboardType="number-pad"
           leftIcon={IconName.Phone}
-          maxLength={UZBEK_PHONE_NUMBER_LENGTH}
+          maxLength={PHONE_NUMBER_LENGTH}
           onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           placeholder="Enter your number"
           value={formValues.phoneNumber}

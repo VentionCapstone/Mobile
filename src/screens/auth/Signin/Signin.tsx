@@ -1,5 +1,5 @@
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Input, Text } from 'src/components';
@@ -10,6 +10,7 @@ import { getAccountError, getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { SignInParams } from 'src/types';
+import { EMAIL_MAX_LENGTH } from 'src/utils';
 
 import { validateForm } from './Signin.utils';
 import styles from '../auth.styles';
@@ -37,7 +38,6 @@ const Signin = () => {
     const errors = validateForm(formValues);
 
     if (Object.keys(errors).length === 0) {
-      dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.signIn(formValues));
 
       if (!response.payload?.error) {
@@ -74,15 +74,16 @@ const Signin = () => {
         <Input
           style={styles.input}
           value={formValues.email}
+          maxLength={EMAIL_MAX_LENGTH}
           placeholder="Enter your email"
-          onChangeText={(text: any) => handleInputChange('email', text)}
+          onChangeText={(text: string) => handleInputChange('email', text)}
           error={validationErrors.email}
         />
         <Input
           style={styles.input}
           value={formValues.password}
           placeholder="Enter your password"
-          onChangeText={(text: any) => handleInputChange('password', text)}
+          onChangeText={(text: string) => handleInputChange('password', text)}
           error={validationErrors.password}
           secureTextEntry
         />

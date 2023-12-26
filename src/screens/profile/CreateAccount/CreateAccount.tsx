@@ -7,26 +7,20 @@ import { LanguageSelector, CountrySelector } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader } from 'src/store/selectors';
+import { getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { CreateAccountFormValues } from 'src/types';
 import { GenderOptionsProps, Country, Gender, Language, CountryOption } from 'src/types/common';
 import { IconName, ThemeType } from 'src/types/ui';
-import { ACCOUNT_NAME_MAX_LENGTH, UZBEK_PHONE_NUMBER_LENGTH } from 'src/utils';
+import { ACCOUNT_NAME_MAX_LENGTH, PHONE_NUMBER_LENGTH } from 'src/utils';
 
 import { styles } from './CreateAccount.style';
-import { validateForm } from './CreateAccount.utils';
-
-const genderOptions = [
-  { label: 'Male', value: Gender.Male },
-  { label: 'Female', value: Gender.Female },
-];
+import { genderOptions, validateForm } from './CreateAccount.utils';
 
 const CreateAccountForm = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const accountError = useSelector(getAccountError);
   const loading = useSelector(getAccountLoader);
 
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -67,9 +61,9 @@ const CreateAccountForm = () => {
     const errors = validateForm(formValues);
 
     if (Object.keys(errors).length === 0) {
-      dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.createAccount(formValues));
-      if (!response.payload.error) {
+
+      if (response.payload?.success) {
         showAlert('success', {
           message: 'Successfully created!',
           onOkPressed: () => navigation.navigate('Profile'),
@@ -93,12 +87,7 @@ const CreateAccountForm = () => {
 
   return (
     <ScreenTemplate>
-      <FormTemplate
-        onSubmit={handleOnSubmit}
-        formIsValid={formIsValid}
-        loading={loading}
-        error={accountError}
-      >
+      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
         <View style={styles.header}>
           <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
         </View>
@@ -134,7 +123,7 @@ const CreateAccountForm = () => {
           error={validationErrors.phoneNumber}
           keyboardType="number-pad"
           leftIcon={IconName.Phone}
-          maxLength={UZBEK_PHONE_NUMBER_LENGTH}
+          maxLength={PHONE_NUMBER_LENGTH}
           onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           placeholder="Enter your number"
           value={formValues.phoneNumber}

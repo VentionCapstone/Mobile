@@ -2,22 +2,26 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { DatePicker, Input, NumericInput, Text } from 'src/components';
-import { AddressSelector } from 'src/components/modals';
+import { Input, NumericInput, Text } from 'src/components';
+import { AddressSelector, DateTimePicker } from 'src/components/modals';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationError, getAccommodationLoader } from 'src/store/selectors';
+import { getAccommodationLoader } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { AddressValues, CreateAccommodationValues } from 'src/types';
+import {
+  Accommodation,
+  AddressValues,
+  ApiSuccessResponseType,
+  CreateAccommodationValues,
+} from 'src/types';
 
 import { styles } from './CreateAccommodation.style';
 import { validateForm } from './CreateAccommodation.utils';
 
 const CreateAccommodation = () => {
   const dispatch = useAppDispatch();
-  const accommodationError = useSelector(getAccommodationError);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccommodationLoader);
 
@@ -29,25 +33,29 @@ const CreateAccommodation = () => {
     squareMeters: null,
     numberOfRooms: null,
     price: null,
+    allowedNumberOfPeople: null,
     availableFrom: '',
     availableTo: '',
-    availability: true,
     description: '',
   });
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
-  const handleDateChange = (fieldName: 'availableFrom' | 'availableTo', selectedDate: string) => {
-    setFormValues({ ...formValues, [fieldName]: selectedDate });
-  };
-
   const handleSelectAddressValues = (values: AddressValues) => {
     setAddressValues(values);
   };
 
+  const handleSelectAvailableFrom = (availableFrom: string) => {
+    setFormValues({ ...formValues, availableFrom });
+  };
+
+  const handleSelectAvailableTo = (availableTo: string) => {
+    setFormValues({ ...formValues, availableTo });
+  };
+
   const handleInputChange = (
     fieldName: keyof CreateAccommodationValues,
-    value: string | number
+    value: string | number | null
   ) => {
     const sanitizedValue = typeof value === 'string' ? value.replace(/\s{6,}/g, ' ') : value;
 
@@ -72,8 +80,8 @@ const CreateAccommodation = () => {
         })
       );
 
-      if (response && response.payload.success) {
-        const { id } = response.payload.data;
+      if (response.payload?.success) {
+        const { id } = (response.payload as ApiSuccessResponseType<Accommodation>).data;
         navigation.navigate('AddAccommodationImage', { accommodationId: id });
       }
     } else {
@@ -94,27 +102,18 @@ const CreateAccommodation = () => {
 
   return (
     <ScreenTemplate headerShown={false}>
-      <FormTemplate
-        onSubmit={handleOnSubmit}
-        formIsValid={formIsValid}
-        loading={loading}
-        error={formIsValid ? accommodationError : undefined}
-      >
+      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
         <View style={styles.inputRow}>
-          <DatePicker
-            label="Available from*"
-            placeholder="yyyy/mm/dd"
-            value={formValues.availableFrom}
-            onDateChange={(selectedDate: string) => handleDateChange('availableFrom', selectedDate)}
+          <DateTimePicker
             width={180}
+            label="Available from*"
+            onDateChange={handleSelectAvailableFrom}
             error={validationErrors.availableFrom}
           />
-          <DatePicker
-            label="Available to*"
-            placeholder="yyyy/mm/dd"
-            value={formValues.availableTo}
-            onDateChange={(selectedDate: string) => handleDateChange('availableTo', selectedDate)}
+          <DateTimePicker
             width={180}
+            label="Available to*"
+            onDateChange={handleSelectAvailableTo}
             error={validationErrors.availableTo}
           />
         </View>
@@ -124,7 +123,7 @@ const CreateAccommodation = () => {
             style={{ width: 180 }}
             label="Price [$]"
             value={formValues.price}
-            onChangeText={(value: string) => handleInputChange('price', value)}
+            onChangeText={(value: number | null) => handleInputChange('price', value)}
             error={validationErrors.price}
           />
 
@@ -132,7 +131,7 @@ const CreateAccommodation = () => {
             style={{ width: 180 }}
             label="Rooms"
             value={formValues.numberOfRooms}
-            onChangeText={(value: number) => handleInputChange('numberOfRooms', value)}
+            onChangeText={(value: number | null) => handleInputChange('numberOfRooms', value)}
             error={validationErrors.numberOfRooms}
           />
         </View>
@@ -140,8 +139,15 @@ const CreateAccommodation = () => {
         <NumericInput
           label="Area [m²]*"
           value={formValues.squareMeters}
-          onChangeText={(value: number) => handleInputChange('squareMeters', value)}
+          onChangeText={(value: number | null) => handleInputChange('squareMeters', value)}
           error={validationErrors.squareMeters}
+        />
+
+        <NumericInput
+          label="Number of people"
+          value={formValues.allowedNumberOfPeople}
+          onChangeText={(value: number | null) => handleInputChange('allowedNumberOfPeople', value)}
+          error={validationErrors.allowedNumberOfPeople}
         />
 
         <Text style={styles.addressLabel}>Address</Text>

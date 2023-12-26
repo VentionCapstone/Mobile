@@ -1,20 +1,26 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useEffect } from 'react';
+import { StatusBar } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationHeader } from 'src/components';
 import {
   Account,
-  ChangeTheme,
+  AddAccommodationImage,
   CreateAccommodation,
   CreateProfile,
+  ChangeLanguage,
+  ChangeTheme,
   MyAccommodations,
-  UpdateProfile,
-  AddAccommodationImage,
   Signin,
   Signup,
-  VerifyEmail,
   UpdateAccommodation,
+  UpdateProfile,
+  VerifyEmail,
+  Notifications,
 } from 'src/screens';
-import { BUTTON_SIZES } from 'src/styles';
+import { getIsDarkMode } from 'src/store/selectors';
+import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
 import { RootStackParamList } from './RootStackNavigator.types';
@@ -23,6 +29,12 @@ const RootRouterStack = createStackNavigator<RootStackParamList>();
 
 const RootStackNavigator = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const isDark = useSelector(getIsDarkMode);
+
+  useEffect(() => {
+    StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
+    StatusBar.setBackgroundColor(isDark ? BLACK : WHITE);
+  }, [isDark]);
 
   return (
     <RootRouterStack.Navigator>
@@ -67,6 +79,11 @@ const RootStackNavigator = () => {
         options={{ header: () => <NavigationHeader title="Theme" /> }}
       />
       <RootRouterStack.Screen
+        name="ChangeLanguage"
+        component={ChangeLanguage}
+        options={{ header: () => <NavigationHeader title="Language" /> }}
+      />
+      <RootRouterStack.Screen
         name="MyAccommodations"
         component={MyAccommodations}
         options={{
@@ -100,6 +117,11 @@ const RootStackNavigator = () => {
         name="AddAccommodationImage"
         component={AddAccommodationImage}
         options={{ header: () => <NavigationHeader /> }}
+      />
+      <RootRouterStack.Screen
+        name="Notifications"
+        component={Notifications}
+        options={{ header: () => <NavigationHeader title="Notifications" /> }}
       />
     </RootRouterStack.Navigator>
   );

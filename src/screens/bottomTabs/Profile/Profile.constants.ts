@@ -14,7 +14,7 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
       {
         label: 'Notifications',
         iconName: IconName.Notifications,
-        screen: 'Account',
+        screen: 'Notifications',
         loggedInOnly: true,
       },
       {
@@ -32,7 +32,7 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
       {
         label: 'Language',
         iconName: IconName.Language,
-        screen: 'ChangeTheme',
+        screen: 'ChangeLanguage',
         loggedInOnly: false,
       },
     ],

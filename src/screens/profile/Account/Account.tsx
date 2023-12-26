@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Button, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
-import { getAccountInfos, getColors, getIsGuestAccount, getUserDetails } from 'src/store/selectors';
+import { getColors, getIsGuestAccount, getUserDetails } from 'src/store/selectors';
 
 import { styles } from './Account.style';
 
@@ -18,9 +18,13 @@ const Account = () => {
     <ScreenTemplate>
       {isGuestUser && (
         <View style={styles.redirectContainer}>
-          <Text style={styles.redirectToCreateText}>You don't have an account.</Text>
+          <Text style={styles.redirectToCreateText}>You didn't create your account yet</Text>
 
-          <Button title="Create Account" onPress={() => navigation.navigate('CreateProfile')} />
+          <Button
+            width="100%"
+            title="Create Account"
+            onPress={() => navigation.navigate('CreateProfile')}
+          />
         </View>
       )}
 
@@ -36,7 +40,7 @@ const Account = () => {
           </View>
           <View style={[styles.card, { borderBottomColor: colors.border }]}>
             <Text style={styles.label}>Phone number</Text>
-            <Text style={styles.value}>{user?.Profile.phoneNumber}</Text>
+            <Text style={styles.value}>{user?.profile?.phoneNumber}</Text>
           </View>
           <View style={[styles.card, { borderBottomColor: colors.border }]}>
             <Text style={styles.label}>Email</Text>
@@ -44,7 +48,7 @@ const Account = () => {
           </View>
           <View style={[styles.card, { borderBottomColor: colors.border }]}>
             <Text style={styles.label}>Country</Text>
-            <Text style={styles.value}>{user?.Profile.country}</Text>
+            <Text style={styles.value}>{user?.profile?.country}</Text>
           </View>
 
           <Button

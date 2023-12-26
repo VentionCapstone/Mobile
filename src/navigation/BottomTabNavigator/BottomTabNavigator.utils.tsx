@@ -1,20 +1,45 @@
 import { AntDesign } from '@expo/vector-icons';
-import React from 'react';
 import { Platform } from 'react-native';
 import { Icon } from 'src/components';
 import { ThemeColors } from 'src/types';
 import { IconName } from 'src/types/ui';
 
-export const getTabBarIcon = (routeName: string, color: string): React.JSX.Element => {
-  switch (routeName) {
+type GetTabBarIconProps = {
+  route: {
+    name: string;
+  };
+  color: string;
+  focused: boolean;
+};
+
+export const getTabBarIcon = ({ route, color, focused }: GetTabBarIconProps) => {
+  switch (route.name) {
     case 'Explore':
-      return <Icon name={IconName.Search} size={26} color={color} />;
+      return (
+        <Icon
+          name={focused ? IconName.Search : IconName.SearchOutline}
+          size={focused ? 30 : 26}
+          color={color}
+        />
+      );
     case 'Wishlist':
-      return <Icon name={IconName.Heart} size={26} color={color} />;
+      return (
+        <Icon
+          name={focused ? IconName.Heart : IconName.HeartOutline}
+          size={focused ? 30 : 26}
+          color={color}
+        />
+      );
     case 'Booking':
-      return <AntDesign name="book" size={23} color={color} />;
+      return <AntDesign name="book" size={focused ? 26 : 24} color={color} />;
     case 'Profile':
-      return <Icon name={IconName.PersonCircle} size={26} color={color} />;
+      return (
+        <Icon
+          name={focused ? IconName.PersonCircle : IconName.PersonCircleOutline}
+          size={focused ? 30 : 26}
+          color={color}
+        />
+      );
     case 'Login':
       return <Icon name={IconName.Login} size={28} color={color} />;
     default:
@@ -30,7 +55,7 @@ export const getTabBarStyles = (colors: ThemeColors) => ({
   },
   tabBarLabelStyle: {
     fontSize: 11,
-    marginBottom: 5,
+    marginBottom: Platform.OS === 'ios' ? 0 : 5,
   },
   tabBarInactiveTintColor: colors.icon,
   tabBarActiveTintColor: colors.tint,

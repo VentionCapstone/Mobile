@@ -1,11 +1,11 @@
 export interface CreateAccommodationValues {
-  ownerId?: string;
+  addressId?: string;
   thumbnailUrl?: string;
   previewImgUrl?: string;
   squareMeters: number | null;
   numberOfRooms: number | null;
+  allowedNumberOfPeople: number | null;
   price: number | null;
-  availability: boolean;
   availableFrom: string;
   availableTo: string;
   description: string;
@@ -18,6 +18,6 @@ export interface AddressValues {
   city: string;
   country: string;
   zipCode: string;
-  latitude?: number;
-  longitude?: number;
+  latitude: number | null;
+  longitude: number | null;
 }
