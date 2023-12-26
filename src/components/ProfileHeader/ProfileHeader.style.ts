@@ -69,6 +69,9 @@ const styles = StyleSheet.create({
   description: {
     ...paragraph2,
   },
+  underline: {
+    textDecorationLine: 'underline',
+  },
 });
 
 export default styles;

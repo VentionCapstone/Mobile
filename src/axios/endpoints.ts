@@ -18,6 +18,9 @@ const ENDPOINTS = {
   deleteAccomodation: (accommodationId: string) => `/accommodations/${accommodationId}`,
   getAllAccomodations: '/accommodations',
   getAccomodationById: (accommodationId: string) => `/accommodations/${accommodationId}`,
+
+  getAmenitiesList: '/amenities',
+  AccomodationAmenities: (accommodationId: string) => `/amenities/${accommodationId}`,
 };
 
 export default ENDPOINTS;

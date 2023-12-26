@@ -32,6 +32,23 @@ export enum IconName {
   Image = 'images-outline',
   Login = 'ios-log-in-outline',
   Logout = 'ios-log-out-outline',
+  Wifi = 'wifi-outline',
+  Car = 'car-outline',
+  Pool = 'pool',
+  Paw = 'paw-outline',
+  Volume = 'volume-mute-outline',
+  Home = 'home-outline',
+  Leaf = 'leaf-outline',
+  Smoking = 'smoking-rooms',
+  Child = 'child-care',
+  Med = 'medical-outline',
+  Pin = 'pin-outline',
+  Shirt = 'shirt-outline',
+  Kitchen = 'kitchen',
+  Snow = 'snow-outline',
+  Tv = 'tv-outline',
+  Airplane = 'airplane-outline',
+  Albums = 'albums-outline',
 }
 
 export type IconSet = 'ionicons' | 'material';
