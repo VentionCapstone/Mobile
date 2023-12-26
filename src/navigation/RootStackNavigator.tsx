@@ -43,7 +43,7 @@ const RootStackNavigator = () => {
       <RootRouterStack.Screen
         name="VerifyEmail"
         component={VerifyEmail}
-        initialParams={{ data: { email: '', password: '', confirm_password: '' } }}
+        initialParams={{ email: '' }}
         options={{ header: () => <NavigationHeader title="Verification" /> }}
       />
       <RootRouterStack.Screen

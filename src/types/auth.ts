@@ -1,7 +1,27 @@
-export interface SignInParams {
+export interface SignInResponse {
+  id: string;
+  tokens: {
+    access_token: string;
+    refresh_token: string;
+  };
+  statusCode: number;
+}
+
+export interface AuthResponse {
+  message: string;
+  statusCode: number;
+}
+
+export interface AuthParams {
   email: string;
+}
+
+export interface SignInParams extends AuthParams {
   password: string;
 }
-export interface SignUpParams extends SignInParams {
+
+export interface SignUpParams {
+  email: string;
+  password: string;
   confirm_password: string;
 }

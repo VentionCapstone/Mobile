@@ -10,6 +10,7 @@ import { getAccountError, getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { SignUpParams } from 'src/types';
+import { EMAIL_MAX_LENGTH } from 'src/utils';
 
 import { validateForm } from './Signup.utils';
 import styles from '../auth.styles';
@@ -41,8 +42,8 @@ const Signup = () => {
       dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.signUp(formValues));
 
-      if (!response.payload?.error) {
-        navigation.navigate('VerifyEmail', { data: formValues });
+      if (response.payload?.success) {
+        navigation.navigate('VerifyEmail', { email: formValues.email });
       }
     } else {
       setValidationErrors(errors);
@@ -54,11 +55,11 @@ const Signup = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formInteracted, formValues]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
-  }, []);
+  });
 
   return (
     <ScreenTemplate>
@@ -73,8 +74,9 @@ const Signup = () => {
 
         <Input
           style={styles.input}
-          placeholder="Enter your email"
           value={formValues.email}
+          maxLength={EMAIL_MAX_LENGTH}
+          placeholder="Enter your email"
           onChangeText={(text: string) => handleInputChange('email', text)}
           error={validationErrors.email}
         />

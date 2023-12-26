@@ -2,16 +2,25 @@ import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
 import { SecureStorageKey } from 'src/constants/storage';
-import { ErrorResponseType, SignInParams, SignUpParams, VerificationParams } from 'src/types';
+import {
+  ApiErrorResponseType,
+  ApiSuccessResponseType,
+  AuthParams,
+  AuthResponse,
+  SignInParams,
+  SignInResponse,
+  SignUpParams,
+} from 'src/types';
 
 export const signInThunk: AsyncThunkPayloadCreator<
-  any,
+  ApiSuccessResponseType<SignInResponse>,
   SignInParams,
-  { rejectValue: ErrorResponseType }
+  { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(ENDPOINTS.signin, params);
-    if (response) {
+
+    if (response.data) {
       await SecureStore.setItemAsync(
         SecureStorageKey.ACCESS_TOKEN,
         response.data.tokens.access_token
@@ -31,9 +40,9 @@ export const signInThunk: AsyncThunkPayloadCreator<
 };
 
 export const signUpThunk: AsyncThunkPayloadCreator<
-  any,
+  ApiSuccessResponseType<AuthResponse>,
   SignUpParams,
-  { rejectValue: ErrorResponseType }
+  { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(ENDPOINTS.signup, params);
@@ -44,13 +53,12 @@ export const signUpThunk: AsyncThunkPayloadCreator<
 };
 
 export const verifyEmailThunk: AsyncThunkPayloadCreator<
-  any,
-  SignUpParams,
-  { rejectValue: ErrorResponseType }
+  ApiSuccessResponseType<AuthResponse>,
+  AuthParams,
+  { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.put(ENDPOINTS.auth.verify, params.email);
-
+    const response = await axiosInstance.put(ENDPOINTS.verify, params.email);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);
@@ -60,7 +68,7 @@ export const verifyEmailThunk: AsyncThunkPayloadCreator<
 export const signOutThunk: AsyncThunkPayloadCreator<
   any,
   undefined,
-  { rejectValue: ErrorResponseType }
+  { rejectValue: ApiErrorResponseType }
 > = async (_, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(ENDPOINTS.signout);

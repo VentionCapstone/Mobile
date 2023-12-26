@@ -1,40 +1,59 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect } from 'react';
+import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
-import { Props, RootStackParamList } from 'src/navigation';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { AsyncThunks } from 'src/store/thunks';
+import { AuthParams } from 'src/types';
 
 import styles from './VerifyEmail.style';
 
-const VerifyEmail = ({ route }: Props) => {
+type VerifyEmailNavigationProp = StackNavigationProp<RootStackParamList, 'VerifyEmail'>;
+type VerifyEmailRouteProp = RouteProp<RootStackParamList, 'VerifyEmail'>;
+
+interface VerifyEmailProps {
+  navigation: VerifyEmailNavigationProp;
+  route: VerifyEmailRouteProp;
+}
+
+const message = {
+  success: 'Verification successful',
+  failed: 'Verification failed. \nTry again later',
+  pending: 'Waiting...',
+};
+
+const VerifyEmail = ({ route }: VerifyEmailProps) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const dispatch = useAppDispatch();
-  const [optionalMessage, setOptionalMessage] = React.useState('Waiting...');
+  const [verificationMessage, setVerificationMessage] = useState<string>(message.pending);
 
-  const data = route.params?.data;
   const verification = useCallback(async () => {
-    const response = await dispatch(AsyncThunks.verifyEmail(data));
-    if (response.payload?.status === 200) {
-      setOptionalMessage('Link sent to your email adress \nYou can sign in after verification');
-      navigation.navigate('Signin');
-    } else {
-      setOptionalMessage(response.payload?.data.message);
-      navigation.navigate('Main');
+    const response = await dispatch(AsyncThunks.verifyEmail(route.params as AuthParams));
+    switch (response.payload?.success) {
+      case true:
+        setVerificationMessage(message.success);
+        navigation.navigate('Signin');
+        break;
+      case false:
+        setVerificationMessage(message.failed);
+        navigation.navigate('Main');
+        break;
+      default:
+        setVerificationMessage(message.pending);
     }
-  }, [optionalMessage]);
-
+  }, [dispatch, navigation, route.params]);
 
   useEffect(() => {
     verification();
-  }, []);
+  });
 
   return (
     <ScreenTemplate>
       <View style={styles.container}>
-        <Text style={styles.text}>{optionalMessage}</Text>
+        <Text style={styles.text}>{verificationMessage}</Text>
       </View>
     </ScreenTemplate>
   );
