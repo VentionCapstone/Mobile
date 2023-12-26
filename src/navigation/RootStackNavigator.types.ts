@@ -1,4 +1,3 @@
-import { StackScreenProps } from '@react-navigation/stack';
 import { Accommodation } from 'src/types';
 
 export type RootStackParamList = {
@@ -20,5 +19,3 @@ export type RootStackParamList = {
   UpdateProfile: undefined;
   UpdateAccommodation: { accommodation: Accommodation };
 };
-
-export type Props = StackScreenProps<RootStackParamList, 'VerifyEmail'>;
