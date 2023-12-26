@@ -17,8 +17,6 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const isGuestUser = useSelector(getIsGuestAccount);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  // console.log(user);
-
   const handlePressed = () => {
     if (isGuestUser) {
       navigation.navigate('CreateProfile');
@@ -62,7 +60,9 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       {isLoggedIn && (
         <View style={styles.loggedInHeader}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Profile</Text>
+            <Text style={[styles.title, { color: colors.text }]}>Profile</Text>
+
+            <Icon name={IconName.Notifications} size={26} />
           </View>
 
           <TouchableOpacity

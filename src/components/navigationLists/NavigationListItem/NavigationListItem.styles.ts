@@ -1,29 +1,27 @@
 import { StyleSheet } from 'react-native';
-import { paragraph1 } from 'src/styles';
+import { paragraph2 } from 'src/styles';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
   },
   rightContainer: {
     width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 6,
+    paddingHorizontal: 2,
   },
   label: {
-    ...paragraph1,
+    ...paragraph2,
   },
   leftIconContainer: {
     width: '10%',
     alignItems: 'flex-end',
-  },
-  leftIcon: {
-    marginLeft: 20,
   },
 });
 

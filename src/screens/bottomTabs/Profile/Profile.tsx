@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, ButtonType, NavigationList, ProfileHeader, showAlert } from 'src/components';
-import { Alert } from 'src/components/modals';
+import {
+  Alert,
+  Button,
+  ButtonType,
+  NavigationList,
+  ProfileHeader,
+  showAlert,
+} from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { AppDispatch } from 'src/store';
 import {

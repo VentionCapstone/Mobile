@@ -4,9 +4,16 @@ import { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { Country } from 'react-native-country-picker-modal';
 import { useSelector } from 'react-redux';
-import { Icon, ProfileImageUploader, Text, showAlert } from 'src/components';
-import { Input, PhoneNumberInput } from 'src/components/inputs';
-import { CountryPicker, LanguageSelector } from 'src/components/modals';
+import {
+  CountryPicker,
+  Icon,
+  Input,
+  LanguageSelector,
+  showAlert,
+  Text,
+  ProfileImageUploader,
+  PhoneNumberInput,
+} from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { SecureStorageKey } from 'src/constants/storage';
 import { RootStackParamList } from 'src/navigation';

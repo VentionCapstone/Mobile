@@ -28,11 +28,10 @@ const NavigationList = ({ options, sections }: Props) => {
     <SectionList
       scrollEnabled={false}
       sections={filteredData}
-      style={styles.container}
+      contentContainerStyle={styles.container}
       alwaysBounceVertical={false}
       keyExtractor={(item, index) => item.label + index}
       ItemSeparatorComponent={() => <Seperator />}
-      SectionSeparatorComponent={() => <Seperator />}
       renderItem={({ item }) => {
         return <NavigationListItem item={item} />;
       }}

@@ -2,9 +2,14 @@ import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Text, showAlert } from 'src/components';
-import { Input, NumericInput } from 'src/components/inputs';
-import { AddressSelector, DateTimePicker } from 'src/components/modals';
+import {
+  AddressSelector,
+  DateTimePicker,
+  Input,
+  NumericInput,
+  showAlert,
+  Text,
+} from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
