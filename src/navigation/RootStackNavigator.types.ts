@@ -5,7 +5,7 @@ export type RootStackParamList = {
 
   Signin: undefined;
   Signup: undefined;
-  VerifyEmail: undefined;
+  VerifyEmail: { email: string };
 
   Account: undefined;
   AddAccommodationImage: { accommodationId: string };

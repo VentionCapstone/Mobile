@@ -9,6 +9,7 @@ import { useAppDispatch } from 'src/store';
 import { getAccountError, getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
+import { SignUpParams } from 'src/types';
 import { EMAIL_MAX_LENGTH } from 'src/utils';
 
 import { validateForm } from './Signup.utils';
@@ -21,7 +22,7 @@ const Signup = () => {
   const authError = useSelector(getAccountError);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<SignUpParams>({
     email: '',
     password: '',
     confirm_password: '',
@@ -42,7 +43,7 @@ const Signup = () => {
       const response = await dispatch(AsyncThunks.signUp(formValues));
 
       if (response.payload?.success) {
-        navigation.navigate('VerifyEmail');
+        navigation.navigate('VerifyEmail', { email: formValues.email });
       }
     } else {
       setValidationErrors(errors);
@@ -54,7 +55,7 @@ const Signup = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formInteracted, formValues]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());

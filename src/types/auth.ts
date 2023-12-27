@@ -4,15 +4,19 @@ export interface SignInResponse {
     access_token: string;
     refresh_token: string;
   };
+  statusCode: number;
 }
 
-export interface SignUpResponse {
-  success: boolean;
+export interface AuthResponse {
   message: string;
+  statusCode: number;
 }
 
-export interface SignInParams {
+export interface AuthParams {
   email: string;
+}
+
+export interface SignInParams extends AuthParams {
   password: string;
 }
 
@@ -20,8 +24,4 @@ export interface SignUpParams {
   email: string;
   password: string;
   confirm_password: string;
-}
-
-export interface VerificationParams {
-  email: string;
 }
