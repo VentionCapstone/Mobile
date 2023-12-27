@@ -25,6 +25,7 @@ const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
 
 const AddressSelector = ({ onSelect, existingAddress }: Props) => {
   const colors = useSelector(getColors);
+
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -68,11 +69,11 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
         });
         return;
       }
-      setAddressSelected(true);
-      setSearchInputHeight(80);
+
       const { city, country, latitude, longitude } = getAddressInfo({
         placeDetails,
       });
+
       setSelectedCoordinates({ latitude, longitude });
       setMapRegion({
         latitude,
@@ -88,6 +89,9 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
         longitude,
         latitude,
       });
+
+      setAddressSelected(true);
+      setSearchInputHeight(80);
     }
   };
 
@@ -175,16 +179,15 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
             </MapView>
           )}
 
-          {addressSelected ||
-            (existingAddress && (
-              <AddressSelectorForm
-                handleInputChange={handleInputChange}
-                addressValues={addressValues}
-                validationErrors={validationErrors}
-                handleOnSave={handleOnSave}
-                formIsValid={formIsValid}
-              />
-            ))}
+          {(addressSelected || existingAddress) && (
+            <AddressSelectorForm
+              handleInputChange={handleInputChange}
+              addressValues={addressValues}
+              validationErrors={validationErrors}
+              handleOnSave={handleOnSave}
+              formIsValid={formIsValid}
+            />
+          )}
         </ScrollView>
       </ModalContainer>
     </ThemedView>

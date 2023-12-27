@@ -4,7 +4,7 @@ import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
-    height: Platform.OS === 'ios' ? 120 : 90,
+    height: Platform.OS === 'ios' ? 120 : 100,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 1,

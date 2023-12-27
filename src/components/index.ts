@@ -2,7 +2,6 @@ import { ButtonType, Button } from './Button';
 import Icon from './Icon/Icon';
 import NavigationHeader from './NavigationHeader/NavigationHeader';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
-import Seperator from './Seperator/Seperator';
 import Text from './Text/Text';
 import ThemedView from './ThemedView/ThemedView';
 import { MyAccommodationListItem } from './accommodationList';
@@ -15,7 +14,6 @@ export {
   Icon,
   NavigationHeader,
   ProfileHeader,
-  Seperator,
   Text,
   ThemedView,
   MyAccommodationListItem,

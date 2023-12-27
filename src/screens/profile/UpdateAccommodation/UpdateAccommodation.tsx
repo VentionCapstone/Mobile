@@ -95,6 +95,7 @@ const UpdateAccommodation = ({ route }: Props) => {
         showAlert('success', {
           message: 'Accommodation updated successfully!',
         });
+        await dispatch(AsyncThunks.getMyAccommodations());
         navigation.navigate('MyAccommodations');
       }
     } else {

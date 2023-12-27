@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     ...title2,
     alignSelf: 'flex-end',
+    marginRight: 280,
   },
   titleContainer: {
     backgroundColor: 'red',
