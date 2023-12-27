@@ -36,7 +36,7 @@ export enum IconName {
   Car = 'car-outline',
   Pool = 'pool',
   Paw = 'paw-outline',
-  Volume = 'volume-mute-outline',
+  Moon = 'moon-outline',
   Home = 'home-outline',
   Leaf = 'leaf-outline',
   Smoking = 'smoking-rooms',
