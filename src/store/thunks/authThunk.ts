@@ -2,10 +2,18 @@ import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
 import { SecureStorageKey } from 'src/constants/storage';
-import { ApiErrorResponseType, SignInParams, SignUpParams, VerificationParams } from 'src/types';
+import {
+  ApiErrorResponseType,
+  ApiSuccessResponseType,
+  AuthParams,
+  AuthResponse,
+  SignInParams,
+  SignInResponse,
+  SignUpParams,
+} from 'src/types';
 
 export const signInThunk: AsyncThunkPayloadCreator<
-  any,
+  ApiSuccessResponseType<SignInResponse>,
   SignInParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
@@ -32,7 +40,7 @@ export const signInThunk: AsyncThunkPayloadCreator<
 };
 
 export const signUpThunk: AsyncThunkPayloadCreator<
-  any,
+  ApiSuccessResponseType<AuthResponse>,
   SignUpParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
@@ -44,13 +52,13 @@ export const signUpThunk: AsyncThunkPayloadCreator<
   }
 };
 
-export const verifyThunk: AsyncThunkPayloadCreator<
-  any,
-  VerificationParams,
+export const verifyEmailThunk: AsyncThunkPayloadCreator<
+  ApiSuccessResponseType<AuthResponse>,
+  AuthParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.put(ENDPOINTS.verify, params);
+    const response = await axiosInstance.put(ENDPOINTS.verify, params.email);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);

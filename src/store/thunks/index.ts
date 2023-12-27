@@ -1,5 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { signInThunk, signOutThunk, signUpThunk } from 'src/store/thunks/authThunk';
+import {
+  refreshThunk,
+  signInThunk,
+  signOutThunk,
+  signUpThunk,
+  verifyEmailThunk,
+} from 'src/store/thunks/authThunk';
+
 
 import {
   createAccommodationThunk,
@@ -16,11 +23,12 @@ export const AsyncThunks = {
   signUp: createAsyncThunk('signUpThunk', signUpThunk),
   signIn: createAsyncThunk('signInThunk', signInThunk),
   signOut: createAsyncThunk('signOutThunk', signOutThunk),
+  refresh: createAsyncThunk('refreshThunk', refreshThunk),
+  verifyEmail: createAsyncThunk('verifyEmailThunk', verifyEmailThunk),
 
   createAccount: createAsyncThunk('createAccountThunk', createAccountThunk),
   updateAccount: createAsyncThunk('updateAccountThunk', updateAccountThunk),
   getAccountDetails: createAsyncThunk('getAccountDetailsThunk', getAccountDetailsThunk),
-
   getUserDetails: createAsyncThunk('getUserDetailsThunk', getUserDetailsThunk),
 
   createAccommodation: createAsyncThunk('createAccommodationThunk', createAccommodationThunk),
