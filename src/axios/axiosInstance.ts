@@ -6,7 +6,7 @@ import { silentTokenRefresh } from './api';
 import ENDPOINTS from './endpoints';
 
 const BASE_URL = 'http://192.168.43.129:3000/api';
-// const BASE_URL = 'https://booking-api.ddns.net/api';
+// const BASE_URL = 'https://booking-vention.ddns.net/api';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,

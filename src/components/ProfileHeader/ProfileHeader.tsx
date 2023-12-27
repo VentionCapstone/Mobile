@@ -71,7 +71,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           </View>
 
           <TouchableOpacity
-            style={[styles.accountHeader, { borderBottomColor: colors.border }]}
+            style={[styles.accountHeader, { borderBottomColor: colors.secondaryBackground }]}
             onPress={handlePressed}
           >
             <View style={styles.accountHeaderContents}>
