@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { Country } from 'react-native-country-picker-modal';
 import { useSelector } from 'react-redux';
@@ -63,16 +63,15 @@ const UpdateAccount = () => {
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
-  const handleInputChange = (fieldName: string, text: string) => {
+  const handleInputChange = useCallback((fieldName: string, text: string) => {
     const sanitizedText = text.replace(/\s{6,}/g, ' ');
+    setFormValues((prevValues) => ({ ...prevValues, [fieldName]: sanitizedText }));
+  }, []);
 
-    setFormValues({ ...formValues, [fieldName]: sanitizedText });
-  };
-
-  const handleCountrySelect = (country: Country) => {
-    setFormValues({ ...formValues, country: country.name as string });
+  const handleCountrySelect = useCallback((country: Country) => {
+    setFormValues((prevValues) => ({ ...prevValues, country: country.name as string }));
     setSelectedCountry(country.name as string);
-  };
+  }, []);
 
   const handlePhotoSelect = (imageUrl: string) => {
     setFormValues({ ...formValues, imageUrl });
@@ -82,7 +81,7 @@ const UpdateAccount = () => {
     setFormValues({ ...formValues, language });
   };
 
-  const handleOnSubmit = async () => {
+  const handleOnSubmit = useCallback(async () => {
     setFormInteracted(true);
     const errors = validateForm(formValues);
 
@@ -103,7 +102,7 @@ const UpdateAccount = () => {
     } else {
       setValidationErrors(errors);
     }
-  };
+  }, [formValues, profileId, dispatch, navigation]);
 
   useEffect(() => {
     if (formInteracted) {

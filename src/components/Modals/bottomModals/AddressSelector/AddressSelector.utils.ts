@@ -1,11 +1,10 @@
-import * as Location from 'expo-location';
-import showAlert from 'src/components/alert';
+import { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { AddressValues } from 'src/types';
 
 const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
 
 type GetAddressInfoProps = {
-  placeDetails: any;
+  placeDetails: GooglePlaceDetail;
 };
 
 const getAddressInfo = ({ placeDetails }: GetAddressInfoProps) => {
@@ -53,19 +52,6 @@ const validateForm = (addressValues: AddressValues): Record<string, string> => {
   return errors;
 };
 
-const getCurrentLocation = async (): Promise<Location.LocationObject | null> => {
-  const { status } = await Location.requestForegroundPermissionsAsync();
-
-  if (status !== 'granted') {
-    showAlert('error', {
-      message: 'Permission to access location was denied',
-    });
-    return null;
-  }
-
-  return await Location.getCurrentPositionAsync({});
-};
-
 const getPlaceDetails = async (placeId: string) => {
   const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${GOOGLE_API_KEY}`;
 
@@ -84,4 +70,6 @@ const getPlaceDetails = async (placeId: string) => {
   }
 };
 
-export { getAddressInfo, validateForm, getCurrentLocation, getPlaceDetails };
+const REGION_DELTA = 0.1;
+
+export { getAddressInfo, validateForm, getPlaceDetails, REGION_DELTA, GOOGLE_API_KEY };

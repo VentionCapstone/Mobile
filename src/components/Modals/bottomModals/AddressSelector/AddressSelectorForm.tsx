@@ -1,15 +1,15 @@
 import { View } from 'react-native';
 import { Button } from 'src/components/Button';
 import { Input } from 'src/components/inputs';
-import { AddressValues } from 'src/types';
+import { AddressValues, AddressValidationErrors } from 'src/types';
 import { ADDRESS_INFO_MAX_LENGTH, ADDRESS_ZIPCODE_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AddressSelector.style';
 
 type Props = {
-  validationErrors: any;
+  validationErrors: AddressValidationErrors;
   formIsValid: boolean;
-  handleOnSave: () => void;
+  onSave: () => void;
   addressValues: AddressValues;
   handleInputChange: (fieldName: keyof AddressValues, text: string) => void;
 };
@@ -17,14 +17,10 @@ type Props = {
 const AddressSelectorForm = ({
   validationErrors,
   formIsValid,
-  handleOnSave,
+  onSave,
   addressValues,
   handleInputChange,
 }: Props) => {
-  const handleOnPress = () => {
-    handleOnSave();
-  };
-
   return (
     <View style={styles.addressContainer}>
       <Input
@@ -63,7 +59,7 @@ const AddressSelectorForm = ({
 
       <Button
         title="Save"
-        onPress={handleOnPress}
+        onPress={onSave}
         style={styles.saveButton}
         marginVertical={30}
         disabled={!formIsValid}

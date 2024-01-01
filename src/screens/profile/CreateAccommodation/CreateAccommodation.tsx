@@ -8,7 +8,6 @@ import {
   NumericInput,
   AddressSelector,
   DateTimePicker,
-  Alert,
   showAlert,
 } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
@@ -103,7 +102,7 @@ const CreateAccommodation = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formValues, formInteracted]);
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());

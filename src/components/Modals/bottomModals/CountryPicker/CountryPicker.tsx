@@ -11,7 +11,6 @@ import { allowedCountries } from './CountryPicker.utils';
 type Props = {
   onSelect: (country: Country) => void;
   onClose?: () => void;
-  initialValue?: string;
   visible: boolean;
 };
 
