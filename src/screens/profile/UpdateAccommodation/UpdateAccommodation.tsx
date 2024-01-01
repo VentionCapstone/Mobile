@@ -95,7 +95,6 @@ const UpdateAccommodation = ({ route }: Props) => {
         showAlert('success', {
           message: 'Accommodation updated successfully!',
         });
-        await dispatch(AsyncThunks.getMyAccommodations());
         navigation.navigate('MyAccommodations');
       }
     } else {
@@ -108,7 +107,7 @@ const UpdateAccommodation = ({ route }: Props) => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formValues, formInteracted]);
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());

@@ -53,7 +53,6 @@ const AddAccommodationImage = ({ route }: Props) => {
       message: 'Accommodation created successfully!',
       onOkPressed: () => navigation.navigate('MyAccommodations'),
     });
-    await dispatch(AsyncThunks.getMyAccommodations());
   };
 
   useEffect(() => {

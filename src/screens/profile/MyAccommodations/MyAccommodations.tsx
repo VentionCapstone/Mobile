@@ -72,6 +72,7 @@ const MyAccommodations = () => {
               accommodationDetails={acc}
               onDelete={handleDelete}
               onEdit={handleEdit}
+              loader={loader}
               key={acc.id}
             />
           ))

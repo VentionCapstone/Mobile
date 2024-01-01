@@ -115,7 +115,7 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
       const errors = validateForm(addressValues);
       setValidationErrors(errors);
     }
-  }, [addressValues]);
+  }, [addressValues, formInteracted]);
 
   useEffect(() => {
     setAddressValues(existingAddress || initialAddressValues);
