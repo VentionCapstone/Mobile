@@ -6,10 +6,9 @@ import { Button, Icon, Text, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationError, getAccommodationLoader, getColors } from 'src/store/selectors';
+import { getAccommodationLoader, getColors } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { RED_200 } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './AddAccommodationImage.style';
@@ -26,7 +25,6 @@ const AddAccommodationImage = ({ route }: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getColors);
   const loading = useSelector(getAccommodationLoader);
-  const imageError = useSelector(getAccommodationError);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleOpenGallery = async () => {
@@ -37,30 +35,24 @@ const AddAccommodationImage = ({ route }: Props) => {
     }
   };
 
-  const handleSaveImage = async () => {
+  const handleOnSubmit = async () => {
     const imageData = {
       uri: selectedImage,
       name: 'image.jpg',
       type: 'image/jpeg',
     };
 
-    const response = await dispatch(
+    await dispatch(
       AsyncThunks.addAccommodationImage({
         accommodationId,
         imageData,
       })
     );
 
-    if (response.payload?.success) {
-      showAlert('success', {
-        message: 'Accommodation created successfully!',
-        onOkPressed: () => navigation.navigate('MyAccommodations'),
-      });
-    } else {
-      showAlert('error', {
-        message: 'Image upload failed. Please try again.',
-      });
-    }
+    showAlert('success', {
+      message: 'Accommodation created successfully!',
+      onOkPressed: () => navigation.navigate('MyAccommodations'),
+    });
   };
 
   useEffect(() => {
@@ -75,28 +67,12 @@ const AddAccommodationImage = ({ route }: Props) => {
           onPress={handleOpenGallery}
         >
           <Icon name={IconName.CameraOutline} size={40} />
-          <Text>Upload photo of accommodation</Text>
+          <Text>Upload photo of accommodation(optional)</Text>
         </TouchableOpacity>
 
         {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
 
-        {imageError && (
-          <View style={[styles.errorContainer, { backgroundColor: colors.errorBackground }]}>
-            <View style={styles.errorIconContainer}>
-              <Icon name={IconName.Error} iconSet="material" color={RED_200} size={20} />
-              <Text style={styles.label}>Error!</Text>
-            </View>
-            <Text style={styles.errorMessage}>{imageError?.error.message}</Text>
-          </View>
-        )}
-
-        <Button
-          title="Save"
-          width="100%"
-          onPress={handleSaveImage}
-          isLoading={loading}
-          disabled={!selectedImage}
-        />
+        <Button title="Submit" width="100%" onPress={handleOnSubmit} isLoading={loading} />
       </View>
     </ScreenTemplate>
   );

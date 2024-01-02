@@ -18,7 +18,7 @@ export const getTabBarIcon = ({ route, color, focused }: GetTabBarIconProps) => 
       return (
         <Icon
           name={focused ? IconName.Search : IconName.SearchOutline}
-          size={focused ? 30 : 26}
+          size={focused ? 30 : 28}
           color={color}
         />
       );
@@ -26,7 +26,7 @@ export const getTabBarIcon = ({ route, color, focused }: GetTabBarIconProps) => 
       return (
         <Icon
           name={focused ? IconName.Heart : IconName.HeartOutline}
-          size={focused ? 30 : 26}
+          size={focused ? 30 : 28}
           color={color}
         />
       );
@@ -36,12 +36,12 @@ export const getTabBarIcon = ({ route, color, focused }: GetTabBarIconProps) => 
       return (
         <Icon
           name={focused ? IconName.PersonCircle : IconName.PersonCircleOutline}
-          size={focused ? 30 : 26}
+          size={focused ? 30 : 28}
           color={color}
         />
       );
     case 'Login':
-      return <Icon name={IconName.Login} size={28} color={color} />;
+      return <Icon name={IconName.Login} size={focused ? 30 : 28} color={color} />;
     default:
       return <Icon name={IconName.Add} size={26} color={color} />;
   }
@@ -49,7 +49,7 @@ export const getTabBarIcon = ({ route, color, focused }: GetTabBarIconProps) => 
 
 export const getTabBarStyles = (colors: ThemeColors) => ({
   tabBarStyle: {
-    height: Platform.OS === 'ios' ? 85 : 60,
+    height: Platform.OS === 'ios' ? 85 : 70,
     backgroundColor: colors.background,
     paddingTop: 10,
   },

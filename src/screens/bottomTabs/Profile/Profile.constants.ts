@@ -7,14 +7,14 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
     data: [
       {
         label: 'Account Information',
-        iconName: IconName.PersonCircle,
+        iconName: IconName.PersonCircleOutline,
         screen: 'Account',
         loggedInOnly: true,
       },
       {
         label: 'Notifications',
         iconName: IconName.Notifications,
-        screen: 'Notifications',
+        screen: 'NotificationSettings',
         loggedInOnly: true,
       },
       {

@@ -1,19 +1,28 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import { Country } from 'react-native-country-picker-modal';
 import { useSelector } from 'react-redux';
-import { Icon, Input, ProfileImageUploader, Text, showAlert } from 'src/components';
-import { LanguageSelector, CountrySelector } from 'src/components/modals';
+import {
+  Icon,
+  ProfileImageUploader,
+  Text,
+  showAlert,
+  Input,
+  PhoneNumberInput,
+  LanguageSelector,
+  CountryPicker,
+} from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountLoader } from 'src/store/selectors';
+import { getAccountLoader, getColors } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { CreateAccountFormValues } from 'src/types';
-import { GenderOptionsProps, Country, Gender, Language, CountryOption } from 'src/types/common';
+import { GenderOptionsProps, Gender, Language } from 'src/types/common';
 import { IconName, ThemeType } from 'src/types/ui';
-import { ACCOUNT_NAME_MAX_LENGTH, PHONE_NUMBER_LENGTH } from 'src/utils';
+import { ACCOUNT_NAME_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './CreateAccount.style';
 import { genderOptions, validateForm } from './CreateAccount.utils';
@@ -22,7 +31,10 @@ const CreateAccountForm = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
+  const colors = useSelector(getColors);
 
+  const [selectedCountry, setSelectedCountry] = useState<string>('Uzbekistan');
+  const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<CreateAccountFormValues>({
@@ -31,9 +43,10 @@ const CreateAccountForm = () => {
     phoneNumber: '',
     gender: Gender.Male,
     description: '',
-    country: Country.UZBEKISTAN,
+    country: '',
     language: Language.English,
     uiTheme: ThemeType.Light,
+    imageUrl: '',
   });
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
@@ -44,8 +57,9 @@ const CreateAccountForm = () => {
     setFormValues({ ...formValues, [fieldName]: sanitizedText });
   };
 
-  const handleCountrySelect = (country: CountryOption) => {
-    setFormValues({ ...formValues, country: country.name });
+  const handleCountrySelect = (country: Country) => {
+    setFormValues({ ...formValues, country: country.name as string });
+    setSelectedCountry(country.name as string);
   };
 
   const handlePhotoSelect = (imageUrl: string) => {
@@ -61,8 +75,8 @@ const CreateAccountForm = () => {
     const errors = validateForm(formValues);
 
     if (Object.keys(errors).length === 0) {
+      dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.createAccount(formValues));
-
       if (response.payload?.success) {
         showAlert('success', {
           message: 'Successfully created!',
@@ -79,7 +93,7 @@ const CreateAccountForm = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formValues, formInteracted]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
@@ -118,16 +132,10 @@ const CreateAccountForm = () => {
           value={formValues.lastName}
         />
 
-        <Input
-          contextMenuHidden
+        <PhoneNumberInput
           error={validationErrors.phoneNumber}
-          keyboardType="number-pad"
-          leftIcon={IconName.Phone}
-          maxLength={PHONE_NUMBER_LENGTH}
           onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
-          placeholder="Enter your number"
           value={formValues.phoneNumber}
-          underlineColorAndroid="transparent"
         />
 
         <Text style={styles.label}>Select your gender</Text>
@@ -149,7 +157,18 @@ const CreateAccountForm = () => {
         ))}
 
         <Text style={styles.label}>Select your country</Text>
-        <CountrySelector onSelect={handleCountrySelect} />
+        <TouchableOpacity
+          onPress={() => setCountrySelectorVisible(true)}
+          style={[styles.selectorButton, { backgroundColor: colors.secondaryBackground }]}
+        >
+          <Text style={styles.selectedCountry}>{selectedCountry}</Text>
+          <Icon name={IconName.ChevronDown} size={20} />
+        </TouchableOpacity>
+        <CountryPicker
+          visible={countrySelectorVisible}
+          onClose={() => setCountrySelectorVisible(false)}
+          onSelect={handleCountrySelect}
+        />
 
         <Text style={styles.label}>Select preffered language</Text>
         <LanguageSelector onSelect={handleLanguageSelect} />

@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, ButtonType, NavigationList, ProfileHeader, showAlert } from 'src/components';
-import { Alert } from 'src/components/modals';
+import {
+  Alert,
+  Button,
+  ButtonType,
+  NavigationList,
+  ProfileHeader,
+  showAlert,
+} from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { AppDispatch } from 'src/store';
 import {
@@ -12,9 +18,15 @@ import {
   getIsLoggedIn,
   getUserId,
 } from 'src/store/selectors';
-import { accommodationActions, accountActions } from 'src/store/slices';
+import {
+  accommodationActions,
+  accountActions,
+  myAccommodationsListActions,
+  userActions,
+} from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
+import { ApiSuccessResponseType, User } from 'src/types';
 
 import { ACCOUNT_SECTIONS } from './Profile.constants';
 
@@ -32,13 +44,13 @@ const Profile = () => {
     showAlert('warning', {
       message: 'Are you sure you want to log out?',
       onOkPressed: async () => {
-        dispatch(accommodationActions.reset());
-        dispatch(accountActions.reset());
         const response = await dispatch(AsyncThunks.signOut());
 
-        if (response?.payload.success) {
-          dispatch(accommodationActions.reset());
+        if (response?.meta.requestStatus === 'fulfilled') {
           dispatch(accountActions.reset());
+          dispatch(accommodationActions.reset());
+          dispatch(myAccommodationsListActions.reset());
+          dispatch(userActions.reset());
         }
       },
       onCancelPressed: () => {},
@@ -47,15 +59,20 @@ const Profile = () => {
 
   const getAccountDetails = async () => {
     if (!userId) return;
+    const user = await dispatch(AsyncThunks.getUserDetails(userId));
+    const userProfile = (user.payload as ApiSuccessResponseType<User>).data.profile;
 
-    await dispatch(AsyncThunks.getAccountDetails(userId));
+    if (userProfile) {
+      const profileId = userProfile.id;
+      await dispatch(AsyncThunks.getAccountDetails(profileId));
+    }
   };
 
   useEffect(() => {
     if (!accountDetails && isLoggedIn) {
       getAccountDetails();
     }
-  }, [isLoggedIn, isGuestUser, userId]);
+  }, [isLoggedIn, isGuestUser]);
 
   useEffect(() => {
     if (userError) {

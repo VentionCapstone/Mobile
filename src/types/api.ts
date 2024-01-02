@@ -88,6 +88,7 @@ export interface Accommodation {
   availableFrom: string;
   availableTo: string;
   description: string;
+  isDeleted: boolean;
   ownerId: string;
   address: {
     id: string;

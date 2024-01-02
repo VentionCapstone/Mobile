@@ -19,6 +19,7 @@ const BottomTabNavigator = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, focused }) => getTabBarIcon({ route, color, focused }),
         ...styles,
+        tabBarLabel: '',
       })}
       initialRouteName="Explore"
     >

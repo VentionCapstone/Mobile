@@ -2,8 +2,8 @@ import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
-import { getAccommodationLoader, getColors } from 'src/store/selectors';
-import { RED_100 } from 'src/styles';
+import { getColors } from 'src/store/selectors';
+import { RED_100, TOMATO, WHITE_200 } from 'src/styles';
 import { Accommodation, IconName } from 'src/types';
 
 import { styles } from './MyAccommodationListItem.style';
@@ -12,11 +12,11 @@ type Props = {
   accommodationDetails: Accommodation;
   onEdit: (accommodation: Accommodation) => void;
   onDelete: (accommodationId: string) => void;
+  loader: boolean;
 };
 
-const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit }: Props) => {
+const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loader }: Props) => {
   const colors = useSelector(getColors);
-  const loader = useSelector(getAccommodationLoader);
   const { id, price, thumbnailUrl, address } = accommodationDetails;
 
   const combinedLocationText = `${address.city}, ${address.country}`;
@@ -28,10 +28,10 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit }: Pro
   return (
     <TouchableOpacity style={[styles.card, { backgroundColor: colors.secondaryBackground }]}>
       <View style={styles.imageContainer}>
-        {loader && <ActivityIndicator size="small" />}
+        {loader && <ActivityIndicator size="small" color={TOMATO} />}
 
         {!thumbnailUrl || thumbnailUrl === 'none' ? (
-          <Icon name={IconName.Image} size={70} color="#b9b9b9" />
+          <Icon name={IconName.Image} size={70} color={WHITE_200} />
         ) : (
           <Image
             source={{

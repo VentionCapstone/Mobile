@@ -1,7 +1,5 @@
-import React from 'react';
-import { SectionList } from 'react-native';
+import { SectionList, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import Seperator from 'src/components/Seperator/Seperator';
 import Text from 'src/components/Text/Text';
 import { getIsLoggedIn } from 'src/store/selectors';
 import { NavigationListOption, NavigationListSection } from 'src/types/navigationList';
@@ -28,10 +26,9 @@ const NavigationList = ({ options, sections }: Props) => {
     <SectionList
       scrollEnabled={false}
       sections={filteredData}
-      style={styles.container}
+      contentContainerStyle={styles.container}
       alwaysBounceVertical={false}
       keyExtractor={(item, index) => item.label + index}
-      ItemSeparatorComponent={() => <Seperator />}
       renderItem={({ item }) => {
         return <NavigationListItem item={item} />;
       }}

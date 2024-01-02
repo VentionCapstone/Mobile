@@ -1,6 +1,6 @@
 import AddressSelector from './AddressSelector/AddressSelector';
 import Alert from './Alert/Alert';
-import CountrySelector from './CountrySelector/CountrySelector';
+import CountryPicker from './CountryPicker/CountryPicker';
 import LanguageSelector from './LanguageSelector/LanguageSelector';
 
-export { AddressSelector, Alert, CountrySelector, LanguageSelector };
+export { AddressSelector, Alert, CountryPicker, LanguageSelector };

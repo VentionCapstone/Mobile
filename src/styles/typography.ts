@@ -7,7 +7,7 @@ export const title1: TextStyle = {
 };
 
 export const title2: TextStyle = {
-  fontSize: 20,
+  fontSize: 22,
   lineHeight: 23,
   fontWeight: '500',
 };

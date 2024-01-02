@@ -5,15 +5,23 @@ import { HORIZONTAL_16_PERCENT } from 'src/utils';
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: HORIZONTAL_16_PERCENT,
+    paddingVertical: 20,
   },
   header: {
-    height: 280,
     justifyContent: 'center',
+    paddingVertical: 20,
     gap: 50,
   },
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '400',
+  },
+  notificationIcon: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
   },
   subTitle: {
     ...paragraph1,
@@ -22,28 +30,26 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   redirectAuthText: {
-    gap: 20,
     flex: 1,
     flexDirection: 'row',
+    gap: 20,
   },
   loggedInHeader: {
     height: 140,
-    justifyContent: 'space-around',
-    gap: 50,
+    justifyContent: 'flex-end',
+    gap: 10,
   },
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 20,
   },
   accountHeader: {
-    height: 60,
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    paddingBottom: 30,
   },
   accountHeaderContents: {
     flexDirection: 'row',

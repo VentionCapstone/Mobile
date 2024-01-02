@@ -2,8 +2,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
-import { MyAccommodationListItem, Text, showAlert } from 'src/components';
-import { Alert } from 'src/components/modals';
+import { Alert, MyAccommodationListItem, Text, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -29,6 +28,8 @@ const MyAccommodations = () => {
   const loader = useSelector(getAccommodationLoader);
   const [errorVisible, setErrorVisible] = useState(false);
 
+  const filteredAccommodations = myAccommodations?.filter((acc) => acc.isDeleted === false);
+
   const handleEdit = (accommodation: Accommodation) => {
     navigation.navigate('UpdateAccommodation', { accommodation });
   };
@@ -49,7 +50,9 @@ const MyAccommodations = () => {
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
-    fetchMyAccommodations();
+    if (!filteredAccommodations?.length) {
+      fetchMyAccommodations();
+    }
   }, []);
 
   useEffect(() => {
@@ -64,17 +67,18 @@ const MyAccommodations = () => {
         {loader ? (
           <ActivityIndicator size="large" color={GREY_300} />
         ) : (
-          myAccommodations?.map((acc) => (
+          filteredAccommodations?.map((acc) => (
             <MyAccommodationListItem
               accommodationDetails={acc}
               onDelete={handleDelete}
               onEdit={handleEdit}
+              loader={loader}
               key={acc.id}
             />
           ))
         )}
 
-        {!loader && myAccommodations?.length === 0 && (
+        {!loader && filteredAccommodations?.length === 0 && (
           <Text style={styles.noAccommodationsText}>You don't have any accommodations!</Text>
         )}
 

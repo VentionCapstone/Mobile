@@ -12,7 +12,7 @@ const validateForm = (values: CreateAccountFormValues): Record<string, string> =
   }
 
   if (!isPhoneNumberValid(values.phoneNumber)) {
-    errors.phoneNumber = 'Hint: 90-123-45-67';
+    errors.phoneNumber = 'Enter valid phone number';
   }
 
   return errors;

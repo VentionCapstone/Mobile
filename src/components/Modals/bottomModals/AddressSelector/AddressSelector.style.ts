@@ -3,15 +3,29 @@ import { title2, paragraph1 } from 'src/styles';
 import { HORIZONTAL_20_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
+  container: {
+    height: 400,
+  },
+  placesInputListView: {
+    position: 'absolute',
+    top: 60,
+    width: '100%',
+    zIndex: 999,
+    maxHeight: 400,
+  },
   mapContainer: {
     width: '100%',
-    height: '40%',
+    height: 260,
     alignItems: 'center',
   },
   searchInputContainer: {
-    width: '90%',
-    height: 70,
+    width: '95%',
     justifyContent: 'center',
+    marginTop: 20,
+  },
+  searchText: {
+    ...title2,
+    alignSelf: 'center',
   },
   searchInput: {
     marginTop: 10,
