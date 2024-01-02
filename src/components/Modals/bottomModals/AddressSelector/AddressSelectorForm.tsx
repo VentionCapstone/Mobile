@@ -1,10 +1,10 @@
 import { View } from 'react-native';
-import { Button } from 'src/components/Button';
-import { Input } from 'src/components/inputs';
 import { AddressValues, AddressValidationErrors } from 'src/types';
 import { ADDRESS_INFO_MAX_LENGTH, ADDRESS_ZIPCODE_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AddressSelector.style';
+import Button from '../../../Button/Button';
+import Input from '../../../inputs/Input/Input';
 
 type Props = {
   validationErrors: AddressValidationErrors;

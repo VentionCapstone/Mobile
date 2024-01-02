@@ -3,12 +3,12 @@ import { View } from 'react-native';
 import { Country } from 'react-native-country-picker-modal';
 import PhoneInput from 'react-native-phone-input';
 import { useSelector } from 'react-redux';
-import { CountryPicker } from 'src/components';
-import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
 import { PHONE_NUMBER_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './PhoneInput.style';
+import Text from '../../Text/Text';
+import { CountryPicker } from '../../modals/bottomModals';
 
 type Props = {
   onChangeText: (phoneNumber: string) => void;

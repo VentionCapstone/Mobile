@@ -7,7 +7,6 @@ import {
 } from 'react-native-google-places-autocomplete';
 import MapView, { LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { Icon, Text, ThemedView, showAlert } from 'src/components';
 import { getColors } from 'src/store/selectors';
 import { AddressValues, IconName } from 'src/types';
 
@@ -20,6 +19,10 @@ import {
   validateForm,
 } from './AddressSelector.utils';
 import AddressSelectorForm from './AddressSelectorForm';
+import Icon from '../../../Icon/Icon';
+import Text from '../../../Text/Text';
+import ThemedView from '../../../ThemedView/ThemedView';
+import showAlert from '../../../alert';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
 interface Props {
