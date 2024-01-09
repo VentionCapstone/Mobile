@@ -4,7 +4,7 @@ import { ThemeType } from './ui';
 export interface Account {
   id: string;
   phoneNumber: string;
-  imageUrl: string | undefined;
+  imageUrl?: string;
   gender: Gender;
   country: string;
   uiTheme: ThemeType;

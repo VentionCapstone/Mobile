@@ -46,7 +46,7 @@ export interface ProfileResponseType {
   description: string;
   country: string;
   language: string;
-  imageUrl: string | undefined;
+  imageUrl?: string;
   uiTheme: string;
 }
 
