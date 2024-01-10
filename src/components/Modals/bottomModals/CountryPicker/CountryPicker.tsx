@@ -6,7 +6,7 @@ import CountryPicker, {
 import { useSelector } from 'react-redux';
 import { getIsDarkMode } from 'src/store/selectors';
 
-import { allowedCountries } from './CountryPicker.utils';
+import { ALLOWED_COUNTRIES } from './CountryPicker.utils';
 
 type Props = {
   onSelect: (country: Country) => void;
@@ -29,7 +29,7 @@ const CountrySelector = ({ onSelect, visible, onClose }: Props) => {
       onClose={onClose}
       visible={visible}
       theme={isDark ? DARK_THEME : DEFAULT_THEME}
-      countryCodes={allowedCountries}
+      countryCodes={ALLOWED_COUNTRIES}
       withFlagButton={false}
     />
   );

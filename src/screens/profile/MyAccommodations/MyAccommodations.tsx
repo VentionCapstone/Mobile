@@ -1,5 +1,5 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Alert, MyAccommodationListItem, Text, showAlert } from 'src/components';
@@ -28,7 +28,10 @@ const MyAccommodations = () => {
   const loader = useSelector(getAccommodationLoader);
   const [errorVisible, setErrorVisible] = useState(false);
 
-  const filteredAccommodations = myAccommodations?.filter((acc) => acc.isDeleted === false);
+  const filteredAccommodations = useMemo(
+    () => myAccommodations?.filter((acc) => !acc.isDeleted) || [],
+    [myAccommodations]
+  );
 
   const handleEdit = (accommodation: Accommodation) => {
     navigation.navigate('UpdateAccommodation', { accommodation });
@@ -50,7 +53,7 @@ const MyAccommodations = () => {
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
-    if (!filteredAccommodations?.length) {
+    if (filteredAccommodations?.length === 0) {
       fetchMyAccommodations();
     }
   }, []);

@@ -191,7 +191,7 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
 
           {(addressSelected || existingAddress) && (
             <AddressSelectorForm
-              handleInputChange={handleInputChange}
+              onInputChange={handleInputChange}
               addressValues={addressValues}
               validationErrors={validationErrors}
               onSave={handleOnSave}

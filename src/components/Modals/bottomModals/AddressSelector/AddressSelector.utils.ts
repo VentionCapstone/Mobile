@@ -8,7 +8,7 @@ type GetAddressInfoProps = {
 };
 
 const getAddressInfo = ({ placeDetails }: GetAddressInfoProps) => {
-  const addressComponents = placeDetails.address_components || [];
+  const addressComponents = placeDetails?.address_components || [];
   let city = '';
   let country = '';
   let latitude = 0;
@@ -22,7 +22,7 @@ const getAddressInfo = ({ placeDetails }: GetAddressInfoProps) => {
     }
   }
 
-  if (placeDetails.geometry && placeDetails.geometry.location) {
+  if (placeDetails?.geometry?.location) {
     latitude = placeDetails.geometry.location.lat;
     longitude = placeDetails.geometry.location.lng;
   }

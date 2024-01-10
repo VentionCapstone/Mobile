@@ -11,7 +11,7 @@ type Props = {
   formIsValid: boolean;
   onSave: () => void;
   addressValues: AddressValues;
-  handleInputChange: (fieldName: keyof AddressValues, text: string) => void;
+  onInputChange: (fieldName: keyof AddressValues, text: string) => void;
 };
 
 const AddressSelectorForm = ({
@@ -19,8 +19,12 @@ const AddressSelectorForm = ({
   formIsValid,
   onSave,
   addressValues,
-  handleInputChange,
+  onInputChange,
 }: Props) => {
+  const handleInputChange = (fieldName: keyof AddressValues) => (text: string) => {
+    onInputChange(fieldName, text);
+  };
+
   return (
     <View style={styles.addressContainer}>
       <Input
@@ -28,7 +32,7 @@ const AddressSelectorForm = ({
         placeholder="enter country"
         value={addressValues.country}
         maxLength={ADDRESS_INFO_MAX_LENGTH}
-        onChangeText={(text: string) => handleInputChange('country', text)}
+        onChangeText={handleInputChange('country')}
         error={validationErrors.country}
       />
       <Input
@@ -36,7 +40,7 @@ const AddressSelectorForm = ({
         placeholder="enter city"
         value={addressValues.city}
         maxLength={ADDRESS_INFO_MAX_LENGTH}
-        onChangeText={(text: string) => handleInputChange('city', text)}
+        onChangeText={handleInputChange('city')}
         error={validationErrors.city}
       />
       <Input
@@ -44,7 +48,7 @@ const AddressSelectorForm = ({
         placeholder="enter street"
         value={addressValues.street}
         maxLength={ADDRESS_INFO_MAX_LENGTH}
-        onChangeText={(text: string) => handleInputChange('street', text)}
+        onChangeText={handleInputChange('street')}
         error={validationErrors.street}
       />
       <Input
@@ -53,7 +57,7 @@ const AddressSelectorForm = ({
         value={addressValues.zipCode}
         keyboardType="numeric"
         maxLength={ADDRESS_ZIPCODE_MAX_LENGTH}
-        onChangeText={(text: string) => handleInputChange('zipCode', text)}
+        onChangeText={handleInputChange('zipCode')}
         error={validationErrors.zipCode}
       />
 

@@ -42,8 +42,8 @@ const UpdateAccount = () => {
   const colors = useSelector(getColors);
 
   const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
-  const [selectedCountry, setSelectedCountry] = useState<string | undefined>(
-    userDetails?.profile?.country
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    userDetails?.profile?.country ?? ''
   );
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});

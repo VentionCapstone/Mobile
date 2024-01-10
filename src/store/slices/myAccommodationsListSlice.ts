@@ -24,7 +24,9 @@ const myAccommodationsListSlice = createSlice({
 
     createAccommodation: (state, action) => {
       const createAccommodation = action.payload.data;
-      state.result?.push(createAccommodation);
+      state.result = state.result || [];
+
+      state.result.push(createAccommodation);
     },
 
     updateAccommodation: (state, action) => {

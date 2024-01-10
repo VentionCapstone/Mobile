@@ -20,7 +20,7 @@ const PhoneNumberInput = ({ onChangeText, error, value }: Props) => {
   const colors = useSelector(getColors);
   const phoneInputRef = useRef<PhoneInput>(null);
   const [initialCountry, setInitialCountry] = useState<string>('uz');
-  const [countryCode, setCountryCode] = useState<string | undefined>();
+  const [countryCode, setCountryCode] = useState<string | null>();
   const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
 
   const handleTextChange = (formattedNumber: string) => {
