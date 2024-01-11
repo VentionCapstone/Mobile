@@ -2,8 +2,14 @@ import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Input, NumericInput, Text, showAlert } from 'src/components';
-import { AddressSelector, DateTimePicker } from 'src/components/modals';
+import {
+  AddressSelector,
+  DateTimePicker,
+  Input,
+  NumericInput,
+  showAlert,
+  Text,
+} from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -29,8 +35,7 @@ const UpdateAccommodation = ({ route }: Props) => {
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [addressError, setAddressError] = useState<boolean>(false);
-  const [addressValues, setAddressValues] = useState<AddressValues | undefined>();
+  const [addressValues, setAddressValues] = useState<AddressValues | undefined>(existingAddress);
   const [formValues, setFormValues] = useState<UpdateAccommodationValues>({
     allowedNumberOfPeople: existingAccommodation.allowedNumberOfPeople,
     availableTo: existingAccommodation.availableTo,
@@ -72,7 +77,9 @@ const UpdateAccommodation = ({ route }: Props) => {
 
     if (Object.keys(errors).length === 0) {
       if (addressValues === undefined) {
-        setAddressError(true);
+        showAlert('error', {
+          message: 'You should add accommodation address',
+        });
         return;
       }
 
@@ -100,7 +107,7 @@ const UpdateAccommodation = ({ route }: Props) => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formValues, formInteracted]);
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
@@ -164,12 +171,7 @@ const UpdateAccommodation = ({ route }: Props) => {
         />
 
         <Text style={styles.addressLabel}>Address</Text>
-        <AddressSelector
-          onSelect={handleSelectAddressValues}
-          addressError={addressError}
-          setAddressError={setAddressError}
-          existingAddress={existingAddress}
-        />
+        <AddressSelector onSelect={handleSelectAddressValues} existingAddress={existingAddress} />
 
         <Input
           multiline

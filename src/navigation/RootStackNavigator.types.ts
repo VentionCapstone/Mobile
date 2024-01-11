@@ -15,6 +15,7 @@ export type RootStackParamList = {
   ChangeLanguage: undefined;
   MyAccommodations: undefined;
   Notifications: undefined;
+  NotificationSettings: undefined;
   Profile: undefined;
   UpdateProfile: undefined;
   UpdateAccommodation: { accommodation: Accommodation };

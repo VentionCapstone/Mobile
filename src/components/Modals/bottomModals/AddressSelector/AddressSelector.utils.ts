@@ -1,74 +1,33 @@
-import * as Location from 'expo-location';
-import Geocoder from 'react-native-geocoding';
 import { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
-import showAlert from 'src/components/alert';
 import { AddressValues } from 'src/types';
 
-const GEOCODER_API_KEY = process.env.EXPO_PUBLIC_GEOCODER_API_KEY ?? '';
+const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
 
-Geocoder.init(GEOCODER_API_KEY);
-
-const getCoordinatesByCity = async (city: string) => {
-  const response = await Geocoder.from(city);
-
-  if (response.results) {
-    const { lat, lng } = response.results[0].geometry.location;
-    return { latitude: lat, longitude: lng };
-  }
-
-  if (!response.results) {
-    showAlert('error', {
-      message: 'Something went wrong!',
-    });
-    return null;
-  }
+type GetAddressInfoProps = {
+  placeDetails: GooglePlaceDetail;
 };
 
-const getCurrentLocation = async (): Promise<Location.LocationObject | null> => {
-  const { status } = await Location.requestForegroundPermissionsAsync();
+const getAddressInfo = ({ placeDetails }: GetAddressInfoProps) => {
+  const addressComponents = placeDetails?.address_components || [];
+  let city = '';
+  let country = '';
+  let latitude = 0;
+  let longitude = 0;
 
-  if (status !== 'granted') {
-    showAlert('error', {
-      message: 'Permission to access location was denied',
-    });
-    return null;
+  for (const component of addressComponents) {
+    if (component.types.includes('locality')) {
+      city = component.long_name;
+    } else if (component.types.includes('country')) {
+      country = component.long_name;
+    }
   }
 
-  return await Location.getCurrentPositionAsync({});
-};
-
-const getAddressInfo = (
-  details: GooglePlaceDetail | null,
-  initialLongitude: number,
-  initialLatitude: number
-) => {
-  if (!details) {
-    return {
-      city: '',
-      country: '',
-      latitude: initialLatitude,
-      longitude: initialLongitude,
-    };
+  if (placeDetails?.geometry?.location) {
+    latitude = placeDetails.geometry.location.lat;
+    longitude = placeDetails.geometry.location.lng;
   }
 
-  const { address_components, geometry } = details;
-
-  const cityComponent = address_components.find((component) =>
-    component.types.includes('locality')
-  );
-  const countryComponent = address_components.find((component) =>
-    component.types.includes('country')
-  );
-
-  const city = cityComponent?.long_name || '';
-  const country = countryComponent?.long_name || '';
-
-  return {
-    city,
-    country,
-    latitude: geometry.location.lat || initialLatitude,
-    longitude: geometry.location.lng || initialLongitude,
-  };
+  return { city, country, latitude, longitude };
 };
 
 const validateForm = (addressValues: AddressValues): Record<string, string> => {
@@ -93,4 +52,24 @@ const validateForm = (addressValues: AddressValues): Record<string, string> => {
   return errors;
 };
 
-export { getCurrentLocation, getAddressInfo, validateForm, getCoordinatesByCity };
+const getPlaceDetails = async (placeId: string) => {
+  const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${GOOGLE_API_KEY}`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (data.status === 'OK') {
+      return data.result;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log('Error fetching places', error);
+    return null;
+  }
+};
+
+const REGION_DELTA = 0.1;
+
+export { getAddressInfo, validateForm, getPlaceDetails, REGION_DELTA, GOOGLE_API_KEY };

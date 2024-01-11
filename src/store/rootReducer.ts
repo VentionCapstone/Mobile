@@ -1,13 +1,18 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import { accommodationReducer, accountReducer, themeReducer, userReducer } from './slices';
-import { accommodationsListReducer } from './slices/accommodationsListSlice';
+import {
+  accommodationReducer,
+  accountReducer,
+  myAccommodationsListReducer,
+  themeReducer,
+  userReducer,
+} from './slices';
 
 const rootReducer = combineReducers({
   account: accountReducer,
   theme: themeReducer,
   accommodation: accommodationReducer,
-  accommodationsList: accommodationsListReducer,
+  myAccommodationsList: myAccommodationsListReducer,
   user: userReducer,
 });
 
