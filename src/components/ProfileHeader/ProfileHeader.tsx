@@ -20,7 +20,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     if (isGuestUser) {
       navigation.navigate('CreateProfile');
     } else {
-      navigation.navigate('Account');
+      navigation.navigate('UpdateProfile');
     }
   };
 
@@ -29,7 +29,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       {!isLoggedIn && (
         <View style={styles.header}>
           <View style={{ gap: 4 }}>
-            <Text style={styles.title}>Your Profile</Text>
+            <Text style={[styles.title, { color: colors.text }]}>Your Profile</Text>
             <Text style={styles.subTitle}>
               Sign in to your account and start your journey with us today.
             </Text>
@@ -62,16 +62,23 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       {isLoggedIn && (
         <View style={styles.loggedInHeader}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Profile</Text>
+            <Text style={[styles.title, { color: colors.text }]}>Profile</Text>
+
+            <TouchableOpacity
+              style={styles.notificationIcon}
+              onPress={() => navigation.navigate('Notifications')}
+            >
+              <Icon name={IconName.Notifications} size={26} />
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity
-            style={[styles.accountHeader, { borderBottomColor: colors.border }]}
+            style={[styles.accountHeader, { borderBottomColor: colors.secondaryBackground }]}
             onPress={handlePressed}
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
-                {user?.profile.imageUrl ? (
+                {user?.profile?.imageUrl ? (
                   <Image
                     source={{
                       uri: user.profile.imageUrl,
@@ -88,7 +95,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                   {user?.profile ? `${user.firstName} ${user.lastName}` : user?.email}
                 </Text>
                 <Text style={styles.description}>
-                  {isGuestUser ? 'tap to create' : 'show profile'}
+                  {isGuestUser ? 'tap to create' : 'edit profile'}
                 </Text>
               </View>
             </View>

@@ -7,7 +7,6 @@ import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { AsyncThunks } from 'src/store/thunks';
-import { AuthParams } from 'src/types';
 
 import styles from './VerifyEmail.style';
 
@@ -19,7 +18,7 @@ interface VerifyEmailProps {
   route: VerifyEmailRouteProp;
 }
 
-const message = {
+const messages = {
   success: 'Verification successful',
   failed: 'Verification failed. \nTry again later',
   pending: 'Waiting...',
@@ -28,21 +27,16 @@ const message = {
 const VerifyEmail = ({ route }: VerifyEmailProps) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const dispatch = useAppDispatch();
-  const [verificationMessage, setVerificationMessage] = useState<string>(message.pending);
+  const [verificationMessage, setVerificationMessage] = useState<string>(messages.pending);
 
   const verification = useCallback(async () => {
-    const response = await dispatch(AsyncThunks.verifyEmail(route.params as AuthParams));
-    switch (response.payload?.success) {
-      case true:
-        setVerificationMessage(message.success);
-        navigation.navigate('Signin');
-        break;
-      case false:
-        setVerificationMessage(message.failed);
-        navigation.navigate('Main');
-        break;
-      default:
-        setVerificationMessage(message.pending);
+    const response = await dispatch(AsyncThunks.verifyEmail(route.params));
+    if (response.payload?.success) {
+      setVerificationMessage(messages.success);
+      navigation.navigate('Signin');
+    } else {
+      setVerificationMessage(messages.failed);
+      navigation.navigate('Main');
     }
   }, [dispatch, navigation, route.params]);
 

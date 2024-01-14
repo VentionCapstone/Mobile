@@ -17,6 +17,7 @@ import {
   UpdateAccommodation,
   UpdateProfile,
   VerifyEmail,
+  NotificationSettings,
   Notifications,
   CreateAmenities,
 } from 'src/screens';
@@ -118,6 +119,11 @@ const RootStackNavigator = () => {
         name="AddAccommodationImage"
         component={AddAccommodationImage}
         options={{ header: () => <NavigationHeader /> }}
+      />
+      <RootRouterStack.Screen
+        name="NotificationSettings"
+        component={NotificationSettings}
+        options={{ header: () => <NavigationHeader title="Notification Settings" /> }}
       />
       <RootRouterStack.Screen
         name="Notifications"

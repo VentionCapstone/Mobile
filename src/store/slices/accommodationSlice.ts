@@ -23,20 +23,6 @@ const accommodationSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(AsyncThunks.createAccommodation.pending, onPending);
-    builder.addCase(AsyncThunks.createAccommodation.fulfilled, (state, action) => {
-      state.pending = false;
-      state.result = action.payload.data;
-    });
-    builder.addCase(AsyncThunks.createAccommodation.rejected, onError);
-
-    builder.addCase(AsyncThunks.updateAccommodation.pending, onPending);
-    builder.addCase(AsyncThunks.updateAccommodation.fulfilled, (state, action) => {
-      state.pending = false;
-      state.result = action.payload.data;
-    });
-    builder.addCase(AsyncThunks.updateAccommodation.rejected, onError);
-
     builder.addCase(AsyncThunks.getAccommodation.pending, onPending);
     builder.addCase(AsyncThunks.getAccommodation.fulfilled, (state, action) => {
       state.pending = false;

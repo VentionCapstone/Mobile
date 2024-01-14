@@ -2,8 +2,14 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Input, NumericInput, Text } from 'src/components';
-import { AddressSelector, DateTimePicker } from 'src/components/modals';
+import {
+  Text,
+  Input,
+  NumericInput,
+  AddressSelector,
+  DateTimePicker,
+  showAlert,
+} from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -16,6 +22,7 @@ import {
   ApiSuccessResponseType,
   CreateAccommodationValues,
 } from 'src/types';
+import { AREA_MAX_LENGTH, PEOPLE_MAX_LENGTH, PRICE_MAX_LENGTH, ROOMS_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './CreateAccommodation.style';
 import { validateForm } from './CreateAccommodation.utils';
@@ -27,7 +34,6 @@ const CreateAccommodation = () => {
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [addressError, setAddressError] = useState<boolean>(false);
   const [addressValues, setAddressValues] = useState<AddressValues | undefined>();
   const [formValues, setFormValues] = useState<CreateAccommodationValues>({
     squareMeters: null,
@@ -68,7 +74,9 @@ const CreateAccommodation = () => {
 
     if (Object.keys(errors).length === 0) {
       if (addressValues === undefined) {
-        setAddressError(true);
+        showAlert('error', {
+          message: 'You should add accommodation address',
+        });
         return;
       }
 
@@ -94,7 +102,7 @@ const CreateAccommodation = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formValues, formInteracted]);
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
@@ -106,13 +114,13 @@ const CreateAccommodation = () => {
         <View style={styles.inputRow}>
           <DateTimePicker
             width={180}
-            label="Available from*"
+            label="Available from"
             onDateChange={handleSelectAvailableFrom}
             error={validationErrors.availableFrom}
           />
           <DateTimePicker
             width={180}
-            label="Available to*"
+            label="Available to"
             onDateChange={handleSelectAvailableTo}
             error={validationErrors.availableTo}
           />
@@ -122,6 +130,7 @@ const CreateAccommodation = () => {
           <NumericInput
             style={{ width: 180 }}
             label="Price [$]"
+            maxLength={PRICE_MAX_LENGTH}
             value={formValues.price}
             onChangeText={(value: number | null) => handleInputChange('price', value)}
             error={validationErrors.price}
@@ -130,6 +139,7 @@ const CreateAccommodation = () => {
           <NumericInput
             style={{ width: 180 }}
             label="Rooms"
+            maxLength={ROOMS_MAX_LENGTH}
             value={formValues.numberOfRooms}
             onChangeText={(value: number | null) => handleInputChange('numberOfRooms', value)}
             error={validationErrors.numberOfRooms}
@@ -137,7 +147,8 @@ const CreateAccommodation = () => {
         </View>
 
         <NumericInput
-          label="Area [m²]*"
+          label="Area [m²]"
+          maxLength={AREA_MAX_LENGTH}
           value={formValues.squareMeters}
           onChangeText={(value: number | null) => handleInputChange('squareMeters', value)}
           error={validationErrors.squareMeters}
@@ -145,17 +156,14 @@ const CreateAccommodation = () => {
 
         <NumericInput
           label="Number of people"
+          maxLength={PEOPLE_MAX_LENGTH}
           value={formValues.allowedNumberOfPeople}
           onChangeText={(value: number | null) => handleInputChange('allowedNumberOfPeople', value)}
           error={validationErrors.allowedNumberOfPeople}
         />
 
         <Text style={styles.addressLabel}>Address</Text>
-        <AddressSelector
-          onSelect={handleSelectAddressValues}
-          addressError={addressError}
-          setAddressError={setAddressError}
-        />
+        <AddressSelector onSelect={handleSelectAddressValues} />
 
         <Input
           multiline

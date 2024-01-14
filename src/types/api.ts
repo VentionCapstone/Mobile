@@ -46,7 +46,7 @@ export interface ProfileResponseType {
   description: string;
   country: string;
   language: string;
-  imageUrl: string | undefined;
+  imageUrl?: string;
   uiTheme: string;
 }
 
@@ -88,6 +88,7 @@ export interface Accommodation {
   availableFrom: string;
   availableTo: string;
   description: string;
+  isDeleted: boolean;
   ownerId: string;
   address: {
     id: string;

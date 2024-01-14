@@ -60,4 +60,31 @@ export const styles = StyleSheet.create({
   textAreaStyles: {
     textAlignVertical: 'top',
   },
+  countrySelectorContainer: {
+    height: 50,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderRadius: 15,
+    marginTop: 10,
+  },
+  selectorButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderRadius: 15,
+    marginTop: 10,
+    justifyContent: 'space-between',
+  },
+  selectedCountry: {
+    ...paragraph1,
+  },
+  countryItem: {
+    padding: 15,
+    ...paragraph1,
+  },
+  optionText: {
+    ...paragraph1,
+  },
 });
