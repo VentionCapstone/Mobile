@@ -18,6 +18,7 @@ import {
   UpdateProfile,
   VerifyEmail,
   Notifications,
+  CreateAmenities,
 } from 'src/screens';
 import { getIsDarkMode } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
@@ -122,6 +123,12 @@ const RootStackNavigator = () => {
         name="Notifications"
         component={Notifications}
         options={{ header: () => <NavigationHeader title="Notifications" /> }}
+      />
+      <RootRouterStack.Screen
+        name="CreateAmenities"
+        component={CreateAmenities}
+        initialParams={{ isNew: true }}
+        options={{ headerShown: false }}
       />
     </RootRouterStack.Navigator>
   );

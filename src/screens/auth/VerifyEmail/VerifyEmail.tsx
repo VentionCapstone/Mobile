@@ -48,7 +48,7 @@ const VerifyEmail = ({ route }: VerifyEmailProps) => {
 
   useEffect(() => {
     verification();
-  });
+  }, []);
 
   return (
     <ScreenTemplate>

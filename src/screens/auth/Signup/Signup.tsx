@@ -59,7 +59,7 @@ const Signup = () => {
 
   useEffect(() => {
     dispatch(accountActions.clearError());
-  });
+  }, []);
 
   return (
     <ScreenTemplate>
