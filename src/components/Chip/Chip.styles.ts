@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { GREY_300, RED_200 } from '../../styles/colors';
+
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -8,39 +10,39 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   chip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 250,
-    height: 50,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: 'grey',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    width: 170,
+    height: 140,
+    borderWidth: 1,
+    borderColor: GREY_300,
     backgroundColor: 'white',
-    paddingLeft: 15,
+    padding: 15,
     marginBottom: 10,
     gap: 15,
+    borderRadius: 15,
   },
   chipAdded: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 250,
-    height: 50,
-    backgroundColor: '#EEFFFF',
-    borderRadius: 15,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    width: 170,
+    height: 140,
     borderWidth: 3,
-    borderColor: '#00c1b2',
-    paddingLeft: 15,
+    borderColor: RED_200,
+    padding: 15,
     marginBottom: 10,
     gap: 15,
+    borderRadius: 15,
   },
   chipFont: {
     fontSize: 16,
+    color: 'grey',
   },
-  iconRemove: {
-    marginBottom: 10,
-  },
-  iconAdd: {
-    marginBottom: 10,
-    color: '#00c1b2',
+  chipFontFocused: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: RED_200,
   },
 });

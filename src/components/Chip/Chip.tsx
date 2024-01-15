@@ -1,4 +1,5 @@
 import { TouchableOpacity, Text, View } from 'react-native';
+import { GREY_300, TOMATO } from 'src/styles/colors';
 import { IconName, IconSet } from 'src/types';
 
 import { styles } from './Chip.styles';
@@ -18,16 +19,8 @@ const Chip = ({ iconName, iconSet, onTouchFunction, text, state, index }: ChipPr
     <TouchableOpacity onPress={onTouchFunction}>
       <View style={styles.container}>
         <View style={state ? styles.chipAdded : styles.chip}>
-          <Icon name={iconName} size={24} iconSet={iconSet} color="grey" />
-          <Text style={styles.chipFont}>{text}</Text>
-        </View>
-        <View>
-          <Icon
-            style={state ? styles.iconAdd : styles.iconRemove}
-            name={state ? IconName.RemoveCircle : IconName.AddCircle}
-            size={35}
-            iconSet="ionicons"
-          />
+          <Icon name={iconName} size={50} iconSet={iconSet} color={state ? TOMATO : GREY_300} />
+          <Text style={state ? styles.chipFontFocused : styles.chipFont}>{text}</Text>
         </View>
       </View>
     </TouchableOpacity>

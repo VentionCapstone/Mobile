@@ -1,6 +1,3 @@
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from 'src/navigation';
 import { IconName, IconSet } from 'src/types';
 
 interface AmenitiesComponentData {
@@ -12,13 +9,9 @@ interface AmenitiesComponentData {
   };
 }
 
-type CreateAmenitiesNavigationProp = StackNavigationProp<RootStackParamList, 'CreateAmenities'>;
-type CreateAmenitiesRouteProp = RouteProp<RootStackParamList, 'CreateAmenities'>;
-
-export interface AmenitiesProps {
-  navigation: CreateAmenitiesNavigationProp;
-  route: CreateAmenitiesRouteProp;
-}
+export type SelectedAmenities = {
+  [key: string]: boolean;
+};
 
 export const amenitiesObj: AmenitiesComponentData = {
   Wifi: {

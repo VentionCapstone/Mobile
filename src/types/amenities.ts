@@ -2,12 +2,6 @@ export interface EditAmenitiesProps {
   accomodationId: string;
   isNew: boolean;
 }
-export interface AmenitySetting {
-  id: string;
-  name: string;
-  icon: string;
-  added?: boolean;
-}
 
 export type AmenityListResponse = {
   success: boolean;
@@ -15,12 +9,37 @@ export type AmenityListResponse = {
 };
 
 export type Amenities = {
-  [key: string]: boolean | string;
+  Wifi: boolean;
+  hasTv: boolean;
+  hasAirConditioning: boolean;
+  hasKitchen: boolean;
+  hasLaundryService: boolean;
+  hasParking: boolean;
+  hasSmokingAllowance: boolean;
+  hasSwimmingPool: boolean;
+  hasBackyard: boolean;
+  isQuetArea: boolean;
+  isChildFriendly: boolean;
+  hasPetAllowance: boolean;
+  isCloseToCenter: boolean;
+  hasHospitalNearby: boolean;
+  hasAirportTransfer: boolean;
+  otherAmenities: string;
 };
 
-export type AccommodationAmenitiesResponse = {
-  data: Amenities;
+export interface AccommodationAmenitiesResponse extends Amenities {
+  id: string;
+  accomodationId: string;
+}
+
+export type AmenitiesParams = {
+  accomodationId: string;
 };
+
+export interface UpdateAmenitiesParams {
+  accomodationId: string;
+  data: Amenities;
+}
 
 export type EditAmenitiesResponse = AccommodationAmenitiesResponse & {
   message: string;

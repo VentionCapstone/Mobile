@@ -134,7 +134,24 @@ const RootStackNavigator = () => {
         name="CreateAmenities"
         component={CreateAmenities}
         initialParams={{ isNew: true }}
-        options={{ headerShown: false }}
+        options={{
+          header: () => (
+            <NavigationHeader
+              title="Add Amenities"
+              rightComponent={
+                <Button
+                  title="Close"
+                  height={35}
+                  size={BUTTON_SIZES.SM}
+                  type={ButtonType.PRIMARY}
+                  onPress={() => {
+                    navigation.navigate('MyAccommodations');
+                  }}
+                />
+              }
+            />
+          ),
+        }}
       />
     </RootRouterStack.Navigator>
   );

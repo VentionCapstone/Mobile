@@ -1,10 +1,15 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
 import { ApiErrorResponseType, ApiSuccessResponseType } from 'src/types';
-import { AmenitiesParams, AmenitiesResponseData } from 'src/types/amenities';
+import {
+  AccommodationAmenitiesResponse,
+  AmenitiesParams,
+  EditAmenitiesResponse,
+  UpdateAmenitiesParams,
+} from 'src/types/amenities';
 
 export const getAmenitiesListThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<string>,
+  ApiSuccessResponseType<string[]>,
   AmenitiesParams,
   { rejectValue: ApiErrorResponseType }
 > = async (_, { rejectWithValue }) => {
@@ -18,12 +23,14 @@ export const getAmenitiesListThunk: AsyncThunkPayloadCreator<
 };
 
 export const getAmenitiesThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AmenitiesResponseData>,
+  ApiSuccessResponseType<AccommodationAmenitiesResponse>,
   AmenitiesParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(ENDPOINTS.AccomodationAmenities(params.id));
+    const response = await axiosInstance.get(
+      ENDPOINTS.AccomodationAmenities(params.accomodationId)
+    );
 
     return response.data;
   } catch (error: any) {
@@ -32,13 +39,13 @@ export const getAmenitiesThunk: AsyncThunkPayloadCreator<
 };
 
 export const addAmenitiesThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AmenitiesResponseData>,
-  AmenitiesParams,
+  ApiSuccessResponseType<AccommodationAmenitiesResponse>,
+  UpdateAmenitiesParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(
-      ENDPOINTS.AccomodationAmenities(params.id),
+      ENDPOINTS.AccomodationAmenities(params.accomodationId),
       params.data
     );
 
@@ -49,13 +56,13 @@ export const addAmenitiesThunk: AsyncThunkPayloadCreator<
 };
 
 export const updateAmenitiesThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AmenitiesResponseData>,
-  AmenitiesParams,
+  ApiSuccessResponseType<EditAmenitiesResponse>,
+  UpdateAmenitiesParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(
-      ENDPOINTS.AccomodationAmenities(params.id),
+      ENDPOINTS.AccomodationAmenities(params.accomodationId),
       params.data
     );
 
@@ -66,12 +73,14 @@ export const updateAmenitiesThunk: AsyncThunkPayloadCreator<
 };
 
 export const deleteAmenitiesThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AmenitiesResponseData>,
+  ApiSuccessResponseType<AccommodationAmenitiesResponse>,
   AmenitiesParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.put(ENDPOINTS.AccomodationAmenities(params.id));
+    const response = await axiosInstance.put(
+      ENDPOINTS.AccomodationAmenities(params.accomodationId)
+    );
 
     return response.data;
   } catch (error: any) {
