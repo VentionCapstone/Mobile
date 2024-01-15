@@ -13,6 +13,24 @@ export type SelectedAmenities = {
   [key: string]: boolean;
 };
 
+export const defaultAmenitiesState: SelectedAmenities = {
+  Wifi: false,
+  hasTv: false,
+  hasAirConditioning: false,
+  hasKitchen: false,
+  hasLaundryService: false,
+  hasParking: false,
+  hasSmokingAllowance: false,
+  hasSwimmingPool: false,
+  hasBackyard: false,
+  isQuetArea: false,
+  isChildFriendly: false,
+  hasPetAllowance: false,
+  isCloseToCenter: false,
+  hasHospitalNearby: false,
+  hasAirportTransfer: false,
+};
+
 export const amenitiesObj: AmenitiesComponentData = {
   Wifi: {
     name: 'Wifi',

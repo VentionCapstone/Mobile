@@ -12,7 +12,7 @@ import { ApiSuccessResponseType, IconName } from 'src/types';
 import { AccommodationAmenitiesResponse, UpdateAmenitiesParams } from 'src/types/amenities';
 
 import { styles } from './CreateAmenities.styles';
-import { SelectedAmenities, amenitiesObj } from './CreateAmenities.utils';
+import { SelectedAmenities, amenitiesObj, defaultAmenitiesState } from './CreateAmenities.utils';
 
 type CreateAmenitiesNavigationProp = StackNavigationProp<RootStackParamList, 'CreateAmenities'>;
 type CreateAmenitiesRouteProp = RouteProp<RootStackParamList, 'CreateAmenities'>;
@@ -26,25 +26,12 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
   const { isNew, accomodationId } = route.params as { isNew: boolean; accomodationId: string };
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [selectedAmenities, setSelectedAmenities] = useState<SelectedAmenities>({
-    Wifi: false,
-    hasTv: false,
-    hasAirConditioning: false,
-    hasKitchen: false,
-    hasLaundryService: false,
-    hasParking: false,
-    hasSmokingAllowance: false,
-    hasSwimmingPool: false,
-    hasBackyard: false,
-    isQuetArea: false,
-    isChildFriendly: false,
-    hasPetAllowance: false,
-    isCloseToCenter: false,
-    hasHospitalNearby: false,
-    hasAirportTransfer: false,
-  });
+
+  const [selectedAmenities, setSelectedAmenities] =
+    useState<SelectedAmenities>(defaultAmenitiesState);
   const [otherAmenities, setOtherAmenities] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
+
   const amenities: string[] = Object.keys(selectedAmenities);
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -62,7 +49,7 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
   };
 
   const addOtherAmenities = () => {
-    if (inputValue.trim() !== '') {
+    if (inputValue.trim() !== '' && inputValue.trim().length < 24) {
       setOtherAmenities((prevAmenity) => [...prevAmenity, inputValue]);
       scrollToBottom();
       setInputValue('');
@@ -129,18 +116,13 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
     <View style={{ flex: 1 }}>
       <ScreenTemplate>
         <ScrollView ref={scrollViewRef} style={styles.container}>
-          <Text style={styles.title}>Tell your guests what your place has to offer</Text>
-          <Text style={styles.subtitle}>
-            You can add more amenities after you publish your listing
-          </Text>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-            }}
-          >
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>Tell your guests what your place has to offer</Text>
+            <Text style={styles.subtitle}>
+              You can add more amenities after you publish your listing
+            </Text>
+          </View>
+          <View style={styles.rowContainer}>
             {amenities.map((amenity) => {
               return (
                 <Chip
@@ -153,20 +135,17 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
                 />
               );
             })}
+            <View style={{ width: 160 }} />
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-            }}
-          >
+          <View style={styles.textContainer}>
             <Text style={styles.title}>Add other amenities</Text>
             <Text style={styles.subtitle}>
               You can put here anything that can make you stand out even more
             </Text>
+          </View>
+          <View style={styles.rowContainer}>
             {renderAdditionalChips()}
+            {otherAmenities.length % 2 === 1 && <View style={{ width: 160 }} />}
           </View>
           <View style={styles.inputField}>
             <View style={{ flexDirection: 'row', gap: 10 }}>
