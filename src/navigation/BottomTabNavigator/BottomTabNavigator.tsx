@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
-import { NavigationHeader } from 'src/components';
+import { ExploreHeader, NavigationHeader } from 'src/components';
 import { Booking, Explore, Profile, Wishlist } from 'src/screens';
 import { getColors, getIsLoggedIn } from 'src/store/selectors';
 
@@ -27,7 +27,7 @@ const BottomTabNavigator = () => {
         name="Explore"
         component={Explore}
         options={{
-          header: () => <NavigationHeader title="Explore" showBackButton={false} />,
+          headerShown: false,
         }}
       />
       <BottomTab.Screen

@@ -1,4 +1,4 @@
-import { SectionList, View } from 'react-native';
+import { SectionList } from 'react-native';
 import { useSelector } from 'react-redux';
 import Text from 'src/components/Text/Text';
 import { getIsLoggedIn } from 'src/store/selectors';

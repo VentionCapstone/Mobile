@@ -1,5 +1,7 @@
 import { ButtonType, Button } from './Button';
+import Card from './Card/Card';
 import Chip from './Chip/Chip';
+import ExploreHeader from './ExploreHeader/ExploreHeader';
 import Icon from './Icon/Icon';
 import NavigationHeader from './NavigationHeader/NavigationHeader';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
@@ -15,12 +17,14 @@ export {
   Icon,
   NavigationHeader,
   ProfileHeader,
+  ExploreHeader,
   Text,
   ThemedView,
   MyAccommodationListItem,
   showAlert,
   ProfileImageUploader,
   Chip,
+  Card,
 };
 
 export * from './navigationLists';
