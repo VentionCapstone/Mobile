@@ -1,26 +1,27 @@
-import { TouchableOpacity, Text, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { GREY_300, TOMATO } from 'src/styles/colors';
 import { IconName, IconSet } from 'src/types';
 
 import { styles } from './Chip.styles';
 import Icon from '../Icon/Icon';
+import Text from '../Text/Text';
 
 type ChipProps = {
   iconName: IconName;
   iconSet: IconSet;
-  onTouchFunction: () => void;
+  onTouch: () => void;
   text: string;
-  state: boolean;
+  isToggled: boolean;
   index?: number;
 };
 
-const Chip = ({ iconName, iconSet, onTouchFunction, text, state, index }: ChipProps) => {
+const Chip = ({ iconName, iconSet, onTouch, text, isToggled }: ChipProps) => {
   return (
-    <TouchableOpacity onPress={onTouchFunction}>
+    <TouchableOpacity onPress={onTouch}>
       <View style={styles.container}>
-        <View style={state ? styles.chipAdded : styles.chip}>
-          <Icon name={iconName} size={50} iconSet={iconSet} color={state ? TOMATO : GREY_300} />
-          <Text style={state ? styles.chipFontFocused : styles.chipFont}>{text}</Text>
+        <View style={[styles.chip, isToggled && styles.chipAdded]}>
+          <Icon name={iconName} size={50} iconSet={iconSet} color={isToggled ? TOMATO : GREY_300} />
+          <Text style={[styles.chipFont, isToggled && styles.chipFontFocused]}>{text}</Text>
         </View>
       </View>
     </TouchableOpacity>

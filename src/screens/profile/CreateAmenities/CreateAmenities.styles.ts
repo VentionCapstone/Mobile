@@ -32,7 +32,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'white',
     borderColor: 'black',
     height: 50,
     width: '90%',
@@ -58,5 +57,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     padding: 20,
+  },
+  errorBox: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    gap: 5,
+    height: 50,
+    width: '90%',
+    paddingHorizontal: 15,
+    borderRadius: 15,
+  },
+  errorText: {
+    fontSize: 16,
   },
 });

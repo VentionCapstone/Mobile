@@ -29,7 +29,7 @@ export const getAmenitiesThunk: AsyncThunkPayloadCreator<
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get(
-      ENDPOINTS.AccomodationAmenities(params.accomodationId)
+      ENDPOINTS.accomodationAmenities(params.accomodationId)
     );
 
     return response.data;
@@ -45,7 +45,7 @@ export const addAmenitiesThunk: AsyncThunkPayloadCreator<
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(
-      ENDPOINTS.AccomodationAmenities(params.accomodationId),
+      ENDPOINTS.accomodationAmenities(params.accomodationId),
       params.data
     );
 
@@ -62,7 +62,7 @@ export const updateAmenitiesThunk: AsyncThunkPayloadCreator<
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(
-      ENDPOINTS.AccomodationAmenities(params.accomodationId),
+      ENDPOINTS.accomodationAmenities(params.accomodationId),
       params.data
     );
 
@@ -79,7 +79,7 @@ export const deleteAmenitiesThunk: AsyncThunkPayloadCreator<
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.put(
-      ENDPOINTS.AccomodationAmenities(params.accomodationId)
+      ENDPOINTS.accomodationAmenities(params.accomodationId)
     );
 
     return response.data;

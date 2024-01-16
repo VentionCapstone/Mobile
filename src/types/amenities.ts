@@ -8,8 +8,8 @@ export type AmenityListResponse = {
   data: string[];
 };
 
-export type Amenities = {
-  Wifi: boolean;
+export interface Amenities {
+  wifi: boolean;
   hasTv: boolean;
   hasAirConditioning: boolean;
   hasKitchen: boolean;
@@ -25,8 +25,7 @@ export type Amenities = {
   hasHospitalNearby: boolean;
   hasAirportTransfer: boolean;
   otherAmenities: string;
-};
-
+}
 export interface AccommodationAmenitiesResponse extends Amenities {
   id: string;
   accomodationId: string;
