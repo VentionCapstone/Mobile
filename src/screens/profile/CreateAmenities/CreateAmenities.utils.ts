@@ -1,20 +1,49 @@
 import { IconName, IconSet } from 'src/types';
 
-interface AmenitiesComponentData {
-  [key: string]: {
+export type AmenitiesErrorHandler = {
+  error: boolean;
+  message: string;
+};
+
+export const ERROR_NONE: AmenitiesErrorHandler = {
+  error: false,
+  message: '',
+} as const;
+
+export const amenityFormValidation = (inputValue: string): AmenitiesErrorHandler => {
+  if (inputValue.length < 2) {
+    return {
+      error: true,
+      message: 'Amenity should be at least 3 characters long',
+    };
+  }
+  if (inputValue.length > 30) {
+    return {
+      error: true,
+      message: 'Amenity should be less than 30 characters long',
+    };
+  }
+  return { error: false, message: '' };
+};
+
+export type Amenities = keyof typeof DEFAULT_AMENITIES_STATE;
+
+type AmenitiesComponentData = Record<
+  Amenities,
+  {
     name: string;
     text: string;
     icon: IconName;
     iconSet: IconSet;
-  };
-}
+  }
+>;
 
 export type SelectedAmenities = {
   [key: string]: boolean;
 };
 
-export const defaultAmenitiesState: SelectedAmenities = {
-  Wifi: false,
+export const DEFAULT_AMENITIES_STATE: SelectedAmenities = {
+  wifi: false,
   hasTv: false,
   hasAirConditioning: false,
   hasKitchen: false,
@@ -29,11 +58,11 @@ export const defaultAmenitiesState: SelectedAmenities = {
   isCloseToCenter: false,
   hasHospitalNearby: false,
   hasAirportTransfer: false,
-};
+} as const;
 
-export const amenitiesObj: AmenitiesComponentData = {
-  Wifi: {
-    name: 'Wifi',
+export const AMENITIES_CHIP_DATA: AmenitiesComponentData = {
+  wifi: {
+    name: 'wifi',
     text: 'Has Wi-Fi',
     icon: IconName.Wifi,
     iconSet: 'ionicons',
@@ -122,4 +151,4 @@ export const amenitiesObj: AmenitiesComponentData = {
     icon: IconName.Airplane,
     iconSet: 'ionicons',
   },
-};
+} as const;

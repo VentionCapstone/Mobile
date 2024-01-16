@@ -20,7 +20,7 @@ const ENDPOINTS = {
   getAccomodationById: (accommodationId: string) => `/accommodations/${accommodationId}`,
 
   getAmenitiesList: '/amenities',
-  AccomodationAmenities: (accommodationId: string) => `/amenities/${accommodationId}`,
+  accomodationAmenities: (accommodationId: string) => `/amenities/${accommodationId}`,
 };
 
 export default ENDPOINTS;

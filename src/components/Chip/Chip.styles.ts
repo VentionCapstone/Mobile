@@ -17,21 +17,6 @@ export const styles = StyleSheet.create({
     height: 140,
     borderWidth: 1,
     borderColor: GREY_300,
-    backgroundColor: 'white',
-    padding: 15,
-    marginBottom: 15,
-    gap: 15,
-    borderRadius: 15,
-  },
-  chipAdded: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    width: 170,
-    height: 140,
-    borderWidth: 3,
-    borderColor: RED_200,
     padding: 15,
     marginBottom: 15,
     gap: 15,
@@ -40,6 +25,10 @@ export const styles = StyleSheet.create({
   chipFont: {
     fontSize: 17,
     color: 'grey',
+  },
+  chipAdded: {
+    borderWidth: 3,
+    borderColor: RED_200,
   },
   chipFontFocused: {
     fontSize: 16,

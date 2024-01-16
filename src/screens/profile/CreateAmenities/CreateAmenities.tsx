@@ -1,18 +1,27 @@
 import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TouchableOpacity, ScrollView, View, TextInput } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Button, ButtonType, Chip, Icon, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
+import { getIsDarkMode } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
-import { BUTTON_SIZES } from 'src/styles';
+import { BUTTON_SIZES, GREY_500, WHITE_100, WHITE_200 } from 'src/styles';
 import { ApiSuccessResponseType, IconName } from 'src/types';
 import { AccommodationAmenitiesResponse, UpdateAmenitiesParams } from 'src/types/amenities';
 
 import { styles } from './CreateAmenities.styles';
-import { SelectedAmenities, amenitiesObj, defaultAmenitiesState } from './CreateAmenities.utils';
+import {
+  DEFAULT_AMENITIES_STATE,
+  AMENITIES_CHIP_DATA,
+  SelectedAmenities,
+  AmenitiesErrorHandler,
+  amenityFormValidation,
+  ERROR_NONE,
+} from './CreateAmenities.utils';
 
 type CreateAmenitiesNavigationProp = StackNavigationProp<RootStackParamList, 'CreateAmenities'>;
 type CreateAmenitiesRouteProp = RouteProp<RootStackParamList, 'CreateAmenities'>;
@@ -23,16 +32,18 @@ export interface AmenitiesProps {
 }
 
 const CreateAmenities = ({ route }: AmenitiesProps) => {
-  const { isNew, accomodationId } = route.params as { isNew: boolean; accomodationId: string };
+  const { isNew, accomodationId } = route.params ?? {};
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const theme = useSelector(getIsDarkMode);
 
+  const [amenityError, setAmenityError] = useState<AmenitiesErrorHandler>(ERROR_NONE);
   const [selectedAmenities, setSelectedAmenities] =
-    useState<SelectedAmenities>(defaultAmenitiesState);
+    useState<SelectedAmenities>(DEFAULT_AMENITIES_STATE);
   const [otherAmenities, setOtherAmenities] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
 
-  const amenities: string[] = Object.keys(selectedAmenities);
+  const amenities: string[] = useMemo(() => Object.keys(selectedAmenities), [selectedAmenities]);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const scrollToBottom = () => {
@@ -49,31 +60,35 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
   };
 
   const addOtherAmenities = () => {
-    if (inputValue.trim() !== '' && inputValue.trim().length < 24) {
+    const trimmedValue = inputValue.trim();
+    setAmenityError(amenityFormValidation(trimmedValue));
+    if (!amenityError.error) {
       setOtherAmenities((prevAmenity) => [...prevAmenity, inputValue]);
       scrollToBottom();
       setInputValue('');
     }
   };
 
-  const renderAdditionalChips = () => {
+  const removeAdditionalChip = useCallback((index: number) => {
+    setOtherAmenities((prevOtherAmenities) => {
+      const updatedOptions = [...prevOtherAmenities];
+      updatedOptions.splice(index, 1);
+      return updatedOptions;
+    });
+  }, []);
+
+  const renderAdditionalChips = useMemo(() => {
     return otherAmenities.map((item, index) => (
       <Chip
         key={index}
         iconName={IconName.Check}
         iconSet="ionicons"
         text={item}
-        onTouchFunction={() => removeAdditionalChip(index)}
-        state
+        onTouch={() => removeAdditionalChip(index)}
+        isToggled
       />
     ));
-  };
-
-  const removeAdditionalChip = (index: number) => {
-    const updatedOptions = [...otherAmenities];
-    updatedOptions.splice(index, 1);
-    setOtherAmenities(updatedOptions);
-  };
+  }, [otherAmenities, removeAdditionalChip]);
 
   const onFormSubmit = async () => {
     try {
@@ -82,35 +97,42 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
           accomodationId,
           data: {
             ...selectedAmenities,
-            otherAmenities: otherAmenities.join(' ,'),
+            otherAmenities: otherAmenities.join(', '),
           },
         } as UpdateAmenitiesParams)
       );
       if (response.meta.requestStatus === 'fulfilled') {
-        console.log('Amenities added successfully');
+        //Placeholder for navigation logic
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      scrollToBottom();
+      setAmenityError({ error: true, message: 'Error adding amenities. Try again later' });
+      throw new Error(error);
     }
   };
 
-  const getSavedAmenities = async () => {
-    const response = await dispatch(AsyncThunks.getAmenitiesThunk({ accomodationId }));
+  const getSavedAmenities = useCallback(async () => {
+    const response = await dispatch(
+      AsyncThunks.getAmenitiesThunk({ accomodationId: accomodationId ?? '' })
+    );
     if (response.payload?.success) {
       const { data } = response.payload as ApiSuccessResponseType<AccommodationAmenitiesResponse>;
-      setSelectedAmenities((({ otherAmenities, id, accomodationId, ...rest }) => rest)(data));
-      setOtherAmenities(data.otherAmenities.split(' ,'));
+      const { otherAmenities, id, accomodationId, ...rest } = data;
+      setSelectedAmenities(rest);
+      const otherAmenitiesSeparated = otherAmenities.split(', ');
+      setOtherAmenities(otherAmenitiesSeparated);
     } else {
+      scrollToBottom();
+      setAmenityError({ error: true, message: 'Error getting accomodation amenities' });
       throw new Error('Error while fetching amenities');
     }
-  };
+  }, [dispatch, accomodationId]);
 
   useEffect(() => {
     if (!isNew) {
       getSavedAmenities();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getSavedAmenities, isNew]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -127,11 +149,11 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
               return (
                 <Chip
                   key={amenity}
-                  iconName={amenitiesObj[amenity].icon}
-                  iconSet={amenitiesObj[amenity].iconSet}
-                  text={amenitiesObj[amenity].text}
-                  onTouchFunction={() => toggleAmenity(amenity)}
-                  state={selectedAmenities[amenity]}
+                  iconName={AMENITIES_CHIP_DATA[amenity].icon}
+                  iconSet={AMENITIES_CHIP_DATA[amenity].iconSet}
+                  text={AMENITIES_CHIP_DATA[amenity].text}
+                  onTouch={() => toggleAmenity(amenity)}
+                  isToggled={selectedAmenities[amenity]}
                 />
               );
             })}
@@ -144,16 +166,23 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
             </Text>
           </View>
           <View style={styles.rowContainer}>
-            {renderAdditionalChips()}
+            {renderAdditionalChips}
             {otherAmenities.length % 2 === 1 && <View style={{ width: 160 }} />}
           </View>
-          <View style={styles.inputField}>
+          {amenityError.error && (
+            <View style={styles.errorBox}>
+              <Icon name={IconName.Error} size={30} iconSet="material" color="white" />
+              <Text style={styles.errorText}>{amenityError.message}</Text>
+            </View>
+          )}
+          <View style={[styles.inputField, { backgroundColor: theme ? GREY_500 : 'white' }]}>
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <Icon name={IconName.Albums} size={24} iconSet="ionicons" />
               <TextInput
                 value={inputValue}
                 onChangeText={(text) => setInputValue(text)}
-                style={styles.inputText}
+                style={[styles.inputText, { color: theme ? WHITE_100 : GREY_500 }]}
+                placeholderTextColor={theme ? WHITE_200 : GREY_500}
                 placeholder="Other amenities"
               />
             </View>
@@ -171,7 +200,6 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
             type={ButtonType.SECONDARY}
             onPress={() => {
               onFormSubmit();
-              console.log('submitted');
             }}
           />
           <Button
@@ -180,7 +208,6 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
             size={BUTTON_SIZES.SM}
             type={ButtonType.PRIMARY}
             onPress={() => {
-              console.log("it's gone");
               navigation.goBack();
             }}
           />
