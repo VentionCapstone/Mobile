@@ -43,7 +43,7 @@ export type SelectedAmenities = {
 };
 
 export const DEFAULT_AMENITIES_STATE: SelectedAmenities = {
-  wifi: false,
+  hasWifi: false,
   hasTv: false,
   hasAirConditioning: false,
   hasKitchen: false,
@@ -61,8 +61,8 @@ export const DEFAULT_AMENITIES_STATE: SelectedAmenities = {
 } as const;
 
 export const AMENITIES_CHIP_DATA: AmenitiesComponentData = {
-  wifi: {
-    name: 'wifi',
+  hasWifi: {
+    name: 'hasWifi',
     text: 'Has Wi-Fi',
     icon: IconName.Wifi,
     iconSet: 'ionicons',
