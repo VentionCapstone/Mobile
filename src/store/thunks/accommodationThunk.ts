@@ -28,12 +28,12 @@ export const updateAccommodationThunk: AsyncThunkPayloadCreator<
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const { accommodationId, accommodation, address } = params;
+    const { accommodationId, accommodation } = params;
 
-    const response = await axiosInstance.put(ENDPOINTS.updateAccomodation(accommodationId), {
-      accommodation,
-      address,
-    });
+    const response = await axiosInstance.put(
+      ENDPOINTS.updateAccomodation(accommodationId),
+      accommodation
+    );
 
     return response.data;
   } catch (error: any) {
@@ -55,30 +55,23 @@ export const deleteAccommodationThunk: AsyncThunkPayloadCreator<
   }
 };
 
-export const addAccommodationImageThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<Accommodation>,
+export const uploadAccommodationImagesThunk: AsyncThunkPayloadCreator<
   any,
+  { accommodationId: string; formData: FormData },
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const { accommodationId, imageData } = params;
-
-    const formData = new FormData();
-    formData.append('file', imageData as any);
+    const { accommodationId, formData } = params;
 
     const response = await axiosInstance.post(
       ENDPOINTS.uploadAccomodationImage(accommodationId),
       formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
+      { headers: { 'Content-Type': 'multipart/form-data' } }
     );
 
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response?.data);
   }
 };
 
@@ -98,11 +91,11 @@ export const getAccommodationThunk: AsyncThunkPayloadCreator<
 
 export const getMyAccommodationsThunk: AsyncThunkPayloadCreator<
   ApiSuccessResponseType<Accommodation[]>,
-  undefined,
+  string,
   { rejectValue: ApiErrorResponseType }
-> = async (_, { rejectWithValue }) => {
+> = async (userId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(ENDPOINTS.getMyAccommodations);
+    const response = await axiosInstance.get(ENDPOINTS.getMyAccommodations(userId));
 
     return response.data;
   } catch (error: any) {

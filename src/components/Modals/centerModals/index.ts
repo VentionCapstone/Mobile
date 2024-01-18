@@ -1,3 +1,4 @@
 import DateTimePicker from './DatePicker/DatePicker';
+import Loader from './Loader/Loader';
 
-export { DateTimePicker };
+export { DateTimePicker, Loader };

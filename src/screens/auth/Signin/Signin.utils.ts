@@ -8,7 +8,7 @@ const validateForm = (values: SignInParams): Record<string, string> => {
     errors.email = 'Enter valid email';
   }
   if (!isPasswordValid(values.password)) {
-    errors.password = `Password should be at least ${PASSWORD_MIN_LENGTH} characters long`;
+    errors.password = `Password must contain at least ${PASSWORD_MIN_LENGTH} characters, numbers, and symbols.`;
   }
 
   return errors;

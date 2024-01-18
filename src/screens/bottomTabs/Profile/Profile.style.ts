@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { title1 } from 'src/styles';
+import { title1, title2, title3 } from 'src/styles';
+import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -8,6 +9,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
     borderBottomWidth: 1,
+  },
+  scrollContainer: {
+    paddingVertical: 10,
+    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    gap: 10,
+  },
+  createAirBnbCard: {
+    width: '95%',
+    height: 180,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginBottom: 10,
+    flexDirection: 'row',
+    padding: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  createAirBnbTitleContainer: {
+    width: '60%',
+  },
+  createAirBnbTitle: {
+    ...title2,
+  },
+  createAirBnbSubTitle: {
+    ...title3,
   },
   leftContainer: {
     flexDirection: 'row',
@@ -19,6 +46,10 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     marginLeft: 10,
+  },
+  image: {
+    width: 120,
+    height: 100,
   },
 });
 

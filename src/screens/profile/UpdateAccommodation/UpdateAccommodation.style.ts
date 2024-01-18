@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { paragraph1 } from 'src/styles';
+import { paragraph1, title1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  title: {
+    ...title1,
   },
   textArea: {
     textAlignVertical: 'top',
@@ -19,11 +22,12 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
   },
-  inputRow: {
-    flexDirection: 'row',
+  inputColumn: {
+    width: '100%',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 4,
+    gap: 10,
   },
   availabilityText: {
     fontSize: 16,

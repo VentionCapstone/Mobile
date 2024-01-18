@@ -1,8 +1,7 @@
 import Account from './Account/Account';
-import AddAccommodationImage from './AddAccommodationImage/AddAccommodationImage';
+import AddAccommodationImage from './createAccomodation/AccommodationImage/AccommodationImage';
 import ChangeLanguage from './ChangeLanguage/ChangeLanguage';
 import ChangeTheme from './ChangeTheme/ChangeTheme';
-import CreateAccommodation from './CreateAccommodation/CreateAccommodation';
 import CreateProfile from './CreateAccount/CreateAccount';
 import MyAccommodations from './MyAccommodations/MyAccommodations';
 import NotificationSettings from './NotificationSettings/NotificationSettings';
@@ -15,7 +14,6 @@ export {
   AddAccommodationImage,
   ChangeLanguage,
   ChangeTheme,
-  CreateAccommodation,
   CreateProfile,
   MyAccommodations,
   NotificationSettings,
@@ -23,3 +21,5 @@ export {
   UpdateAccommodation,
   UpdateProfile,
 };
+
+export * from './createAccomodation';

@@ -59,7 +59,7 @@ const UpdateAccount = () => {
     country: selectedCountry || '',
   });
 
-  const profileId = userDetails?.profile?.id;
+  const profileId = userDetails?.profile?.id!;
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
@@ -109,7 +109,7 @@ const UpdateAccount = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formValues, formInteracted]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
@@ -132,6 +132,7 @@ const UpdateAccount = () => {
 
         <Input
           error={validationErrors.firstName}
+          label="Firstname"
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
           onChangeText={(text: string) => handleInputChange('firstName', text)}
@@ -141,6 +142,7 @@ const UpdateAccount = () => {
 
         <Input
           error={validationErrors.lastName}
+          label="Lastname"
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
           onChangeText={(text: string) => handleInputChange('lastName', text)}
@@ -149,6 +151,7 @@ const UpdateAccount = () => {
         />
 
         <PhoneNumberInput
+          label="Phone number"
           error={validationErrors.phoneNumber}
           onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           value={formValues.phoneNumber}
@@ -177,7 +180,9 @@ const UpdateAccount = () => {
           onPress={() => setCountrySelectorVisible(true)}
           style={[styles.selectorButton, { backgroundColor: colors.secondaryBackground }]}
         >
-          <Text style={styles.selectedCountry}>{selectedCountry}</Text>
+          <Text style={styles.selectedCountry}>
+            {selectedCountry ? selectedCountry : 'Select country'}
+          </Text>
           <Icon name={IconName.ChevronDown} size={20} />
         </TouchableOpacity>
         <CountryPicker

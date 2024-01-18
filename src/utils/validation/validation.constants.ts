@@ -15,3 +15,6 @@ export const AREA_MAX_LENGTH = 10;
 export const PRICE_MAX_LENGTH = 9;
 export const ROOMS_MAX_LENGTH = 2;
 export const PEOPLE_MAX_LENGTH = 2;
+
+export const ACCOMMODATION_TITLE_MAX_LENGTH = 32;
+export const ACCOMMODATION_DESCRIPTION_MAX_LENGTH = 500;

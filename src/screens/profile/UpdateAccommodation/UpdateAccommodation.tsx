@@ -2,25 +2,18 @@ import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import {
-  AddressSelector,
-  DateTimePicker,
-  Input,
-  NumericInput,
-  showAlert,
-  Text,
-} from 'src/components';
+import { DateTimePicker, Input, NumericInput, showAlert } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationLoader } from 'src/store/selectors';
+import { getMyAccommodationsLoader } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { Accommodation, AddressValues, UpdateAccommodationValues } from 'src/types';
+import { Accommodation, UpdateAccommodationValues } from 'src/types';
 import { AREA_MAX_LENGTH, PEOPLE_MAX_LENGTH, PRICE_MAX_LENGTH, ROOMS_MAX_LENGTH } from 'src/utils';
 
-import { styles } from '../CreateAccommodation/CreateAccommodation.style';
-import { validateForm } from '../CreateAccommodation/CreateAccommodation.utils';
+import { styles } from './UpdateAccommodation.style';
+import { validateForm } from './UpdateAccommodation.utils';
 
 interface Props {
   route: Route<'UpdateAccommodation', { accommodation: Accommodation }>;
@@ -28,31 +21,35 @@ interface Props {
 
 const UpdateAccommodation = ({ route }: Props) => {
   const dispatch = useAppDispatch();
-  const loading = useSelector(getAccommodationLoader);
+  const loading = useSelector(getMyAccommodationsLoader);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const existingAccommodation = route.params.accommodation;
-  const existingAddress = existingAccommodation.address;
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [addressValues, setAddressValues] = useState<AddressValues | undefined>(existingAddress);
   const [formValues, setFormValues] = useState<UpdateAccommodationValues>({
+    title: existingAccommodation.title,
     allowedNumberOfPeople: existingAccommodation.allowedNumberOfPeople,
     availableTo: existingAccommodation.availableTo,
     availableFrom: existingAccommodation.availableFrom,
     description: existingAccommodation.description,
     numberOfRooms: existingAccommodation.numberOfRooms,
     price: existingAccommodation.price,
+    timezoneOffset: existingAccommodation.timezoneOffset,
     previewImgUrl: existingAccommodation.previewImgUrl,
     squareMeters: existingAccommodation.squareMeters,
     thumbnailUrl: existingAccommodation.thumbnailUrl,
+    address: {
+      country: existingAccommodation.address.country,
+      city: existingAccommodation.address.city,
+      street: existingAccommodation.address.street,
+      zipCode: existingAccommodation.address.zipCode,
+      latitude: existingAccommodation.address.latitude,
+      longitude: existingAccommodation.address.longitude,
+    },
   });
 
   const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
-
-  const handleSelectAddressValues = (values: AddressValues) => {
-    setAddressValues(values);
-  };
 
   const handleSelectAvailableFrom = (availableFrom: string) => {
     setFormValues({ ...formValues, availableFrom });
@@ -76,18 +73,10 @@ const UpdateAccommodation = ({ route }: Props) => {
     const errors = validateForm(formValues);
 
     if (Object.keys(errors).length === 0) {
-      if (addressValues === undefined) {
-        showAlert('error', {
-          message: 'You should add accommodation address',
-        });
-        return;
-      }
-
       const response = await dispatch(
         AsyncThunks.updateAccommodation({
           accommodationId: existingAccommodation.id,
           accommodation: formValues,
-          address: addressValues,
         })
       );
 
@@ -114,11 +103,10 @@ const UpdateAccommodation = ({ route }: Props) => {
   }, []);
 
   return (
-    <ScreenTemplate headerShown={false}>
+    <ScreenTemplate>
       <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
-        <View style={styles.inputRow}>
+        <View style={styles.inputColumn}>
           <DateTimePicker
-            width={180}
             label="Available from"
             initialValue={existingAccommodation.availableFrom}
             onDateChange={handleSelectAvailableFrom}
@@ -126,7 +114,6 @@ const UpdateAccommodation = ({ route }: Props) => {
           />
 
           <DateTimePicker
-            width={180}
             label="Available to"
             initialValue={existingAccommodation.availableTo}
             onDateChange={handleSelectAvailableTo}
@@ -134,25 +121,21 @@ const UpdateAccommodation = ({ route }: Props) => {
           />
         </View>
 
-        <View style={styles.inputRow}>
-          <NumericInput
-            label="Price [$]"
-            style={{ width: 180 }}
-            maxLength={PRICE_MAX_LENGTH}
-            value={formValues.price}
-            onChangeText={(value: number | null) => handleInputChange('price', value)}
-            error={validationErrors.price}
-          />
+        <NumericInput
+          label="Price [$]"
+          maxLength={PRICE_MAX_LENGTH}
+          value={formValues.price}
+          onChangeText={(value: number | null) => handleInputChange('price', value)}
+          error={validationErrors.price}
+        />
 
-          <NumericInput
-            label="Rooms"
-            style={{ width: 180 }}
-            maxLength={ROOMS_MAX_LENGTH}
-            value={formValues.numberOfRooms}
-            onChangeText={(value: number | null) => handleInputChange('numberOfRooms', value)}
-            error={validationErrors.numberOfRooms}
-          />
-        </View>
+        <NumericInput
+          label="Rooms"
+          maxLength={ROOMS_MAX_LENGTH}
+          value={formValues.numberOfRooms}
+          onChangeText={(value: number | null) => handleInputChange('numberOfRooms', value)}
+          error={validationErrors.numberOfRooms}
+        />
 
         <NumericInput
           label="Area [m²]"
@@ -169,9 +152,6 @@ const UpdateAccommodation = ({ route }: Props) => {
           onChangeText={(value: number | null) => handleInputChange('allowedNumberOfPeople', value)}
           error={validationErrors.allowedNumberOfPeople}
         />
-
-        <Text style={styles.addressLabel}>Address</Text>
-        <AddressSelector onSelect={handleSelectAddressValues} existingAddress={existingAddress} />
 
         <Input
           multiline

@@ -8,7 +8,13 @@ export type RootStackParamList = {
   VerifyEmail: { email: string };
 
   Account: undefined;
-  AddAccommodationImage: { accommodationId: string };
+  AccommodationImage: { accommodationId: string };
+  AccommodationAddress: any;
+  AccommodationInfos: { accommodation: any };
+  AccommodationDescription: { accommodation: any };
+  AccommodationTitle: { accommodation: any };
+  AccommodationPriceAndArea: { accommodation: any };
+  AccommodationDate: { accommodation: any };
   CreateAccommodation?: { userId: string };
   CreateProfile: undefined;
   ChangeTheme: undefined;

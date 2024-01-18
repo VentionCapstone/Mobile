@@ -11,12 +11,13 @@ import Text from '../../Text/Text';
 import { CountryPicker } from '../../modals/bottomModals';
 
 type Props = {
+  label?: string;
+  error?: string;
   onChangeText: (phoneNumber: string) => void;
   value: string;
-  error?: string;
 };
 
-const PhoneNumberInput = ({ onChangeText, error, value }: Props) => {
+const PhoneNumberInput = ({ label, error, onChangeText, value }: Props) => {
   const colors = useSelector(getColors);
   const phoneInputRef = useRef<PhoneInput>(null);
   const [initialCountry, setInitialCountry] = useState<string>('uz');
@@ -48,7 +49,9 @@ const PhoneNumberInput = ({ onChangeText, error, value }: Props) => {
   }, [value]);
 
   return (
-    <View>
+    <View style={styles.container}>
+      {label && <Text style={styles.label}>{label}</Text>}
+
       <PhoneInput
         ref={phoneInputRef}
         style={[styles.phoneInputContainer, { backgroundColor: colors.secondaryBackground }]}

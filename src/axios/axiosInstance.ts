@@ -11,6 +11,7 @@ const BASE_URL = 'http://192.168.43.129:3000/api';
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
+  timeout: 10000,
 });
 
 const endpointsWithoutToken = [ENDPOINTS.signin, ENDPOINTS.signup];
@@ -24,7 +25,7 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
-    if (config.url && config.url.includes(ENDPOINTS.signout) && refreshToken) {
+    if (config.url && config.url === ENDPOINTS.signout && refreshToken) {
       config.headers['refresh-token'] = refreshToken;
     }
 
@@ -42,11 +43,13 @@ axiosInstance.interceptors.response.use(
 
     const { data } = response;
 
-    if (config.url === ENDPOINTS.refresh && data?.error?.statusCode === 401) {
+    if (config.url.includes('/refresh') && data?.error?.statusCode === 401) {
       await SecureStore.deleteItemAsync(SecureStorageKey.REFRESH_TOKEN);
+
+      return;
     }
 
-    if (data?.error?.statusCode === 401 && data?.error?.message === 'Unauthorized') {
+    if (data?.error?.statusCode === 401 && !config.url.includes('/refresh')) {
       if (!config.retry) {
         config.retry = true;
 

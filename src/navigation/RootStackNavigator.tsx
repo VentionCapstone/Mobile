@@ -7,7 +7,6 @@ import { Button, ButtonType, NavigationHeader } from 'src/components';
 import {
   Account,
   AddAccommodationImage,
-  CreateAccommodation,
   CreateProfile,
   ChangeLanguage,
   ChangeTheme,
@@ -19,8 +18,15 @@ import {
   VerifyEmail,
   NotificationSettings,
   Notifications,
+  AccommodationAddress,
+  AccommodationInfos,
+  AccommodationTitle,
+  AccommodationDescription,
+  AccommodationPriceAndArea,
+  AccommodationDate,
+  AccommodationImage,
 } from 'src/screens';
-import { getIsDarkMode } from 'src/store/selectors';
+import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
@@ -31,6 +37,7 @@ const RootRouterStack = createStackNavigator<RootStackParamList>();
 const RootStackNavigator = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const isDark = useSelector(getIsDarkMode);
+  const isGuestAccount = useSelector(getIsGuestAccount);
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
@@ -39,9 +46,11 @@ const RootStackNavigator = () => {
 
   return (
     <RootRouterStack.Navigator>
-      <RootRouterStack.Group screenOptions={{ headerShown: false }}>
-        <RootRouterStack.Screen name="Main" component={BottomTabNavigation} />
-      </RootRouterStack.Group>
+      <RootRouterStack.Screen
+        name="Main"
+        component={BottomTabNavigation}
+        options={{ headerShown: false }}
+      />
 
       <RootRouterStack.Screen
         name="Signin"
@@ -92,32 +101,26 @@ const RootStackNavigator = () => {
             <NavigationHeader
               title="My Accommodations"
               rightComponent={
-                <Button
-                  title="create"
-                  height={35}
-                  size={BUTTON_SIZES.SM}
-                  type={ButtonType.SECONDARY}
-                  onPress={() => navigation.navigate('CreateAccommodation')}
-                />
+                <>
+                  {!isGuestAccount && (
+                    <Button
+                      title="create"
+                      height={35}
+                      size={BUTTON_SIZES.SM}
+                      type={ButtonType.SECONDARY}
+                      onPress={() => navigation.navigate('AccommodationAddress')}
+                    />
+                  )}
+                </>
               }
             />
           ),
         }}
       />
       <RootRouterStack.Screen
-        name="CreateAccommodation"
-        component={CreateAccommodation}
-        options={{ header: () => <NavigationHeader title="Create Accommodation" /> }}
-      />
-      <RootRouterStack.Screen
         name="UpdateAccommodation"
         component={UpdateAccommodation}
         options={{ header: () => <NavigationHeader title="Edit Accommodation" /> }}
-      />
-      <RootRouterStack.Screen
-        name="AddAccommodationImage"
-        component={AddAccommodationImage}
-        options={{ header: () => <NavigationHeader /> }}
       />
       <RootRouterStack.Screen
         name="NotificationSettings"
@@ -129,6 +132,22 @@ const RootStackNavigator = () => {
         component={Notifications}
         options={{ header: () => <NavigationHeader title="Notifications" /> }}
       />
+
+      <RootRouterStack.Group screenOptions={{ headerShown: false }}>
+        <RootRouterStack.Screen name="AccommodationAddress" component={AccommodationAddress} />
+        <RootRouterStack.Screen name="AccommodationInfos" component={AccommodationInfos} />
+        <RootRouterStack.Screen name="AccommodationTitle" component={AccommodationTitle} />
+        <RootRouterStack.Screen name="AccommodationDate" component={AccommodationDate} />
+        <RootRouterStack.Screen name="AccommodationImage" component={AccommodationImage} />
+        <RootRouterStack.Screen
+          name="AccommodationPriceAndArea"
+          component={AccommodationPriceAndArea}
+        />
+        <RootRouterStack.Screen
+          name="AccommodationDescription"
+          component={AccommodationDescription}
+        />
+      </RootRouterStack.Group>
     </RootRouterStack.Navigator>
   );
 };
