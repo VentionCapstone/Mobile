@@ -64,8 +64,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 5,
     height: 50,
-    width: '90%',
-    paddingHorizontal: 15,
+    width: '100%',
+    paddingHorizontal: 10,
     borderRadius: 15,
   },
   errorText: {

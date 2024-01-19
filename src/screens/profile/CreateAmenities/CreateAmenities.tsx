@@ -64,7 +64,8 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
 
   const addOtherAmenities = () => {
     const trimmedValue = inputValue.trim();
-    setAmenityError(amenityFormValidation(trimmedValue));
+    const error = amenityFormValidation(trimmedValue);
+    setAmenityError(error);
     if (!amenityError.error) {
       setOtherAmenities((prevAmenity) => [...prevAmenity, inputValue]);
       scrollToBottom();

@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
-import { ExploreHeader, NavigationHeader } from 'src/components';
+import { ExploreHeader } from 'src/components';
+import BottomTabsHeader from 'src/components/BottomTabsHeader/BottomTabsHeader';
 import { Booking, Explore, Profile, Wishlist } from 'src/screens';
 import { getColors, getIsLoggedIn } from 'src/store/selectors';
 
@@ -27,21 +28,21 @@ const BottomTabNavigator = () => {
         name="Explore"
         component={Explore}
         options={{
-          headerShown: false,
+          header: () => <ExploreHeader />,
         }}
       />
       <BottomTab.Screen
         name="Wishlist"
         component={Wishlist}
         options={{
-          header: () => <NavigationHeader title="Wishlist" showBackButton={false} />,
+          header: () => <BottomTabsHeader title="Wishlist" />,
         }}
       />
       <BottomTab.Screen
         name="Booking"
         component={Booking}
         options={{
-          header: () => <NavigationHeader title="Booking" showBackButton={false} />,
+          header: () => <BottomTabsHeader title="Booking" />,
         }}
       />
       <BottomTab.Screen

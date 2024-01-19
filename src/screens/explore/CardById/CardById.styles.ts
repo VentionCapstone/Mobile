@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BLACK, WHITE } from 'src/styles';
+import { BLACK } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -19,16 +19,16 @@ export const styles = StyleSheet.create({
     width: 400,
   },
   icon: {
+    flexDirection: 'row',
     borderRadius: 100,
-    borderWidth: 0.5,
-    width: 34,
-    height: 34,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
   imageContainer: {
     width: '100%',
-    height: 300,
+    height: 250,
     backgroundColor: BLACK,
   },
 });

@@ -25,7 +25,7 @@ const ExploreHeader = () => {
   }
 
   return (
-    <View>
+    <ThemedView>
       <StatusBar backgroundColor={colors ? BLACK : WHITE} />
       <SafeAreaView style={styles.container}>
         <TouchableOpacity onPress={() => setSearchModalVisible(true)}>
@@ -45,7 +45,7 @@ const ExploreHeader = () => {
       </SafeAreaView>
       <SearchModal modalOpen={searchModalVisible} changeOpen={handleSearchModalChange} />
       <FilterModal modalOpen={filterModalVisible} changeOpen={handleFilterModalChange} />
-    </View>
+    </ThemedView>
   );
 };
 

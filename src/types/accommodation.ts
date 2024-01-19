@@ -1,3 +1,5 @@
+import { Amenities } from './amenities';
+
 export interface CreateAccommodationValues {
   addressId?: string;
   thumbnailUrl?: string;
@@ -55,4 +57,27 @@ export interface ExploreListItem {
   allowedNumberOfPeople: number;
   price: number;
   address: AdressListingValues;
+}
+
+export interface Media {
+  imageUrl: string;
+  thumbnailUrl: string;
+  accommodationId: string;
+}
+
+export interface AccommodationFullView {
+  id: string;
+  thumbnailUrl: string;
+  previewImgUrl: string;
+  squareMeters: number;
+  numberOfRooms: number;
+  price: number;
+  allowedNumberOfPeople: number;
+  availability: true;
+  availableFrom: string;
+  availableTo: string;
+  description: string;
+  address: AddressValues;
+  amenities: Amenities;
+  media: Media[];
 }

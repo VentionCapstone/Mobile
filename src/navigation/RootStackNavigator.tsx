@@ -21,12 +21,12 @@ import {
   Notifications,
   CreateAmenities,
 } from 'src/screens';
+import CardById from 'src/screens/explore/CardById/CardById';
 import { getIsDarkMode } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
 import { RootStackParamList } from './RootStackNavigator.types';
-import CardById from 'src/screens/explore/CardById/CardById';
 
 const RootRouterStack = createStackNavigator<RootStackParamList>();
 

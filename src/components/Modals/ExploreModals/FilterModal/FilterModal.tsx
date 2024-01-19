@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux';
 import { Button, ButtonType, Icon, Input, Text, ThemedView } from 'src/components';
 import { getIsDarkMode } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, WHITE_100, WHITE_200 } from 'src/styles';
-import { IconName, OrderOptions } from 'src/types';
+import { IconName, ListingSearchValues, OrderOptions } from 'src/types';
 
 import { styles } from './FilterModal.styles';
+import { DEFAULT_FILTER_VALUES } from './FilterModal.utils';
 
 type FilterModalProps = {
   modalOpen: boolean;
@@ -16,25 +17,20 @@ type FilterModalProps = {
 
 const FilterModal = ({ modalOpen, changeOpen }: FilterModalProps) => {
   const colors = useSelector(getIsDarkMode);
-  const [orderByPrice, setOrderByPrice] = useState<OrderOptions>(null);
-  const [orderByRooms, setOrderByRooms] = useState<OrderOptions>(null);
-  const [orderByPeople, setOrderByPeople] = useState<OrderOptions>(null);
+  const [formValues, setFormValues] = useState<ListingSearchValues>(DEFAULT_FILTER_VALUES);
 
-  const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(0);
-  const [minRooms, setMinRooms] = useState<number>(0);
-  const [maxRooms, setMaxRooms] = useState<number>(0);
-  const [minPeople, setMinPeople] = useState<number>(0);
-  const [maxPeople, setMaxPeople] = useState<number>(0);
+  const changeOrder = (key: keyof typeof formValues, val: OrderOptions) => {
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      [key]: val,
+    }));
+  };
 
-  const changeOrderByPrice = (val: OrderOptions) => {
-    setOrderByPrice(val);
-  };
-  const changeOrderByRooms = (val: OrderOptions) => {
-    setOrderByRooms(val);
-  };
-  const changeOrderByPeople = (val: OrderOptions) => {
-    setOrderByPeople(val);
+  const handleInputChange = (key: keyof typeof formValues, value: number) => {
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      [key]: value,
+    }));
   };
 
   return (
@@ -70,27 +66,41 @@ const FilterModal = ({ modalOpen, changeOpen }: FilterModalProps) => {
               <Text style={styles.filterTitle}>Order by Price</Text>
             </View>
             <View style={styles.filterContentContent}>
-              <Input style={styles.input} placeholder="Min" keyboardType="numeric" />
-              <Input style={styles.input} placeholder="Max" keyboardType="numeric" />
+              <Input
+                style={styles.input}
+                placeholder="Min"
+                keyboardType="numeric"
+                onChangeText={(value) => handleInputChange('minPrice', Number(value))}
+              />
+              <Input
+                style={styles.input}
+                placeholder="Max"
+                keyboardType="numeric"
+                onChangeText={(value) => handleInputChange('maxPrice', Number(value))}
+              />
             </View>
             <View style={styles.filterContentContent}>
               <Button
                 title="none"
                 size={BUTTON_SIZES.MD}
-                type={orderByPrice === null ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByPrice(null)}
+                type={formValues.orderByPrice === null ? ButtonType.SECONDARY : ButtonType.TERTIARY}
+                onPress={() => changeOrder('orderByPrice', null)}
               />
               <Button
                 title="Asc"
                 size={BUTTON_SIZES.MD}
-                type={orderByPrice === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByPrice('asc')}
+                type={
+                  formValues.orderByPrice === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY
+                }
+                onPress={() => changeOrder('orderByPrice', 'asc')}
               />
               <Button
                 title="Desc"
                 size={BUTTON_SIZES.MD}
-                type={orderByPrice === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByPrice('desc')}
+                type={
+                  formValues.orderByPrice === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY
+                }
+                onPress={() => changeOrder('orderByPrice', 'desc')}
               />
             </View>
           </View>
@@ -100,27 +110,41 @@ const FilterModal = ({ modalOpen, changeOpen }: FilterModalProps) => {
               <Text style={styles.filterTitle}>Order by number of rooms</Text>
             </View>
             <View style={styles.filterContentContent}>
-              <Input style={styles.input} placeholder="Min" keyboardType="numeric" />
-              <Input style={styles.input} placeholder="Max" keyboardType="numeric" />
+              <Input
+                style={styles.input}
+                placeholder="Min"
+                keyboardType="numeric"
+                onChangeText={(value) => handleInputChange('minRooms', Number(value))}
+              />
+              <Input
+                style={styles.input}
+                placeholder="Max"
+                keyboardType="numeric"
+                onChangeText={(value) => handleInputChange('maxRooms', Number(value))}
+              />
             </View>
             <View style={styles.filterContentContent}>
               <Button
                 title="none"
                 size={BUTTON_SIZES.MD}
-                type={orderByRooms === null ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByRooms(null)}
+                type={formValues.orderByRooms === null ? ButtonType.SECONDARY : ButtonType.TERTIARY}
+                onPress={() => changeOrder('orderByRooms', null)}
               />
               <Button
                 title="Asc"
                 size={BUTTON_SIZES.MD}
-                type={orderByRooms === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByRooms('asc')}
+                type={
+                  formValues.orderByRooms === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY
+                }
+                onPress={() => changeOrder('orderByRooms', 'asc')}
               />
               <Button
                 title="Desc"
                 size={BUTTON_SIZES.MD}
-                type={orderByRooms === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByRooms('desc')}
+                type={
+                  formValues.orderByRooms === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY
+                }
+                onPress={() => changeOrder('orderByRooms', 'desc')}
               />
             </View>
           </View>
@@ -130,27 +154,43 @@ const FilterModal = ({ modalOpen, changeOpen }: FilterModalProps) => {
               <Text style={styles.filterTitle}>Order by number of people</Text>
             </View>
             <View style={styles.filterContentContent}>
-              <Input style={styles.input} placeholder="Min" keyboardType="numeric" />
-              <Input style={styles.input} placeholder="Max" keyboardType="numeric" />
+              <Input
+                style={styles.input}
+                placeholder="Min"
+                keyboardType="numeric"
+                onChangeText={(value) => handleInputChange('minPeople', Number(value))}
+              />
+              <Input
+                style={styles.input}
+                placeholder="Max"
+                keyboardType="numeric"
+                onChangeText={(value) => handleInputChange('maxPeople', Number(value))}
+              />
             </View>
             <View style={styles.filterContentContent}>
               <Button
                 title="none"
                 size={BUTTON_SIZES.MD}
-                type={orderByPeople === null ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByPeople(null)}
+                type={
+                  formValues.orderByPeople === null ? ButtonType.SECONDARY : ButtonType.TERTIARY
+                }
+                onPress={() => changeOrder('orderByPeople', null)}
               />
               <Button
                 title="Asc"
                 size={BUTTON_SIZES.MD}
-                type={orderByPeople === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByPeople('asc')}
+                type={
+                  formValues.orderByPeople === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY
+                }
+                onPress={() => changeOrder('orderByPeople', 'asc')}
               />
               <Button
                 title="Desc"
                 size={BUTTON_SIZES.MD}
-                type={orderByPeople === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-                onPress={() => changeOrderByPeople('desc')}
+                type={
+                  formValues.orderByPeople === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY
+                }
+                onPress={() => changeOrder('orderByPeople', 'desc')}
               />
             </View>
           </View>
