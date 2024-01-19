@@ -18,7 +18,7 @@ import {
   DEFAULT_AMENITIES_STATE,
   AMENITIES_CHIP_DATA,
   SelectedAmenities,
-  AmenitiesErrorHandler,
+  AmenitiesErrorType,
   amenityFormValidation,
   ERROR_NONE,
 } from './CreateAmenities.utils';
@@ -37,7 +37,7 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const theme = useSelector(getIsDarkMode);
 
-  const [amenityError, setAmenityError] = useState<AmenitiesErrorHandler>(ERROR_NONE);
+  const [amenityError, setAmenityError] = useState<AmenitiesErrorType>(ERROR_NONE);
   const [selectedAmenities, setSelectedAmenities] =
     useState<SelectedAmenities>(DEFAULT_AMENITIES_STATE);
   const [otherAmenities, setOtherAmenities] = useState<string[]>([]);
@@ -52,12 +52,15 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
     }
   };
 
-  const toggleAmenity = (amenityKey: string) => {
-    setSelectedAmenities((prevSelectedAmenities: SelectedAmenities) => ({
-      ...prevSelectedAmenities,
-      [amenityKey]: !prevSelectedAmenities[amenityKey],
-    }));
-  };
+  const toggleAmenity = useCallback(
+    (amenityKey: string) => {
+      setSelectedAmenities((prevSelectedAmenities: SelectedAmenities) => ({
+        ...prevSelectedAmenities,
+        [amenityKey]: !prevSelectedAmenities[amenityKey],
+      }));
+    },
+    [setSelectedAmenities]
+  );
 
   const addOtherAmenities = () => {
     const trimmedValue = inputValue.trim();
@@ -77,7 +80,7 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
     });
   }, []);
 
-  const renderAdditionalChips = useMemo(() => {
+  const additionalChips = useMemo(() => {
     return otherAmenities.map((item, index) => (
       <Chip
         key={index}
@@ -119,7 +122,8 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
       const { data } = response.payload as ApiSuccessResponseType<AccommodationAmenitiesResponse>;
       const { otherAmenities, id, accomodationId, ...rest } = data;
       setSelectedAmenities(rest);
-      const otherAmenitiesSeparated = otherAmenities.split(', ');
+      const splitter = ', ';
+      const otherAmenitiesSeparated = otherAmenities.split(splitter);
       setOtherAmenities(otherAmenitiesSeparated);
     } else {
       scrollToBottom();
@@ -166,7 +170,7 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
             </Text>
           </View>
           <View style={styles.rowContainer}>
-            {renderAdditionalChips}
+            {additionalChips}
             {otherAmenities.length % 2 === 1 && <View style={{ width: 160 }} />}
           </View>
           {amenityError.error && (
