@@ -9,7 +9,8 @@ import styles from './ExploreHeader.styles';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
 import ThemedView from '../ThemedView/ThemedView';
-import { FilterModal, SearchModal } from '../modals/ExploreModals';
+import FilterModal from '../modals/ExploreModals/FilterModal/FilterModal';
+import SearchModal from '../modals/ExploreModals/SearchModal/SearchModal';
 
 const ExploreHeader = () => {
   const colors = useSelector(getIsDarkMode);

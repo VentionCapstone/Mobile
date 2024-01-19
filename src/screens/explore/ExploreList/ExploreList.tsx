@@ -8,8 +8,10 @@ import {
   ViewStyle,
   View,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Card } from 'src/components';
 import { useAppDispatch } from 'src/store';
+import { getFilterSettings } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { AdressListingValues } from 'src/types';
 import { getAccommodationsListQuery } from 'src/utils';
@@ -30,6 +32,7 @@ interface ExploreListProps {
 
 const ExploreList = ({ style }: ExploreListProps) => {
   const dispatch = useAppDispatch();
+  const filter = useSelector(getFilterSettings);
   const [data, setData] = useState<CardProps[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -38,7 +41,9 @@ const ExploreList = ({ style }: ExploreListProps) => {
   const fetchData = useCallback(async () => {
     try {
       const response = await dispatch(
-        AsyncThunks.getListOfAccommodations(getAccommodationsListQuery({ page: pageNumber }))
+        AsyncThunks.getListOfAccommodations(
+          getAccommodationsListQuery({ ...filter, page: pageNumber })
+        )
       );
       if (response.payload?.success) {
         setData((prevData) => [...prevData, ...(response.payload?.data as CardProps[])]);
@@ -49,7 +54,7 @@ const ExploreList = ({ style }: ExploreListProps) => {
       setLoading(false);
       setIsRefreshing(false);
     }
-  }, [pageNumber, dispatch]);
+  }, [filter, pageNumber, dispatch]);
 
   const handleRefresh = useCallback(() => {
     setIsRefreshing(true);
@@ -81,7 +86,7 @@ const ExploreList = ({ style }: ExploreListProps) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData, filter]);
 
   return (
     <ScrollView
@@ -102,73 +107,8 @@ const ExploreList = ({ style }: ExploreListProps) => {
           country: 'Country',
         }}
       />
-      <Card
-        id="123456"
-        thumbnailUrl="https://example.com/image.jpg"
-        squareMeters={100}
-        numberOfRooms={3}
-        allowedNumberOfPeople={4}
-        price={2000}
-        address={{
-          street: '123 Main St',
-          city: 'City',
-          country: 'Country',
-        }}
-      />
-      <Card
-        id="123456"
-        thumbnailUrl="https://example.com/image.jpg"
-        squareMeters={100}
-        numberOfRooms={3}
-        allowedNumberOfPeople={4}
-        price={2000}
-        address={{
-          street: '123 Main St',
-          city: 'City',
-          country: 'Country',
-        }}
-      />
-      <Card
-        id="123456"
-        thumbnailUrl="https://example.com/image.jpg"
-        squareMeters={100}
-        numberOfRooms={3}
-        allowedNumberOfPeople={4}
-        price={2000}
-        address={{
-          street: '123 Main St',
-          city: 'City',
-          country: 'Country',
-        }}
-      />
-      <Card
-        id="123456"
-        thumbnailUrl="https://example.com/image.jpg"
-        squareMeters={100}
-        numberOfRooms={3}
-        allowedNumberOfPeople={4}
-        price={2000}
-        address={{
-          street: '123 Main St',
-          city: 'City',
-          country: 'Country',
-        }}
-      />
-      <Card
-        id="123456"
-        thumbnailUrl="https://example.com/image.jpg"
-        squareMeters={100}
-        numberOfRooms={3}
-        allowedNumberOfPeople={4}
-        price={2000}
-        address={{
-          street: '123 Main St',
-          city: 'City',
-          country: 'Country',
-        }}
-      />
-      {renderCards}
       {loading && <ActivityIndicator style={styles.loading} />}
+      {renderCards}
       <View style={{ height: 40 }} />
     </ScrollView>
   );

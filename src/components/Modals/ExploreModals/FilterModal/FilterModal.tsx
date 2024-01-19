@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { Modal, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ButtonType, Icon, Input, Text, ThemedView } from 'src/components';
+import { useAppDispatch } from 'src/store';
 import { getIsDarkMode } from 'src/store/selectors';
+import { accommodationListActions } from 'src/store/slices';
 import { BLACK, BUTTON_SIZES, WHITE_100, WHITE_200 } from 'src/styles';
 import { IconName, ListingSearchValues, OrderOptions } from 'src/types';
 
@@ -17,6 +19,7 @@ type FilterModalProps = {
 
 const FilterModal = ({ modalOpen, changeOpen }: FilterModalProps) => {
   const colors = useSelector(getIsDarkMode);
+  const dispatch = useAppDispatch();
   const [formValues, setFormValues] = useState<ListingSearchValues>(DEFAULT_FILTER_VALUES);
 
   const changeOrder = (key: keyof typeof formValues, val: OrderOptions) => {
@@ -24,6 +27,7 @@ const FilterModal = ({ modalOpen, changeOpen }: FilterModalProps) => {
       ...prevFormValues,
       [key]: val,
     }));
+    dispatch(accommodationListActions.setFilter(formValues));
   };
 
   const handleInputChange = (key: keyof typeof formValues, value: number) => {
@@ -31,6 +35,16 @@ const FilterModal = ({ modalOpen, changeOpen }: FilterModalProps) => {
       ...prevFormValues,
       [key]: value,
     }));
+    dispatch(accommodationListActions.setFilter(formValues));
+  };
+
+  const saveFilterValues = () => {
+    dispatch(accommodationListActions.setFilter(formValues));
+  };
+
+  const setFilterToDefault = () => {
+    dispatch(accommodationListActions.setFilter(DEFAULT_FILTER_VALUES));
+    setFormValues(DEFAULT_FILTER_VALUES);
   };
 
   return (
@@ -196,10 +210,10 @@ const FilterModal = ({ modalOpen, changeOpen }: FilterModalProps) => {
           </View>
         </ThemedView>
         <ThemedView style={[styles.footer, colors && { borderColor: WHITE_200 }]}>
-          <TouchableOpacity onPress={() => changeOpen()}>
+          <TouchableOpacity onPress={setFilterToDefault}>
             <Text style={{ fontSize: 20, textDecorationLine: 'underline' }}>Default</Text>
           </TouchableOpacity>
-          <Button title="Apply" size={BUTTON_SIZES.MD} onPress={() => changeOpen()} />
+          <Button title="Apply" size={BUTTON_SIZES.MD} onPress={saveFilterValues} />
         </ThemedView>
       </View>
     </Modal>

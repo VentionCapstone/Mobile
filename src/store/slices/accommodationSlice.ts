@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Accommodation, StateType } from 'src/types';
+import { Accommodation, AccommodationFullView, StateType } from 'src/types';
 
 import { onError, onPending } from '../stateResults';
 import { AsyncThunks } from '../thunks';
 
-type AccommodationStateType = StateType<Accommodation>;
+type AccommodationStateType = StateType<Accommodation | AccommodationFullView>;
 
 const initialState: AccommodationStateType = {
   error: null,

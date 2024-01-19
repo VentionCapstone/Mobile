@@ -14,8 +14,8 @@ const rootReducer = combineReducers({
   theme: themeReducer,
   accommodation: accommodationReducer,
   myAccommodationsList: myAccommodationsListReducer,
-  user: userReducer,
   accommodationList: accommodationListReducer,
+  user: userReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
