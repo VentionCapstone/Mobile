@@ -9,7 +9,7 @@ export type AmenityListResponse = {
 };
 
 export interface Amenities {
-  wifi: boolean;
+  hasWifi: boolean;
   hasTv: boolean;
   hasAirConditioning: boolean;
   hasKitchen: boolean;

@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationHeader } from 'src/components';
 import {
@@ -26,6 +26,7 @@ import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
 import { RootStackParamList } from './RootStackNavigator.types';
+import CardById from 'src/screens/explore/CardById/CardById';
 
 const RootRouterStack = createStackNavigator<RootStackParamList>();
 
@@ -35,7 +36,7 @@ const RootStackNavigator = () => {
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
-    StatusBar.setBackgroundColor(isDark ? BLACK : WHITE);
+    Platform.OS === 'android' && StatusBar.setBackgroundColor(isDark ? BLACK : WHITE);
   }, [isDark]);
 
   return (
@@ -152,6 +153,11 @@ const RootStackNavigator = () => {
             />
           ),
         }}
+      />
+      <RootRouterStack.Screen
+        name="CardById"
+        component={CardById}
+        options={{ headerShown: false }}
       />
     </RootRouterStack.Navigator>
   );

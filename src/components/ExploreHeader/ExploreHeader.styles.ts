@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY_500, WHITE_100 } from 'src/styles';
+import { GREY_300, GREY_400, GREY_500, WHITE_100 } from 'src/styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,14 +20,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 40,
     backgroundColor: '#fff',
-    elevation: 3,
-    shadowColor: GREY_500,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
   },
   searchContent: {
     justifyContent: 'flex-start',
@@ -50,12 +42,6 @@ const styles = StyleSheet.create({
   },
   darkModeShadow: {
     shadowColor: '#fff',
-    elevation: 10,
-    shadowRadius: 12,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
   },
   darkModeBorder: {
     borderColor: WHITE_100,

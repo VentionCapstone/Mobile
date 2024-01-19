@@ -1,6 +1,7 @@
 import { ButtonType, Button } from './Button';
 import Card from './Card/Card';
 import Chip from './Chip/Chip';
+import Collapsable from './Collapsable/Collapsable';
 import ExploreHeader from './ExploreHeader/ExploreHeader';
 import Icon from './Icon/Icon';
 import NavigationHeader from './NavigationHeader/NavigationHeader';
@@ -25,6 +26,7 @@ export {
   ProfileImageUploader,
   Chip,
   Card,
+  Collapsable,
 };
 
 export * from './navigationLists';
