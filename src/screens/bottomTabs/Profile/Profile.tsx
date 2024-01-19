@@ -16,11 +16,13 @@ import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { AppDispatch } from 'src/store';
 import {
+  getAccommodationError,
   getAccountError,
   getAccountInfos,
   getColors,
   getIsGuestAccount,
   getIsLoggedIn,
+  getMyAccommodationsError,
   getUserId,
 } from 'src/store/selectors';
 import {
@@ -41,6 +43,8 @@ const Profile = () => {
   const isGuestUser = useSelector(getIsGuestAccount);
   const accountDetails = useSelector(getAccountInfos);
   const userError = useSelector(getAccountError);
+  const accommodationError = useSelector(getAccommodationError);
+  const myAccommodationsError = useSelector(getMyAccommodationsError);
   const colors = useSelector(getColors);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const dispatch = useDispatch<AppDispatch>();
@@ -86,10 +90,10 @@ const Profile = () => {
   }, [isLoggedIn, isGuestUser]);
 
   useEffect(() => {
-    if (userError) {
+    if (userError || accommodationError || myAccommodationsError) {
       setErrorVisible(true);
     }
-  }, [userError]);
+  }, [userError, accommodationError, myAccommodationsError]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
@@ -138,7 +142,11 @@ const Profile = () => {
 
       <Alert
         visible={errorVisible}
-        message={userError?.error.message}
+        message={
+          userError?.error.message ||
+          accommodationError?.error.message ||
+          myAccommodationsError?.error.message
+        }
         onClose={() => setErrorVisible(false)}
       />
     </ScreenTemplate>

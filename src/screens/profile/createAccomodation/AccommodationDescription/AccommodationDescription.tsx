@@ -1,16 +1,17 @@
 import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
+import { View } from 'react-native';
 import Text from 'src/components/Text/Text';
 import { Input } from 'src/components/inputs';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
+import { CreateAccommodationValues } from 'src/types';
 import { ACCOMMODATION_DESCRIPTION_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AccommodationDescription.style';
-import { View } from 'react-native';
 
 type Props = {
-  route: Route<'AccommodationDescription', { accommodation: any }>;
+  route: Route<'AccommodationDescription', { accommodation: Partial<CreateAccommodationValues> }>;
 };
 
 const AccommodationDescription = ({ route }: Props) => {

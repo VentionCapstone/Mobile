@@ -5,6 +5,7 @@ import Text from 'src/components/Text/Text';
 import { NumericInput } from 'src/components/inputs';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
+import { CreateAccommodationValues } from 'src/types';
 import { AREA_MAX_LENGTH, PRICE_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AccommodationPriceAndArea.style';
@@ -15,7 +16,7 @@ interface FormValues {
 }
 
 type Props = {
-  route: Route<'AccommodationTitle', { accommodation: any }>;
+  route: Route<'AccommodationTitle', { accommodation: Partial<CreateAccommodationValues> }>;
 };
 
 const AccommodationPriceAndArea = ({ route }: Props) => {

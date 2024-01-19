@@ -25,8 +25,10 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
-    if (config.url && config.url === ENDPOINTS.signout && refreshToken) {
-      config.headers['refresh-token'] = refreshToken;
+    if (config.url === ENDPOINTS.signout && refreshToken) {
+      if (config.headers) {
+        config.headers['refresh-token'] = refreshToken;
+      }
     }
 
     return config;
@@ -41,15 +43,19 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const { response, config } = error;
 
+    const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
+
     const { data } = response;
 
-    if (config.url.includes('/refresh') && data?.error?.statusCode === 401) {
+    if (!userId) return;
+
+    if (config.url === ENDPOINTS.refresh(userId) && data?.error?.statusCode === 401) {
       await SecureStore.deleteItemAsync(SecureStorageKey.REFRESH_TOKEN);
 
       return;
     }
 
-    if (data?.error?.statusCode === 401 && !config.url.includes('/refresh')) {
+    if (data?.error?.statusCode === 401 && !config.url.includes(ENDPOINTS.refresh(userId))) {
       if (!config.retry) {
         config.retry = true;
 

@@ -129,38 +129,41 @@ const AccommodationImage = ({ route }: Props) => {
         )}
 
         {selectedImages.length !== 0 && (
-          <View style={styles.addButtonContainer}>
-            <Text style={styles.addButtonTitle}>Choose at least 5 photos</Text>
+          <>
+            <View style={styles.addButtonContainer}>
+              <Text style={styles.addButtonTitle}>Choose at least 5 photos</Text>
 
-            <Button
-              width={120}
-              title="Add more"
-              leftIcon={IconName.Add}
-              size={BUTTON_SIZES.SM}
-              type={ButtonType.SECONDARY}
+              <Button
+                width={120}
+                title="Add more"
+                leftIcon={IconName.Add}
+                size={BUTTON_SIZES.SM}
+                type={ButtonType.SECONDARY}
+                onPress={handleOpenGallery}
+                style={styles.addButton}
+              />
+            </View>
+
+            {selectedImages.map((item, index) => (
+              <View key={index} style={styles.imageContainer}>
+                <Image source={{ uri: item.uri }} style={styles.image} />
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => handleDeleteImage(index)}
+                >
+                  <Icon name={IconName.Delete} size={20} color={WHITE} iconSet="material" />
+                </TouchableOpacity>
+              </View>
+            ))}
+
+            <TouchableOpacity
+              style={[styles.imageContainer, { borderStyle: 'dashed', borderColor: GREY_400 }]}
               onPress={handleOpenGallery}
-              style={styles.addButton}
-            />
-          </View>
-        )}
-
-        {selectedImages.map((item, index) => (
-          <View key={index} style={styles.imageContainer}>
-            <Image source={{ uri: item.uri }} style={styles.image} />
-            <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteImage(index)}>
-              <Icon name={IconName.Delete} size={20} color={WHITE} iconSet="material" />
+            >
+              <Icon name={IconName.Add} />
+              <Text>Add more</Text>
             </TouchableOpacity>
-          </View>
-        ))}
-
-        {selectedImages.length !== 0 && (
-          <TouchableOpacity
-            style={[styles.imageContainer, { borderStyle: 'dashed', borderColor: GREY_400 }]}
-            onPress={handleOpenGallery}
-          >
-            <Icon name={IconName.Add} />
-            <Text>Add more</Text>
-          </TouchableOpacity>
+          </>
         )}
       </ScrollView>
 

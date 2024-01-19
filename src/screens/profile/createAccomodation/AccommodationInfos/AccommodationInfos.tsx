@@ -6,12 +6,13 @@ import Text from 'src/components/Text/Text';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { getColors } from 'src/store/selectors';
+import { CreateAccommodationValues } from 'src/types';
 
 import { styles } from './AccommodationInfos.style';
 import CounterButton from './AccommodationInfos.utils';
 
 type Props = {
-  route: Route<'AccommodationInfos', { accommodation: any }>;
+  route: Route<'AccommodationInfos', { accommodation: Partial<CreateAccommodationValues> }>;
 };
 
 const AccommodationInfos = ({ route }: Props) => {

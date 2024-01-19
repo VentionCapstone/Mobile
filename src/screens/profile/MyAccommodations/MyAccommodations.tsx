@@ -1,17 +1,15 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Alert, Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
+import { Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import {
-  getAccommodationError,
   getAccommodationLoader,
   getIsGuestAccount,
   getMyAccommodations,
-  getMyAccommodationsError,
   getUserId,
 } from 'src/store/selectors';
 import { accommodationActions, myAccommodationsListActions } from 'src/store/slices';
@@ -23,14 +21,11 @@ import { styles } from './MyAccommodations.style';
 
 const MyAccommodations = () => {
   const dispatch = useAppDispatch();
-  const accommodationError = useSelector(getAccommodationError);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const myAccommodationsError = useSelector(getMyAccommodationsError);
   const myAccommodations = useSelector(getMyAccommodations);
   const isGuestAccount = useSelector(getIsGuestAccount);
   const loader = useSelector(getAccommodationLoader);
   const userId = useSelector(getUserId);
-  const [errorVisible, setErrorVisible] = useState(false);
 
   const filteredAccommodations = useMemo(
     () => myAccommodations?.filter((acc) => !acc.isDeleted) || [],
@@ -67,12 +62,6 @@ const MyAccommodations = () => {
     fetchMyAccommodations();
   }, []);
 
-  useEffect(() => {
-    if (accommodationError || myAccommodationsError) {
-      setErrorVisible(true);
-    }
-  }, [accommodationError, myAccommodationsError]);
-
   return (
     <ScreenTemplate style={styles.container}>
       {isGuestAccount && (
@@ -101,12 +90,6 @@ const MyAccommodations = () => {
           {!loader && filteredAccommodations?.length === 0 && (
             <Text style={styles.noAccommodationsText}>You don't have any accommodations!</Text>
           )}
-
-          <Alert
-            visible={errorVisible}
-            message={accommodationError?.error.message || myAccommodationsError?.error.message}
-            onClose={() => setErrorVisible(false)}
-          />
         </ScrollView>
       )}
     </ScreenTemplate>

@@ -1,4 +1,4 @@
-import { Accommodation } from 'src/types';
+import { Accommodation, CreateAccommodationValues } from 'src/types';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -9,13 +9,12 @@ export type RootStackParamList = {
 
   Account: undefined;
   AccommodationImage: { accommodationId: string };
-  AccommodationAddress: any;
-  AccommodationInfos: { accommodation: any };
-  AccommodationDescription: { accommodation: any };
-  AccommodationTitle: { accommodation: any };
-  AccommodationPriceAndArea: { accommodation: any };
+  AccommodationAddress: undefined;
+  AccommodationInfos: { accommodation: Partial<CreateAccommodationValues> };
+  AccommodationDescription: { accommodation: Partial<CreateAccommodationValues> };
+  AccommodationTitle: { accommodation: Partial<CreateAccommodationValues> };
+  AccommodationPriceAndArea: { accommodation: Partial<CreateAccommodationValues> };
   AccommodationDate: { accommodation: any };
-  CreateAccommodation?: { userId: string };
   CreateProfile: undefined;
   ChangeTheme: undefined;
   ChangeLanguage: undefined;
