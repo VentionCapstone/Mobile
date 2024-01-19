@@ -1,23 +1,26 @@
 import { IconName, IconSet } from 'src/types';
 
-export type AmenitiesErrorHandler = {
+export type AmenitiesErrorType = {
   error: boolean;
-  message: string;
+  message: string | null;
 };
 
-export const ERROR_NONE: AmenitiesErrorHandler = {
+export const ERROR_NONE: AmenitiesErrorType = {
   error: false,
-  message: '',
+  message: null,
 } as const;
 
-export const amenityFormValidation = (inputValue: string): AmenitiesErrorHandler => {
-  if (inputValue.length < 2) {
+const INPUT_MIN_LENGTH = 3;
+const INPUT_MAX_LENGTH = 30;
+
+export const amenityFormValidation = (inputValue: string): AmenitiesErrorType => {
+  if (inputValue.length < INPUT_MIN_LENGTH) {
     return {
       error: true,
       message: 'Amenity should be at least 3 characters long',
     };
   }
-  if (inputValue.length > 30) {
+  if (inputValue.length > INPUT_MAX_LENGTH) {
     return {
       error: true,
       message: 'Amenity should be less than 30 characters long',

@@ -12,7 +12,6 @@ type ChipProps = {
   onTouch: () => void;
   text: string;
   isToggled: boolean;
-  index?: number;
 };
 
 const Chip = ({ iconName, iconSet, onTouch, text, isToggled }: ChipProps) => {
