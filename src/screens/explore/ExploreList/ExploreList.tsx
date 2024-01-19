@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { Card } from 'src/components';
 import { useAppDispatch } from 'src/store';
-import { getIsDarkMode } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { AdressListingValues } from 'src/types';
 import { getAccommodationsListQuery } from 'src/utils';
@@ -65,7 +64,7 @@ const ExploreList = ({ style }: ExploreListProps) => {
     }
   }, [loading, fetchData]);
 
-  const renderCard = useMemo<JSX.Element[]>(() => {
+  const renderCards = useMemo<JSX.Element[]>(() => {
     return data.map((item, index) => (
       <Card
         key={index}
@@ -78,7 +77,7 @@ const ExploreList = ({ style }: ExploreListProps) => {
         address={item.address}
       />
     ));
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     fetchData();
@@ -168,7 +167,7 @@ const ExploreList = ({ style }: ExploreListProps) => {
           country: 'Country',
         }}
       />
-      {data.map((item) => memoizedCards({ item }))}
+      {renderCards}
       {loading && <ActivityIndicator style={styles.loading} />}
       <View style={{ height: 40 }} />
     </ScrollView>
