@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ScrollView, ActivityIndicator, StyleSheet, RefreshControl } from 'react-native';
-import { useSelector } from 'react-redux';
+import {
+  ScrollView,
+  ActivityIndicator,
+  StyleSheet,
+  RefreshControl,
+  StyleProp,
+  ViewStyle,
+  View,
+} from 'react-native';
 import { Card } from 'src/components';
 import { useAppDispatch } from 'src/store';
 import { getIsDarkMode } from 'src/store/selectors';
@@ -18,17 +25,16 @@ interface CardProps {
   address: AdressListingValues;
 }
 
-const ExploreList = () => {
+interface ExploreListProps {
+  style: StyleProp<ViewStyle>;
+}
+
+const ExploreList = ({ style }: ExploreListProps) => {
   const dispatch = useAppDispatch();
-  const theme = useSelector(getIsDarkMode);
   const [data, setData] = useState<CardProps[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const fetchData = useCallback(async () => {
     try {
@@ -59,23 +65,28 @@ const ExploreList = () => {
     }
   }, [loading, fetchData]);
 
-  const renderCard = ({ item }: { item: CardProps }) => (
-    <Card
-      id={item.id}
-      thumbnailUrl={item.thumbnailUrl}
-      squareMeters={item.squareMeters}
-      numberOfRooms={item.numberOfRooms}
-      allowedNumberOfPeople={item.allowedNumberOfPeople}
-      price={item.price}
-      address={item.address}
-    />
-  );
+  const renderCard = useMemo<JSX.Element[]>(() => {
+    return data.map((item, index) => (
+      <Card
+        key={index}
+        id={item.id}
+        thumbnailUrl={item.thumbnailUrl}
+        squareMeters={item.squareMeters}
+        numberOfRooms={item.numberOfRooms}
+        allowedNumberOfPeople={item.allowedNumberOfPeople}
+        price={item.price}
+        address={item.address}
+      />
+    ));
+  }, []);
 
-  const memoizedRenderCard = useMemo(() => renderCard, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <ScrollView
-      contentContainerStyle={styles.container}
+      style={[styles.container, style]}
       onScrollEndDrag={handleLoadMore}
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
     >
@@ -92,8 +103,74 @@ const ExploreList = () => {
           country: 'Country',
         }}
       />
-      {data.map((item) => memoizedRenderCard({ item }))}
+      <Card
+        id="123456"
+        thumbnailUrl="https://example.com/image.jpg"
+        squareMeters={100}
+        numberOfRooms={3}
+        allowedNumberOfPeople={4}
+        price={2000}
+        address={{
+          street: '123 Main St',
+          city: 'City',
+          country: 'Country',
+        }}
+      />
+      <Card
+        id="123456"
+        thumbnailUrl="https://example.com/image.jpg"
+        squareMeters={100}
+        numberOfRooms={3}
+        allowedNumberOfPeople={4}
+        price={2000}
+        address={{
+          street: '123 Main St',
+          city: 'City',
+          country: 'Country',
+        }}
+      />
+      <Card
+        id="123456"
+        thumbnailUrl="https://example.com/image.jpg"
+        squareMeters={100}
+        numberOfRooms={3}
+        allowedNumberOfPeople={4}
+        price={2000}
+        address={{
+          street: '123 Main St',
+          city: 'City',
+          country: 'Country',
+        }}
+      />
+      <Card
+        id="123456"
+        thumbnailUrl="https://example.com/image.jpg"
+        squareMeters={100}
+        numberOfRooms={3}
+        allowedNumberOfPeople={4}
+        price={2000}
+        address={{
+          street: '123 Main St',
+          city: 'City',
+          country: 'Country',
+        }}
+      />
+      <Card
+        id="123456"
+        thumbnailUrl="https://example.com/image.jpg"
+        squareMeters={100}
+        numberOfRooms={3}
+        allowedNumberOfPeople={4}
+        price={2000}
+        address={{
+          street: '123 Main St',
+          city: 'City',
+          country: 'Country',
+        }}
+      />
+      {data.map((item) => memoizedCards({ item }))}
       {loading && <ActivityIndicator style={styles.loading} />}
+      <View style={{ height: 40 }} />
     </ScrollView>
   );
 };

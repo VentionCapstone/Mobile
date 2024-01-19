@@ -6,7 +6,6 @@ import {
   UpdateAccommodationParams,
   ApiSuccessResponseType,
   Accommodation,
-  ExploreListItem,
 } from 'src/types';
 
 export const createAccommodationThunk: AsyncThunkPayloadCreator<
@@ -104,20 +103,6 @@ export const getMyAccommodationsThunk: AsyncThunkPayloadCreator<
 > = async (_, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get(ENDPOINTS.getMyAccommodations);
-
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.response.data);
-  }
-};
-
-export const getListOfAccommodationsThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<ExploreListItem[]>,
-  string,
-  { rejectValue: ApiErrorResponseType }
-> = async (params, { rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.get(ENDPOINTS.getAllAccomodations(params));
 
     return response.data;
   } catch (error: any) {

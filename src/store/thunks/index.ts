@@ -13,8 +13,8 @@ import {
   addAccommodationImageThunk,
   getAccommodationThunk,
   getMyAccommodationsThunk,
-  getListOfAccommodationsThunk,
 } from './accommodationThunk';
+import { getListOfAccommodationsThunk } from './accomodationListThunk';
 import { createAccountThunk, getAccountDetailsThunk, updateAccountThunk } from './accountThunk';
 import {
   addAmenitiesThunk,

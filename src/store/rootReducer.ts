@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
 import {
+  accommodationListReducer,
   accommodationReducer,
   accountReducer,
   myAccommodationsListReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   accommodation: accommodationReducer,
   myAccommodationsList: myAccommodationsListReducer,
   user: userReducer,
+  accommodationList: accommodationListReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

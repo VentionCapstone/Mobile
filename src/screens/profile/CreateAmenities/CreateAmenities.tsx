@@ -77,7 +77,7 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
     });
   }, []);
 
-  const renderAdditionalChips = useMemo(() => {
+  const renderAdditionalChips = useMemo<JSX.Element[]>(() => {
     return otherAmenities.map((item, index) => (
       <Chip
         key={index}
