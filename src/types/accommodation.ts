@@ -1,4 +1,4 @@
-import { Amenities } from './amenities';
+import { AccommodationAmenitiesResponse, Amenities } from './amenities';
 
 export interface CreateAccommodationValues {
   addressId?: string;
@@ -32,7 +32,7 @@ export interface AdressListingValues {
 
 export type OrderOptions = null | 'asc' | 'desc';
 
-export interface ListingSearchValues {
+export interface SearchValues {
   location?: AdressListingValues;
   checkInDate?: string;
   checkOutDate?: string;
@@ -73,11 +73,26 @@ export interface AccommodationFullView {
   numberOfRooms: number;
   price: number;
   allowedNumberOfPeople: number;
-  availability: true;
+  available: boolean;
   availableFrom: string;
   availableTo: string;
   description: string;
   address: AddressValues;
-  amenities: Amenities;
+  amenities: AccommodationAmenitiesResponse[];
   media: Media[];
+  title?: string;
+  owner?: Owner;
+}
+
+interface Owner {
+  createdAt: string;
+  firstName: string;
+  id: string;
+  isVerified: boolean;
+  lastName: string;
+  profile: {
+    country: string;
+    imageUrl: string;
+    language: string;
+  };
 }

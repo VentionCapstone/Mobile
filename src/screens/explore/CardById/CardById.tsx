@@ -2,21 +2,26 @@ import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/nati
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { RefreshControl, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native';
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  View,
+  Image,
+} from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Icon, Text, ThemedView } from 'src/components';
+import { Button, ButtonType, Icon, ImageCarousel, Text, ThemedView } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
-import { AMENITIES_CHIP_DATA } from 'src/screens/profile/CreateAmenities/CreateAmenities.utils';
 import { useAppDispatch } from 'src/store';
 import { getIsDarkMode } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BLACK, BUTTON_SIZES, LEVEL_1, TOMATO, WHITE } from 'src/styles';
 import { AccommodationFullView, IconName } from 'src/types';
-import { Amenities } from 'src/types/amenities';
 
 import { styles } from './CardById.styles';
-import { formatDate, mockValues } from './CardById.utils';
+import { AMENITIES_CHIP_DATA, DEFAULT_ACCOMMODATION_VIEW, formatDate } from './CardById.utils';
 
 type CardByIdNavigationProp = StackNavigationProp<RootStackParamList, 'CardById'>;
 type CardByIdRouteProp = RouteProp<RootStackParamList, 'CardById'>;
@@ -31,9 +36,11 @@ const CardById = ({ route }: CardByIdProps) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const theme = useSelector(getIsDarkMode);
-  const [cardData, setCardData] = useState<AccommodationFullView>(mockValues);
+  const [cardData, setCardData] = useState<AccommodationFullView>(DEFAULT_ACCOMMODATION_VIEW);
   const [heartPressed, setHeartPressed] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  const mappedMedia = cardData.media.map((media) => media.imageUrl);
 
   const handleHeartPress = () => {
     setHeartPressed(!heartPressed);
@@ -42,38 +49,41 @@ const CardById = ({ route }: CardByIdProps) => {
   const getCardData = useCallback(async () => {
     const response = await dispatch(AsyncThunks.getAccommodation(acccomodationId));
     if (response.payload?.success) {
-      setCardData(response.payload.data);
+      setCardData(response.payload?.data);
     } else {
       return null;
     }
   }, [dispatch, acccomodationId]);
 
-  const badgesMemo = useMemo(() => {
-    return Object.keys(cardData.amenities).map((amenity) => {
-      const amenityValues = AMENITIES_CHIP_DATA[amenity];
-      const separator = ', ';
-      if (amenity === 'otherAmenities') {
-        const otherAmenities: string = cardData.amenities[amenity as keyof Amenities] as string;
-        return otherAmenities.split(separator).map((otherAmenity: any) => {
-          return (
-            <ThemedView key={otherAmenity} style={styles.badge}>
-              <Icon name={IconName.Check} size={20} />
-              <Text style={styles.badgeText}>{otherAmenity}</Text>
-            </ThemedView>
-          );
-        });
-      }
-      if (cardData.amenities[amenity as keyof Amenities]) {
-        const { icon, iconSet, text } = amenityValues;
+  const AmenitiesBadges = useMemo(() => {
+    const { otherAmenities, id, accommodationId, ...rest } = cardData.amenities[0];
+    const amenities = Object.keys(rest);
+    return amenities.map((amenity) => {
+      if (rest[amenity as keyof typeof rest]) {
+        const { icon, text, iconSet } =
+          AMENITIES_CHIP_DATA[amenity as keyof typeof AMENITIES_CHIP_DATA];
         return (
           <ThemedView key={amenity} style={styles.badge}>
-            <Icon name={icon} iconSet={iconSet} size={20} />
+            <Icon name={icon} size={20} iconSet={iconSet} />
             <Text style={styles.badgeText}>{text}</Text>
           </ThemedView>
         );
       }
-      return null;
     });
+  }, [cardData.amenities]);
+
+  const otherAmenitiesBadgesMemo = useMemo(() => {
+    const separator = ', ';
+    if (cardData.amenities[0].otherAmenities) {
+      return cardData.amenities[0]['otherAmenities'].split(separator).map((amenity) => {
+        return (
+          <ThemedView key={amenity} style={styles.badge}>
+            <Icon name={IconName.Check} size={20} />
+            <Text style={styles.badgeText}>{amenity}</Text>
+          </ThemedView>
+        );
+      });
+    }
   }, [cardData.amenities]);
 
   const refreshCardData = useCallback(async () => {
@@ -130,18 +140,19 @@ const CardById = ({ route }: CardByIdProps) => {
         </View>
         {/* Main Content */}
         <ScreenTemplate>
-          <View style={styles.imagePlaceholder} />
+          <Image source={{ uri: cardData.thumbnailUrl }} style={styles.imagePlaceholder} />
           <ThemedView style={styles.container}>
+            <Text style={styles.headTitle}>{cardData.title}</Text>
             <View style={styles.titleContainer}>
               <View>
                 <Text style={styles.title}>{`${cardData.address.city}`}</Text>
                 <Text style={styles.title}>{`(${cardData.address.country})`}</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-                {cardData.availability && <Text>Available</Text>}
+                {cardData.available && <Text>Available</Text>}
                 <Icon
-                  name={cardData.availability ? IconName.Check : IconName.Ellipse}
-                  color={cardData.availability && 'green'}
+                  name={cardData.available ? IconName.Check : IconName.Ellipse}
+                  color={cardData.available && 'green'}
                 />
               </View>
             </View>
@@ -152,8 +163,35 @@ const CardById = ({ route }: CardByIdProps) => {
             <View style={styles.descriptionContainer}>
               <Text style={styles.description}>{cardData.description}</Text>
             </View>
+            <View style={styles.profileContainer}>
+              {cardData.owner && (
+                <>
+                  <Image source={{ uri: cardData.owner.profile.imageUrl }} style={styles.avatar} />
+                  <View>
+                    <Text style={styles.profileText}>
+                      {cardData.owner.firstName} {cardData.owner.lastName}
+                    </Text>
+                    <Text>{cardData.owner.profile.country}</Text>
+                  </View>
+                  {cardData.owner.isVerified && (
+                    <>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
+                        <Icon name={IconName.Check} color="green" />
+                      </View>
+                    </>
+                  )}
+                </>
+              )}
+            </View>
             <Text style={styles.amenitiesTitle}>What amenities will be waiting for you?</Text>
-            <View style={styles.badgesContainer}>{badgesMemo}</View>
+            <View style={styles.badgesContainer}>
+              {AmenitiesBadges}
+              {otherAmenitiesBadgesMemo}
+            </View>
+            <View style={{ marginVertical: 30 }}>
+              <Text style={styles.amenitiesTitle}>More photos</Text>
+              <ImageCarousel images={mappedMedia} />
+            </View>
             <View style={{ marginVertical: 30 }}>
               <Text>Available</Text>
               <Text>From: {formatDate(cardData.availableFrom)}</Text>
@@ -163,11 +201,11 @@ const CardById = ({ route }: CardByIdProps) => {
         </ScreenTemplate>
       </ScrollView>
       <ThemedView style={styles.footer}>
-        <Text style={{ fontSize: 20 }}>Price: {`$${cardData.price}`}</Text>
+        <Text style={{ fontSize: 20 }}>Total price: ${cardData.price / 100}</Text>
         <Button
           title="Book"
           onPress={() => {}}
-          disabled={cardData.availability}
+          disabled={!cardData.available}
           size={BUTTON_SIZES.MD}
           type={ButtonType.PRIMARY}
         />

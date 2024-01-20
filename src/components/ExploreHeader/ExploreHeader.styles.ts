@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { GREY_300, GREY_400, GREY_500, WHITE_100 } from 'src/styles';
+import { Platform, StyleSheet } from 'react-native';
+import { GREY_500, WHITE_100 } from 'src/styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     gap: 10,
+    marginTop: Platform.OS === 'android' ? 30 : undefined,
   },
   searchBar: {
     flexDirection: 'row',

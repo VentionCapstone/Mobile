@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationHeader } from 'src/components';
+import FilterModal from 'src/components/modals/ExploreModals/FilterModal/FilterModal';
 import {
   Account,
   AddAccommodationImage,
@@ -157,6 +158,11 @@ const RootStackNavigator = () => {
       <RootRouterStack.Screen
         name="CardById"
         component={CardById}
+        options={{ headerShown: false }}
+      />
+      <RootRouterStack.Screen
+        name="FilterModal"
+        component={FilterModal}
         options={{ headerShown: false }}
       />
     </RootRouterStack.Navigator>

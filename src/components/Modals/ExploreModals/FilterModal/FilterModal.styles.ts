@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   filterContainer: {
     flex: 2,
     paddingVertical: 20,
-    paddingHorizontal: 25,
+    paddingHorizontal: 10,
     marginVertical: 5,
     marginHorizontal: 10,
     backgroundColor: WHITE,
@@ -35,6 +35,7 @@ export const styles = StyleSheet.create({
   filterContentContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 10,
   },
   input: {
     width: 140,

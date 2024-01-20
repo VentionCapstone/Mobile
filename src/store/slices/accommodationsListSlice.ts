@@ -1,18 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ExploreListItem, ListingSearchValues, StateType } from 'src/types';
+import { DEFAULT_FILTER_VALUES } from 'src/constants/defaultSearchVelues';
+import { ExploreListItem, SearchValues, StateType } from 'src/types';
 
 import { onError, onPending } from '../stateResults';
 import { AsyncThunks } from '../thunks';
 
 interface AccommodationListStateType extends StateType<ExploreListItem[]> {
-  filters: ListingSearchValues;
+  filters: SearchValues;
 }
 
 const initialState: AccommodationListStateType = {
   error: null,
   pending: false,
   result: null,
-  filters: {} as ListingSearchValues,
+  filters: DEFAULT_FILTER_VALUES,
 };
 
 const accommodationListSlice = createSlice({
@@ -27,7 +28,6 @@ const accommodationListSlice = createSlice({
 
     setFilter: (state, action) => {
       state.filters = action.payload;
-      console.log(state.filters);
     },
     resetFilters: (state) => {
       state.filters = initialState.filters;

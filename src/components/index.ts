@@ -4,6 +4,7 @@ import Chip from './Chip/Chip';
 import Collapsable from './Collapsable/Collapsable';
 import ExploreHeader from './ExploreHeader/ExploreHeader';
 import Icon from './Icon/Icon';
+import ImageCarousel from './ImageCarousel/ImageCarousel';
 import NavigationHeader from './NavigationHeader/NavigationHeader';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
 import Text from './Text/Text';
@@ -13,6 +14,7 @@ import showAlert from './alert';
 import ProfileImageUploader from './imageUploaders/ProfileImage/ProfileImage';
 
 export {
+  ImageCarousel,
   Button,
   ButtonType,
   Icon,

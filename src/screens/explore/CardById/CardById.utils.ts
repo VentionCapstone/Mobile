@@ -1,4 +1,4 @@
-import { AccommodationFullView } from 'src/types';
+import { AccommodationFullView, IconName, IconSet } from 'src/types';
 
 export function formatDate(inputDate: string, includeOrdinal: boolean = true): string {
   const months = [
@@ -16,7 +16,7 @@ export function formatDate(inputDate: string, includeOrdinal: boolean = true): s
     'December',
   ];
 
-  const [year, month, day] = inputDate.split('-').map(Number);
+  const [year, month, day] = inputDate.split('T')[0].split('-').map(Number);
   const monthName = months[month - 1];
 
   const dayWithOrdinal = includeOrdinal ? addOrdinalSuffix(day) : day.toString();
@@ -41,50 +41,132 @@ function addOrdinalSuffix(day: number): string {
   }
 }
 
-export const mockValues: AccommodationFullView = {
-  id: '123456789',
-  thumbnailUrl: 'https://example.com/thumbnail.jpg',
-  previewImgUrl: 'https://example.com/preview.jpg',
-  squareMeters: 80,
-  numberOfRooms: 3,
-  price: 1500,
-  allowedNumberOfPeople: 4,
-  availability: true,
-  availableFrom: '2022-01-01',
-  availableTo: '2022-01-31',
-  description:
-    'This is a beautiful accommodation with stunning views on you, lorem ipsum, avada kedavra and dolce gabana with ham',
+export const DEFAULT_ACCOMMODATION_VIEW: AccommodationFullView = {
+  id: '',
+  title: '',
+  thumbnailUrl: '',
+  previewImgUrl: '',
+  squareMeters: 0,
+  numberOfRooms: 0,
+  price: 0,
+  allowedNumberOfPeople: 0,
+  available: false,
+  availableFrom: '',
+  availableTo: '',
+  description: '',
   address: {
-    street: '123 Main Street',
-    city: 'Rio de Janeiro',
-    country: 'Brazil',
-    zipCode: '10001',
-    latitude: 40.748817,
-    longitude: -73.985428,
+    street: '',
+    city: '',
+    country: '',
+    zipCode: '',
+    latitude: 0,
+    longitude: 0,
   },
-  amenities: {
-    hasWifi: true,
-    hasTv: false,
-    hasAirConditioning: true,
-    hasKitchen: true,
-    hasLaundryService: false,
-    hasParking: true,
-    hasSmokingAllowance: false,
-    hasSwimmingPool: true,
-    hasBackyard: false,
-    isQuetArea: true,
-    isChildFriendly: true,
-    hasPetAllowance: false,
-    isCloseToCenter: true,
-    hasHospitalNearby: true,
-    hasAirportTransfer: false,
-    otherAmenities: 'Gym, Sauna',
-  },
-  media: [
+  amenities: [
     {
-      imageUrl: 'https://example.com/image1.jpg',
-      thumbnailUrl: 'https://example.com/image1.jpg',
-      accommodationId: 'smshtsndkjnfkjdsnfjsnjkdnsnft',
+      id: '',
+      accommodationId: '',
+      hasWifi: false,
+      hasTv: false,
+      hasAirConditioning: false,
+      hasKitchen: false,
+      hasLaundryService: false,
+      hasParking: false,
+      hasSmokingAllowance: false,
+      hasSwimmingPool: false,
+      hasBackyard: false,
+      isQuetArea: false,
+      isChildFriendly: false,
+      hasPetAllowance: false,
+      isCloseToCenter: false,
+      hasHospitalNearby: false,
+      hasAirportTransfer: false,
+      otherAmenities: '',
     },
   ],
+  media: [
+    {
+      imageUrl: '',
+      thumbnailUrl: '',
+      accommodationId: '',
+    },
+  ],
+} as const;
+
+export const AMENITIES_CHIP_DATA = {
+  hasWifi: {
+    text: 'Has Wi-Fi',
+    icon: IconName.Wifi,
+    iconSet: 'ionicons',
+  },
+  hasTv: {
+    text: 'Has TV',
+    icon: IconName.Tv,
+    iconSet: 'ionicons',
+  },
+  hasAirConditioning: {
+    text: 'Has air conditioning',
+    icon: IconName.Snow,
+    iconSet: 'ionicons',
+  },
+  hasKitchen: {
+    text: 'Has kitchen',
+    icon: IconName.Kitchen,
+    iconSet: 'material',
+  },
+  hasLaundryService: {
+    text: 'Has laundry service',
+    icon: IconName.Shirt,
+    iconSet: 'ionicons',
+  },
+  hasParking: {
+    text: 'Has parking',
+    icon: IconName.Parking,
+    iconSet: 'ionicons',
+  },
+  hasSmokingAllowance: {
+    text: 'Has smoking allowance',
+    icon: IconName.Smoking,
+    iconSet: 'material',
+  },
+  hasSwimmingPool: {
+    text: 'Has swimming pool',
+    icon: IconName.Pool,
+    iconSet: 'material',
+  },
+  hasBackyard: {
+    text: 'Has backyard',
+    icon: IconName.Home,
+    iconSet: 'ionicons',
+  },
+  isQuetArea: {
+    text: 'Is quet area',
+    icon: IconName.Moon,
+    iconSet: 'ionicons',
+  },
+  isChildFriendly: {
+    text: 'Is child friendly',
+    icon: IconName.Child,
+    iconSet: 'material',
+  },
+  hasPetAllowance: {
+    text: 'Has pet allowance',
+    icon: IconName.Paw,
+    iconSet: 'ionicons',
+  },
+  isCloseToCenter: {
+    text: 'Is close to center',
+    icon: IconName.Pin,
+    iconSet: 'ionicons',
+  },
+  hasHospitalNearby: {
+    text: 'Has hospital nearby',
+    icon: IconName.Med,
+    iconSet: 'ionicons',
+  },
+  hasAirportTransfer: {
+    text: 'Has airport transfer',
+    icon: IconName.Airplane,
+    iconSet: 'ionicons',
+  },
 };

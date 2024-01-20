@@ -1,9 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleProp, View, ViewProps } from 'react-native';
-import { useSelector } from 'react-redux';
+import { Platform, SafeAreaView, StyleProp, View, ViewProps } from 'react-native';
 import { ThemedView, Text } from 'src/components';
-import { getIsDarkMode } from 'src/store/selectors';
-import { BLACK, WHITE } from 'src/styles';
 
 import { styles } from './BottomTabsHeader.styles';
 
@@ -15,11 +11,9 @@ interface BottomTabsHeaderProps {
 }
 
 const BottomTabsHeader = ({ title, children, style, button }: BottomTabsHeaderProps) => {
-  const theme = useSelector(getIsDarkMode);
   return (
     <ThemedView>
-      <SafeAreaView>
-        <StatusBar backgroundColor={theme ? BLACK : WHITE} />
+      <SafeAreaView style={{ marginTop: Platform.OS === 'android' ? 20 : undefined }}>
         <View style={[styles.container, style]}>
           <View style={styles.firstLine}>
             <Text style={styles.header}>{title}</Text>

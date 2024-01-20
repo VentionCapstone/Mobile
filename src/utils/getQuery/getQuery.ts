@@ -12,6 +12,5 @@ export const getAccommodationsListQuery = (queryParams: ListingSearchValues): st
     })
     .filter(Boolean)
     .join('&');
-
-  return endpoint;
+  return '?' + endpoint;
 };

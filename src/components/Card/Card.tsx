@@ -36,10 +36,11 @@ const Card = ({
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('CardById')}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: thumbnailUrl }} style={{ width: '100%', height: '100%' }} alt="Img" />
-      </View>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate('CardById', { accomodationId: id })}
+    >
+      <Image style={styles.imageContainer} source={{ uri: thumbnailUrl }} alt="Img" />
       <View style={styles.bodyContent}>
         <View style={styles.bodyFlex}>
           <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
@@ -56,7 +57,7 @@ const Card = ({
         <Text style={styles.text}>{squareMeters} sq.m.</Text>
         <Text style={styles.text}>
           {allowedNumberOfPeople > 1 && '1 - '}
-          {allowedNumberOfPeople}
+          {allowedNumberOfPeople} guests
         </Text>
         <Text style={styles.text}>{numberOfRooms} rooms</Text>
         <Text style={[styles.text, { fontWeight: 'bold' }]}>${price / 100}</Text>

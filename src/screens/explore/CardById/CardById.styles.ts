@@ -44,7 +44,12 @@ export const styles = StyleSheet.create({
     marginBottom: 28,
   },
   title: {
-    fontSize: 30,
+    fontSize: 25,
+  },
+  headTitle: {
+    fontSize: 35,
+    marginBottom: 15,
+    fontWeight: 'bold',
   },
   subtitle: { fontSize: 16 },
   description: {
@@ -53,6 +58,22 @@ export const styles = StyleSheet.create({
   descriptionContainer: {
     marginTop: 20,
     marginBottom: 10,
+  },
+  profileContainer: {
+    flexDirection: 'row',
+    padding: 20,
+    gap: 30,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+  },
+  profileText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   amenitiesTitle: {
     fontSize: 25,

@@ -1,30 +1,14 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import {
-  ScrollView,
-  ActivityIndicator,
-  StyleSheet,
-  RefreshControl,
-  StyleProp,
-  ViewStyle,
-  View,
-} from 'react-native';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { FlatList, StyleSheet, RefreshControl, StyleProp, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Card } from 'src/components';
 import { useAppDispatch } from 'src/store';
 import { getFilterSettings } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
-import { AdressListingValues } from 'src/types';
+import { ExploreListItem } from 'src/types';
 import { getAccommodationsListQuery } from 'src/utils';
 
-interface CardProps {
-  id: string;
-  thumbnailUrl: string;
-  squareMeters: number;
-  numberOfRooms: number;
-  allowedNumberOfPeople: number;
-  price: number;
-  address: AdressListingValues;
-}
+interface CardProps extends ExploreListItem {}
 
 interface ExploreListProps {
   style: StyleProp<ViewStyle>;
@@ -58,59 +42,55 @@ const ExploreList = ({ style }: ExploreListProps) => {
 
   const handleRefresh = useCallback(() => {
     setIsRefreshing(true);
+    setData([]);
     setPageNumber(1);
     fetchData();
   }, [fetchData]);
 
   const handleLoadMore = useCallback(() => {
     if (!loading) {
+      console.log('loadMore');
       setPageNumber((prevPage) => prevPage + 1);
       fetchData();
     }
   }, [loading, fetchData]);
 
-  const renderCards = useMemo<JSX.Element[]>(() => {
-    return data.map((item, index) => (
-      <Card
-        key={index}
-        id={item.id}
-        thumbnailUrl={item.thumbnailUrl}
-        squareMeters={item.squareMeters}
-        numberOfRooms={item.numberOfRooms}
-        allowedNumberOfPeople={item.allowedNumberOfPeople}
-        price={item.price}
-        address={item.address}
-      />
-    ));
-  }, [data]);
+  const keyExtractor = useCallback((item: CardProps) => item.id, []);
+
+  const renderItem = useMemo(
+    () =>
+      ({ item }: { item: CardProps }) => (
+        <Card
+          id={item.id}
+          thumbnailUrl={item.thumbnailUrl}
+          squareMeters={item.squareMeters}
+          numberOfRooms={item.numberOfRooms}
+          allowedNumberOfPeople={item.allowedNumberOfPeople}
+          price={item.price}
+          address={item.address}
+        />
+      ),
+    []
+  );
 
   useEffect(() => {
     fetchData();
-  }, [fetchData, filter]);
+  }, []);
+
+  useEffect(() => {
+    handleRefresh();
+  }, [filter]);
 
   return (
-    <ScrollView
+    <FlatList
       style={[styles.container, style]}
-      onScrollEndDrag={handleLoadMore}
+      data={data}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      onEndReached={handleLoadMore}
+      onEndReachedThreshold={0.1}
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-    >
-      <Card
-        id="123456"
-        thumbnailUrl="https://example.com/image.jpg"
-        squareMeters={100}
-        numberOfRooms={3}
-        allowedNumberOfPeople={4}
-        price={2000}
-        address={{
-          street: '123 Main St',
-          city: 'City',
-          country: 'Country',
-        }}
-      />
-      {loading && <ActivityIndicator style={styles.loading} />}
-      {renderCards}
-      <View style={{ height: 40 }} />
-    </ScrollView>
+    />
   );
 };
 
