@@ -4,7 +4,7 @@ import { HORIZONTAL_16_PERCENT } from 'src/utils';
 
 const styles = StyleSheet.create({
   container: {
-    width: '95%',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

@@ -2,12 +2,12 @@ import * as SecureStore from 'expo-secure-store';
 import { SecureStorageKey } from 'src/constants/storage';
 
 export const updateLocalTokens = async ({
-  accessToken,
-  refreshToken,
+  access_token,
+  refresh_token,
 }: {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }) => {
-  await SecureStore.setItemAsync(SecureStorageKey.ACCESS_TOKEN, accessToken);
-  await SecureStore.setItemAsync(SecureStorageKey.REFRESH_TOKEN, refreshToken);
+  await SecureStore.setItemAsync(SecureStorageKey.ACCESS_TOKEN, access_token);
+  await SecureStore.setItemAsync(SecureStorageKey.REFRESH_TOKEN, refresh_token);
 };

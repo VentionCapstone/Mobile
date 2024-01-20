@@ -3,7 +3,7 @@ export enum AsyncStorageKey {
 }
 
 export enum SecureStorageKey {
-  ACCESS_TOKEN = 'accessToken',
-  REFRESH_TOKEN = 'refreshToken',
-  USER_ID = 'userId',
+  ACCESS_TOKEN = 'access_token',
+  REFRESH_TOKEN = 'refresh_token',
+  USER_ID = 'id',
 }

@@ -1,13 +1,19 @@
 import { StyleSheet } from 'react-native';
-import { RED_200, paragraph3 } from 'src/styles';
+import { RED_200, paragraph3, paragraph1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+  },
   phoneInputContainer: {
     width: '100%',
     paddingHorizontal: 10,
     paddingVertical: 15,
     borderRadius: 15,
-    marginVertical: 10,
+    marginVertical: 5,
+  },
+  label: {
+    ...paragraph1,
   },
   phoneInputText: {
     fontSize: 16,

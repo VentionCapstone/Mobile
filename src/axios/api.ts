@@ -19,7 +19,7 @@ export const silentTokenRefresh = async (axiosInstance: AxiosInstance) => {
 
         const { data } = response;
 
-        await updateLocalTokens(data);
+        await updateLocalTokens(data.tokens);
         return data;
       }
 

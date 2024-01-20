@@ -10,7 +10,7 @@ import {
   createAccommodationThunk,
   deleteAccommodationThunk,
   updateAccommodationThunk,
-  addAccommodationImageThunk,
+  uploadAccommodationImagesThunk,
   getAccommodationThunk,
   getMyAccommodationsThunk,
 } from './accommodationThunk';
@@ -38,7 +38,10 @@ export const AsyncThunks = {
   createAccommodation: createAsyncThunk('createAccommodationThunk', createAccommodationThunk),
   updateAccommodation: createAsyncThunk('updateAccommodationThunk', updateAccommodationThunk),
   deleteAccommodation: createAsyncThunk('deleteAccommodationThunk', deleteAccommodationThunk),
-  addAccommodationImage: createAsyncThunk('AddAccommodationImageThunk', addAccommodationImageThunk),
+  uploadAccommodationImages: createAsyncThunk(
+    'uploadAccommodationImagesThunk',
+    uploadAccommodationImagesThunk
+  ),
   getAccommodation: createAsyncThunk('getAccommodationThunk', getAccommodationThunk),
   getMyAccommodations: createAsyncThunk('getAccommodationsThunk', getMyAccommodationsThunk),
 

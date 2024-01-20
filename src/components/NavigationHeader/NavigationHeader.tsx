@@ -35,7 +35,7 @@ const NavigationHeader: React.FC<Props> = ({
   );
 
   return (
-    <ThemedView style={[styles.container, { borderBottomColor: colors.border }]}>
+    <ThemedView style={[styles.container, { shadowColor: colors.shadowColor }]}>
       <View style={styles.leftContainer}>
         <View style={styles.leftInnerContainer}>
           {showBackButton && renderBackButton()}

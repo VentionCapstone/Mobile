@@ -9,32 +9,30 @@ export const ACCOUNT_SECTIONS: NavigationListSection[] = [
         label: 'Account Information',
         iconName: IconName.PersonCircleOutline,
         screen: 'Account',
-        loggedInOnly: true,
       },
       {
         label: 'Notifications',
         iconName: IconName.Notifications,
         screen: 'NotificationSettings',
-        loggedInOnly: true,
       },
       {
         label: 'My Accommodations',
         iconName: IconName.List,
         screen: 'MyAccommodations',
-        loggedInOnly: true,
       },
       {
         label: 'Theme',
         iconName: IconName.ThemeSun,
         screen: 'ChangeTheme',
-        loggedInOnly: false,
       },
       {
         label: 'Language',
         iconName: IconName.Language,
         screen: 'ChangeLanguage',
-        loggedInOnly: false,
       },
     ],
   },
 ];
+
+export const AIR_BNB_IMAGE_URL =
+  'https://cdni.iconscout.com/illustration/premium/thumb/house-2557338-2140044.png?f=webp';

@@ -1,5 +1,5 @@
 import { SignUpParams } from 'src/types';
-import { isEmailValid, isPasswordMatches, isPasswordValid } from 'src/utils';
+import { PASSWORD_MIN_LENGTH, isEmailValid, isPasswordMatches, isPasswordValid } from 'src/utils';
 
 const validateForm = (values: SignUpParams): Record<string, string> => {
   const errors: Record<string, string> = {};
@@ -8,7 +8,7 @@ const validateForm = (values: SignUpParams): Record<string, string> => {
     errors.email = 'Enter valid email';
   }
   if (!isPasswordValid(values.password)) {
-    errors.password = 'Password must include a letter, a number, and a special character';
+    errors.password = `Password must contain at least ${PASSWORD_MIN_LENGTH} characters, numbers, and symbols.`;
   }
 
   if (!isPasswordMatches(values.password, values.confirm_password)) {
