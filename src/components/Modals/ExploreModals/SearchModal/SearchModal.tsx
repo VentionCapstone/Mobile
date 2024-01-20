@@ -1,14 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Modal, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import DatePicker from 'react-native-modern-datepicker';
 import { useSelector } from 'react-redux';
 import Button from 'src/components/Button/Button';
 import Collapsable from 'src/components/Collapsable/Collapsable';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
+import { Input } from 'src/components/inputs';
 import { getIsDarkMode } from 'src/store/selectors';
-import { BLACK, BUTTON_SIZES, LEVEL_1, WHITE, WHITE_100 } from 'src/styles';
+import { BLACK, BUTTON_SIZES, GREY_200, LEVEL_1, TOMATO, WHITE, WHITE_100 } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './SearchModal.styles';
@@ -21,8 +23,10 @@ type ExploreModalProps = {
 
 const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
   const colors = useSelector(getIsDarkMode);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
 
-  const [isCollapsed, setIsCollapsed] = useState(COLLAPSABLE_CARDS_POSITIONS.whenPressed);
+  const [isCollapsed, setIsCollapsed] = useState(COLLAPSABLE_CARDS_POSITIONS.wherePressed);
 
   const toggleCollapseWhen = () => {
     setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.whenPressed);
@@ -31,11 +35,6 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
   const toggleCollapseWhere = () => {
     setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.wherePressed);
   };
-
-  const toggleCollapseGuests = () => {
-    setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.guestsPressed);
-  };
-
   return (
     <Modal
       animationType="fade"
@@ -84,29 +83,35 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
           <Collapsable
             title="Where"
             subtitle="Nowhere"
-            contentTitle="Somewhere"
+            contentTitle="Pick your next destination"
             collapsed={isCollapsed.where}
             onTouch={toggleCollapseWhere}
           >
-            <Text>Something</Text>
+            <Input placeholder="Where are you going?" />
           </Collapsable>
           <Collapsable
             title="When"
             subtitle="Never"
-            contentTitle="Sometime"
+            contentTitle="What are the dates?"
             collapsed={isCollapsed.when}
             onTouch={toggleCollapseWhen}
           >
-            <Text>Something</Text>
-          </Collapsable>
-          <Collapsable
-            title="Guests"
-            subtitle="None"
-            contentTitle="Someone"
-            collapsed={isCollapsed.guests}
-            onTouch={toggleCollapseGuests}
-          >
-            <Text>Something</Text>
+            <DatePicker
+              options={{
+                backgroundColor: colors ? BLACK : WHITE,
+                textHeaderColor: colors ? WHITE : BLACK,
+                textDefaultColor: colors ? WHITE : BLACK,
+                selectedTextColor: WHITE,
+                mainColor: TOMATO,
+                textSecondaryColor: GREY_200,
+                borderColor: colors ? BLACK : WHITE,
+              }}
+              mode="calendar"
+              startDate={startDate}
+              endDate={endDate}
+              onStartDateChange={(date: Date) => setStartDate(date)}
+              onEndDateChange={(date: Date) => setEndDate(date)}
+            />
           </Collapsable>
         </View>
       </SafeAreaView>
@@ -122,7 +127,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
           LEVEL_1,
         ]}
       >
-        <Text style={styles.title}>Footer</Text>
+        <Text style={styles.title}>Default</Text>
         <Button onPress={() => changeOpen()} title="Search" size={BUTTON_SIZES.MD} />
       </ThemedView>
     </Modal>

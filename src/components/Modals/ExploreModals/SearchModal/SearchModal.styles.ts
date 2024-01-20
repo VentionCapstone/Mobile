@@ -14,6 +14,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  datePicker: {
+    marginVertical: 10,
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
