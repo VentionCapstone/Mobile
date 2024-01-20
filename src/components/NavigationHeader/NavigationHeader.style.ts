@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import { title3 } from 'src/styles';
+import { title2 } from 'src/styles';
 import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   title: {
-    ...title3,
+    ...title2,
   },
   rightContainer: {
     justifyContent: 'flex-end',

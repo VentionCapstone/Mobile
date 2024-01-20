@@ -19,3 +19,7 @@ export const getMyAccommodationsError = (state: RootState) => state.myAccommodat
 export const getMyAccommodationsLoader = (state: RootState) => state.myAccommodationsList.pending;
 
 export const getUserDetails = (state: RootState) => state.user.result;
+
+export const getWishlists = (state: RootState) => state.wishlist.result;
+export const getWishlistLoader = (state: RootState) => state.wishlist.pending;
+export const getWishlistError = (state: RootState) => state.wishlist.error;

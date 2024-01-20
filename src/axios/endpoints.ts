@@ -18,6 +18,10 @@ const ENDPOINTS = {
   deleteAccomodation: (accommodationId: string) => `/accommodations/${accommodationId}`,
   getAllAccomodations: '/accommodations',
   getAccomodationById: (accommodationId: string) => `/accommodations/${accommodationId}`,
+
+  addToWishlist: (accommodationId: string) => `/wishlist/${accommodationId}`,
+  removeFromWishlist: (accommodationId: string) => `/wishlist/${accommodationId}`,
+  getWishlists: `/wishlist`,
 };
 
 export default ENDPOINTS;

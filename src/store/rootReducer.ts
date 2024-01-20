@@ -6,6 +6,7 @@ import {
   myAccommodationsListReducer,
   themeReducer,
   userReducer,
+  wishlistReducer,
 } from './slices';
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   accommodation: accommodationReducer,
   myAccommodationsList: myAccommodationsListReducer,
   user: userReducer,
+  wishlist: wishlistReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

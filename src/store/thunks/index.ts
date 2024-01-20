@@ -7,7 +7,6 @@ import {
   verifyEmailThunk,
 } from 'src/store/thunks/authThunk';
 
-
 import {
   createAccommodationThunk,
   deleteAccommodationThunk,
@@ -18,6 +17,7 @@ import {
 } from './accommodationThunk';
 import { createAccountThunk, getAccountDetailsThunk, updateAccountThunk } from './accountThunk';
 import { getUserDetailsThunk } from './userThunk';
+import { addToWishlistThunk, removeFromWishlistThunk, getWishlistsThunk } from './wishlistThunk';
 
 export const AsyncThunks = {
   signUp: createAsyncThunk('signUpThunk', signUpThunk),
@@ -37,4 +37,8 @@ export const AsyncThunks = {
   addAccommodationImage: createAsyncThunk('AddAccommodationImageThunk', addAccommodationImageThunk),
   getAccommodation: createAsyncThunk('getAccommodationThunk', getAccommodationThunk),
   getMyAccommodations: createAsyncThunk('getAccommodationsThunk', getMyAccommodationsThunk),
+
+  getWishlists: createAsyncThunk('getWishlistsThunk', getWishlistsThunk),
+  addToWishlist: createAsyncThunk('addToWishlistThunk', addToWishlistThunk),
+  removeFromWishlist: createAsyncThunk('removeFromWishlistThunk', removeFromWishlistThunk),
 };
