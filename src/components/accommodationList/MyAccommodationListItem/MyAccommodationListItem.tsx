@@ -7,6 +7,7 @@ import { RED_100, TOMATO, WHITE_200 } from 'src/styles';
 import { Accommodation, IconName } from 'src/types';
 
 import { styles } from './MyAccommodationListItem.style';
+import { getLocationName } from './MyAccommodationListItem.utils';
 
 type Props = {
   accommodationDetails: Accommodation;
@@ -19,11 +20,7 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loade
   const colors = useSelector(getColors);
   const { id, price, thumbnailUrl, address } = accommodationDetails;
 
-  const combinedLocationText = `${address.city}, ${address.country}`;
-  const locationText =
-    address.city.length + address.country.length <= 40
-      ? `${address.city}, ${address.country}`
-      : `${combinedLocationText.substring(0, 24)}...`;
+  const locationName = getLocationName(address);
 
   return (
     <TouchableOpacity style={[styles.card, { backgroundColor: colors.secondaryBackground }]}>
@@ -44,7 +41,7 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loade
       <View style={styles.descriptionContainer}>
         <View style={styles.titleContainer}>
           <Icon name={IconName.Location} size={20} />
-          <Text style={styles.city}>{locationText}</Text>
+          <Text style={styles.city}>{locationName}</Text>
         </View>
 
         <View style={styles.priceContainer}>

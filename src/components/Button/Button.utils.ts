@@ -50,7 +50,7 @@ const getBorderColor = ({
     case ButtonType.SECONDARY:
       if (pressed) return colors?.border;
       if (disabled) return colors?.border;
-      return colors?.border;
+      return colors?.buttonBorder;
     case ButtonType.TERTIARY:
       return 'transparent';
     default:
@@ -110,7 +110,7 @@ const getFontColor = ({
     case ButtonType.TERTIARY:
       if (disabled) return colors?.secondaryButtonBackground;
       if (pressed) return colors?.secondaryButtonBackground;
-      return colors?.border;
+      return colors?.buttonTextColor;
     default:
       break;
   }

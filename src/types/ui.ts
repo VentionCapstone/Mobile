@@ -18,7 +18,7 @@ export enum IconName {
   EyeOffOutline = 'eye-off-outline',
   ChevronDown = 'chevron-down-outline',
   Close = 'close-outline',
-  CameraOutline = 'camera-outline',
+  ImagesOutline = 'images-outline',
   Camera = 'camera',
   Phone = 'local-phone',
   Person = 'person',
@@ -32,7 +32,7 @@ export enum IconName {
   Image = 'images-outline',
   Login = 'ios-log-in-outline',
   Logout = 'ios-log-out-outline',
-
+  Calendar = 'calendar-outline',
   Wifi = 'wifi-outline',
   Parking = 'car-outline',
   Pool = 'pool',
@@ -60,6 +60,6 @@ export enum IconName {
 export type IconSet = 'ionicons' | 'material';
 
 export enum ThemeType {
-  Light = 'LIGHT',
-  Dark = 'DARK',
+  Light = 'light',
+  Dark = 'dark',
 }

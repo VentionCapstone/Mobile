@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { ScrollView, KeyboardAvoidingView, Platform, ViewStyle, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'src/components/Button';
@@ -14,13 +14,22 @@ import { styles } from './FormTemplate.style';
 interface Props {
   children: ReactNode;
   formIsValid?: boolean;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   loading?: boolean;
   error?: ApiErrorResponseType | null;
+  isButtonVisible?: boolean;
   style?: ViewStyle;
 }
 
-const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error, style }: Props) => {
+const FormTemplate = ({
+  children,
+  formIsValid = true,
+  isButtonVisible = true,
+  onSubmit,
+  loading,
+  error,
+  style,
+}: Props) => {
   const colors = useSelector(getColors);
 
   return (
@@ -46,13 +55,15 @@ const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error, 
           </View>
         )}
 
-        <Button
-          title="Submit"
-          isLoading={loading}
-          disabled={!formIsValid}
-          marginVertical={15}
-          onPress={onSubmit}
-        />
+        {isButtonVisible && onSubmit && (
+          <Button
+            title="Submit"
+            isLoading={loading}
+            disabled={!formIsValid}
+            marginVertical={15}
+            onPress={onSubmit}
+          />
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );

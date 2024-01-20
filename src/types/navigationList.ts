@@ -8,7 +8,6 @@ export type NavigationListOption = {
   screen?: keyof RootStackParamList;
   onPress?: () => void;
   showIconRight?: boolean;
-  loggedInOnly?: boolean;
 };
 
 export type NavigationListSection = {

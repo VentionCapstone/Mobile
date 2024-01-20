@@ -30,12 +30,12 @@ const accommodationSlice = createSlice({
     });
     builder.addCase(AsyncThunks.getAccommodation.rejected, onError);
 
-    builder.addCase(AsyncThunks.addAccommodationImage.pending, onPending);
-    builder.addCase(AsyncThunks.addAccommodationImage.fulfilled, (state, action) => {
+    builder.addCase(AsyncThunks.uploadAccommodationImages.pending, onPending);
+    builder.addCase(AsyncThunks.uploadAccommodationImages.fulfilled, (state, action) => {
       state.pending = false;
       state.result = action.payload.data;
     });
-    builder.addCase(AsyncThunks.addAccommodationImage.rejected, onError);
+    builder.addCase(AsyncThunks.uploadAccommodationImages.rejected, onError);
   },
 });
 
