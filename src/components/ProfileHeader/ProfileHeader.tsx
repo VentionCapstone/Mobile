@@ -6,7 +6,6 @@ import { getColors, getIsGuestAccount, getUserDetails } from 'src/store/selector
 import { IconName } from 'src/types/ui';
 
 import styles from './ProfileHeader.style';
-import { ButtonType } from '../Button';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
@@ -44,14 +43,17 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
               }}
             />
             <View style={styles.redirectAuthContainer}>
-              <Text>Don't have an account yet?</Text>
-              <Button
-                title="Sign Up"
-                type={ButtonType.SECONDARY}
-                onPress={() => {
-                  navigation.navigate('Signup');
-                }}
-              />
+              <Text>
+                Don't have an account yet?{' '}
+                <Text
+                  style={styles.underline}
+                  onPress={() => {
+                    navigation.navigate('Signup');
+                  }}
+                >
+                  Sign up
+                </Text>
+              </Text>
             </View>
           </View>
         </View>

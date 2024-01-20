@@ -1,4 +1,5 @@
 import { ButtonType, Button } from './Button';
+import Chip from './Chip/Chip';
 import Icon from './Icon/Icon';
 import NavigationHeader from './NavigationHeader/NavigationHeader';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
@@ -19,6 +20,7 @@ export {
   MyAccommodationListItem,
   showAlert,
   ProfileImageUploader,
+  Chip,
 };
 
 export * from './navigationLists';
