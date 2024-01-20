@@ -1,4 +1,4 @@
-export const ACCOUNT_NAME_MIN_LENGTH = 3;
+export const ACCOUNT_NAME_MIN_LENGTH = 1;
 export const ACCOUNT_NAME_MAX_LENGTH = 20;
 
 export const PASSWORD_MIN_LENGTH = 8;

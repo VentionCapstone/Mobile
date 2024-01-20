@@ -3,7 +3,7 @@ const ENDPOINTS = {
   signup: '/auth/signup',
   signout: '/auth/signout',
   refresh: (id: string) => `/auth/${id}/refresh`,
-  verify: '/auth/verify',
+  verify: '/auth/email',
 
   createProfile: '/users/profile',
   updateProfile: (userId: string | undefined) => `/users/profile/${userId}`,
@@ -22,6 +22,9 @@ const ENDPOINTS = {
   addToWishlist: (accommodationId: string) => `/wishlist/${accommodationId}`,
   removeFromWishlist: (accommodationId: string) => `/wishlist/${accommodationId}`,
   getWishlists: `/wishlist`,
+  
+  getAmenitiesList: '/amenities',
+  accomodationAmenities: (accommodationId: string) => `/amenities/${accommodationId}`,
 };
 
 export default ENDPOINTS;

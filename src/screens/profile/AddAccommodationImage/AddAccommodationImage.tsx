@@ -52,6 +52,7 @@ const AddAccommodationImage = ({ route }: Props) => {
     showAlert('success', {
       message: 'Accommodation created successfully!',
       onOkPressed: () => navigation.navigate('MyAccommodations'),
+      //here goes amenities adding
     });
   };
 
