@@ -33,7 +33,7 @@ const CreateAccountForm = () => {
   const loading = useSelector(getAccountLoader);
   const colors = useSelector(getColors);
 
-  const [selectedCountry, setSelectedCountry] = useState<string>('Uzbekistan');
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
@@ -77,7 +77,8 @@ const CreateAccountForm = () => {
     if (Object.keys(errors).length === 0) {
       dispatch(accountActions.clearError());
       const response = await dispatch(AsyncThunks.createAccount(formValues));
-      if (response.payload?.success) {
+
+      if (response.meta.requestStatus === 'fulfilled') {
         showAlert('success', {
           message: 'Successfully created!',
           onOkPressed: () => navigation.navigate('Profile'),
@@ -133,6 +134,7 @@ const CreateAccountForm = () => {
         />
 
         <PhoneNumberInput
+          label="Phone number"
           error={validationErrors.phoneNumber}
           onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           value={formValues.phoneNumber}
@@ -161,7 +163,9 @@ const CreateAccountForm = () => {
           onPress={() => setCountrySelectorVisible(true)}
           style={[styles.selectorButton, { backgroundColor: colors.secondaryBackground }]}
         >
-          <Text style={styles.selectedCountry}>{selectedCountry}</Text>
+          <Text style={styles.selectedCountry}>
+            {selectedCountry ? selectedCountry : 'Select country'}
+          </Text>
           <Icon name={IconName.ChevronDown} size={20} />
         </TouchableOpacity>
         <CountryPicker

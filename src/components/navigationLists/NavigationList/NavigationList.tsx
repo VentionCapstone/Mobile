@@ -1,7 +1,7 @@
 import { SectionList } from 'react-native';
 import { useSelector } from 'react-redux';
 import Text from 'src/components/Text/Text';
-import { getIsLoggedIn } from 'src/store/selectors';
+import { getColors } from 'src/store/selectors';
 import { NavigationListOption, NavigationListSection } from 'src/types/navigationList';
 
 import styles from './NavigationList.styles';
@@ -15,18 +15,13 @@ interface Props {
 
 const NavigationList = ({ options, sections }: Props) => {
   const originalData: NavigationListSection[] = getSections({ options, sections });
-  const isLoggedIn = useSelector(getIsLoggedIn);
-
-  const filteredData = originalData.map((section) => ({
-    ...section,
-    data: section.data.filter((item) => !item.loggedInOnly || isLoggedIn),
-  }));
+  const colors = useSelector(getColors);
 
   return (
     <SectionList
       scrollEnabled={false}
-      sections={filteredData}
-      contentContainerStyle={styles.container}
+      sections={originalData}
+      contentContainerStyle={[styles.container, { borderBottomColor: colors.border }]}
       alwaysBounceVertical={false}
       keyExtractor={(item, index) => item.label + index}
       renderItem={({ item }) => {

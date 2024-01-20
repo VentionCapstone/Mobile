@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { ExploreHeader } from 'src/components';
 import BottomTabsHeader from 'src/components/BottomTabsHeader/BottomTabsHeader';
 import { Booking, Explore, Profile, Wishlist } from 'src/screens';
-import { getColors, getIsLoggedIn } from 'src/store/selectors';
+import { getColors, getIsDarkMode, getIsLoggedIn } from 'src/store/selectors';
 
 import { BottomTabParamList } from './BottomTabNavigator.types';
 import { getTabBarIcon, getTabBarStyles } from './BottomTabNavigator.utils';
@@ -13,7 +13,8 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 const BottomTabNavigator = () => {
   const isLoggedIn = useSelector(getIsLoggedIn);
   const colors = useSelector(getColors);
-  const styles = getTabBarStyles(colors);
+  const isDarkMode = useSelector(getIsDarkMode);
+  const styles = getTabBarStyles({ colors, isDarkMode });
 
   return (
     <BottomTab.Navigator

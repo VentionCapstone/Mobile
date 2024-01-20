@@ -46,6 +46,7 @@ export const signUpThunk: AsyncThunkPayloadCreator<
 > = async (params, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(ENDPOINTS.signup, params);
+
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);

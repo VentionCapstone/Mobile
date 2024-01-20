@@ -1,11 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { paragraph1, paragraph2, title3 } from 'src/styles';
-import { HORIZONTAL_16_PERCENT } from 'src/utils';
+import { paragraph1, paragraph2, title2 } from 'src/styles';
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: HORIZONTAL_16_PERCENT,
-    paddingVertical: 20,
+    paddingTop: 20,
   },
   header: {
     justifyContent: 'center',
@@ -70,7 +68,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   accountName: {
-    ...title3,
+    ...title2,
+    fontSize: 20,
   },
   description: {
     ...paragraph2,

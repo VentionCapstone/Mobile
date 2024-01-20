@@ -6,7 +6,7 @@ import { Text, Input } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader } from 'src/store/selectors';
+import { getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { SignInParams } from 'src/types';
@@ -17,7 +17,6 @@ import styles from '../auth.styles';
 
 const Signin = () => {
   const dispatch = useAppDispatch();
-  const authError = useSelector(getAccountError);
   const loading = useSelector(getAccountLoader);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -40,7 +39,7 @@ const Signin = () => {
     if (Object.keys(errors).length === 0) {
       const response = await dispatch(AsyncThunks.signIn(formValues));
 
-      if (!response.payload?.error) {
+      if (response.meta.requestStatus === 'fulfilled') {
         navigation.navigate('Main');
       }
     } else {
@@ -53,7 +52,7 @@ const Signin = () => {
       const errors = validateForm(formValues);
       setValidationErrors(errors);
     }
-  }, [formValues]);
+  }, [formValues, formInteracted]);
 
   useEffect(() => {
     dispatch(accountActions.clearError());
@@ -61,12 +60,7 @@ const Signin = () => {
 
   return (
     <ScreenTemplate>
-      <FormTemplate
-        loading={loading}
-        onSubmit={handleSignIn}
-        error={authError}
-        formIsValid={formIsValid}
-      >
+      <FormTemplate loading={loading} onSubmit={handleSignIn} formIsValid={formIsValid}>
         <Text style={styles.head}>Welcome back!</Text>
         <Text style={styles.description}>
           Sign in to your account and plan your next journey with us

@@ -6,6 +6,7 @@ import ExploreHeader from './ExploreHeader/ExploreHeader';
 import Icon from './Icon/Icon';
 import ImageCarousel from './ImageCarousel/ImageCarousel';
 import NavigationHeader from './NavigationHeader/NavigationHeader';
+import ProfileFooter from './ProfileFooter/ProfileFooter';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
 import Text from './Text/Text';
 import ThemedView from './ThemedView/ThemedView';
@@ -19,6 +20,7 @@ export {
   ButtonType,
   Icon,
   NavigationHeader,
+  ProfileFooter,
   ProfileHeader,
   ExploreHeader,
   Text,

@@ -6,14 +6,14 @@ const ENDPOINTS = {
   verify: '/auth/email',
 
   createProfile: '/users/profile',
-  updateProfile: (userId: string | undefined) => `/users/profile/${userId}`,
+  updateProfile: (userId: string | undefined) => `/users/${userId}`,
   getProfile: (userId: string) => `/users/profile/${userId}`,
 
   getUserDetails: (userId: string) => `/users/${userId}`,
 
   createAccomodation: '/accommodations',
   updateAccomodation: (accommodationId: string) => `/accommodations/${accommodationId}`,
-  getMyAccommodations: `/accommodations/getAll`,
+  getMyAccommodations: (userId: string) => `/accommodations/${userId}/accommodations`,
   uploadAccomodationImage: (accommodationId: string) => `/accommodations/${accommodationId}/file`,
   deleteAccomodation: (accommodationId: string) => `/accommodations/${accommodationId}`,
   getAllAccomodations: (query: string) => `/accommodations${query}`,

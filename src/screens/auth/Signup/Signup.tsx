@@ -6,7 +6,7 @@ import { Text, Input } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader } from 'src/store/selectors';
+import { getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { SignUpParams } from 'src/types';
@@ -19,7 +19,6 @@ const Signup = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
-  const authError = useSelector(getAccountError);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<SignUpParams>({
@@ -38,15 +37,15 @@ const Signup = () => {
     setFormInteracted(true);
     const errors = validateForm(formValues);
 
-    if (Object.keys(errors).length === 0) {
-      dispatch(accountActions.clearError());
-      const response = await dispatch(AsyncThunks.signUp(formValues));
-
-      if (response.payload?.success) {
-        navigation.navigate('VerifyEmail', { email: formValues.email });
-      }
-    } else {
+    if (Object.keys(errors).length !== 0) {
       setValidationErrors(errors);
+      return;
+    }
+
+    const response = await dispatch(AsyncThunks.signUp(formValues));
+
+    if (response.payload?.success) {
+      navigation.navigate('VerifyEmail', { email: formValues.email });
     }
   };
 
@@ -63,12 +62,7 @@ const Signup = () => {
 
   return (
     <ScreenTemplate>
-      <FormTemplate
-        loading={loading}
-        onSubmit={handleSignup}
-        error={authError}
-        formIsValid={formIsValid}
-      >
+      <FormTemplate loading={loading} onSubmit={handleSignup} formIsValid={formIsValid}>
         <Text style={styles.head}>Hello, stranger!</Text>
         <Text style={styles.description}>Discover new places and start your next journey</Text>
 

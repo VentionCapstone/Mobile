@@ -1,7 +1,7 @@
 import { AccommodationAmenitiesResponse, Amenities } from './amenities';
 
 export interface CreateAccommodationValues {
-  addressId?: string;
+  title: string;
   thumbnailUrl?: string;
   previewImgUrl?: string;
   squareMeters: number | null;
@@ -10,7 +10,9 @@ export interface CreateAccommodationValues {
   price: number | null;
   availableFrom: string;
   availableTo: string;
+  timezoneOffset: number;
   description: string;
+  address: AddressValues;
 }
 
 export interface UpdateAccommodationValues extends CreateAccommodationValues {}
