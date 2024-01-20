@@ -1,14 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  containerVertical: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
   container: {
     flex: 1,
     flexDirection: 'row',
+    textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
   },

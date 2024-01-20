@@ -15,6 +15,13 @@ import {
   getMyAccommodationsThunk,
 } from './accommodationThunk';
 import { createAccountThunk, getAccountDetailsThunk, updateAccountThunk } from './accountThunk';
+import {
+  addAmenitiesThunk,
+  deleteAmenitiesThunk,
+  getAmenitiesListThunk,
+  getAmenitiesThunk,
+  updateAmenitiesThunk,
+} from './amenitiesThunk';
 import { getUserDetailsThunk } from './userThunk';
 
 export const AsyncThunks = {
@@ -37,4 +44,10 @@ export const AsyncThunks = {
   ),
   getAccommodation: createAsyncThunk('getAccommodationThunk', getAccommodationThunk),
   getMyAccommodations: createAsyncThunk('getAccommodationsThunk', getMyAccommodationsThunk),
+
+  getAmenitiesListThunk: createAsyncThunk('getAmenitiesListThunk', getAmenitiesListThunk),
+  getAmenitiesThunk: createAsyncThunk('getAmenitiesThunk', getAmenitiesThunk),
+  updateAmenitiesThunk: createAsyncThunk('updateAmenitiesThunk', updateAmenitiesThunk),
+  addAmenitiesThunk: createAsyncThunk('addAmenitiesThunk', addAmenitiesThunk),
+  deleteAmenitiesThunk: createAsyncThunk('deleteAmenitiesThunk', deleteAmenitiesThunk),
 };

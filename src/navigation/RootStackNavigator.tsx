@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationHeader } from 'src/components';
 import {
   Account,
-  AddAccommodationImage,
   CreateProfile,
   ChangeLanguage,
   ChangeTheme,
@@ -25,6 +24,7 @@ import {
   AccommodationPriceAndArea,
   AccommodationDate,
   AccommodationImage,
+  CreateAmenities,
 } from 'src/screens';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
@@ -148,6 +148,30 @@ const RootStackNavigator = () => {
           component={AccommodationDescription}
         />
       </RootRouterStack.Group>
+
+      <RootRouterStack.Screen
+        name="CreateAmenities"
+        component={CreateAmenities}
+        initialParams={{ isNew: true }}
+        options={{
+          header: () => (
+            <NavigationHeader
+              title="Add Amenities"
+              rightComponent={
+                <Button
+                  title="Close"
+                  height={35}
+                  size={BUTTON_SIZES.SM}
+                  type={ButtonType.PRIMARY}
+                  onPress={() => {
+                    navigation.navigate('MyAccommodations');
+                  }}
+                />
+              }
+            />
+          ),
+        }}
+      />
     </RootRouterStack.Navigator>
   );
 };

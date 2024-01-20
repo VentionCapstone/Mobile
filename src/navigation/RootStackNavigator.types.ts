@@ -24,4 +24,7 @@ export type RootStackParamList = {
   Profile: undefined;
   UpdateProfile: undefined;
   UpdateAccommodation: { accommodation: Accommodation };
+
+  CreateAmenities: { accomodationId: string; isNew: boolean } | undefined;
+  UpdateAmenities: { accomodationId: string };
 };
