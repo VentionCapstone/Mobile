@@ -3,7 +3,7 @@ import { Asset, ImagePicker } from 'expo-image-multiple-picker';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, View, ScrollView, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Icon, Loader, Text, showAlert } from 'src/components';
+import { Button, ButtonType, Icon, Text, showAlert } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -14,13 +14,6 @@ import { BUTTON_SIZES, GREY_400, WHITE } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './AccommodationImage.style';
-import { getBase64FromURI } from './AddAccommodationImage.utils';
-
-type ImageProps = {
-  filename: string;
-  uri: string;
-  base64Image: string | undefined;
-};
 
 type Props = {
   route: Route<'AccommodationImage', { accommodationId: string }>;
@@ -35,31 +28,15 @@ const AccommodationImage = ({ route }: Props) => {
   const loader = useSelector(getAccommodationLoader);
   const { width } = useWindowDimensions();
   const [openPicker, setOpenPicker] = useState<boolean>(false);
-  const [isConvertingtoBase64, setIsConvertingtoBase64] = useState<boolean>(false);
-  const [selectedImages, setSelectedImages] = useState<ImageProps[]>([]);
+  const [selectedImages, setSelectedImages] = useState<Asset[]>([]);
 
   const handleOpenGallery = async () => {
     setOpenPicker(true);
   };
 
   const handleSaveImages = async (assets: Asset[]) => {
-    dispatch(accommodationActions.clearError());
-
-    const images = assets.map(async (asset) => {
-      const base64 = await getBase64FromURI(asset.uri);
-      return {
-        filename: asset.filename,
-        uri: asset.uri,
-        base64Image: base64,
-      };
-    });
-
-    setIsConvertingtoBase64(true);
-    Promise.all(images).then((processedImages) => {
-      setSelectedImages((prevImages) => [...prevImages, ...processedImages]);
-      setOpenPicker(false);
-      setIsConvertingtoBase64(false);
-    });
+    setSelectedImages(assets);
+    setOpenPicker(false);
   };
 
   const handleDeleteImage = (index: number) => {
@@ -74,11 +51,11 @@ const AccommodationImage = ({ route }: Props) => {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    selectedImages.forEach((image, index) => {
-      formData.append(`images`, {
+    selectedImages.forEach((image) => {
+      formData.append('images', {
         uri: image.uri,
-        name: 'media',
-        type: `image/${'jpeg'}`,
+        name: image.filename,
+        type: 'image/jpeg',
       } as any);
     });
 
@@ -89,7 +66,7 @@ const AccommodationImage = ({ route }: Props) => {
       })
     );
 
-    if (response.payload.success) {
+    if (response.payload?.success) {
       navigation.navigate('MyAccommodations');
     }
   };
@@ -180,8 +157,6 @@ const AccommodationImage = ({ route }: Props) => {
           />
         </View>
       )}
-
-      <Loader visible={isConvertingtoBase64} />
     </StepperTemplate>
   );
 };

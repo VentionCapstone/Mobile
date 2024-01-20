@@ -97,6 +97,8 @@ const Profile = () => {
 
   useEffect(() => {
     dispatch(accountActions.clearError());
+    dispatch(myAccommodationsListActions.clearError());
+    dispatch(accommodationActions.clearError());
     dispatch(userActions.clearError());
   }, []);
 
@@ -144,8 +146,8 @@ const Profile = () => {
         visible={errorVisible}
         message={
           userError?.error.message ||
-          accommodationError?.error.message ||
-          myAccommodationsError?.error.message
+          accommodationError?.error?.message ||
+          myAccommodationsError?.error?.message
         }
         onClose={() => setErrorVisible(false)}
       />
