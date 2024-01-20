@@ -127,7 +127,9 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
           LEVEL_1,
         ]}
       >
-        <Text style={styles.title}>Default</Text>
+        <TouchableOpacity>
+          <Text style={styles.title}>Default</Text>
+        </TouchableOpacity>
         <Button onPress={() => changeOpen()} title="Search" size={BUTTON_SIZES.MD} />
       </ThemedView>
     </Modal>
