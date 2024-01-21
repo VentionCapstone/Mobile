@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation, Route } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Asset, ImagePicker } from 'expo-image-multiple-picker';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, View, ScrollView, useWindowDimensions } from 'react-native';
@@ -15,15 +15,12 @@ import { IconName } from 'src/types';
 
 import { styles } from './AccommodationImage.style';
 
-type Props = {
-  route: Route<'AccommodationImage', { accommodationId: string }>;
-};
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationImage'>;
 
-const AccommodationImage = ({ route }: Props) => {
+const AccommodationImage = ({ route, navigation }: Props) => {
   const { accommodationId } = route.params;
 
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getColors);
   const loader = useSelector(getAccommodationLoader);
   const { width } = useWindowDimensions();

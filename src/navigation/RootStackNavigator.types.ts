@@ -26,7 +26,7 @@ export type RootStackParamList = {
   UpdateProfile: undefined;
   UpdateAccommodation: { accommodation: Accommodation };
 
-  CreateAmenities: { accomodationId: string; isNew: boolean } | undefined;
+  CreateAmenities: { accomodationId: string; isNew: boolean };
   UpdateAmenities: { accomodationId: string };
 
   AccommodationDetails: { accomodationId: string };

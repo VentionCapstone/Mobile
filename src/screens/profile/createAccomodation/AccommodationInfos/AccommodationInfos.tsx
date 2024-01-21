@@ -1,4 +1,4 @@
-import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -6,18 +6,14 @@ import Text from 'src/components/Text/Text';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { getColors } from 'src/store/selectors';
-import { CreateAccommodationValues } from 'src/types';
 
 import { styles } from './AccommodationInfos.style';
 import CounterButton from './AccommodationInfos.utils';
 
-type Props = {
-  route: Route<'AccommodationInfos', { accommodation: Partial<CreateAccommodationValues> }>;
-};
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationInfos'>;
 
-const AccommodationInfos = ({ route }: Props) => {
+const AccommodationInfos = ({ route, navigation }: Props) => {
   const colors = useSelector(getColors);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [formValues, setFormValues] = useState({
     allowedNumberOfPeople: 1,
