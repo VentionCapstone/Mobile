@@ -8,7 +8,6 @@ import Text from './Text/Text';
 import ThemedView from './ThemedView/ThemedView';
 import { MyAccommodationListItem } from './accommodationList';
 import showAlert from './alert';
-import ProfileImageUploader from './imageUploaders/ProfileImage/ProfileImage';
 
 export {
   Button,
@@ -21,7 +20,6 @@ export {
   ThemedView,
   MyAccommodationListItem,
   showAlert,
-  ProfileImageUploader,
   Chip,
 };
 

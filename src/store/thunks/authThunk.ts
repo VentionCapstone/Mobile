@@ -13,7 +13,7 @@ import {
 } from 'src/types';
 
 export const signInThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<SignInResponse>,
+  SignInResponse,
   SignInParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {

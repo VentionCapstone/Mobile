@@ -3,6 +3,7 @@ import { paragraph1, LEVEL_1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   card: {
+    width: '95%',
     flexDirection: 'row',
     borderRadius: 10,
     overflow: 'hidden',

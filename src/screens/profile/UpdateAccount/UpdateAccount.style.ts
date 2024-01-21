@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { WHITE_100, LEVEL_1, title1, paragraph1 } from 'src/styles';
+import { title1, paragraph1, LEVEL_1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   header: {
@@ -13,12 +13,31 @@ export const styles = StyleSheet.create({
   description: {
     ...paragraph1,
   },
-  profileImageContainer: {
-    width: 250,
-    height: 250,
-    justifyContent: 'center',
-    alignItems: 'center',
+  imageContainer: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
+    backgroundColor: 'blue',
+    borderRadius: 100,
+    overflow: 'hidden',
     ...LEVEL_1,
+  },
+  editButton: {
+    width: '100%',
+    height: 40,
+    bottom: 0,
+    alignSelf: 'center',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    borderRadius: 10,
+    gap: 4,
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 100,
   },
   iconContainer: {
     width: 200,
@@ -26,24 +45,6 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  profileImage: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-  },
-  addPhotoButton: {
-    width: 120,
-    position: 'absolute',
-    bottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: WHITE_100,
-    padding: 6,
-    gap: 10,
-    borderRadius: 20,
-    ...LEVEL_1,
   },
   label: {
     fontWeight: 'bold',

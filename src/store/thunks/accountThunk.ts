@@ -8,6 +8,8 @@ import {
   ApiSuccessResponseType,
 } from 'src/types';
 
+import type { RootState } from '..';
+
 export const createAccountThunk: AsyncThunkPayloadCreator<
   ApiSuccessResponseType<ProfileResponseType>,
   CreateProfileParams,
@@ -45,6 +47,24 @@ export const getAccountDetailsThunk: AsyncThunkPayloadCreator<
   try {
     const response = await axiosInstance.get(ENDPOINTS.getProfile(profileId));
     return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response.data);
+  }
+};
+
+export const addProfileImageThunk: AsyncThunkPayloadCreator<
+  ProfileResponseType,
+  FormData,
+  { rejectValue: ApiErrorResponseType; state: RootState }
+> = async (image, { rejectWithValue, getState }) => {
+  try {
+    const profileId = getState().account.result.id;
+
+    const response = await axiosInstance.post(ENDPOINTS.addProfileImage(profileId), image, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    return response?.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);
   }

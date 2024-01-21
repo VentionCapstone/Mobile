@@ -5,10 +5,9 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
-  scrollContainer: {
-    flexGrow: 1,
-    padding: 15,
+  flatlist: {
+    paddingVertical: 10,
+    alignItems: 'center',
   },
   noAccommodationsText: {
     textAlign: 'center',
@@ -19,6 +18,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     gap: 10,
+  },
+  loader: {
+    marginTop: 10,
   },
   createAccountTitle: {
     ...title3,
