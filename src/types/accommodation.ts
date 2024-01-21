@@ -1,4 +1,4 @@
-import { AccommodationAmenitiesResponse, Amenities } from './amenities';
+import { AccommodationAmenitiesResponse } from './amenities';
 
 export interface CreateAccommodationValues {
   title: string;
@@ -67,7 +67,7 @@ export interface Media {
   accommodationId: string;
 }
 
-export interface AccommodationFullView {
+export interface AccommodationDetailsParams {
   id: string;
   thumbnailUrl: string;
   previewImgUrl: string;
@@ -82,8 +82,8 @@ export interface AccommodationFullView {
   address: AddressValues;
   amenities: AccommodationAmenitiesResponse[];
   media: Media[];
-  title?: string;
-  owner?: Owner;
+  title: string;
+  owner: Owner;
 }
 
 interface Owner {

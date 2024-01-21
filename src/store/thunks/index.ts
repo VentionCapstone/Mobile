@@ -49,6 +49,10 @@ export const AsyncThunks = {
     'getListOfAccommodationsThunk',
     getListOfAccommodationsThunk
   ),
+  getUpdatedListOfAccommodations: createAsyncThunk(
+    'getUpdatedListOfAccommodations',
+    getListOfAccommodationsThunk
+  ),
 
   getAmenitiesListThunk: createAsyncThunk('getAmenitiesListThunk', getAmenitiesListThunk),
   getAmenitiesThunk: createAsyncThunk('getAmenitiesThunk', getAmenitiesThunk),

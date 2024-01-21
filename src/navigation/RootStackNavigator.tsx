@@ -27,7 +27,7 @@ import {
   AccommodationImage,
   CreateAmenities,
 } from 'src/screens';
-import CardById from 'src/screens/explore/CardById/CardById';
+import AccommodationDetails from 'src/screens/explore/AccommodationDetails/AccommodationDetails.tsx';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
 
@@ -175,8 +175,8 @@ const RootStackNavigator = () => {
         }}
       />
       <RootRouterStack.Screen
-        name="CardById"
-        component={CardById}
+        name="AccommodationDetails"
+        component={AccommodationDetails}
         options={{ headerShown: false }}
       />
       <RootRouterStack.Screen

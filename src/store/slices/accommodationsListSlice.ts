@@ -21,11 +21,9 @@ const accommodationListSlice = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
-
     clearError: (state) => {
       state.error = null;
     },
-
     setFilter: (state, action) => {
       state.filters = action.payload;
     },
@@ -40,6 +38,12 @@ const accommodationListSlice = createSlice({
       state.result = action.payload.data;
     });
     builder.addCase(AsyncThunks.getListOfAccommodations.rejected, onError);
+    builder.addCase(AsyncThunks.getUpdatedListOfAccommodations.pending, onPending);
+    builder.addCase(AsyncThunks.getUpdatedListOfAccommodations.fulfilled, (state, action) => {
+      state.pending = false;
+      state.result = state.result ? [...state.result, ...action.payload.data] : action.payload.data;
+    });
+    builder.addCase(AsyncThunks.getUpdatedListOfAccommodations.rejected, onError);
   },
 });
 

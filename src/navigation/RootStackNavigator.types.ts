@@ -28,6 +28,6 @@ export type RootStackParamList = {
   CreateAmenities: { accomodationId: string; isNew: boolean } | undefined;
   UpdateAmenities: { accomodationId: string };
 
-  CardById: { accomodationId: string };
+  AccommodationDetails: { accomodationId: string };
   FilterModal: undefined;
 };

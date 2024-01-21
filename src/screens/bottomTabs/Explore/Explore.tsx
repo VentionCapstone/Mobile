@@ -1,13 +1,112 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { useSelector } from 'react-redux';
+import { Card } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
-import { ExploreList } from 'src/screens/explore';
+import { useAppDispatch } from 'src/store';
+import {
+  getAccommodationList,
+  getAccommodationListLoading,
+  getFilterSettings,
+} from 'src/store/selectors';
+import { AsyncThunks } from 'src/store/thunks';
+import { ExploreListItem } from 'src/types';
+import { getAccommodationsListQuery } from 'src/utils';
+
+interface CardProps extends ExploreListItem {}
 
 const Explore = () => {
+  const dispatch = useAppDispatch();
+  const filter = useSelector(getFilterSettings);
+  const data = useSelector(getAccommodationList);
+  const loading = useSelector(getAccommodationListLoading);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
+  const renderItem = useMemo(
+    () =>
+      ({ item }: { item: CardProps }) => (
+        <Card
+          id={item.id}
+          thumbnailUrl={item.thumbnailUrl}
+          squareMeters={item.squareMeters}
+          numberOfRooms={item.numberOfRooms}
+          allowedNumberOfPeople={item.allowedNumberOfPeople}
+          price={item.price}
+          address={item.address}
+        />
+      ),
+    []
+  );
+
+  const fetchData = useCallback(async () => {
+    try {
+      await dispatch(
+        AsyncThunks.getListOfAccommodations(
+          getAccommodationsListQuery({ ...filter, page: pageNumber })
+        )
+      );
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [filter, pageNumber, dispatch]);
+
+  const handleRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setPageNumber(1);
+    fetchData();
+  }, [fetchData]);
+
+  const handleLoadMore = useCallback(() => {
+    if (!loading) {
+      setPageNumber((prevPage) => prevPage + 1);
+      dispatch(
+        AsyncThunks.getUpdatedListOfAccommodations(
+          getAccommodationsListQuery({ ...filter, page: pageNumber })
+        )
+      );
+    }
+  }, [loading, filter, pageNumber, dispatch]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    handleRefresh();
+  }, [filter, handleRefresh]);
+
   return (
     <ScreenTemplate>
-      <ExploreList style={{ height: 800, padding: 10 }} />
+      <FlatList
+        style={[styles.container]}
+        data={data}
+        keyExtractor={(item: CardProps) => item.id}
+        renderItem={renderItem}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.2}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+      />
     </ScreenTemplate>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    height: 800,
+    alignSelf: 'center',
+    width: '95%',
+    padding: 10,
+  },
+  loading: {
+    marginVertical: 20,
+  },
+  emptySpace: {
+    height: 80,
+  },
+});
 
 export default Explore;

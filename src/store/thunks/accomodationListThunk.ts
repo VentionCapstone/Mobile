@@ -15,3 +15,17 @@ export const getListOfAccommodationsThunk: AsyncThunkPayloadCreator<
     return rejectWithValue(error.response.data);
   }
 };
+
+export const getUpdatedListOfAccommodationsThunk: AsyncThunkPayloadCreator<
+  ApiSuccessResponseType<ExploreListItem[]>,
+  string,
+  { rejectValue: ApiErrorResponseType }
+> = async (params, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get(ENDPOINTS.getAllAccomodations(params));
+
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response.data);
+  }
+};

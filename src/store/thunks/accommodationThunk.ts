@@ -6,7 +6,7 @@ import {
   UpdateAccommodationParams,
   ApiSuccessResponseType,
   Accommodation,
-  AccommodationFullView,
+  AccommodationDetailsParams,
 } from 'src/types';
 
 export const createAccommodationThunk: AsyncThunkPayloadCreator<
@@ -77,7 +77,7 @@ export const uploadAccommodationImagesThunk: AsyncThunkPayloadCreator<
 };
 
 export const getAccommodationThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AccommodationFullView>,
+  ApiSuccessResponseType<AccommodationDetailsParams>,
   string,
   { rejectValue: ApiErrorResponseType }
 > = async (accommodationId, { rejectWithValue }) => {
