@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderBottomWidth: 1,
   },
-  container: {
+  scrollContainer: {
     paddingVertical: 10,
     paddingHorizontal: HORIZONTAL_12_PERCENT,
   },

@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { FlatList, Image, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { Image, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ErrorAlert,
@@ -81,9 +81,8 @@ const Profile = () => {
     }
   };
 
-  const onRefresh = async () => {
+  const handleRefresh = async () => {
     setRefreshing(true);
-
     if (accountDetails) {
       await dispatch(AsyncThunks.getAccountDetails(accountDetails.id));
       setRefreshing(false);
@@ -115,66 +114,54 @@ const Profile = () => {
 
   return (
     <ScreenTemplate headerShown={false}>
-      <FlatList
-        data={['header', 'createAccommodation', 'accountSections', 'logout']}
-        keyExtractor={(item) => item}
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
         refreshControl={
-          isLoggedIn ? (
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[TOMATO]} />
-          ) : undefined
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            progressBackgroundColor={colors.background}
+            colors={[TOMATO]}
+          />
         }
-        renderItem={({ item }) => {
-          switch (item) {
-            case 'header':
-              return <ProfileHeader isLoggedIn={isLoggedIn} />;
-            case 'createAccommodation':
-              return (
-                <>
-                  {isLoggedIn && (
-                    <TouchableOpacity
-                      style={[styles.createAirBnbCard, { backgroundColor: colors.background }]}
-                      onPress={navigateToCreateAccommodation}
-                    >
-                      <View style={styles.createAirBnbTitleContainer}>
-                        <Text style={styles.createAirBnbTitle}>AirBnb your place</Text>
-                        <Text style={styles.createAirBnbSubTitle}>
-                          It's simple to get set up and start earning
-                        </Text>
-                      </View>
-                      <Image
-                        source={{
-                          uri: AIR_BNB_IMAGE_URL,
-                        }}
-                        style={styles.image}
-                      />
-                    </TouchableOpacity>
-                  )}
-                </>
-              );
-            case 'accountSections':
-              return (
-                <>
-                  {isLoggedIn && (
-                    <View>
-                      <NavigationList sections={ACCOUNT_SECTIONS} />
-                      <Button
-                        title="Log out"
-                        marginVertical={30}
-                        type={ButtonType.SECONDARY}
-                        onPress={handleLogOut}
-                      />
-                    </View>
-                  )}
-                </>
-              );
-            case 'logout':
-              return <ProfileFooter />;
-            default:
-              return null;
-          }
-        }}
-        style={styles.container}
-      />
+      >
+        <ProfileHeader isLoggedIn={isLoggedIn} />
+
+        {isLoggedIn && (
+          <TouchableOpacity
+            style={[styles.createAirBnbCard, { backgroundColor: colors.secondaryBackground }]}
+            onPress={navigateToCreateAccommodation}
+          >
+            <View style={styles.createAirBnbTitleContainer}>
+              <Text style={styles.createAirBnbTitle}>AirBnb your place</Text>
+              <Text style={styles.createAirBnbSubTitle}>
+                It's simple to get set up and start earning
+              </Text>
+            </View>
+
+            <Image
+              source={{
+                uri: AIR_BNB_IMAGE_URL,
+              }}
+              style={styles.image}
+            />
+          </TouchableOpacity>
+        )}
+
+        {isLoggedIn && (
+          <>
+            <NavigationList sections={ACCOUNT_SECTIONS} />
+            <Button
+              title="Log out"
+              marginVertical={30}
+              type={ButtonType.SECONDARY}
+              onPress={handleLogOut}
+            />
+          </>
+        )}
+
+        <ProfileFooter />
+      </ScrollView>
 
       <ErrorAlert
         visible={errorVisible}
