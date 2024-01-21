@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { paragraph1 } from 'src/styles';
+import { paragraph1, LEVEL_1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   card: {
@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     height: 100,
     maxHeight: 140,
+    ...LEVEL_1,
   },
   imageContainer: {
     flex: 1,

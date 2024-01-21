@@ -1,5 +1,6 @@
 export const BLACK = '#000000';
 
+export const GREY_200 = '#969696';
 export const GREY_300 = '#737373';
 export const GREY_400 = '#3b3b3b';
 export const GREY_500 = '#141414';
@@ -19,3 +20,4 @@ export const TOMATO_100 = '#FF6347';
 export const WHITE = '#FFFFFF';
 export const WHITE_100 = '#f5f5f5';
 export const WHITE_200 = '#bfbfbf';
+export const WHITE_300 = '#a8a8a8';

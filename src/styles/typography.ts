@@ -15,7 +15,7 @@ export const title2: TextStyle = {
 export const title3: TextStyle = {
   fontSize: 17,
   lineHeight: 18,
-  fontWeight: '500',
+  fontWeight: '300',
 };
 
 export const subtitle1: TextStyle = {

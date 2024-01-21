@@ -131,28 +131,6 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
 
   return (
     <ThemedView>
-      <TouchableOpacity
-        style={[
-          styles.addressLabel,
-          {
-            backgroundColor: colors.secondaryBackground,
-            borderColor: 'transparent',
-          },
-        ]}
-        onPress={() => setModalVisible(true)}
-      >
-        <View style={styles.row}>
-          <Icon name={IconName.Location} size={26} color={colors.placeholder} />
-          <Text style={[styles.labelText, { color: colors.placeholder }]}>
-            {addressValues.city && addressValues.street
-              ? `${addressValues.city}, ${addressValues.country}`
-              : 'location'}
-          </Text>
-        </View>
-
-        <Icon name={IconName.ChevronForward} color={colors.placeholder} />
-      </TouchableOpacity>
-
       <ModalContainer bottomModal visible={modalVisible} onClose={() => setModalVisible(false)}>
         <View
           style={[

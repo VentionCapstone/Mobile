@@ -13,11 +13,11 @@ import Text from '../Text/Text';
 const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const colors = useSelector(getColors);
   const user = useSelector(getUserDetails);
-  const isGuestUser = useSelector(getIsGuestAccount);
+  const isGuestAccount = useSelector(getIsGuestAccount);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const handlePressed = () => {
-    if (isGuestUser) {
+  const navigateToCreateOrUpdate = () => {
+    if (isGuestAccount) {
       navigation.navigate('CreateProfile');
     } else {
       navigation.navigate('UpdateProfile');
@@ -74,7 +74,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
 
           <TouchableOpacity
             style={[styles.accountHeader, { borderBottomColor: colors.secondaryBackground }]}
-            onPress={handlePressed}
+            onPress={navigateToCreateOrUpdate}
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
@@ -95,7 +95,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                   {user?.profile ? `${user.firstName} ${user.lastName}` : user?.email}
                 </Text>
                 <Text style={styles.description}>
-                  {isGuestUser ? 'tap to create' : 'edit profile'}
+                  {isGuestAccount ? 'tap to create' : 'edit profile'}
                 </Text>
               </View>
             </View>

@@ -2,7 +2,6 @@ import {
   ACCOUNT_NAME_MAX_LENGTH,
   ACCOUNT_NAME_MIN_LENGTH,
   PASSWORD_MIN_LENGTH,
-  PHONE_NUMBER_MAX_LENGTH,
 } from './validation.constants';
 
 const isAccountNameValid = (name: string | undefined): boolean => {

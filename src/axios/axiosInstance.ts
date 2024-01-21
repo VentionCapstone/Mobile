@@ -10,6 +10,7 @@ const BASE_URL = 'https://dev.vention-booking.taksifon.uz/api';
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
+  timeout: 10000,
 });
 
 const endpointsWithoutToken = [ENDPOINTS.signin, ENDPOINTS.signup];
@@ -23,8 +24,10 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
-    if (config.url && config.url.includes(ENDPOINTS.signout) && refreshToken) {
-      config.headers['refresh-token'] = refreshToken;
+    if (config.url === ENDPOINTS.signout && refreshToken) {
+      if (config.headers) {
+        config.headers['refresh-token'] = refreshToken;
+      }
     }
 
     return config;
@@ -39,13 +42,19 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const { response, config } = error;
 
+    const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
+
     const { data } = response;
 
-    if (config.url === ENDPOINTS.refresh && data?.error?.statusCode === 401) {
+    if (!userId) return;
+
+    if (config.url === ENDPOINTS.refresh(userId) && data?.error?.statusCode === 401) {
       await SecureStore.deleteItemAsync(SecureStorageKey.REFRESH_TOKEN);
+
+      return;
     }
 
-    if (data?.error?.statusCode === 401 && data?.error?.message === 'Unauthorized') {
+    if (data?.error?.statusCode === 401 && !config.url.includes(ENDPOINTS.refresh(userId))) {
       if (!config.retry) {
         config.retry = true;
 

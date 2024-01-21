@@ -9,16 +9,19 @@ import { styles } from './DatePicker.style';
 import { getFormattedDate, getInitialDate } from './DatePicker.utils';
 import Text from '../../../Text/Text';
 import ModalContainer from '../../ModalContainer/ModalContainer';
+import Icon from 'src/components/Icon/Icon';
+import { IconName } from 'src/types';
 
 type Props = {
-  label?: string;
-  width?: number;
-  onDateChange: (selectedDate: string) => void;
   error?: string;
-  initialValue?: string | undefined;
+  initialValue?: string;
+  label?: string;
+  minDate?: string;
+  maxDate?: string;
+  onDateChange: (selectedDate: string) => void;
 };
 
-const DateTimePicker = ({ label, width, onDateChange, error, initialValue }: Props) => {
+const DateTimePicker = ({ error, initialValue, label, minDate, maxDate, onDateChange }: Props) => {
   const colors = useSelector(getColors);
   const initialDate = getInitialDate({ initialValue });
 
@@ -34,19 +37,19 @@ const DateTimePicker = ({ label, width, onDateChange, error, initialValue }: Pro
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.labelText}>{label}</Text>
       <TouchableOpacity
         style={[
           styles.openDateButton,
           {
-            width,
             backgroundColor: colors.secondaryBackground,
             borderColor: error ? RED_200 : 'transparent',
           },
         ]}
         onPress={() => setShowDatePicker(true)}
       >
+        <Icon name={IconName.Calendar} size={20} />
         <Text style={[styles.placeholder, { color: error ? RED_200 : colors.placeholder }]}>
           {selectedDate || 'yyyy-mm-dd'}
         </Text>
@@ -65,7 +68,8 @@ const DateTimePicker = ({ label, width, onDateChange, error, initialValue }: Pro
             mainColor: colors.tint,
           }}
           onSelectedChange={(value) => handleOnDateChange(value)}
-          minimumDate={new Date().toISOString()}
+          minimumDate={minDate || new Date().toISOString()}
+          maximumDate={maxDate}
           mode="calendar"
         />
       </ModalContainer>

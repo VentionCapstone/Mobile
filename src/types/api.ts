@@ -1,4 +1,4 @@
-import { AddressValues, CreateAccommodationValues } from './accommodation';
+import { AddressValues } from './accommodation';
 import { Gender } from './common';
 import { ThemeType } from './ui';
 import { WishlistAccommodationResponse } from './wishlist';
@@ -34,9 +34,12 @@ export interface User {
   id: string;
   email: string;
   firstName: string;
+  role: string;
   lastName: string;
   isVerified: boolean;
   isEmailVerified: boolean;
+  isDeleted: boolean;
+  createdAt: Date;
   actiovationLink: string;
   profile: Profile | null;
 }
@@ -70,19 +73,32 @@ export interface UpdateProfileParams {
 }
 
 export interface CreateAccommodationParams {
-  accommodation: CreateAccommodationValues;
+  title: string;
+  thumbnailUrl?: string;
+  previewImgUrl?: string;
+  squareMeters: number | null;
+  numberOfRooms: number | null;
+  allowedNumberOfPeople: number | null;
+  price: number | null;
+  availableFrom: string;
+  availableTo: string;
+  timezoneOffset: number;
+  description: string;
   address: AddressValues;
 }
 
-export interface UpdateAccommodationParams extends CreateAccommodationParams {
+export interface UpdateAccommodationParams {
   accommodationId: string;
+  accommodation: CreateAccommodationParams;
 }
 
 export interface Accommodation {
   id: string;
+  title: string;
   thumbnailUrl: string;
-  addressId: string;
   previewImgUrl: string;
+  addressId: string;
+  ownerId: string;
   squareMeters: number;
   numberOfRooms: number;
   price: number;
@@ -90,8 +106,8 @@ export interface Accommodation {
   availableFrom: string;
   availableTo: string;
   description: string;
+  timezoneOffset: number;
   isDeleted: boolean;
-  ownerId: string;
   address: {
     id: string;
     street: string;
