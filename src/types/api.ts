@@ -14,7 +14,8 @@ export interface ApiErrorResponseType {
 
 export interface ApiSuccessResponseType<T = any> {
   success: boolean;
-  data: T;
+  data?: T;
+  message?: string;
 }
 
 export interface Profile {
@@ -107,8 +108,3 @@ export interface Wishlist {
   createdAt: string;
   accommodation: WishlistAccommodationResponse;
 }
-
-export type WishlistResponseType = {
-  success: boolean;
-  message: string;
-};

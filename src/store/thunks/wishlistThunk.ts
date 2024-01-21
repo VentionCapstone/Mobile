@@ -1,11 +1,6 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
-import {
-  ApiErrorResponseType,
-  ApiSuccessResponseType,
-  Wishlist,
-  WishlistResponseType,
-} from 'src/types';
+import { ApiErrorResponseType, ApiSuccessResponseType, Wishlist } from 'src/types';
 
 export const getWishlistsThunk: AsyncThunkPayloadCreator<
   ApiSuccessResponseType<Wishlist[]>,
@@ -22,7 +17,7 @@ export const getWishlistsThunk: AsyncThunkPayloadCreator<
 };
 
 export const addToWishlistThunk: AsyncThunkPayloadCreator<
-  WishlistResponseType,
+  ApiSuccessResponseType,
   string,
   { rejectValue: ApiErrorResponseType }
 > = async (accommodationId, { rejectWithValue }) => {
