@@ -10,7 +10,6 @@ import ThemedView from 'src/components/ThemedView/ThemedView';
 import { getColors, getFilterSettings, getIsDarkMode } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, GREY_200, LEVEL_1, TOMATO, WHITE, WHITE_100 } from 'src/styles';
 import { IconName } from 'src/types';
-
 import { styles } from './SearchModal.styles';
 import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, getPrevDay, isInvalidDateRange } from './SearchModal.utils';
 import { useAppDispatch } from 'src/store';
@@ -46,32 +45,32 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
         setLocation(formattedLocation)
       }
     },
-    []
+    [getPlaceDetails, formatLocationString, setLocation]
   );
 
   const handleCheckInChange = useCallback(
     (newDate: string) => {
       setcheckInDate(newDate);
     },
-    []
+    [setcheckInDate]
   );
 
   const handleCheckOutChange = useCallback(
     (newDate: string) => {
       setcheckOutDate(newDate);
     },
-    []
+    [setcheckOutDate]
   );
 
   const getCheckOutMinDate = useCallback(() => {
     const checkoutMin = checkInDate ? getNextDay(checkInDate) : getNextDay(getToday());
     return checkoutMin;
-  }, [checkInDate, getNextDay]);
+  }, [checkInDate, getNextDay, getToday]);
 
   const getCheckInMinDate = useCallback(() => {
     const today = getToday();
     return today;
-  }, []);
+  }, [getToday]);
 
   const getCheckInMaxDate = useCallback(() => {
     const checkinMax = checkOutDate ? getPrevDay(checkOutDate) : undefined;
@@ -90,7 +89,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
     setLocation('');
   }, [setLocation]);
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
 
     if (isInvalidDateRange(checkInDate, checkOutDate)) {
       showAlert('error', { message: 'Date range is invalid' });
@@ -99,7 +98,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
     dispatch(accommodationListActions.setFilter({...filter, location, checkInDate, checkOutDate}));
     changeOpen();
     return;
-  };
+  }, [filter, isInvalidDateRange, dispatch, changeOpen]);
 
   const handleResetSearch = useCallback(() => {
     setLocation('');
