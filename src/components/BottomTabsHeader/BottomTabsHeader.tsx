@@ -19,8 +19,6 @@ const BottomTabsHeader = ({ title, children, style, button }: BottomTabsHeaderPr
             <Text style={styles.header}>{title}</Text>
             {button}
           </View>
-          <Text style={styles.subtitle}>Find your perfect place</Text>
-          <View>{children}</View>
         </View>
       </SafeAreaView>
     </ThemedView>
