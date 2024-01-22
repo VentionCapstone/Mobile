@@ -14,6 +14,7 @@ import {
   getAccommodationThunk,
   getMyAccommodationsThunk,
 } from './accommodationThunk';
+import { getListOfAccommodationsThunk } from './accomodationListThunk';
 import {
   addProfileImageThunk,
   createAccountThunk,
@@ -51,6 +52,14 @@ export const AsyncThunks = {
   ),
   getAccommodation: createAsyncThunk('getAccommodationThunk', getAccommodationThunk),
   getMyAccommodations: createAsyncThunk('getAccommodationsThunk', getMyAccommodationsThunk),
+  getListOfAccommodations: createAsyncThunk(
+    'getListOfAccommodationsThunk',
+    getListOfAccommodationsThunk
+  ),
+  getUpdatedListOfAccommodations: createAsyncThunk(
+    'getUpdatedListOfAccommodations',
+    getListOfAccommodationsThunk
+  ),
 
   getWishlists: createAsyncThunk('getWishlistsThunk', getWishlistsThunk),
   addToWishlist: createAsyncThunk('addToWishlistThunk', addToWishlistThunk),

@@ -1,6 +1,10 @@
 import { ButtonType, Button } from './Button';
+import Card from './Card/Card';
 import Chip from './Chip/Chip';
+import Collapsable from './Collapsable/Collapsable';
+import ExploreHeader from './ExploreHeader/ExploreHeader';
 import Icon from './Icon/Icon';
+import ImageCarousel from './ImageCarousel/ImageCarousel';
 import NavigationHeader from './NavigationHeader/NavigationHeader';
 import ProfileFooter from './ProfileFooter/ProfileFooter';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
@@ -9,16 +13,20 @@ import ThemedView from './ThemedView/ThemedView';
 import showAlert from './alert';
 
 export {
+  ImageCarousel,
   Button,
   ButtonType,
   Icon,
   NavigationHeader,
   ProfileFooter,
   ProfileHeader,
+  ExploreHeader,
   Text,
   ThemedView,
   showAlert,
   Chip,
+  Card,
+  Collapsable,
 };
 
 export * from './navigationLists';

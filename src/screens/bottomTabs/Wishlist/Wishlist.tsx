@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Alert, Text, WishlistItem } from 'src/components';
+import { ErrorAlert, Text, WishlistItem } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { useAppDispatch } from 'src/store';
 import { getColors, getWishlistError, getWishlistLoader, getWishlists } from 'src/store/selectors';
@@ -57,7 +57,7 @@ const Wishlist = () => {
         columnWrapperStyle={styles.columnWrapper}
       />
 
-      <Alert
+      <ErrorAlert
         visible={errorVisible}
         message={wishlistError?.error.message}
         onClose={() => setErrorVisible(false)}

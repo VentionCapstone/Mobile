@@ -1,3 +1,5 @@
+import { AccommodationAmenitiesResponse } from './amenities';
+
 export interface CreateAccommodationValues {
   title: string;
   thumbnailUrl?: string;
@@ -22,4 +24,77 @@ export interface AddressValues {
   zipCode: string;
   latitude: number | null;
   longitude: number | null;
+}
+
+export interface AdressListingValues {
+  street?: string;
+  city?: string;
+  country?: string;
+}
+
+export type OrderOptions = null | 'asc' | 'desc';
+
+export interface SearchValues {
+  location?: AdressListingValues;
+  checkInDate?: string;
+  checkOutDate?: string;
+  orderByPrice?: OrderOptions;
+  orderByRooms?: OrderOptions;
+  orderByPeople?: OrderOptions;
+  minPrice?: number;
+  maxPrice?: number;
+  minRooms?: number;
+  maxRooms?: number;
+  minPeople?: number;
+  maxPeople?: number;
+  limit?: number;
+  page?: number;
+}
+
+export interface ExploreListItem {
+  id: string;
+  thumbnailUrl: string;
+  squareMeters: number;
+  numberOfRooms: number;
+  allowedNumberOfPeople: number;
+  price: number;
+  address: AdressListingValues;
+}
+
+export interface Media {
+  imageUrl: string;
+  thumbnailUrl: string;
+  accommodationId: string;
+}
+
+export interface AccommodationDetailsParams {
+  id: string;
+  thumbnailUrl: string;
+  previewImgUrl: string;
+  squareMeters: number;
+  numberOfRooms: number;
+  price: number;
+  allowedNumberOfPeople: number;
+  available: boolean;
+  availableFrom: string;
+  availableTo: string;
+  description: string;
+  address: AddressValues;
+  amenities: AccommodationAmenitiesResponse[];
+  media: Media[];
+  title: string;
+  owner: Owner;
+}
+
+interface Owner {
+  createdAt: string;
+  firstName: string;
+  id: string;
+  isVerified: boolean;
+  lastName: string;
+  profile: {
+    country: string;
+    imageUrl: string;
+    language: string;
+  };
 }

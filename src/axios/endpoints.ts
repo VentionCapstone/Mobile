@@ -23,7 +23,7 @@ const ENDPOINTS = {
   addToWishlist: (accommodationId: string) => `/wishlist/${accommodationId}`,
   removeFromWishlist: (accommodationId: string) => `/wishlist/${accommodationId}`,
   getWishlists: `/wishlist`,
-  
+
   getAmenitiesList: '/amenities',
   accomodationAmenities: (accommodationId: string) => `/amenities/${accommodationId}`,
 };

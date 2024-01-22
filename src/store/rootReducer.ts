@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
 import {
+  accommodationListReducer,
   accommodationReducer,
   accountReducer,
   myAccommodationsListReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   theme: themeReducer,
   accommodation: accommodationReducer,
   myAccommodationsList: myAccommodationsListReducer,
+  accommodationList: accommodationListReducer,
   user: userReducer,
   wishlist: wishlistReducer,
 });

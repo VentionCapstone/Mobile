@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import { Platform, StyleSheet } from 'react-native';
-import { title3, LEVEL_2 } from 'src/styles';
+import { LEVEL_2, title2 } from 'src/styles';
 import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
