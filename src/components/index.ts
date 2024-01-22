@@ -7,7 +7,6 @@ import ProfileHeader from './ProfileHeader/ProfileHeader';
 import Text from './Text/Text';
 import ThemedView from './ThemedView/ThemedView';
 import showAlert from './alert';
-import ProfileImageUploader from './imageUploaders/ProfileImage/ProfileImage';
 
 export {
   Button,
@@ -19,7 +18,6 @@ export {
   Text,
   ThemedView,
   showAlert,
-  ProfileImageUploader,
   Chip,
 };
 

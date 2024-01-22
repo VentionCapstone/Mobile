@@ -5,7 +5,6 @@ import { Country } from 'react-native-country-picker-modal';
 import { useSelector } from 'react-redux';
 import {
   Icon,
-  ProfileImageUploader,
   Text,
   showAlert,
   Input,
@@ -19,7 +18,7 @@ import { useAppDispatch } from 'src/store';
 import { getAccountLoader, getColors } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { CreateAccountFormValues } from 'src/types';
+import { ApiSuccessResponseType, CreateAccountFormValues, ProfileResponseType } from 'src/types';
 import { GenderOptionsProps, Gender, Language } from 'src/types/common';
 import { IconName, ThemeType } from 'src/types/ui';
 import { ACCOUNT_NAME_MAX_LENGTH } from 'src/utils';
@@ -71,6 +70,8 @@ const CreateAccountForm = () => {
   };
 
   const handleOnSubmit = async () => {
+    navigation.navigate('ProfileImage');
+
     setFormInteracted(true);
     const errors = validateForm(formValues);
 
@@ -79,13 +80,10 @@ const CreateAccountForm = () => {
       const response = await dispatch(AsyncThunks.createAccount(formValues));
 
       if (response.meta.requestStatus === 'fulfilled') {
-        showAlert('success', {
-          message: 'Successfully created!',
-          onOkPressed: () => navigation.navigate('Profile'),
-        });
+        navigation.navigate('ProfileImage');
+      } else {
+        setValidationErrors(errors);
       }
-    } else {
-      setValidationErrors(errors);
     }
   };
 
@@ -103,10 +101,6 @@ const CreateAccountForm = () => {
   return (
     <ScreenTemplate>
       <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
-        <View style={styles.header}>
-          <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
-        </View>
-
         <View style={{ gap: 10 }}>
           <Text style={styles.title}>Profile</Text>
           <Text>

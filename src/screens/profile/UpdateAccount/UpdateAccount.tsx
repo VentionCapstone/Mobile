@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import { useCallback, useEffect, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, TouchableOpacity, View } from 'react-native';
 import { Country } from 'react-native-country-picker-modal';
 import { useSelector } from 'react-redux';
 import {
@@ -11,11 +11,12 @@ import {
   LanguageSelector,
   showAlert,
   Text,
-  ProfileImageUploader,
   PhoneNumberInput,
+  Loader,
 } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { SecureStorageKey } from 'src/constants/storage';
+import { pickImage } from 'src/helper/pickProfileImage';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccountLoader, getColors, getUserDetails } from 'src/store/selectors';
@@ -54,8 +55,8 @@ const UpdateAccount = () => {
     gender: userDetails?.profile?.gender || Gender.Male,
     description: userDetails?.profile?.description || '',
     language: userDetails?.profile?.language || '',
-    imageUrl: userDetails?.profile?.imageUrl || '',
     uiTheme: userDetails?.profile?.uiTheme || ThemeType.Light,
+    imageUrl: userDetails?.profile?.imageUrl,
     country: selectedCountry || '',
   });
 
@@ -73,12 +74,23 @@ const UpdateAccount = () => {
     setSelectedCountry(country.name as string);
   }, []);
 
-  const handlePhotoSelect = (imageUrl: string) => {
-    setFormValues({ ...formValues, imageUrl });
-  };
-
   const handleLanguageSelect = (language: string) => {
     setFormValues({ ...formValues, language });
+  };
+
+  const handlePhotoSelect = async () => {
+    const selectedPhoto = await pickImage();
+    if (!selectedPhoto) return;
+
+    const formData = new FormData();
+
+    formData.append('image', {
+      uri: selectedPhoto.uri,
+      name: 'image',
+      type: 'image/jpeg',
+    } as any);
+
+    await dispatch(AsyncThunks.addProfileImage(formData));
   };
 
   const handleOnSubmit = useCallback(async () => {
@@ -95,6 +107,7 @@ const UpdateAccount = () => {
           onOkPressed: () => navigation.navigate('Profile'),
         });
         const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
+
         if (userId) {
           await dispatch(AsyncThunks.getUserDetails(userId));
         }
@@ -117,17 +130,17 @@ const UpdateAccount = () => {
 
   return (
     <ScreenTemplate>
-      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
-        <View style={styles.header}>
-          <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
-        </View>
+      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid}>
+        <View style={[styles.imageContainer, { backgroundColor: colors.background }]}>
+          <Image source={{ uri: formValues.imageUrl }} style={styles.profileImage} />
 
-        <View>
-          <Text style={styles.title}>Profile</Text>
-          <Text>
-            The information you share will be used across Airbnb to help other guests and Hosts get
-            to know you.
-          </Text>
+          <Pressable
+            style={[styles.editButton, { backgroundColor: colors.secondaryBackground }]}
+            onPress={handlePhotoSelect}
+          >
+            <Text>edit image</Text>
+            <Icon name={IconName.Edit} iconSet="material" size={16} />
+          </Pressable>
         </View>
 
         <Input
@@ -204,6 +217,11 @@ const UpdateAccount = () => {
           innerStyle={styles.textAreaStyles}
         />
       </FormTemplate>
+
+      <Loader
+        visible={loading}
+        message="Your accommodation details are being updated. This won't take long..."
+      />
     </ScreenTemplate>
   );
 };

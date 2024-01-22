@@ -8,6 +8,7 @@ const ENDPOINTS = {
   createProfile: '/users/profile',
   updateProfile: (userId: string | undefined) => `/users/${userId}`,
   getProfile: (userId: string) => `/users/profile/${userId}`,
+  addProfileImage: (profileId: string) => `/users/${profileId}/image`,
 
   getUserDetails: (userId: string) => `/users/${userId}`,
 

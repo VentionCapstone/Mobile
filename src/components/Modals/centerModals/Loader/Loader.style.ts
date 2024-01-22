@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { title3 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   modalContainer: {
@@ -10,5 +11,13 @@ export const styles = StyleSheet.create({
   loaderContainer: {
     borderRadius: 10,
     padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+  },
+  loaderMessage: {
+    ...title3,
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });

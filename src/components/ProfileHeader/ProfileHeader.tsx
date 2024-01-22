@@ -1,5 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { TouchableOpacity, Image, View } from 'react-native';
+import { useState } from 'react';
+import { TouchableOpacity, Image, View, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
 import { getColors, getIsGuestAccount, getUserDetails } from 'src/store/selectors';
@@ -15,6 +16,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const user = useSelector(getUserDetails);
   const isGuestAccount = useSelector(getIsGuestAccount);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
 
   const navigateToCreateOrUpdate = () => {
     if (isGuestAccount) {
@@ -22,6 +24,10 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     } else {
       navigation.navigate('UpdateProfile');
     }
+  };
+
+  const handleImageLoad = () => {
+    setIsImageLoading(false);
   };
 
   return (
@@ -78,16 +84,19 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
-                {user?.profile?.imageUrl ? (
+                {user?.profile?.imageUrl && (
                   <Image
                     source={{
                       uri: user.profile.imageUrl,
                     }}
+                    onLoad={handleImageLoad}
                     style={styles.image}
                   />
-                ) : (
-                  <Icon name={IconName.Person} size={60} />
                 )}
+
+                {isImageLoading && <ActivityIndicator size="small" />}
+
+                {!user?.profile?.imageUrl && <Icon name={IconName.Person} size={60} />}
               </View>
 
               <View>

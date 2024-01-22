@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY_300, title1, title2, title3, paragraph2 } from 'src/styles';
+import { GREY_300, title1, title2, title3, paragraph2, LEVEL_1 } from 'src/styles';
 import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -7,10 +7,10 @@ export const styles = StyleSheet.create({
     width: '90%',
     height: 200,
     borderRadius: 10,
-    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
+    ...LEVEL_1,
   },
   titleContainer: {
     paddingHorizontal: HORIZONTAL_12_PERCENT,
@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: 'transparent',
+    borderRadius: 8,
   },
   deleteButton: {
     position: 'absolute',

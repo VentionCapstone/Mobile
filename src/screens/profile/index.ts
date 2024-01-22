@@ -6,6 +6,7 @@ import CreateAmenities from './CreateAmenities/CreateAmenities';
 import MyAccommodations from './MyAccommodations/MyAccommodations';
 import NotificationSettings from './NotificationSettings/NotificationSettings';
 import Notifications from './Notifications/Notifications';
+import ProfileImage from './ProfileImage/ProfileImage';
 import UpdateAccommodation from './UpdateAccommodation/UpdateAccommodation';
 import UpdateProfile from './UpdateAccount/UpdateAccount';
 
@@ -18,6 +19,7 @@ export {
   MyAccommodations,
   NotificationSettings,
   Notifications,
+  ProfileImage,
   UpdateAccommodation,
   UpdateProfile,
 };
