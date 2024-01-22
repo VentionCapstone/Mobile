@@ -12,4 +12,5 @@ export interface WishlistAccommodationResponse {
   price: number;
   address: WishlistAddress;
   thumbnailUrl: string;
+  isInWishlist: boolean;
 }

@@ -1,4 +1,4 @@
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -15,10 +15,11 @@ import { EMAIL_MAX_LENGTH } from 'src/utils';
 import { validateForm } from './Signin.utils';
 import styles from '../auth.styles';
 
-const Signin = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Signin'>;
+
+const Signin = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const loading = useSelector(getAccountLoader);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<SignInParams>({

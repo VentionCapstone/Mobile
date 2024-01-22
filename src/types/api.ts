@@ -14,7 +14,7 @@ export interface ApiErrorResponseType {
 
 export interface ApiSuccessResponseType<T = any> {
   success: boolean;
-  data?: T;
+  data: T;
   message?: string;
 }
 

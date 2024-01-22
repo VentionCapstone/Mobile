@@ -7,8 +7,8 @@ export interface SignInResponse {
 }
 
 export interface AuthResponse {
-  message: string;
-  statusCode: number;
+  success: boolean;
+  message: number;
 }
 
 export interface AuthParams {

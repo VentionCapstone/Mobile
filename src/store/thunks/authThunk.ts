@@ -53,19 +53,6 @@ export const signUpThunk: AsyncThunkPayloadCreator<
   }
 };
 
-export const verifyEmailThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AuthResponse>,
-  AuthParams,
-  { rejectValue: ApiErrorResponseType }
-> = async (params, { rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.put(ENDPOINTS.verify, params.email);
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.response.data);
-  }
-};
-
 export const signOutThunk: AsyncThunkPayloadCreator<
   any,
   undefined,

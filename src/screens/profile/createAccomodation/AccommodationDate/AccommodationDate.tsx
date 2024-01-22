@@ -1,5 +1,4 @@
-import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
-import moment from 'moment-timezone';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -20,14 +19,11 @@ type FormValues = {
   timezoneOffset: number;
 };
 
-type Props = {
-  route: Route<'AccommodationDate', { accommodation: any }>;
-};
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDate'>;
 
-const AccommodationDate = ({ route }: Props) => {
+const AccommodationDate = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
   const accommodationLoader = useSelector(getMyAccommodationsLoader);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [dateValues, setDateValues] = useState<FormValues>({
     availableFrom: '',
     availableTo: '',

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { LEVEL_1, title2, title3 } from 'src/styles';
+import { LEVEL_1, title2, paragraph1 } from 'src/styles';
 import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -46,9 +46,14 @@ export const styles = StyleSheet.create({
   title: {
     ...title2,
     marginTop: 20,
+    fontWeight: '600',
     textAlign: 'left',
   },
   subTitle: {
-    ...title3,
+    ...paragraph1,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
   },
 });

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { title1, paragraph2 } from 'src/styles';
+import { title1, title3, paragraph2 } from 'src/styles';
 import { HORIZONTAL_20_PERCENT } from 'src/utils';
 
 const styles = StyleSheet.create({
@@ -16,6 +16,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: HORIZONTAL_20_PERCENT,
     paddingVertical: 10,
+  },
+  container: {
+    paddingHorizontal: HORIZONTAL_20_PERCENT,
+    paddingVertical: 20,
+  },
+  signInFirst: {
+    ...title3,
+    textAlign: 'center',
+    marginBottom: 10,
   },
 });
 
