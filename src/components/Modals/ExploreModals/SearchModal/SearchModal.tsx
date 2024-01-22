@@ -7,11 +7,11 @@ import Button from 'src/components/Button/Button';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
-import { getColors, getFilterSettings, getIsDarkMode } from 'src/store/selectors';
+import { getColors, getFilterSettings } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, GREY_200, LEVEL_1, TOMATO, WHITE, WHITE_100 } from 'src/styles';
 import { IconName } from 'src/types';
 import { styles } from './SearchModal.styles';
-import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, getPrevDay, isInvalidDateRange } from './SearchModal.utils';
+import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
 import { useAppDispatch } from 'src/store';
 import { accommodationListActions } from 'src/store/slices';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -72,10 +72,6 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
     return today;
   }, [getToday]);
 
-  const getCheckInMaxDate = useCallback(() => {
-    const checkinMax = checkOutDate ? getPrevDay(checkOutDate) : undefined;
-    return checkinMax;
-  }, [checkOutDate, getPrevDay]);
 
   const clearCheckin = useCallback(() => {
       setcheckInDate('');
@@ -235,7 +231,6 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
                     }}
                     mode="calendar"
                     minimumDate={getCheckInMinDate()}
-                    maximumDate={getCheckInMaxDate()}
                     onSelectedChange={handleCheckInChange}
                     current={getToday()}
                     selected={checkInDate ? checkInDate : undefined}
