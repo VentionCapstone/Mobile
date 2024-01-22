@@ -1,9 +1,9 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
-import { getIsDarkMode } from 'src/store/selectors';
+import { getFilterSettings, getIsDarkMode } from 'src/store/selectors';
 import { LEVEL_1 } from 'src/styles';
 import { IconName } from 'src/types';
 
@@ -16,11 +16,29 @@ import SearchModal from '../modals/ExploreModals/SearchModal/SearchModal';
 const ExploreHeader = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getIsDarkMode);
+  const filter = useSelector(getFilterSettings);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
+
+  const { location, checkInDate, checkOutDate } = filter;
+
+  const getStayDuration = (checkInDate: string | undefined, checkOutDate: string | undefined) => {
+    if (!checkInDate || !checkOutDate) return;
+    const checkinDateFormat = new Date(checkInDate.replaceAll("/", "-"));
+    const checkoutDateFormat = new Date(checkOutDate.replaceAll("/", "-"));
+    const diffInTime = checkoutDateFormat.getTime() - checkinDateFormat.getTime();
+    const diffInDays = Math.round(diffInTime / (1000 * 3600 * 24));
+    const dayOrDays = diffInDays > 1 ? 'days' : 'day'
+    const durationText = `${diffInDays} ${dayOrDays}`;
+    return durationText;
+  }
 
   function handleSearchModalChange() {
     setSearchModalVisible(!searchModalVisible);
   }
+
+  const locationText = location !== '' ? location : "Anywhere";
+  const durationText =
+    (checkInDate !== '' && checkOutDate !== '') ? getStayDuration(checkInDate, checkOutDate) : "Anytime";
 
   return (
     <ThemedView>
@@ -30,7 +48,7 @@ const ExploreHeader = () => {
             <Icon name={IconName.Search} size={26} />
             <View style={styles.searchContent}>
               <Text style={styles.searchHeader}>Where to go?</Text>
-              <Text>anywhere · week · 1 person</Text>
+              <Text>{locationText} · {durationText}</Text>
             </View>
           </ThemedView>
         </TouchableOpacity>
