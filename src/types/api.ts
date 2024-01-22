@@ -1,6 +1,7 @@
 import { AddressValues } from './accommodation';
 import { Gender } from './common';
 import { ThemeType } from './ui';
+import { WishlistAccommodationResponse } from './wishlist';
 
 export interface ApiErrorResponseType {
   success: boolean;
@@ -13,7 +14,8 @@ export interface ApiErrorResponseType {
 
 export interface ApiSuccessResponseType<T = any> {
   success: boolean;
-  data: T;
+  data?: T;
+  message?: string;
 }
 
 export interface Profile {
@@ -115,4 +117,10 @@ export interface Accommodation {
     latitude: number;
     longitude: number;
   };
+}
+
+export interface Wishlist {
+  id: string;
+  createdAt: string;
+  accommodation: WishlistAccommodationResponse;
 }

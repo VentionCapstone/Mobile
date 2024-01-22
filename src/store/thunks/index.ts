@@ -23,6 +23,7 @@ import {
   updateAmenitiesThunk,
 } from './amenitiesThunk';
 import { getUserDetailsThunk } from './userThunk';
+import { addToWishlistThunk, removeFromWishlistThunk, getWishlistsThunk } from './wishlistThunk';
 
 export const AsyncThunks = {
   signUp: createAsyncThunk('signUpThunk', signUpThunk),
@@ -44,6 +45,10 @@ export const AsyncThunks = {
   ),
   getAccommodation: createAsyncThunk('getAccommodationThunk', getAccommodationThunk),
   getMyAccommodations: createAsyncThunk('getAccommodationsThunk', getMyAccommodationsThunk),
+
+  getWishlists: createAsyncThunk('getWishlistsThunk', getWishlistsThunk),
+  addToWishlist: createAsyncThunk('addToWishlistThunk', addToWishlistThunk),
+  removeFromWishlist: createAsyncThunk('removeFromWishlistThunk', removeFromWishlistThunk),
 
   getAmenitiesListThunk: createAsyncThunk('getAmenitiesListThunk', getAmenitiesListThunk),
   getAmenitiesThunk: createAsyncThunk('getAmenitiesThunk', getAmenitiesThunk),
