@@ -14,7 +14,6 @@ import { IconName } from 'src/types';
 import { styles } from './SearchModal.styles';
 import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
 import { useAppDispatch } from 'src/store';
-import { DEFAULT_SEARCH_VALUES } from 'src/constants/defaultSearchVelues';
 import { accommodationListActions } from 'src/store/slices';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import showAlert from 'src/components/alert';

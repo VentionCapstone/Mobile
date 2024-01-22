@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     maxHeight: 400,
   },
   searchModalFooter: {
-      height: 70,
+      height: 85,
       position: 'absolute',
       bottom: 0,
       flexDirection: 'row',
