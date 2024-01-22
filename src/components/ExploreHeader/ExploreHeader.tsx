@@ -12,6 +12,7 @@ import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
 import ThemedView from '../ThemedView/ThemedView';
 import SearchModal from '../modals/ExploreModals/SearchModal/SearchModal';
+import { getStayDuration } from './ExploreHeader.utils';
 
 const ExploreHeader = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -21,24 +22,13 @@ const ExploreHeader = () => {
 
   const { location, checkInDate, checkOutDate } = filter;
 
-  const getStayDuration = (checkInDate: string | undefined, checkOutDate: string | undefined) => {
-    if (!checkInDate || !checkOutDate) return;
-    const checkinDateFormat = new Date(checkInDate.replaceAll("/", "-"));
-    const checkoutDateFormat = new Date(checkOutDate.replaceAll("/", "-"));
-    const diffInTime = checkoutDateFormat.getTime() - checkinDateFormat.getTime();
-    const diffInDays = Math.round(diffInTime / (1000 * 3600 * 24));
-    const dayOrDays = diffInDays > 1 ? 'days' : 'day'
-    const durationText = `${diffInDays} ${dayOrDays}`;
-    return durationText;
-  }
-
   function handleSearchModalChange() {
     setSearchModalVisible(!searchModalVisible);
   }
 
-  const locationText = location !== '' ? location : "Anywhere";
-  const durationText =
-    (checkInDate !== '' && checkOutDate !== '') ? getStayDuration(checkInDate, checkOutDate) : "Anytime";
+  const locationText = location ? location : "Anywhere";
+  const duration = getStayDuration(checkInDate, checkOutDate);
+  const durationText = duration ? duration : "Anytime";
 
   return (
     <ThemedView>
