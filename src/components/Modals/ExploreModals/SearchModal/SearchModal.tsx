@@ -12,7 +12,7 @@ import { BLACK, BUTTON_SIZES, GREY_200, LEVEL_1, TOMATO, WHITE, WHITE_100 } from
 import { IconName } from 'src/types';
 
 import { styles } from './SearchModal.styles';
-import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
+import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, getPrevDay, isInvalidDateRange } from './SearchModal.utils';
 import { useAppDispatch } from 'src/store';
 import { accommodationListActions } from 'src/store/slices';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -64,13 +64,19 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
   );
 
   const getCheckOutMinDate = useCallback(() => {
-    return checkInDate ? getNextDay(checkInDate) : getNextDay(getToday())
-  }, [checkInDate]);
+    const checkoutMin = checkInDate ? getNextDay(checkInDate) : getNextDay(getToday());
+    return checkoutMin;
+  }, [checkInDate, getNextDay]);
 
   const getCheckInMinDate = useCallback(() => {
     const today = getToday();
     return today;
   }, []);
+
+  const getCheckInMaxDate = useCallback(() => {
+    const checkinMax = checkOutDate ? getPrevDay(checkOutDate) : undefined;
+    return checkinMax;
+  }, [checkOutDate, getPrevDay]);
 
   const clearCheckin = useCallback(() => {
       setcheckInDate('');
@@ -230,9 +236,11 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
                     }}
                     mode="calendar"
                     minimumDate={getCheckInMinDate()}
+                    maximumDate={getCheckInMaxDate()}
                     onSelectedChange={handleCheckInChange}
                     current={getToday()}
-                    selected={checkInDate !== '' ? checkInDate : undefined} />
+                    selected={checkInDate ? checkInDate : undefined}
+                  />
                   <TouchableOpacity onPress={clearCheckin}>
                     <Text style={styles.buttonText}>Clear</Text>
                   </TouchableOpacity>
