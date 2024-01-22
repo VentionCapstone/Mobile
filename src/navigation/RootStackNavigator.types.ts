@@ -22,6 +22,7 @@ export type RootStackParamList = {
   Notifications: undefined;
   NotificationSettings: undefined;
   Profile: undefined;
+  ProfileImage: undefined;
   UpdateProfile: undefined;
   UpdateAccommodation: { accommodation: Accommodation };
 

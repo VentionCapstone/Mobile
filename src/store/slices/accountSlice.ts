@@ -43,6 +43,13 @@ const accountSlice = createSlice({
     });
     builder.addCase(AsyncThunks.updateAccount.rejected, onError);
 
+    builder.addCase(AsyncThunks.addProfileImage.pending, onPending);
+    builder.addCase(AsyncThunks.addProfileImage.fulfilled, (state, action) => {
+      state.pending = false;
+      state.result = action.payload;
+    });
+    builder.addCase(AsyncThunks.addProfileImage.rejected, onError);
+
     builder.addCase(AsyncThunks.getAccountDetails.pending, onPending);
     builder.addCase(AsyncThunks.getAccountDetails.fulfilled, (state, action) => {
       state.pending = false;

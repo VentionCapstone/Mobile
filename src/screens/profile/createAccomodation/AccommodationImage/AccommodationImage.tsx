@@ -95,7 +95,7 @@ const AccommodationImage = ({ route }: Props) => {
             </View>
 
             <TouchableOpacity
-              style={[styles.uploaderContainer, { borderColor: colors.buttonBorder }]}
+              style={[styles.uploaderContainer, { backgroundColor: colors.background }]}
               onPress={handleOpenGallery}
             >
               <Icon name={IconName.ImagesOutline} size={40} />

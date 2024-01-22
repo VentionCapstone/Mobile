@@ -10,9 +10,7 @@ import ProfileFooter from './ProfileFooter/ProfileFooter';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
 import Text from './Text/Text';
 import ThemedView from './ThemedView/ThemedView';
-import { MyAccommodationListItem } from './accommodationList';
 import showAlert from './alert';
-import ProfileImageUploader from './imageUploaders/ProfileImage/ProfileImage';
 
 export {
   ImageCarousel,
@@ -25,9 +23,7 @@ export {
   ExploreHeader,
   Text,
   ThemedView,
-  MyAccommodationListItem,
   showAlert,
-  ProfileImageUploader,
   Chip,
   Card,
   Collapsable,
@@ -37,3 +33,4 @@ export * from './navigationLists';
 export * from './inputs';
 export * from './modals/bottomModals';
 export * from './modals/centerModals';
+export * from './accommodationList';

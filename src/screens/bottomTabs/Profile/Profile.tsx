@@ -1,9 +1,9 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Image, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Alert,
+  ErrorAlert,
   Button,
   ButtonType,
   NavigationList,
@@ -32,6 +32,7 @@ import {
   userActions,
 } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
+import { TOMATO } from 'src/styles';
 import { ApiSuccessResponseType, User } from 'src/types';
 
 import { ACCOUNT_SECTIONS, AIR_BNB_IMAGE_URL } from './Profile.constants';
@@ -50,6 +51,7 @@ const Profile = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [errorVisible, setErrorVisible] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const handleLogOut = async () => {
     showAlert('warning', {
@@ -79,6 +81,14 @@ const Profile = () => {
     }
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    if (accountDetails) {
+      await dispatch(AsyncThunks.getAccountDetails(accountDetails.id));
+      setRefreshing(false);
+    }
+  };
+
   const navigateToCreateAccommodation = () => {
     navigation.navigate('AccommodationAddress');
   };
@@ -104,12 +114,22 @@ const Profile = () => {
 
   return (
     <ScreenTemplate headerShown={false}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            progressBackgroundColor={colors.background}
+            colors={[TOMATO]}
+          />
+        }
+      >
         <ProfileHeader isLoggedIn={isLoggedIn} />
 
         {isLoggedIn && (
           <TouchableOpacity
-            style={[styles.createAirBnbCard, { borderColor: colors.placeholder }]}
+            style={[styles.createAirBnbCard, { backgroundColor: colors.secondaryBackground }]}
             onPress={navigateToCreateAccommodation}
           >
             <View style={styles.createAirBnbTitleContainer}>
@@ -118,6 +138,7 @@ const Profile = () => {
                 It's simple to get set up and start earning
               </Text>
             </View>
+
             <Image
               source={{
                 uri: AIR_BNB_IMAGE_URL,
@@ -142,10 +163,10 @@ const Profile = () => {
         <ProfileFooter />
       </ScrollView>
 
-      <Alert
+      <ErrorAlert
         visible={errorVisible}
         message={
-          userError?.error.message ||
+          userError?.error?.message ||
           accommodationError?.error?.message ||
           myAccommodationsError?.error?.message
         }

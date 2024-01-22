@@ -8,6 +8,7 @@ const ENDPOINTS = {
   createProfile: '/users/profile',
   updateProfile: (userId: string | undefined) => `/users/${userId}`,
   getProfile: (userId: string) => `/users/profile/${userId}`,
+  addProfileImage: (profileId: string) => `/users/${profileId}/image`,
 
   getUserDetails: (userId: string) => `/users/${userId}`,
 
@@ -16,8 +17,12 @@ const ENDPOINTS = {
   getMyAccommodations: (userId: string) => `/accommodations/${userId}/accommodations`,
   uploadAccomodationImage: (accommodationId: string) => `/accommodations/${accommodationId}/file`,
   deleteAccomodation: (accommodationId: string) => `/accommodations/${accommodationId}`,
-  getAllAccomodations: (query: string) => `/accommodations${query}`,
+  getAllAccomodations: '/accommodations',
   getAccomodationById: (accommodationId: string) => `/accommodations/${accommodationId}`,
+
+  addToWishlist: (accommodationId: string) => `/wishlist/${accommodationId}`,
+  removeFromWishlist: (accommodationId: string) => `/wishlist/${accommodationId}`,
+  getWishlists: `/wishlist`,
 
   getAmenitiesList: '/amenities',
   accomodationAmenities: (accommodationId: string) => `/amenities/${accommodationId}`,

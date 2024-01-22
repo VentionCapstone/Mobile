@@ -11,7 +11,6 @@ import {
 } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { ExploreListItem } from 'src/types';
-import { getAccommodationsListQuery } from 'src/utils';
 
 interface CardProps extends ExploreListItem {}
 
@@ -19,9 +18,8 @@ const Explore = () => {
   const dispatch = useAppDispatch();
   const filter = useSelector(getFilterSettings);
   const data = useSelector(getAccommodationList);
-  const loading = useSelector(getAccommodationListLoading);
+  const pending = useSelector(getAccommodationListLoading);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const renderItem = useMemo(
     () =>
@@ -40,35 +38,20 @@ const Explore = () => {
   );
 
   const fetchData = useCallback(async () => {
-    try {
-      await dispatch(
-        AsyncThunks.getListOfAccommodations(
-          getAccommodationsListQuery({ ...filter, page: pageNumber })
-        )
-      );
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsRefreshing(false);
-    }
+    await dispatch(AsyncThunks.getListOfAccommodations({ ...filter, page: pageNumber }));
   }, [filter, pageNumber, dispatch]);
 
   const handleRefresh = useCallback(() => {
-    setIsRefreshing(true);
     setPageNumber(1);
     fetchData();
   }, [fetchData]);
 
   const handleLoadMore = useCallback(() => {
-    if (!loading) {
+    if (!pending) {
       setPageNumber((prevPage) => prevPage + 1);
-      dispatch(
-        AsyncThunks.getUpdatedListOfAccommodations(
-          getAccommodationsListQuery({ ...filter, page: pageNumber })
-        )
-      );
+      dispatch(AsyncThunks.getUpdatedListOfAccommodations({ ...filter, page: pageNumber }));
     }
-  }, [loading, filter, pageNumber, dispatch]);
+  }, [pending, filter, pageNumber, dispatch]);
 
   useEffect(() => {
     fetchData();
@@ -87,7 +70,7 @@ const Explore = () => {
         renderItem={renderItem}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.2}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        refreshControl={<RefreshControl refreshing={pending} onRefresh={handleRefresh} />}
       />
     </ScreenTemplate>
   );

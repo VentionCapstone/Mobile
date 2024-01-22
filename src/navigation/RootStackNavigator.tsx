@@ -26,6 +26,7 @@ import {
   AccommodationDate,
   AccommodationImage,
   CreateAmenities,
+  ProfileImage,
 } from 'src/screens';
 import AccommodationDetails from 'src/screens/explore/AccommodationDetails/AccommodationDetails.tsx';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
@@ -73,12 +74,17 @@ const RootStackNavigator = () => {
       <RootRouterStack.Screen
         name="UpdateProfile"
         component={UpdateProfile}
-        options={{ header: () => <NavigationHeader /> }}
+        options={{ header: () => <NavigationHeader title="Edit Profile" /> }}
       />
       <RootRouterStack.Screen
         name="CreateProfile"
         component={CreateProfile}
-        options={{ header: () => <NavigationHeader /> }}
+        options={{ header: () => <NavigationHeader title="Create Profile" /> }}
+      />
+      <RootRouterStack.Screen
+        name="ProfileImage"
+        component={ProfileImage}
+        options={{ header: () => <NavigationHeader title="Create Profile" /> }}
       />
       <RootRouterStack.Screen
         name="Account"

@@ -15,7 +15,12 @@ import {
   getMyAccommodationsThunk,
 } from './accommodationThunk';
 import { getListOfAccommodationsThunk } from './accomodationListThunk';
-import { createAccountThunk, getAccountDetailsThunk, updateAccountThunk } from './accountThunk';
+import {
+  addProfileImageThunk,
+  createAccountThunk,
+  getAccountDetailsThunk,
+  updateAccountThunk,
+} from './accountThunk';
 import {
   addAmenitiesThunk,
   deleteAmenitiesThunk,
@@ -24,6 +29,7 @@ import {
   updateAmenitiesThunk,
 } from './amenitiesThunk';
 import { getUserDetailsThunk } from './userThunk';
+import { addToWishlistThunk, removeFromWishlistThunk, getWishlistsThunk } from './wishlistThunk';
 
 export const AsyncThunks = {
   signUp: createAsyncThunk('signUpThunk', signUpThunk),
@@ -35,6 +41,7 @@ export const AsyncThunks = {
   updateAccount: createAsyncThunk('updateAccountThunk', updateAccountThunk),
   getAccountDetails: createAsyncThunk('getAccountDetailsThunk', getAccountDetailsThunk),
   getUserDetails: createAsyncThunk('getUserDetailsThunk', getUserDetailsThunk),
+  addProfileImage: createAsyncThunk('addProfileImageThunk', addProfileImageThunk),
 
   createAccommodation: createAsyncThunk('createAccommodationThunk', createAccommodationThunk),
   updateAccommodation: createAsyncThunk('updateAccommodationThunk', updateAccommodationThunk),
@@ -53,6 +60,10 @@ export const AsyncThunks = {
     'getUpdatedListOfAccommodations',
     getListOfAccommodationsThunk
   ),
+
+  getWishlists: createAsyncThunk('getWishlistsThunk', getWishlistsThunk),
+  addToWishlist: createAsyncThunk('addToWishlistThunk', addToWishlistThunk),
+  removeFromWishlist: createAsyncThunk('removeFromWishlistThunk', removeFromWishlistThunk),
 
   getAmenitiesListThunk: createAsyncThunk('getAmenitiesListThunk', getAmenitiesListThunk),
   getAmenitiesThunk: createAsyncThunk('getAmenitiesThunk', getAmenitiesThunk),

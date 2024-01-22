@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   title: {
-    ...title3,
+    ...title2,
   },
   rightContainer: {
     justifyContent: 'flex-end',
