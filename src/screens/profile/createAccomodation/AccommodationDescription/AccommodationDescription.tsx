@@ -9,7 +9,7 @@ import { ACCOMMODATION_DESCRIPTION_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AccommodationDescription.style';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDate'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDescription'>;
 
 const AccommodationDescription = ({ route, navigation }: Props) => {
   const [description, setDescription] = useState<string>('');
@@ -23,7 +23,7 @@ const AccommodationDescription = ({ route, navigation }: Props) => {
   const handleNext = useCallback(() => {
     const accommodation = { ...route.params.accommodation, description };
 
-    navigation.navigate('AccommodationDescription', { accommodation });
+    navigation.navigate('AccommodationDate', { accommodation });
   }, [navigation, description, route.params.accommodation]);
 
   const isNextButtonDisabled = description === '';

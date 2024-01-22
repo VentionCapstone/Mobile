@@ -39,9 +39,11 @@ const wishlistSlice = createSlice({
     builder.addCase(AsyncThunks.removeFromWishlist.pending, onPending);
     builder.addCase(AsyncThunks.removeFromWishlist.fulfilled, (state, action) => {
       state.pending = false;
-      const wishlistId = action.payload;
+      const accommodationId = action.payload;
 
-      state.result = state.result?.filter((wishlist) => wishlist.id !== wishlistId);
+      state.result = state.result?.filter(
+        (wishlist) => wishlist.accommodation.id !== accommodationId
+      );
     });
     builder.addCase(AsyncThunks.removeFromWishlist.rejected, onError);
   },

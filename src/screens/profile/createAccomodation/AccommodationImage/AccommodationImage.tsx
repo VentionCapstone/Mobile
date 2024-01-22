@@ -92,7 +92,7 @@ const AccommodationImage = ({ route, navigation }: Props) => {
             </View>
 
             <TouchableOpacity
-              style={[styles.uploaderContainer, { backgroundColor: colors.background }]}
+              style={[styles.uploaderContainer, { backgroundColor: colors.secondaryBackground }]}
               onPress={handleOpenGallery}
             >
               <Icon name={IconName.ImagesOutline} size={40} />
@@ -145,7 +145,6 @@ const AccommodationImage = ({ route, navigation }: Props) => {
         <View style={[styles.imagePickerContainer, { width }]}>
           <ImagePicker
             onSave={(assets) => handleSaveImages(assets)}
-            onCancel={() => showAlert('warning', { message: 'no permissions or user go back' })}
             galleryColumns={4}
             limit={10}
             timeSlider

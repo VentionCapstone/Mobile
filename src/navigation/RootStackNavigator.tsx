@@ -15,7 +15,6 @@ import {
   Signup,
   UpdateAccommodation,
   UpdateProfile,
-  VerifyEmail,
   NotificationSettings,
   Notifications,
   AccommodationAddress,
@@ -64,12 +63,6 @@ const RootStackNavigator = () => {
         name="Signup"
         component={Signup}
         options={{ header: () => <NavigationHeader title="Sign Up" /> }}
-      />
-      <RootRouterStack.Screen
-        name="VerifyEmail"
-        component={VerifyEmail}
-        initialParams={{ email: '' }}
-        options={{ header: () => <NavigationHeader title="Verification" /> }}
       />
       <RootRouterStack.Screen
         name="UpdateProfile"

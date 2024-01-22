@@ -41,7 +41,9 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loade
       <View style={styles.descriptionContainer}>
         <View style={styles.titleContainer}>
           <Icon name={IconName.Location} size={20} />
-          <Text style={styles.city}>{locationName}</Text>
+          <Text style={styles.city} numberOfLines={1} ellipsizeMode="tail">
+            {locationName}
+          </Text>
         </View>
 
         <View style={styles.priceContainer}>

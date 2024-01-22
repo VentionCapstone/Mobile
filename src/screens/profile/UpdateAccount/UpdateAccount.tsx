@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as SecureStore from 'expo-secure-store';
 import { useCallback, useEffect, useState } from 'react';
 import { Image, Pressable, TouchableOpacity, View } from 'react-native';
@@ -35,9 +35,10 @@ const genderOptions = [
   { label: 'Female', value: Gender.Female },
 ];
 
-const UpdateAccount = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'UpdateProfile'>;
+
+const UpdateAccount = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
   const userDetails = useSelector(getUserDetails);
   const colors = useSelector(getColors);
@@ -131,15 +132,18 @@ const UpdateAccount = () => {
   return (
     <ScreenTemplate>
       <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid}>
-        <View style={[styles.imageContainer, { backgroundColor: colors.background }]}>
-          <Image source={{ uri: formValues.imageUrl }} style={styles.profileImage} />
+        <View style={[styles.imageContainer, { backgroundColor: colors.secondaryBackground }]}>
+          {formValues.imageUrl && (
+            <Image source={{ uri: formValues?.imageUrl }} style={styles.profileImage} />
+          )}
+
+          {!formValues.imageUrl && <Icon name={IconName.Person} size={120} />}
 
           <Pressable
             style={[styles.editButton, { backgroundColor: colors.secondaryBackground }]}
             onPress={handlePhotoSelect}
           >
             <Text>edit image</Text>
-            <Icon name={IconName.Edit} iconSet="material" size={16} />
           </Pressable>
         </View>
 

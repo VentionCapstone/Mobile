@@ -78,9 +78,6 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
       );
 
       if (response.payload?.success) {
-        showAlert('success', {
-          message: 'Accommodation updated successfully!',
-        });
         navigation.navigate('MyAccommodations');
       }
     } else {

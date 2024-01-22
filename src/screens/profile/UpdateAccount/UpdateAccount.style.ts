@@ -17,6 +17,8 @@ export const styles = StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'blue',
     borderRadius: 100,
     overflow: 'hidden',
@@ -24,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   editButton: {
     width: '100%',
-    height: 40,
+    height: 50,
     bottom: 0,
     alignSelf: 'center',
     position: 'absolute',
