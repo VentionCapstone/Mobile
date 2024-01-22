@@ -41,6 +41,35 @@ function addOrdinalSuffix(day: number): string {
   }
 }
 
+export const AMENITIES_DEFAULT_VALUES = {
+  id: '',
+  accommodationId: '',
+  hasWifi: false,
+  hasTv: false,
+  hasAirConditioning: false,
+  hasKitchen: false,
+  hasLaundryService: false,
+  hasParking: false,
+  hasSmokingAllowance: false,
+  hasSwimmingPool: false,
+  hasBackyard: false,
+  isQuetArea: false,
+  isChildFriendly: false,
+  hasPetAllowance: false,
+  isCloseToCenter: false,
+  hasHospitalNearby: false,
+  hasAirportTransfer: false,
+  otherAmenities: null,
+} as const;
+
+export type AmenityChipData = {
+  [key: string]: {
+    text: string;
+    icon: IconName | 'Add';
+    iconSet: 'ionicons' | 'material';
+  };
+};
+
 export const AMENITIES_CHIP_DATA = {
   hasWifi: {
     text: 'Has Wi-Fi',

@@ -4,6 +4,7 @@ import {
   accommodationListReducer,
   accommodationReducer,
   accountReducer,
+  amenitiesReducer,
   myAccommodationsListReducer,
   themeReducer,
   userReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   accommodationList: accommodationListReducer,
   user: userReducer,
   wishlist: wishlistReducer,
+  amenities: amenitiesReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

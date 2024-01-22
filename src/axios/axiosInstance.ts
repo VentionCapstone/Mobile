@@ -5,7 +5,7 @@ import { SecureStorageKey } from 'src/constants/storage';
 import { silentTokenRefresh } from './api';
 import ENDPOINTS from './endpoints';
 
-const BASE_URL = 'http://192.168.43.83:3000/api';
+const BASE_URL = 'http://localhost:3000/api';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,

@@ -19,10 +19,8 @@ import { getAccommodation, getAccommodationLoader, getIsDarkMode } from 'src/sto
 import { AsyncThunks } from 'src/store/thunks';
 import { BLACK, BUTTON_SIZES, LEVEL_1, TOMATO, WHITE } from 'src/styles';
 import { IconName, Media } from 'src/types';
-import { AccommodationAmenitiesResponse } from 'src/types/amenities';
 
 import { styles } from './AccommodationDetails.styles';
-import { AMENITIES_CHIP_DATA, formatDate } from './AccommodationDetails.utils.ts';
 
 type AccommodationDetailsNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -59,37 +57,6 @@ const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
       navigation.goBack();
     }
   }, [dispatch, acccomodationId, navigation]);
-
-  const AmenitiesBadges = useMemo(() => {
-    const { otherAmenities, id, accommodationId, ...rest }: AccommodationAmenitiesResponse =
-      data?.amenities[0];
-    const amenities = Object.keys(rest);
-    return amenities.map((amenity) => {
-      if (rest[amenity as keyof typeof rest]) {
-        const { icon, text, iconSet } = AMENITIES_CHIP_DATA[amenity as keyof typeof rest];
-        return (
-          <ThemedView key={amenity} style={styles.badge}>
-            <Icon name={icon} size={20} iconSet={iconSet} />
-            <Text style={styles.badgeText}>{text}</Text>
-          </ThemedView>
-        );
-      }
-    });
-  }, [data?.amenities]);
-
-  const otherAmenitiesBadgesMemo = useMemo(() => {
-    const separator = ', ';
-    if (data?.amenities[0]?.otherAmenities) {
-      return data?.amenities[0]['otherAmenities'].split(separator).map((amenity) => {
-        return (
-          <ThemedView key={amenity} style={styles.badge}>
-            <Icon name={IconName.Check} size={20} />
-            <Text style={styles.badgeText}>{amenity}</Text>
-          </ThemedView>
-        );
-      });
-    }
-  }, [data?.amenities]);
 
   const refreshCardData = useCallback(async () => {
     getCardData();
@@ -185,11 +152,6 @@ const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
                   )}
                 </>
               )}
-            </View>
-            <Text style={styles.amenitiesTitle}>What amenities will be waiting for you?</Text>
-            <View style={styles.badgesContainer}>
-              {AmenitiesBadges}
-              {otherAmenitiesBadgesMemo}
             </View>
             <View style={{ marginVertical: 30 }}>
               <Text style={styles.amenitiesTitle}>More photos</Text>

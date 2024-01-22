@@ -21,13 +21,7 @@ import {
   getAccountDetailsThunk,
   updateAccountThunk,
 } from './accountThunk';
-import {
-  addAmenitiesThunk,
-  deleteAmenitiesThunk,
-  getAmenitiesListThunk,
-  getAmenitiesThunk,
-  updateAmenitiesThunk,
-} from './amenitiesThunk';
+import { addAmenitiesThunk, updateAmenitiesThunk } from './amenitiesThunk';
 import { getUserDetailsThunk } from './userThunk';
 import { addToWishlistThunk, removeFromWishlistThunk, getWishlistsThunk } from './wishlistThunk';
 
@@ -65,9 +59,6 @@ export const AsyncThunks = {
   addToWishlist: createAsyncThunk('addToWishlistThunk', addToWishlistThunk),
   removeFromWishlist: createAsyncThunk('removeFromWishlistThunk', removeFromWishlistThunk),
 
-  getAmenitiesListThunk: createAsyncThunk('getAmenitiesListThunk', getAmenitiesListThunk),
-  getAmenitiesThunk: createAsyncThunk('getAmenitiesThunk', getAmenitiesThunk),
   updateAmenitiesThunk: createAsyncThunk('updateAmenitiesThunk', updateAmenitiesThunk),
   addAmenitiesThunk: createAsyncThunk('addAmenitiesThunk', addAmenitiesThunk),
-  deleteAmenitiesThunk: createAsyncThunk('deleteAmenitiesThunk', deleteAmenitiesThunk),
 };
