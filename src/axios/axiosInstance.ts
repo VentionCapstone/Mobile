@@ -5,8 +5,7 @@ import { SecureStorageKey } from 'src/constants/storage';
 import { silentTokenRefresh } from './api';
 import ENDPOINTS from './endpoints';
 
-// const BASE_URL = 'https://dev.vention-booking.taksifon.uz/api';
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'https://dev.vention-booking.taksifon.uz/api';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
