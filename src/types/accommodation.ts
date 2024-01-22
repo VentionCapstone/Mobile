@@ -35,7 +35,7 @@ export interface AdressListingValues {
 export type OrderOptions = null | 'asc' | 'desc';
 
 export interface SearchValues {
-  location?: AdressListingValues;
+  location?: string;
   checkInDate?: string;
   checkOutDate?: string;
   orderByPrice?: OrderOptions;

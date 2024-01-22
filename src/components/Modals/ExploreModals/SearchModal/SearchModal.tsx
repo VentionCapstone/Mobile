@@ -1,20 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { Modal, SafeAreaView, TouchableOpacity, View } from 'react-native';
-import DatePicker from 'react-native-modern-datepicker';
+import { useCallback, useState } from 'react';
+import { FlatList, Modal, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import DatePicker, { getToday } from 'react-native-modern-datepicker';
 import { useSelector } from 'react-redux';
 import Button from 'src/components/Button/Button';
-import Collapsable from 'src/components/Collapsable/Collapsable';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
-import { Input } from 'src/components/inputs';
-import { getIsDarkMode } from 'src/store/selectors';
+import { getColors, getFilterSettings, getIsDarkMode } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, GREY_200, LEVEL_1, TOMATO, WHITE, WHITE_100 } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './SearchModal.styles';
-import { COLLAPSABLE_CARDS_POSITIONS } from './SearchModal.utils';
+import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
+import { useAppDispatch } from 'src/store';
+import { DEFAULT_SEARCH_VALUES } from 'src/constants/defaultSearchVelues';
+import { accommodationListActions } from 'src/store/slices';
+import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import showAlert from 'src/components/alert';
+import Collapsable from 'src/components/Collapsable/Collapsable';
 
 type ExploreModalProps = {
   modalOpen: boolean;
@@ -22,26 +26,115 @@ type ExploreModalProps = {
 };
 
 const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
-  const colors = useSelector(getIsDarkMode);
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
+  const colors = useSelector(getColors);
+  const dispatch = useAppDispatch();
+  const filter = useSelector(getFilterSettings);
+  const [location, setLocation] = useState("")
+  const [checkInDate, setcheckInDate] = useState("")
+  const [checkOutDate, setcheckOutDate] = useState("")
 
-  const [isCollapsed, setIsCollapsed] = useState(COLLAPSABLE_CARDS_POSITIONS.wherePressed);
+  const handleGooglePlacesSearch = useCallback(
+    async (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
+      if (details) {
+        const placeDetails = await getPlaceDetails(details.place_id);
 
-  const toggleCollapseWhen = () => {
-    setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.whenPressed);
+        if (!placeDetails) {
+          showAlert('error', { message: 'Something went wrong!' });
+          return;
+        }
+        const formattedLocation = formatLocationString(placeDetails.formatted_address);
+        setLocation(formattedLocation)
+      }
+    },
+    []
+  );
+
+  const handleCheckInChange = useCallback(
+    (newDate: string) => {
+      setcheckInDate(newDate);
+    },
+    []
+  );
+
+  const handleCheckOutChange = useCallback(
+    (newDate: string) => {
+      setcheckOutDate(newDate);
+    },
+    []
+  );
+
+  const getCheckOutMinDate = useCallback(() => {
+    return checkInDate ? getNextDay(checkInDate) : getNextDay(getToday())
+  }, [checkInDate]);
+
+  const getCheckInMinDate = useCallback(() => {
+    const today = getToday();
+    return today;
+  }, []);
+
+  const clearCheckin = useCallback(() => {
+      setcheckInDate('');
+    }, [setcheckInDate]);
+  
+  const clearCheckout = useCallback(() => {
+    setcheckOutDate('');
+  },[setcheckOutDate])
+
+  const clearLocation = useCallback(() => {
+    setLocation('');
+  }, [setLocation]);
+
+  const handleSearch = () => {
+
+    if (isInvalidDateRange(checkInDate, checkOutDate)) {
+      showAlert('error', { message: 'Date range is invalid' });
+      return;
+    }
+    dispatch(accommodationListActions.setFilter({...filter, location, checkInDate, checkOutDate}));
+    changeOpen();
+    return;
   };
 
-  const toggleCollapseWhere = () => {
-    setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.wherePressed);
+  const handleResetSearch = useCallback(() => {
+    setLocation('');
+    setcheckInDate('');
+    setcheckOutDate('');
+  }, [setLocation,setcheckOutDate, setcheckInDate]);
+
+  const [isCollapsed, setIsCollapsed] = useState(COLLAPSABLE_CARDS_POSITIONS.allClosed);
+
+  const toggleCollapseLocation = () => {
+    isCollapsed.location ? 
+      setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.locationPressed) :
+      setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.allClosed);
   };
+
+  const toggleCollapseCheckIn = () => {
+    isCollapsed.checkin ? 
+    setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.checkInPressed) :
+    setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.allClosed);
+  };
+
+  const toggleCollapseCheckOut = () => {
+    isCollapsed.checkout ? 
+    setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.checkOutPressed) :
+    setIsCollapsed(COLLAPSABLE_CARDS_POSITIONS.allClosed);
+  };
+
+  const sections = [
+    { type: 'location', title: 'Destination' },
+    { type: 'checkin', title: 'Check-in' },
+    { type: 'checkout', title: 'Check-out' },
+  ];
+
   return (
     <Modal
       animationType="fade"
       visible={modalOpen}
       onRequestClose={() => {
         changeOpen();
-      }}
+      } }
     >
       <StatusBar backgroundColor={colors ? BLACK : WHITE_100} />
       <SafeAreaView
@@ -49,15 +142,15 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
           flex: 1,
           backgroundColor: colors ? BLACK : WHITE_100,
           alignItems: 'center',
-        }}
-      >
+          maxHeight: '90%',
+        }}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             width: '100%',
-            height: 50,
+            height: 40,
             marginBottom: 20,
             paddingHorizontal: 15,
           }}
@@ -79,58 +172,112 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
           <Text style={{ fontSize: 20 }}>Accomodations</Text>
           <View style={{ width: 34 }} />
         </View>
-        <View>
-          <Collapsable
-            title="Where"
-            subtitle="Nowhere"
-            contentTitle="Pick your next destination"
-            collapsed={isCollapsed.where}
-            onTouch={toggleCollapseWhere}
-          >
-            <Input placeholder="Where are you going?" />
-          </Collapsable>
-          <Collapsable
-            title="When"
-            subtitle="Never"
-            contentTitle="What are the dates?"
-            collapsed={isCollapsed.when}
-            onTouch={toggleCollapseWhen}
-          >
-            <DatePicker
-              options={{
-                backgroundColor: colors ? BLACK : WHITE,
-                textHeaderColor: colors ? WHITE : BLACK,
-                textDefaultColor: colors ? WHITE : BLACK,
-                selectedTextColor: WHITE,
-                mainColor: TOMATO,
-                textSecondaryColor: GREY_200,
-                borderColor: colors ? BLACK : WHITE,
-              }}
-              mode="calendar"
-              startDate={startDate}
-              endDate={endDate}
-              onStartDateChange={(date: Date) => setStartDate(date)}
-              onEndDateChange={(date: Date) => setEndDate(date)}
-            />
-          </Collapsable>
-        </View>
-      </SafeAreaView>
+        <FlatList
+          data={sections}
+          keyExtractor={(item) => item.type}
+          renderItem={({ item }) => {
+            if (item.type === 'location') {
+              return (
+                <Collapsable
+                  title={item.title}
+                  subtitle={location ? location : "Anywhere"}
+                  contentTitle="Pick your next destination"
+                  collapsed={isCollapsed.location}
+                  onTouch={toggleCollapseLocation}>
+                  <View>
+                    <GooglePlacesAutocomplete
+                      styles={{
+                        textInput: [
+                          styles.searchInput,
+                        ],
+                        listView: [styles.placesInputListView, { backgroundColor: colors.background }],
+                      }}
+                      textInputProps={{
+                        placeholderTextColor: colors.placeholder,
+                        selectionColor: colors.tint,
+                        editable: true,
+                      }}
+                      placeholder={location ? location : "Search for location"}
+                      onPress={handleGooglePlacesSearch}
+                      query={{
+                        key: GOOGLE_API_KEY,
+                        language: 'en',
+                        types: '(cities)',
+                      }} />
+                    <TouchableOpacity onPress={clearLocation}>
+                      <Text style={styles.buttonText}>Clear</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Collapsable>);
+            }
+            if (item.type === 'checkin') {
+              return (
+                <Collapsable
+                  title={item.title}
+                  subtitle={checkInDate ? checkInDate : "Anyday"}
+                  contentTitle={item.title}
+                  collapsed={isCollapsed.checkin}
+                  onTouch={toggleCollapseCheckIn}
+                >
+                  <DatePicker
+                    options={{
+                      backgroundColor: colors ? BLACK : WHITE,
+                      textHeaderColor: colors ? WHITE : BLACK,
+                      textDefaultColor: colors ? WHITE : BLACK,
+                      selectedTextColor: WHITE,
+                      mainColor: TOMATO,
+                      textSecondaryColor: GREY_200,
+                      borderColor: colors ? BLACK : WHITE,
+                    }}
+                    mode="calendar"
+                    minimumDate={getCheckInMinDate()}
+                    onSelectedChange={handleCheckInChange}
+                    current={getToday()}
+                    selected={checkInDate !== '' ? checkInDate : undefined} />
+                  <TouchableOpacity onPress={clearCheckin}>
+                    <Text style={styles.buttonText}>Clear</Text>
+                  </TouchableOpacity>
+                </Collapsable>);
+            }
+            if (item.type === 'checkout') {
+              return (
+                <Collapsable
+                  title={item.title}
+                  subtitle={checkOutDate ? checkOutDate : "Anyday"}
+                  contentTitle={item.title}
+                  collapsed={isCollapsed.checkout}
+                  onTouch={toggleCollapseCheckOut}
+                >
+                  <DatePicker
+                    options={{
+                      backgroundColor: colors ? BLACK : WHITE,
+                      textHeaderColor: colors ? WHITE : BLACK,
+                      textDefaultColor: colors ? WHITE : BLACK,
+                      selectedTextColor: WHITE,
+                      mainColor: TOMATO,
+                      textSecondaryColor: GREY_200,
+                      borderColor: colors ? BLACK : WHITE,
+                    }}
+                    mode="calendar"
+                    minimumDate={getCheckOutMinDate()}
+                    onSelectedChange={handleCheckOutChange}
+                    current={getToday()}
+                    selected={checkOutDate ? checkOutDate : ''} />
+                  <TouchableOpacity onPress={clearCheckout}>
+                    <Text style={styles.buttonText}>Clear</Text>
+                  </TouchableOpacity>
+                </Collapsable>);
+            }
+            return null;
+          } } 
+          />
+    </SafeAreaView>
       <ThemedView
-        style={[
-          {
-            height: 100,
-            flexDirection: 'row',
-            padding: 20,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          },
-          LEVEL_1,
-        ]}
-      >
-        <TouchableOpacity>
-          <Text style={styles.title}>Default</Text>
+        style={[styles.searchModalFooter, LEVEL_1]}>
+        <TouchableOpacity onPress={handleResetSearch}>
+          <Text style={styles.title}>Reset</Text>
         </TouchableOpacity>
-        <Button onPress={() => changeOpen()} title="Search" size={BUTTON_SIZES.MD} />
+        <Button onPress={handleSearch} title="Search" size={BUTTON_SIZES.MD} />
       </ThemedView>
     </Modal>
   );
