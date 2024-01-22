@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
 import { NavigationHeader } from 'src/components';
 import { Booking, Explore, Profile, Wishlist } from 'src/screens';
-import { getColors } from 'src/store/selectors';
+import { getColors, getIsDarkMode, getIsLoggedIn } from 'src/store/selectors';
 
 import { BottomTabParamList } from './BottomTabNavigator.types';
 import { getTabBarIcon, getTabBarStyles } from './BottomTabNavigator.utils';
@@ -10,14 +10,17 @@ import { getTabBarIcon, getTabBarStyles } from './BottomTabNavigator.utils';
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator = () => {
+  const isLoggedIn = useSelector(getIsLoggedIn);
   const colors = useSelector(getColors);
-  const styles = getTabBarStyles(colors);
+  const isDarkMode = useSelector(getIsDarkMode);
+  const styles = getTabBarStyles({ colors, isDarkMode });
 
   return (
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color }) => getTabBarIcon(route.name, color),
+        tabBarIcon: ({ color, focused }) => getTabBarIcon({ route, color, focused }),
         ...styles,
+        tabBarLabel: '',
       })}
       initialRouteName="Explore"
     >
@@ -25,25 +28,25 @@ const BottomTabNavigator = () => {
         name="Explore"
         component={Explore}
         options={{
-          header: () => <NavigationHeader title="Explore" leftComponent={false} />,
+          header: () => <NavigationHeader title="Explore" showBackButton={false} />,
         }}
       />
       <BottomTab.Screen
         name="Wishlist"
         component={Wishlist}
         options={{
-          header: () => <NavigationHeader title="Wishlist" leftComponent={false} />,
+          header: () => <NavigationHeader title="Wishlist" showBackButton={false} />,
         }}
       />
       <BottomTab.Screen
         name="Booking"
         component={Booking}
         options={{
-          header: () => <NavigationHeader title="Booking" leftComponent={false} />,
+          header: () => <NavigationHeader title="Booking" showBackButton={false} />,
         }}
       />
       <BottomTab.Screen
-        name="Profile"
+        name={isLoggedIn ? 'Profile' : 'Login'}
         component={Profile}
         options={{
           headerShown: false,

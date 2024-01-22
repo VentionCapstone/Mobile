@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { ReactNode } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getColors } from 'src/store/selectors';
@@ -10,33 +11,39 @@ import Text from '../Text/Text';
 import ThemedView from '../ThemedView/ThemedView';
 
 interface Props {
-  leftComponent?: boolean;
+  showBackButton?: boolean;
   title?: string;
-  rightComponent?: any;
+  rightComponent?: ReactNode;
 }
 
-const NavigationHeader = ({ leftComponent = true, title = '', rightComponent }: Props) => {
+const NavigationHeader: React.FC<Props> = ({
+  showBackButton = true,
+  title = '',
+  rightComponent,
+}) => {
   const navigation = useNavigation();
   const colors = useSelector(getColors);
 
   const handleBackPress = () => {
-    if (leftComponent) {
-      navigation.goBack();
-    }
+    navigation.goBack();
   };
 
+  const renderBackButton = () => (
+    <TouchableOpacity onPress={handleBackPress}>
+      <Icon name={IconName.BackChevron} size={28} />
+    </TouchableOpacity>
+  );
+
   return (
-    <ThemedView style={[styles.container, { borderBottomColor: colors.border }]}>
+    <ThemedView style={[styles.container, { shadowColor: colors.shadowColor }]}>
       <View style={styles.leftContainer}>
-        {leftComponent && (
-          <TouchableOpacity onPress={handleBackPress}>
-            <Icon name={IconName.Back} size={30} />
-          </TouchableOpacity>
-        )}
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.leftInnerContainer}>
+          {showBackButton && renderBackButton()}
+          <Text style={styles.title}>{title}</Text>
+        </View>
       </View>
 
-      {rightComponent ? <View style={styles.rightContainer}>{rightComponent}</View> : ''}
+      {rightComponent && <View style={styles.rightContainer}>{rightComponent}</View>}
     </ThemedView>
   );
 };

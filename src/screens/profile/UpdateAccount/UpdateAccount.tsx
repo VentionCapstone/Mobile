@@ -1,18 +1,31 @@
-import { useEffect, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
+import { useCallback, useEffect, useState } from 'react';
+import { Image, Pressable, TouchableOpacity, View } from 'react-native';
+import { Country } from 'react-native-country-picker-modal';
 import { useSelector } from 'react-redux';
-import { CountrySelector, Icon, ProfileImageUploader, Input, Text } from 'src/components';
-import { LanguageSelector } from 'src/components/Modals';
+import {
+  CountryPicker,
+  Icon,
+  Input,
+  LanguageSelector,
+  showAlert,
+  Text,
+  PhoneNumberInput,
+  Loader,
+} from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
-import { user } from 'src/data';
+import { SecureStorageKey } from 'src/constants/storage';
+import { pickImage } from 'src/helper/pickProfileImage';
+import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountError, getAccountLoader } from 'src/store/selectors';
+import { getAccountLoader, getColors, getUserDetails } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
-import { CountryOption, Gender, GenderOptionsProps } from 'src/types/common';
-import { IconName } from 'src/types/ui';
-import { ACCOUNT_NAME_MAX_LENGTH, UZBEK_PHONE_NUMBER_LENGTH } from 'src/utils';
+import { Gender, GenderOptionsProps } from 'src/types/common';
+import { IconName, ThemeType } from 'src/types/ui';
+import { ACCOUNT_NAME_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './UpdateAccount.style';
 import { validateForm } from './UpdateAccount.utils';
@@ -24,41 +37,85 @@ const genderOptions = [
 
 const UpdateAccount = () => {
   const dispatch = useAppDispatch();
-  const userError = useSelector(getAccountError);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
-  const userId = '1';
+  const userDetails = useSelector(getUserDetails);
+  const colors = useSelector(getColors);
 
-  const [formValues, setFormValues] = useState<UpdateAccountFormValues>(user);
+  const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    userDetails?.profile?.country ?? ''
+  );
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [formValues, setFormValues] = useState<UpdateAccountFormValues>({
+    firstName: userDetails?.firstName || '',
+    lastName: userDetails?.lastName || '',
+    phoneNumber: userDetails?.profile?.phoneNumber || '',
+    gender: userDetails?.profile?.gender || Gender.Male,
+    description: userDetails?.profile?.description || '',
+    language: userDetails?.profile?.language || '',
+    uiTheme: userDetails?.profile?.uiTheme || ThemeType.Light,
+    imageUrl: userDetails?.profile?.imageUrl,
+    country: selectedCountry || '',
+  });
 
-  const formIsValid = Object.keys(validationErrors).length === 0;
+  const profileId = userDetails?.profile?.id!;
 
-  const handleInputChange = (fieldName: keyof UpdateAccountFormValues, text: string) => {
-    setValidationErrors({});
-    setFormValues({ ...formValues, [fieldName]: text });
-  };
+  const formIsValid = !Object.values(validationErrors).some((error) => error.trim() !== '');
 
-  const handleCountrySelect = (country: CountryOption) => {
-    setFormValues({ ...formValues, country: country.name });
-  };
+  const handleInputChange = useCallback((fieldName: string, text: string) => {
+    const sanitizedText = text.replace(/\s{6,}/g, ' ');
+    setFormValues((prevValues) => ({ ...prevValues, [fieldName]: sanitizedText }));
+  }, []);
 
-  const handlePhotoSelect = (photoUrl: string) => {
-    setFormValues({ ...formValues, photoUrl });
-  };
+  const handleCountrySelect = useCallback((country: Country) => {
+    setFormValues((prevValues) => ({ ...prevValues, country: country.name as string }));
+    setSelectedCountry(country.name as string);
+  }, []);
 
   const handleLanguageSelect = (language: string) => {
-    setValidationErrors({});
     setFormValues({ ...formValues, language });
   };
 
-  const handleOnSubmit = async () => {
-    setFormInteracted(true);
+  const handlePhotoSelect = async () => {
+    const selectedPhoto = await pickImage();
+    if (!selectedPhoto) return;
 
-    if (formIsValid) {
-      await dispatch(AsyncThunks.updateAccount({ ...formValues, userId }));
-    }
+    const formData = new FormData();
+
+    formData.append('image', {
+      uri: selectedPhoto.uri,
+      name: 'image',
+      type: 'image/jpeg',
+    } as any);
+
+    await dispatch(AsyncThunks.addProfileImage(formData));
   };
+
+  const handleOnSubmit = useCallback(async () => {
+    setFormInteracted(true);
+    const errors = validateForm(formValues);
+
+    if (Object.keys(errors).length === 0) {
+      dispatch(accountActions.clearError());
+      const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
+
+      if (response.meta.requestStatus === 'fulfilled') {
+        showAlert('success', {
+          message: 'Account details updated successfully!',
+          onOkPressed: () => navigation.navigate('Profile'),
+        });
+        const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
+
+        if (userId) {
+          await dispatch(AsyncThunks.getUserDetails(userId));
+        }
+      }
+    } else {
+      setValidationErrors(errors);
+    }
+  }, [formValues, profileId, dispatch, navigation]);
 
   useEffect(() => {
     if (formInteracted) {
@@ -73,52 +130,44 @@ const UpdateAccount = () => {
 
   return (
     <ScreenTemplate>
-      <FormTemplate
-        onSubmit={handleOnSubmit}
-        formIsValid={formIsValid}
-        loading={loading}
-        error={formInteracted && formIsValid ? userError : null}
-      >
-        <View style={styles.header}>
-          <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
-        </View>
+      <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid}>
+        <View style={[styles.imageContainer, { backgroundColor: colors.background }]}>
+          <Image source={{ uri: formValues.imageUrl }} style={styles.profileImage} />
 
-        <View>
-          <Text style={styles.title}>Profile</Text>
-          <Text>
-            The information you share will be used across Airbnb to help other guests and Hosts get
-            to know you.
-          </Text>
+          <Pressable
+            style={[styles.editButton, { backgroundColor: colors.secondaryBackground }]}
+            onPress={handlePhotoSelect}
+          >
+            <Text>edit image</Text>
+            <Icon name={IconName.Edit} iconSet="material" size={16} />
+          </Pressable>
         </View>
 
         <Input
           error={validationErrors.firstName}
+          label="Firstname"
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
-          onChangeText={(text) => handleInputChange('firstName', text)}
+          onChangeText={(text: string) => handleInputChange('firstName', text)}
           placeholder="Enter your firstname"
           value={formValues.firstName}
         />
 
         <Input
           error={validationErrors.lastName}
+          label="Lastname"
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
-          onChangeText={(text) => handleInputChange('lastName', text)}
+          onChangeText={(text: string) => handleInputChange('lastName', text)}
           placeholder="Enter your lastname"
           value={formValues.lastName}
         />
 
-        <Input
-          contextMenuHidden
+        <PhoneNumberInput
+          label="Phone number"
           error={validationErrors.phoneNumber}
-          keyboardType="number-pad"
-          leftIcon={IconName.Phone}
-          maxLength={UZBEK_PHONE_NUMBER_LENGTH}
-          onChangeText={(text) => handleInputChange('phoneNumber', text)}
-          placeholder="Enter your number"
+          onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           value={formValues.phoneNumber}
-          underlineColorAndroid="transparent"
         />
 
         <Text style={styles.label}>Select your gender</Text>
@@ -140,10 +189,23 @@ const UpdateAccount = () => {
         ))}
 
         <Text style={styles.label}>Select your country</Text>
-        <CountrySelector onSelect={handleCountrySelect} />
+        <TouchableOpacity
+          onPress={() => setCountrySelectorVisible(true)}
+          style={[styles.selectorButton, { backgroundColor: colors.secondaryBackground }]}
+        >
+          <Text style={styles.selectedCountry}>
+            {selectedCountry ? selectedCountry : 'Select country'}
+          </Text>
+          <Icon name={IconName.ChevronDown} size={20} />
+        </TouchableOpacity>
+        <CountryPicker
+          visible={countrySelectorVisible}
+          onClose={() => setCountrySelectorVisible(false)}
+          onSelect={handleCountrySelect}
+        />
 
         <Text style={styles.label}>Select preffered language</Text>
-        <LanguageSelector onSelect={handleLanguageSelect} />
+        <LanguageSelector onSelect={handleLanguageSelect} value={formValues.language} />
 
         <Text style={styles.label}>Tell about yourself</Text>
         <Input
@@ -151,10 +213,15 @@ const UpdateAccount = () => {
           numberOfLines={4}
           placeholder="Enter your description"
           value={formValues.description}
-          onChangeText={(text) => handleInputChange('description', text)}
+          onChangeText={(text: string) => handleInputChange('description', text)}
           innerStyle={styles.textAreaStyles}
         />
       </FormTemplate>
+
+      <Loader
+        visible={loading}
+        message="Your accommodation details are being updated. This won't take long..."
+      />
     </ScreenTemplate>
   );
 };

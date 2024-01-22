@@ -18,7 +18,7 @@ interface Props {
   title: string;
   type?: ButtonType;
   size?: BUTTON_SIZES;
-  width?: number;
+  width?: number | string;
   height?: number;
   style?: any;
 }
@@ -56,11 +56,10 @@ const Button = ({
             type,
             size,
             colors,
-            width,
             height,
           });
 
-          return [styles.pressable, buttonStyles, style, { width: width && '100%' }];
+          return [styles.pressable, buttonStyles, style, { width: width || 'auto' }];
         }}
       >
         {({ pressed }) => (

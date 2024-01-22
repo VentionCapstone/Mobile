@@ -36,14 +36,21 @@ type GetBorderColorProps = {
   colors?: ThemeColors;
 };
 
-const getBorderColor = ({ type, pressed, colors }: GetBorderColorProps): string | undefined => {
+const getBorderColor = ({
+  type,
+  pressed,
+  colors,
+  disabled,
+}: GetBorderColorProps): string | undefined => {
   switch (type) {
     case ButtonType.PRIMARY:
       if (pressed) return colors?.secondaryButtonBackground;
+      if (disabled) return colors?.secondaryBackground;
       return colors?.buttonBackground;
     case ButtonType.SECONDARY:
       if (pressed) return colors?.border;
-      return colors?.border;
+      if (disabled) return colors?.border;
+      return colors?.buttonBorder;
     case ButtonType.TERTIARY:
       return 'transparent';
     default:
@@ -103,7 +110,7 @@ const getFontColor = ({
     case ButtonType.TERTIARY:
       if (disabled) return colors?.secondaryButtonBackground;
       if (pressed) return colors?.secondaryButtonBackground;
-      return colors?.border;
+      return colors?.buttonTextColor;
     default:
       break;
   }
@@ -121,7 +128,7 @@ type GetFontStyleProps = {
 const getFontStyles = ({ type, pressed, disabled, size, colors }: GetFontStyleProps): TextStyle => {
   let fontSize = 16;
 
-  if (pressed && size !== undefined) {
+  if (pressed && size) {
     fontSize -= 2;
   }
 
@@ -138,7 +145,7 @@ const getFontStyles = ({ type, pressed, disabled, size, colors }: GetFontStylePr
       fontSize = 22;
       break;
     default:
-      break;
+      fontSize = 18;
   }
 
   const textColor = type === ButtonType.PRIMARY && colors?.background;

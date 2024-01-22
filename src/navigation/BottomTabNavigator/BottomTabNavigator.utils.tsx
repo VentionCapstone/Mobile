@@ -1,34 +1,61 @@
 import { AntDesign } from '@expo/vector-icons';
-import React from 'react';
 import { Platform } from 'react-native';
 import { Icon } from 'src/components';
 import { ThemeColors } from 'src/types';
 import { IconName } from 'src/types/ui';
 
-export const getTabBarIcon = (routeName: string, color: string): React.JSX.Element => {
-  switch (routeName) {
+type GetTabBarIconProps = {
+  route: {
+    name: string;
+  };
+  color: string;
+  focused: boolean;
+};
+
+export const getTabBarIcon = ({ route, color, focused }: GetTabBarIconProps) => {
+  switch (route.name) {
     case 'Explore':
-      return <Icon name={IconName.Search} size={26} color={color} />;
+      return <Icon name={IconName.SearchOutline} size={focused ? 30 : 26} color={color} />;
     case 'Wishlist':
-      return <Icon name={IconName.Heart} size={26} color={color} />;
+      return (
+        <Icon
+          name={focused ? IconName.Heart : IconName.HeartOutline}
+          size={focused ? 30 : 26}
+          color={color}
+        />
+      );
     case 'Booking':
-      return <AntDesign name="book" size={24} color={color} />;
+      return <AntDesign name="book" size={focused ? 26 : 22} color={color} />;
     case 'Profile':
-      return <Icon name={IconName.PersonCircle} size={26} color={color} />;
+      return (
+        <Icon
+          name={focused ? IconName.PersonCircle : IconName.PersonCircleOutline}
+          size={focused ? 32 : 26}
+          color={color}
+        />
+      );
+    case 'Login':
+      return <Icon name={IconName.Login} size={focused ? 30 : 28} color={color} />;
     default:
       return <Icon name={IconName.Add} size={26} color={color} />;
   }
 };
 
-export const getTabBarStyles = (colors: ThemeColors) => ({
+type GetTabBarStylesProps = {
+  colors: ThemeColors;
+  isDarkMode: boolean;
+};
+
+export const getTabBarStyles = ({ colors, isDarkMode }: GetTabBarStylesProps) => ({
   tabBarStyle: {
-    height: Platform.OS === 'ios' ? 90 : 60,
-    paddingBottom: 8,
-    paddingTop: 6,
+    height: Platform.OS === 'ios' ? 85 : 65,
     backgroundColor: colors.background,
+    paddingTop: 10,
+    borderTopWidth: isDarkMode ? 1 : 0,
+    borderTopColor: isDarkMode ? colors.border : 'transparent',
   },
   tabBarLabelStyle: {
-    fontSize: 12,
+    fontSize: 10,
   },
   tabBarInactiveTintColor: colors.icon,
   tabBarActiveTintColor: colors.tint,

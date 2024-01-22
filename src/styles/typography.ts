@@ -2,20 +2,20 @@ import { TextStyle } from 'react-native';
 
 export const title1: TextStyle = {
   fontSize: 24,
-  lineHeight: 29,
-  fontWeight: '700',
+  lineHeight: 24,
+  fontWeight: '600',
 };
 
 export const title2: TextStyle = {
-  fontSize: 20,
+  fontSize: 22,
   lineHeight: 23,
   fontWeight: '500',
 };
 
 export const title3: TextStyle = {
-  fontSize: 18,
-  lineHeight: 20,
-  fontWeight: '500',
+  fontSize: 17,
+  lineHeight: 18,
+  fontWeight: '300',
 };
 
 export const subtitle1: TextStyle = {

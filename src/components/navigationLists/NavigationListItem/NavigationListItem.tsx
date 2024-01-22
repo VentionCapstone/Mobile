@@ -1,6 +1,5 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Pressable, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
@@ -16,32 +15,27 @@ interface Props {
 }
 
 const NavigationListItem = ({ item }: Props) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getColors);
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { onPress, screen, label, iconName, showIconRight = true } = item;
 
+  const handlePress = () => {
+    if (onPress) onPress();
+    navigation.navigate(screen as any);
+  };
+
   return (
-    <Pressable
-      onPress={() => {
-        if (onPress) onPress();
-        navigation.navigate(screen as any);
-      }}
-      style={({ pressed }) => [
-        styles.container,
-        {
-          backgroundColor: pressed ? colors.secondaryBackground : colors.background,
-        },
-      ]}
+    <TouchableOpacity
+      onPress={handlePress}
+      style={[styles.container, { backgroundColor: colors.secondaryBackground }]}
     >
-      <View style={styles.leftContainer}>
-        {iconName && <Icon name={iconName} />}
+      <View style={styles.leftIconContainer}>{iconName && <Icon name={iconName} />}</View>
 
+      <View style={styles.rightContainer}>
         <Text style={[styles.label, { marginLeft: iconName ? 14 : 0 }]}>{label}</Text>
+        {showIconRight && <Icon name={IconName.ChevronForward} />}
       </View>
-
-      {showIconRight && <Icon name={IconName.ChevronForward} />}
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

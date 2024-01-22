@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { paragraph1, WHITE } from 'src/styles';
+import { WHITE } from 'src/styles';
 
 export const styles = StyleSheet.create({
-  modalContainer: {
+  centralModalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -11,18 +11,29 @@ export const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: WHITE,
     padding: 25,
-    paddingVertical: 35,
-    borderRadius: 10,
-    width: '80%',
-    maxHeight: '80%',
+    paddingVertical: 40,
+    borderRadius: 15,
+    width: '90%',
   },
   closeButton: {
     position: 'absolute',
-    right: 6,
-    padding: 4,
+    right: 10,
+    padding: 10,
   },
-  closeButtonText: {
-    color: 'blue',
-    ...paragraph1,
+
+  bottomModalContainer: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  bottomModalContent: {
+    backgroundColor: WHITE,
+    padding: 10,
+    paddingVertical: 20,
+    borderRadius: 10,
+    width: '100%',
+    maxHeight: '95%',
   },
 });

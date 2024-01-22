@@ -1,10 +1,19 @@
 import { StyleSheet } from 'react-native';
-import { title1, paragraph1 } from 'src/styles';
-import { HORIZONTAL_24_PERCENT } from 'src/utils';
+import { title1, title3, paragraph1 } from 'src/styles';
+import { HORIZONTAL_16_PERCENT, HORIZONTAL_24_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
     paddingHorizontal: HORIZONTAL_24_PERCENT,
+  },
+  redirectToCreateText: {
+    ...title3,
+  },
+  redirectContainer: {
+    paddingHorizontal: HORIZONTAL_16_PERCENT,
+    paddingVertical: 20,
+    gap: 30,
+    alignItems: 'center',
   },
   card: {
     height: 70,
@@ -12,9 +21,6 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
-  },
-  title: {
-    ...title1,
   },
   label: {
     fontWeight: '400',

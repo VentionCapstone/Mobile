@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { ScrollView, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { ScrollView, KeyboardAvoidingView, Platform, ViewStyle, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'src/components/Button';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
-import { RED_300 } from 'src/styles';
-import { ErrorResponseType } from 'src/types';
+import { RED_200 } from 'src/styles';
+import { ApiErrorResponseType } from 'src/types';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './FormTemplate.style';
@@ -14,42 +14,56 @@ import { styles } from './FormTemplate.style';
 interface Props {
   children: ReactNode;
   formIsValid?: boolean;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   loading?: boolean;
-  error?: ErrorResponseType | null;
+  error?: ApiErrorResponseType | null;
+  isButtonVisible?: boolean;
+  style?: ViewStyle;
 }
 
-const FormTemplate = ({ children, formIsValid = true, onSubmit, loading, error }: Props) => {
+const FormTemplate = ({
+  children,
+  formIsValid = true,
+  isButtonVisible = true,
+  onSubmit,
+  loading,
+  error,
+  style,
+}: Props) => {
   const colors = useSelector(getColors);
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
       style={styles.container}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContainer}
+        contentContainerStyle={[styles.scrollContainer, style]}
         keyboardShouldPersistTaps="handled"
+        style={styles.scrollView}
       >
         {children}
 
         {error && (
           <View style={[styles.errorContainer, { backgroundColor: colors.errorBackground }]}>
             <View style={styles.errorIconContainer}>
-              <Icon name={IconName.Error} iconSet="material" color={RED_300} size={20} />
+              <Icon name={IconName.Error} iconSet="material" color={RED_200} size={20} />
               <Text style={styles.label}>Error!</Text>
             </View>
-            <Text style={styles.errorMessage}>{error?.message}</Text>
+            <Text style={styles.errorMessage}>{error.error.message}</Text>
           </View>
         )}
 
-        <Button
-          title="Submit"
-          isLoading={loading}
-          disabled={!formIsValid}
-          marginVertical={30}
-          onPress={onSubmit}
-        />
+        {isButtonVisible && onSubmit && (
+          <Button
+            title="Submit"
+            isLoading={loading}
+            disabled={!formIsValid}
+            marginVertical={15}
+            onPress={onSubmit}
+          />
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -1,15 +1,25 @@
 import { StyleSheet } from 'react-native';
-import { paragraph1, paragraph2, title3 } from 'src/styles';
+import { paragraph1, paragraph2, title2 } from 'src/styles';
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 20,
+  },
   header: {
-    height: 280,
     justifyContent: 'center',
+    paddingVertical: 20,
     gap: 50,
   },
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '400',
+  },
+  notificationIcon: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
   },
   subTitle: {
     ...paragraph1,
@@ -17,10 +27,15 @@ const styles = StyleSheet.create({
   redirectAuthContainer: {
     gap: 20,
   },
+  redirectAuthText: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 20,
+  },
   loggedInHeader: {
     height: 140,
-    justifyContent: 'space-around',
-    gap: 50,
+    justifyContent: 'flex-end',
+    gap: 10,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -28,12 +43,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   accountHeader: {
-    height: 60,
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    paddingBottom: 30,
   },
   accountHeaderContents: {
     flexDirection: 'row',
@@ -54,10 +68,14 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   accountName: {
-    ...title3,
+    ...title2,
+    fontSize: 20,
   },
   description: {
     ...paragraph2,
+  },
+  underline: {
+    textDecorationLine: 'underline',
   },
 });
 
