@@ -7,7 +7,7 @@ import ENDPOINTS from './endpoints';
 import { store } from '../store';
 import { accountActions } from '../store/slices/accountSlice';
 
-const BASE_URL = 'http://192.168.43.83:3000/api';
+const BASE_URL = 'https://dev.vention-booking.taksifon.uz/api';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,

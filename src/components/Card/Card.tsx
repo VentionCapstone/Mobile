@@ -8,6 +8,9 @@ import { AccommodationListItem, IconName } from 'src/types';
 import { styles } from './Card.styles';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
+import { useSelector } from 'react-redux';
+import { getIsLoggedIn } from 'src/store/selectors';
+import showAlert from '../alert';
 
 type Props = {
   item: AccommodationListItem;
@@ -17,9 +20,15 @@ type Props = {
 
 const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist }: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const isLoggedIn = useSelector(getIsLoggedIn);
   const [pressed, setPressed] = useState<boolean>(false);
 
   const handleToggleWishlist = () => {
+    if (!isLoggedIn) {
+      showAlert('warning', { message: 'You should login first!' });
+      return;
+    }
+
     setPressed(!pressed);
     if (pressed) {
       onRemoveFromWishlist(item.id);

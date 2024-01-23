@@ -28,9 +28,7 @@ const Explore = () => {
   };
 
   const handleAddToWishlist = async (accommodationId: string) => {
-    const response = await dispatch(AsyncThunks.addToWishlist(accommodationId));
-
-    console.log(response);
+    await dispatch(AsyncThunks.addToWishlist(accommodationId));
   };
 
   const handleRemoveFromWishlist = async (accommodationId: string) => {

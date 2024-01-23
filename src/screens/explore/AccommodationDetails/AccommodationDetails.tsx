@@ -8,14 +8,26 @@ import {
   TouchableOpacity,
   View,
   Image,
-  ActivityIndicator,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Icon, ImageCarousel, Text, ThemedView } from 'src/components';
+import {
+  Button,
+  ButtonType,
+  Icon,
+  ImageCarousel,
+  Text,
+  ThemedView,
+  showAlert,
+} from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodation, getAccommodationLoader, getColors } from 'src/store/selectors';
+import {
+  getAccommodation,
+  getAccommodationLoader,
+  getColors,
+  getIsLoggedIn,
+} from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES, GREY_200, TOMATO } from 'src/styles';
 import { IconName } from 'src/types';
@@ -31,6 +43,7 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
   const colors = useSelector(getColors);
   const accommodation = useSelector(getAccommodation);
   const refreshing = useSelector(getAccommodationLoader);
+  const isLoggedIn = useSelector(getIsLoggedIn);
   const [heartPressed, setHeartPressed] = useState<boolean>(false);
 
   const accommodationMedia = useMemo(
@@ -47,6 +60,11 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
   };
 
   const handleToggleWishlist = () => {
+    if (!isLoggedIn) {
+      showAlert('warning', { message: 'You should login first!' });
+      return;
+    }
+
     setHeartPressed(!heartPressed);
     if (heartPressed) {
       handleRemoveFromWishlist(acccomodationId);
