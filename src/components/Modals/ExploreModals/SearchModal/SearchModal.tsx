@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Modal, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import DatePicker, { getToday } from 'react-native-modern-datepicker';
 import { useSelector } from 'react-redux';
@@ -54,6 +54,26 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
   useEffect(() => {
     setFormValues({ ...filter, location, checkInDate, checkOutDate });
   }, [filter, location, checkInDate, checkOutDate]);
+
+  const DatePickerStyles = useMemo(() => {
+    const options = {
+      selectedTextColor: WHITE,
+      mainColor: TOMATO,
+      textSecondaryColor: GREY_200,
+    }
+    const colorOptions =
+      colors ?
+       {backgroundColor: BLACK,
+        textHeaderColor: WHITE,
+        textDefaultColor: WHITE,
+        borderColor: BLACK,}
+      :
+       {backgroundColor: WHITE,
+        textHeaderColor: BLACK,
+        textDefaultColor: BLACK,
+        borderColor: WHITE,}
+    return {...options, ...colorOptions}
+  }, [colors])
 
   const handleCheckInChange = useCallback(
     (newDate: string) => {
@@ -226,15 +246,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
                   onTouch={toggleCollapseCheckIn}
                 >
                   <DatePicker
-                    options={{
-                      backgroundColor: colors ? BLACK : WHITE,
-                      textHeaderColor: colors ? WHITE : BLACK,
-                      textDefaultColor: colors ? WHITE : BLACK,
-                      selectedTextColor: WHITE,
-                      mainColor: TOMATO,
-                      textSecondaryColor: GREY_200,
-                      borderColor: colors ? BLACK : WHITE,
-                    }}
+                    options={DatePickerStyles}
                     mode="calendar"
                     minimumDate={getCheckInMinDate()}
                     onSelectedChange={handleCheckInChange}
@@ -256,15 +268,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
                   onTouch={toggleCollapseCheckOut}
                 >
                   <DatePicker
-                    options={{
-                      backgroundColor: colors ? BLACK : WHITE,
-                      textHeaderColor: colors ? WHITE : BLACK,
-                      textDefaultColor: colors ? WHITE : BLACK,
-                      selectedTextColor: WHITE,
-                      mainColor: TOMATO,
-                      textSecondaryColor: GREY_200,
-                      borderColor: colors ? BLACK : WHITE,
-                    }}
+                    options={DatePickerStyles}
                     mode="calendar"
                     minimumDate={getCheckOutMinDate()}
                     onSelectedChange={handleCheckOutChange}
