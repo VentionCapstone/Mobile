@@ -17,18 +17,11 @@ import { getStayDuration } from './ExploreHeader.utils';
 const ExploreHeader = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getIsDarkMode);
-  const filter = useSelector(getFilterSettings);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
-
-  const { location, checkInDate, checkOutDate } = filter;
 
   function handleSearchModalChange() {
     setSearchModalVisible(!searchModalVisible);
   }
-
-  const locationText = location ? location : "Anywhere";
-  const duration = getStayDuration(checkInDate, checkOutDate);
-  const durationText = duration ? duration : "Anytime";
 
   return (
     <ThemedView>
@@ -38,7 +31,6 @@ const ExploreHeader = () => {
             <Icon name={IconName.Search} size={26} />
             <View style={styles.searchContent}>
               <Text style={styles.searchHeader}>Where to go?</Text>
-              <Text>{locationText} · {durationText}</Text>
             </View>
           </ThemedView>
         </TouchableOpacity>
