@@ -1,21 +1,17 @@
-import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import Text from 'src/components/Text/Text';
 import { Input } from 'src/components/inputs';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
-import { CreateAccommodationValues } from 'src/types';
 import { ACCOMMODATION_TITLE_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AccommodationTitle.style';
 
-type Props = {
-  route: Route<'AccommodationDescription', { accommodation: Partial<CreateAccommodationValues> }>;
-};
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationTitle'>;
 
-const AccommodationTitle = ({ route }: Props) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+const AccommodationTitle = ({ route, navigation }: Props) => {
   const [title, setTitle] = useState<string>('');
   const [titleLength, setTitleLength] = useState<number>(0);
 

@@ -8,6 +8,7 @@ import rootReducer from './rootReducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  whislist: ['account', 'theme'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,5 +1,6 @@
 import { AddressValues } from './accommodation';
-import { Gender } from './common';
+import { Amenities } from './amenities';
+import { Gender, Language } from './common';
 import { ThemeType } from './ui';
 import { WishlistAccommodationResponse } from './wishlist';
 
@@ -14,7 +15,7 @@ export interface ApiErrorResponseType {
 
 export interface ApiSuccessResponseType<T = any> {
   success: boolean;
-  data?: T;
+  data: T;
   message?: string;
 }
 
@@ -92,6 +93,36 @@ export interface UpdateAccommodationParams {
   accommodation: CreateAccommodationParams;
 }
 
+export interface AccommodationMedia {
+  id: string;
+  imageUrl: string;
+  thumbnailUrl: string;
+  accommodationId: string;
+}
+
+export interface AccommodationAddressResponse {
+  id: string;
+  street: string;
+  city: string;
+  country: string;
+  zipCode: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface AccommodationOwner {
+  id: string;
+  ownerId: string;
+  createdAt: string;
+  firstName: string;
+  lastName: string;
+  profile: {
+    language: Language;
+    imageUrl: string;
+    country: string;
+  };
+}
+
 export interface Accommodation {
   id: string;
   title: string;
@@ -103,20 +134,17 @@ export interface Accommodation {
   numberOfRooms: number;
   price: number;
   allowedNumberOfPeople: number;
+  available: boolean;
   availableFrom: string;
   availableTo: string;
   description: string;
   timezoneOffset: number;
   isDeleted: boolean;
-  address: {
-    id: string;
-    street: string;
-    city: string;
-    country: string;
-    zipCode: string;
-    latitude: number;
-    longitude: number;
-  };
+  isInWishlist: boolean;
+  address: AccommodationAddressResponse;
+  media?: AccommodationMedia[];
+  amenities?: Amenities;
+  owner: AccommodationOwner;
 }
 
 export interface Wishlist {

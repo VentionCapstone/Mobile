@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
+    marginTop: Platform.OS === 'android' ? 50 : undefined,
     gap: 10,
-    marginTop: Platform.OS === 'android' ? 30 : undefined,
   },
   searchBar: {
     flexDirection: 'row',
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 14,
     height: 60,
-    width: 280,
+    width: '100%',
     marginVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 40,

@@ -5,7 +5,6 @@ export type RootStackParamList = {
 
   Signin: undefined;
   Signup: undefined;
-  VerifyEmail: { email: string };
 
   Account: undefined;
   AccommodationImage: { accommodationId: string };
@@ -26,9 +25,10 @@ export type RootStackParamList = {
   UpdateProfile: undefined;
   UpdateAccommodation: { accommodation: Accommodation };
 
-  CreateAmenities: { accomodationId: string; isNew: boolean } | undefined;
+  CreateAmenities: { accomodationId: string; isNew: boolean };
   UpdateAmenities: { accomodationId: string };
 
-  AccommodationDetails: { accomodationId: string };
+  AccommodationDetails: { accommodationId: string };
   FilterModal: undefined;
+  Wishlist: undefined;
 };

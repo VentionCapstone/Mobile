@@ -3,7 +3,7 @@ const ENDPOINTS = {
   signup: '/auth/signup',
   signout: '/auth/signout',
   refresh: (id: string) => `/auth/${id}/refresh`,
-  verify: '/auth/email',
+  verify: '/auth/verify',
 
   createProfile: '/users/profile',
   updateProfile: (userId: string | undefined) => `/users/${userId}`,

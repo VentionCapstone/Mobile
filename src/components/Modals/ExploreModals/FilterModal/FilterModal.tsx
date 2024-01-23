@@ -48,16 +48,8 @@ const FilterModal = () => {
   };
 
   return (
-    <ScreenTemplate
-      headerShown={false}
-      style={{
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: colors ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.5)',
-        marginTop: Platform.OS === 'android' ? 30 : undefined,
-      }}
-    >
-      <ThemedView style={styles.container}>
+    <ScreenTemplate headerShown={false} style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.modalHeader}>
           <StatusBar backgroundColor={colors ? BLACK : WHITE_100} />
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -195,7 +187,7 @@ const FilterModal = () => {
             />
           </View>
         </View>
-      </ThemedView>
+      </View>
       <ThemedView style={[styles.footer, colors && { borderColor: WHITE_200 }]}>
         <TouchableOpacity onPress={setFilterToDefault}>
           <Text style={{ fontSize: 20, textDecorationLine: 'underline' }}>Default</Text>

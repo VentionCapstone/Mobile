@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState, useRef, useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import {
@@ -23,10 +23,11 @@ import { styles } from './AccommodationAddress.style';
 import { GOOGLE_API_KEY, INITIAL_COORDINATES } from './AccommodationAddress.utils';
 import AccommodationAddressForm from './AccommodationAddressForm';
 
-const AccommodationAddress = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationAddress'>;
+
+const AccommodationAddress = ({ navigation }: Props) => {
   const colors = useSelector(getColors);
   const mapViewRef = useRef<MapView>(null);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [addressSelected, setAddressSelected] = useState(false);
   const [selectedCoordinates, setSelectedCoordinates] = useState<LatLng | undefined>(
     INITIAL_COORDINATES

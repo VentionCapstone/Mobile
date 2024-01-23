@@ -38,7 +38,7 @@ const ChangeLanguage = () => {
       if (userId) {
         await dispatch(
           AsyncThunks.updateAccount({
-            id: userId,
+            id: userDetails?.profile?.id,
             formValues: { ...formValues, language },
           })
         );

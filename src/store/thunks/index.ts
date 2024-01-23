@@ -1,10 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  signInThunk,
-  signOutThunk,
-  signUpThunk,
-  verifyEmailThunk,
-} from 'src/store/thunks/authThunk';
 
 import {
   createAccommodationThunk,
@@ -21,7 +15,14 @@ import {
   getAccountDetailsThunk,
   updateAccountThunk,
 } from './accountThunk';
-import { addAmenitiesThunk, updateAmenitiesThunk } from './amenitiesThunk';
+import {
+  addAmenitiesThunk,
+  deleteAmenitiesThunk,
+  getAmenitiesListThunk,
+  getAmenitiesThunk,
+  updateAmenitiesThunk,
+} from './amenitiesThunk';
+import { signInThunk, signOutThunk, signUpThunk } from './authThunk';
 import { getUserDetailsThunk } from './userThunk';
 import { addToWishlistThunk, removeFromWishlistThunk, getWishlistsThunk } from './wishlistThunk';
 
@@ -29,7 +30,6 @@ export const AsyncThunks = {
   signUp: createAsyncThunk('signUpThunk', signUpThunk),
   signIn: createAsyncThunk('signInThunk', signInThunk),
   signOut: createAsyncThunk('signOutThunk', signOutThunk),
-  verifyEmail: createAsyncThunk('verifyEmailThunk', verifyEmailThunk),
 
   createAccount: createAsyncThunk('createAccountThunk', createAccountThunk),
   updateAccount: createAsyncThunk('updateAccountThunk', updateAccountThunk),
@@ -48,10 +48,6 @@ export const AsyncThunks = {
   getMyAccommodations: createAsyncThunk('getAccommodationsThunk', getMyAccommodationsThunk),
   getListOfAccommodations: createAsyncThunk(
     'getListOfAccommodationsThunk',
-    getListOfAccommodationsThunk
-  ),
-  getUpdatedListOfAccommodations: createAsyncThunk(
-    'getUpdatedListOfAccommodations',
     getListOfAccommodationsThunk
   ),
 

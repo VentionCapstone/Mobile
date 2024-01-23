@@ -34,11 +34,11 @@ export const removeFromWishlistThunk: AsyncThunkPayloadCreator<
   string,
   string,
   { rejectValue: ApiErrorResponseType }
-> = async (wishlistId, { rejectWithValue }) => {
+> = async (accommodationId, { rejectWithValue }) => {
   try {
-    await axiosInstance.delete(ENDPOINTS.addToWishlist(wishlistId));
+    await axiosInstance.delete(ENDPOINTS.addToWishlist(accommodationId));
 
-    return wishlistId;
+    return accommodationId;
   } catch (error: any) {
     return rejectWithValue(error.response.data);
   }

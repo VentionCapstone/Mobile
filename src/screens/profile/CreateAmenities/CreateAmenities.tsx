@@ -1,5 +1,4 @@
-import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TouchableOpacity, ScrollView, View, TextInput } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -9,7 +8,7 @@ import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getIsDarkMode } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
-import { BUTTON_SIZES, GREY_500, WHITE_100, WHITE_200 } from 'src/styles';
+import { BUTTON_SIZES, GREY_500, WHITE, WHITE_100, WHITE_200 } from 'src/styles';
 import { ApiSuccessResponseType, IconName } from 'src/types';
 import { AccommodationAmenitiesResponse, UpdateAmenitiesParams } from 'src/types/amenities';
 
@@ -23,18 +22,11 @@ import {
   ERROR_NONE,
 } from './CreateAmenities.utils';
 
-type CreateAmenitiesNavigationProp = StackNavigationProp<RootStackParamList, 'CreateAmenities'>;
-type CreateAmenitiesRouteProp = RouteProp<RootStackParamList, 'CreateAmenities'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'CreateAmenities'>;
 
-export interface AmenitiesProps {
-  navigation: CreateAmenitiesNavigationProp;
-  route: CreateAmenitiesRouteProp;
-}
-
-const CreateAmenities = ({ route }: AmenitiesProps) => {
-  const { isNew, accomodationId } = route.params ?? {};
+const CreateAmenities = ({ route, navigation }: Props) => {
+  const { isNew, accomodationId } = route.params;
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const theme = useSelector(getIsDarkMode);
 
   const [amenityError, setAmenityError] = useState<AmenitiesErrorType>(ERROR_NONE);
@@ -176,13 +168,13 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
           </View>
           {amenityError.error && (
             <View style={styles.errorBox}>
-              <Icon name={IconName.Error} size={30} iconSet="material" color="white" />
+              <Icon name={IconName.Error} size={30} iconSet="material" color={WHITE} />
               <Text style={styles.errorText}>{amenityError.message}</Text>
             </View>
           )}
-          <View style={[styles.inputField, { backgroundColor: theme ? GREY_500 : 'white' }]}>
+          <View style={[styles.inputField, { backgroundColor: theme ? GREY_500 : WHITE }]}>
             <View style={{ flexDirection: 'row', gap: 10 }}>
-              <Icon name={IconName.Albums} size={24} iconSet="ionicons" />
+              <Icon name={IconName.Albums} size={24} />
               <TextInput
                 value={inputValue}
                 onChangeText={(text) => setInputValue(text)}
@@ -192,7 +184,7 @@ const CreateAmenities = ({ route }: AmenitiesProps) => {
               />
             </View>
             <TouchableOpacity onPress={() => addOtherAmenities()}>
-              <Icon name={IconName.AddBlank} size={28} iconSet="ionicons" />
+              <Icon name={IconName.AddBlank} size={28} />
             </TouchableOpacity>
           </View>
           <View style={styles.emptySpace} />

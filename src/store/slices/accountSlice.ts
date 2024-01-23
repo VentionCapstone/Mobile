@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { onError, onPending } from 'src/store/stateResults';
 import { ProfileResponseType, StateType } from 'src/types';
 
+import { onError, onPending } from '../stateResults';
 import { AsyncThunks } from '../thunks';
 
 type AccountStateType = StateType<ProfileResponseType | any> & {
@@ -71,12 +71,6 @@ const accountSlice = createSlice({
       state.pending = false;
     });
     builder.addCase(AsyncThunks.signUp.rejected, onError);
-    builder.addCase(AsyncThunks.verifyEmail.pending, onPending);
-    builder.addCase(AsyncThunks.verifyEmail.fulfilled, (state, action) => {
-      state.pending = false;
-      state.result = action.payload;
-    });
-    builder.addCase(AsyncThunks.verifyEmail.rejected, onError);
 
     builder.addCase(AsyncThunks.signOut.pending, onPending);
     builder.addCase(AsyncThunks.signOut.fulfilled, (state, action) => {

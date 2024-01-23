@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import {
   Icon,
   Text,
-  showAlert,
   Input,
   PhoneNumberInput,
   LanguageSelector,
@@ -18,7 +17,7 @@ import { useAppDispatch } from 'src/store';
 import { getAccountLoader, getColors } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { ApiSuccessResponseType, CreateAccountFormValues, ProfileResponseType } from 'src/types';
+import { CreateAccountFormValues } from 'src/types';
 import { GenderOptionsProps, Gender, Language } from 'src/types/common';
 import { IconName, ThemeType } from 'src/types/ui';
 import { ACCOUNT_NAME_MAX_LENGTH } from 'src/utils';
@@ -28,9 +27,9 @@ import { genderOptions, validateForm } from './CreateAccount.utils';
 
 const CreateAccountForm = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const loading = useSelector(getAccountLoader);
   const colors = useSelector(getColors);
+  const loading = useSelector(getAccountLoader);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
@@ -61,17 +60,11 @@ const CreateAccountForm = () => {
     setSelectedCountry(country.name as string);
   };
 
-  const handlePhotoSelect = (imageUrl: string) => {
-    setFormValues({ ...formValues, imageUrl });
-  };
-
   const handleLanguageSelect = (language: string) => {
     setFormValues({ ...formValues, language });
   };
 
   const handleOnSubmit = async () => {
-    navigation.navigate('ProfileImage');
-
     setFormInteracted(true);
     const errors = validateForm(formValues);
 

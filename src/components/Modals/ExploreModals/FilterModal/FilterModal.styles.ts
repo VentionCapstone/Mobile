@@ -1,13 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { GREY_500, WHITE } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 10,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    marginTop: Platform.OS === 'android' ? 30 : undefined,
   },
   modalHeader: {
     padding: 20,

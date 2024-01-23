@@ -1,11 +1,10 @@
-import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import Text from 'src/components/Text/Text';
 import { NumericInput } from 'src/components/inputs';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
-import { CreateAccommodationValues } from 'src/types';
 import { AREA_MAX_LENGTH, PRICE_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './AccommodationPriceAndArea.style';
@@ -15,12 +14,9 @@ interface FormValues {
   price: number | null;
 }
 
-type Props = {
-  route: Route<'AccommodationTitle', { accommodation: Partial<CreateAccommodationValues> }>;
-};
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationPriceAndArea'>;
 
-const AccommodationPriceAndArea = ({ route }: Props) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+const AccommodationPriceAndArea = ({ route, navigation }: Props) => {
   const [formValues, setFormValues] = useState<FormValues>({
     squareMeters: null,
     price: null,

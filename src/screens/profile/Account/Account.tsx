@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, Text } from 'src/components';
@@ -8,9 +8,10 @@ import { getColors, getIsGuestAccount, getUserDetails } from 'src/store/selector
 
 import { styles } from './Account.style';
 
-const Account = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Account'>;
+
+const Account = ({ navigation }: Props) => {
   const colors = useSelector(getColors);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const isGuestUser = useSelector(getIsGuestAccount);
   const user = useSelector(getUserDetails);
 
