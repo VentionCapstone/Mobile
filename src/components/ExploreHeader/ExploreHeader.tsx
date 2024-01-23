@@ -1,9 +1,9 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { View, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
-import { getFilterSettings, getIsDarkMode } from 'src/store/selectors';
+import { getIsDarkMode } from 'src/store/selectors';
 import { LEVEL_1 } from 'src/styles';
 import { IconName } from 'src/types';
 
