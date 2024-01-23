@@ -13,6 +13,7 @@ import Text from '../Text/Text';
 import ThemedView from '../ThemedView/ThemedView';
 import SearchModal from '../modals/ExploreModals/SearchModal/SearchModal';
 import { getStayDuration } from './ExploreHeader.utils';
+import { DEFAULT_LOCATION, DEFAULT_DURATION } from 'src/constants/constantLabels';
 
 const ExploreHeader = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -20,9 +21,6 @@ const ExploreHeader = () => {
   const [searchModalVisible, setSearchModalVisible] = useState(false);
 
   const filter = useSelector(getFilterSettings);
-
-  const DEFAULT_LOCATION = "Anywhere";
-  const DEFAULT_DURATION = "Anytime";
 
   const [locationText, setLocationText] = useState(filter.location ? filter.location : DEFAULT_LOCATION)
   const [durationText, setDurationText] = useState((filter.checkInDate && filter.checkOutDate) ? getStayDuration(filter.checkInDate, filter.checkOutDate) : DEFAULT_DURATION)

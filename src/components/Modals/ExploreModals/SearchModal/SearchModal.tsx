@@ -17,6 +17,7 @@ import { accommodationListActions } from 'src/store/slices';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import showAlert from 'src/components/alert';
 import Collapsable from 'src/components/Collapsable/Collapsable';
+import { DEFAULT_DURATION, DEFAULT_LOCATION } from 'src/constants/constantLabels';
 
 type ExploreModalProps = {
   modalOpen: boolean;
@@ -185,7 +186,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
               return (
                 <Collapsable
                   title={item.title}
-                  subtitle={location ? location : "Anywhere"}
+                  subtitle={location ? location : DEFAULT_LOCATION}
                   contentTitle="Pick your next destination"
                   collapsed={isCollapsed.location}
                   onTouch={toggleCollapseLocation}>
@@ -219,7 +220,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
               return (
                 <Collapsable
                   title={item.title}
-                  subtitle={checkInDate ? checkInDate : "Anyday"}
+                  subtitle={checkInDate ? checkInDate : DEFAULT_DURATION}
                   contentTitle={item.title}
                   collapsed={isCollapsed.checkin}
                   onTouch={toggleCollapseCheckIn}
@@ -249,7 +250,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
               return (
                 <Collapsable
                   title={item.title}
-                  subtitle={checkOutDate ? checkOutDate : "Anyday"}
+                  subtitle={checkOutDate ? checkOutDate : DEFAULT_DURATION}
                   contentTitle={item.title}
                   collapsed={isCollapsed.checkout}
                   onTouch={toggleCollapseCheckOut}
