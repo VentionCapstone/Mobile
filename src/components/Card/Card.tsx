@@ -2,6 +2,8 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { RootStackParamList } from 'src/navigation';
+import { useAppDispatch } from 'src/store';
+import { AsyncThunks } from 'src/store/thunks';
 import { TOMATO } from 'src/styles';
 import { AdressListingValues, IconName } from 'src/types';
 
@@ -30,9 +32,17 @@ const Card = ({
 }: CardProps) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [pressed, setPressed] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const handlePressed = () => {
-    setPressed(!pressed);
+    if (!pressed) {
+      const response = dispatch(AsyncThunks.addToWishlist(id));
+      if (response.payload?.success) {
+        setPressed(true);
+      } else {
+        setPressed(false);
+      }
+    }
   };
 
   return (

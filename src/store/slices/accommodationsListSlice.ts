@@ -41,7 +41,7 @@ const accommodationListSlice = createSlice({
     builder.addCase(AsyncThunks.getUpdatedListOfAccommodations.pending, onPending);
     builder.addCase(AsyncThunks.getUpdatedListOfAccommodations.fulfilled, (state, action) => {
       state.pending = false;
-      state.result = state.result ? [...state.result, ...action.payload.data] : action.payload.data;
+      state.result = state.result && [...state.result, ...action.payload.data];
     });
     builder.addCase(AsyncThunks.getUpdatedListOfAccommodations.rejected, onError);
   },
