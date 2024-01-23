@@ -71,23 +71,6 @@ export const getNextDay = (dateString: string) => {
   return nextDayString;
 }
 
-export const getPrevDay = (dateString: string) => {
-  const date = new Date(dateString.replaceAll("/", "-"))
-  const prevDay = new Date(date.setDate(date.getDate() - 1))
-  let year = prevDay.getFullYear() 
-  let month = String(prevDay.getMonth() + 1) 
-  let day = String(prevDay.getDate()) 
-
-  month = month.length == 1 ?  
-      month.padStart(2, '0') : month; 
-
-  day = day.length == 1 ?  
-    day.padStart(2, '0') : day;
-  
-  const prevDayString = `${year}/${month}/${day}`
-  return prevDayString;
-}
-
 export const formatLocationString = (locationString: string) => {
   const parts: Array<string> = locationString.split(',').map((part) => part.trim());
   const city = parts[0];
