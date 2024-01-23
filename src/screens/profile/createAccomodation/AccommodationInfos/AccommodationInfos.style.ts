@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { title1, title3 } from 'src/styles';
+import { title1, title3, LEVEL_1 } from 'src/styles';
 import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    ...LEVEL_1,
   },
   counterText: {
     fontSize: 22,

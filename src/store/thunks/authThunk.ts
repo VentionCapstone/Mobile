@@ -13,7 +13,7 @@ import {
 } from 'src/types';
 
 export const signInThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<SignInResponse>,
+  SignInResponse,
   SignInParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
@@ -47,19 +47,6 @@ export const signUpThunk: AsyncThunkPayloadCreator<
   try {
     const response = await axiosInstance.post(ENDPOINTS.signup, params);
 
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.response.data);
-  }
-};
-
-export const verifyEmailThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AuthResponse>,
-  AuthParams,
-  { rejectValue: ApiErrorResponseType }
-> = async (params, { rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.put(ENDPOINTS.verify, params.email);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);

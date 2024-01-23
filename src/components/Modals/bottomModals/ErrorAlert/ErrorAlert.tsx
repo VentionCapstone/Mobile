@@ -4,7 +4,7 @@ import Icon from 'src/components/Icon/Icon';
 import { RED_100, RED_200 } from 'src/styles';
 import { IconName } from 'src/types';
 
-import { styles } from './Alert.style';
+import { styles } from './ErrorAlert.style';
 
 interface Props {
   visible: boolean;
@@ -12,7 +12,7 @@ interface Props {
   onClose: () => void;
 }
 
-const Alert = ({ visible, message, onClose }: Props) => {
+const ErrorAlert = ({ visible, message, onClose }: Props) => {
   const [modalVisible, setModalVisible] = useState(visible);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Alert = ({ visible, message, onClose }: Props) => {
     if (visible) {
       const timer = setTimeout(() => {
         onClose();
-      }, 3000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     }
@@ -46,4 +46,4 @@ const Alert = ({ visible, message, onClose }: Props) => {
   );
 };
 
-export default Alert;
+export default ErrorAlert;

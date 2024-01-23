@@ -16,11 +16,7 @@ interface Props {
   rightComponent?: ReactNode;
 }
 
-const NavigationHeader: React.FC<Props> = ({
-  showBackButton = true,
-  title = '',
-  rightComponent,
-}) => {
+const NavigationHeader = ({ showBackButton = true, title = '', rightComponent }: Props) => {
   const navigation = useNavigation();
   const colors = useSelector(getColors);
 

@@ -6,6 +6,7 @@ const LEVEL_1 = {
   },
   shadowOpacity: 0.2,
   shadowRadius: 4,
+  shadowColor: 'black',
 };
 
 const LEVEL_2 = {

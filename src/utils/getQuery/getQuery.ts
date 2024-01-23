@@ -1,16 +1,12 @@
-import { ListingSearchValues } from 'src/types';
-
-export const getAccommodationsListQuery = (queryParams: ListingSearchValues): string => {
-  const endpoint = Object.keys(queryParams)
-    .map((header) => {
-      if (queryParams[header as keyof ListingSearchValues]) {
-        return `${header}=${encodeURIComponent(
-          queryParams[header as keyof ListingSearchValues] as string | number | boolean
-        )}`;
+export const adaptParamsToURLEncoded = (params: Record<string, any>): URLSearchParams => {
+  const URLSearchParamsInstance = new URLSearchParams();
+  for (const key in params) {
+    if (Object.prototype.hasOwnProperty.call(params, key)) {
+      const value = params[key];
+      if (value) {
+        URLSearchParamsInstance.append(key, value);
       }
-      return '';
-    })
-    .filter(Boolean)
-    .join('&');
-  return '?' + endpoint;
+    }
+  }
+  return URLSearchParamsInstance;
 };

@@ -2,18 +2,14 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    height: 160,
+    height: 120,
     width: '100%',
-    padding: 15,
+    padding: 10,
   },
   header: {
     fontSize: 40,
     fontWeight: 'bold',
-    marginVertical: 15,
-  },
-  subtitle: {
-    fontSize: 18,
-    marginBottom: 10,
+    marginTop: 40,
   },
   firstLine: {
     flexDirection: 'row',

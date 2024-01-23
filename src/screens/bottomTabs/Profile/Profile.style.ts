@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { title1, title2, title3 } from 'src/styles';
+import { title1, title2, title3, LEVEL_1 } from 'src/styles';
 import { HORIZONTAL_12_PERCENT } from 'src/utils';
 
 const styles = StyleSheet.create({
@@ -13,19 +13,19 @@ const styles = StyleSheet.create({
   scrollContainer: {
     paddingVertical: 10,
     paddingHorizontal: HORIZONTAL_12_PERCENT,
-    gap: 10,
   },
   createAirBnbCard: {
     width: '95%',
     height: 180,
-    borderWidth: 1,
     borderRadius: 10,
     alignSelf: 'center',
-    marginBottom: 10,
+    marginBottom: 20,
+    marginTop: 20,
     flexDirection: 'row',
     padding: 20,
     justifyContent: 'space-between',
     alignItems: 'center',
+    ...LEVEL_1,
   },
   createAirBnbTitleContainer: {
     width: '60%',

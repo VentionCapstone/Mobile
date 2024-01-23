@@ -1,4 +1,4 @@
-import { AccommodationFullView, IconName, IconSet } from 'src/types';
+import { IconName } from 'src/types';
 
 export function formatDate(inputDate: string, includeOrdinal: boolean = true): string {
   const months = [
@@ -40,58 +40,6 @@ function addOrdinalSuffix(day: number): string {
       return `${day}th`;
   }
 }
-
-export const DEFAULT_ACCOMMODATION_VIEW: AccommodationFullView = {
-  id: '',
-  title: '',
-  thumbnailUrl: '',
-  previewImgUrl: '',
-  squareMeters: 0,
-  numberOfRooms: 0,
-  price: 0,
-  allowedNumberOfPeople: 0,
-  available: false,
-  availableFrom: '',
-  availableTo: '',
-  description: '',
-  address: {
-    street: '',
-    city: '',
-    country: '',
-    zipCode: '',
-    latitude: 0,
-    longitude: 0,
-  },
-  amenities: [
-    {
-      id: '',
-      accommodationId: '',
-      hasWifi: false,
-      hasTv: false,
-      hasAirConditioning: false,
-      hasKitchen: false,
-      hasLaundryService: false,
-      hasParking: false,
-      hasSmokingAllowance: false,
-      hasSwimmingPool: false,
-      hasBackyard: false,
-      isQuetArea: false,
-      isChildFriendly: false,
-      hasPetAllowance: false,
-      isCloseToCenter: false,
-      hasHospitalNearby: false,
-      hasAirportTransfer: false,
-      otherAmenities: '',
-    },
-  ],
-  media: [
-    {
-      imageUrl: '',
-      thumbnailUrl: '',
-      accommodationId: '',
-    },
-  ],
-} as const;
 
 export const AMENITIES_CHIP_DATA = {
   hasWifi: {
@@ -169,4 +117,4 @@ export const AMENITIES_CHIP_DATA = {
     icon: IconName.Airplane,
     iconSet: 'ionicons',
   },
-};
+} as const;

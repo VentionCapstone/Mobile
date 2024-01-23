@@ -18,8 +18,8 @@ import { styles } from './FilterModal.styles';
 const FilterModal = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getIsDarkMode);
-  const dispatch = useAppDispatch();
   const filter = useSelector(getFilterSettings);
+  const dispatch = useAppDispatch();
   const { location, checkInDate, checkOutDate, ...rest } = filter;
   const [formValues, setFormValues] = useState<SearchValues>(rest);
 
@@ -48,6 +48,7 @@ const FilterModal = () => {
 
   return (
     <ScreenTemplate
+      headerShown={false}
       style={{
         flex: 1,
         justifyContent: 'flex-end',
@@ -56,16 +57,15 @@ const FilterModal = () => {
       }}
     >
       <ThemedView style={styles.container}>
-        <SafeAreaView style={{}}>
-          <View style={styles.modalHeader}>
-            <StatusBar backgroundColor={colors ? BLACK : WHITE_100} />
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Icon name={IconName.Close} size={30} />
-            </TouchableOpacity>
-            <Text style={styles.headerText}>Search options</Text>
-            <View style={{ width: 30 }} />
-          </View>
-        </SafeAreaView>
+        <View style={styles.modalHeader}>
+          <StatusBar backgroundColor={colors ? BLACK : WHITE_100} />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name={IconName.Close} size={30} />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Search options</Text>
+          <View style={{ width: 30 }} />
+        </View>
+
         {/* Price */}
         <View style={[styles.filterContainer, colors && styles.darkColorBackground]}>
           <View style={styles.filterContentContent}>

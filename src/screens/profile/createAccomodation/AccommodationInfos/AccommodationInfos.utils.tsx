@@ -15,7 +15,7 @@ const CounterButton = ({ onPress, children, disabled }: Props) => {
   const colors = useSelector(getColors);
   return (
     <TouchableOpacity
-      style={[styles.counterButton, { borderColor: colors.buttonBorder }]}
+      style={[styles.counterButton, { backgroundColor: colors.secondaryBackground }]}
       onPress={onPress}
       disabled={disabled}
     >

@@ -78,16 +78,16 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           >
             <View style={styles.accountHeaderContents}>
               <View style={[styles.imageContainer, { borderColor: colors.border }]}>
-                {user?.profile?.imageUrl ? (
+                {user?.profile?.imageUrl && (
                   <Image
                     source={{
                       uri: user.profile.imageUrl,
                     }}
                     style={styles.image}
                   />
-                ) : (
-                  <Icon name={IconName.Person} size={60} />
                 )}
+
+                {!user?.profile?.imageUrl && <Icon name={IconName.Person} size={60} />}
               </View>
 
               <View>

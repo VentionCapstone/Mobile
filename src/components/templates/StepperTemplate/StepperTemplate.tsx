@@ -37,7 +37,7 @@ const StepperTemplate = ({
   };
 
   const handleExit = () => {
-    navigation.navigate('MyAccommodations');
+    navigation.navigate('Profile');
   };
 
   return (

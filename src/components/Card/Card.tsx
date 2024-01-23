@@ -38,7 +38,7 @@ const Card = ({
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate('CardById', { accomodationId: id })}
+      onPress={() => navigation.navigate('AccommodationDetails', { accomodationId: id })}
     >
       <Image style={styles.imageContainer} source={{ uri: thumbnailUrl }} alt="Img" />
       <View style={styles.bodyContent}>

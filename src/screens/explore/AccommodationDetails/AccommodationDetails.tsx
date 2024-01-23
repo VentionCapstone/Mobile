@@ -15,32 +15,39 @@ import { Button, ButtonType, Icon, ImageCarousel, Text, ThemedView } from 'src/c
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getIsDarkMode } from 'src/store/selectors';
+import { getAccommodation, getAccommodationLoader, getIsDarkMode } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BLACK, BUTTON_SIZES, LEVEL_1, TOMATO, WHITE } from 'src/styles';
-import { AccommodationFullView, IconName } from 'src/types';
+import { IconName, Media } from 'src/types';
+import { AccommodationAmenitiesResponse } from 'src/types/amenities';
 
-import { styles } from './CardById.styles';
-import { AMENITIES_CHIP_DATA, DEFAULT_ACCOMMODATION_VIEW, formatDate } from './CardById.utils';
+import { styles } from './AccommodationDetails.styles';
+import { AMENITIES_CHIP_DATA, formatDate } from './AccommodationDetails.utils.ts';
 
-type CardByIdNavigationProp = StackNavigationProp<RootStackParamList, 'CardById'>;
-type CardByIdRouteProp = RouteProp<RootStackParamList, 'CardById'>;
+type AccommodationDetailsNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'AccommodationDetails'
+>;
+type AccommodationDetailsRouteProp = RouteProp<RootStackParamList, 'AccommodationDetails'>;
 
-type CardByIdProps = {
-  navigation: CardByIdNavigationProp;
-  route: CardByIdRouteProp;
+type AccommodationDetailsProps = {
+  navigation: AccommodationDetailsNavigationProp;
+  route: AccommodationDetailsRouteProp;
 };
 
-const CardById = ({ route }: CardByIdProps) => {
+const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
   const acccomodationId = route.params?.accomodationId;
   const dispatch = useAppDispatch();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const theme = useSelector(getIsDarkMode);
-  const [cardData, setCardData] = useState<AccommodationFullView>(DEFAULT_ACCOMMODATION_VIEW);
+  const data = useSelector(getAccommodation);
+  const refreshing = useSelector(getAccommodationLoader);
   const [heartPressed, setHeartPressed] = useState<boolean>(false);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  const mappedMedia = cardData.media.map((media) => media.imageUrl);
+  const mappedMedia = useMemo(
+    () => data?.media.map((media: Media) => media?.imageUrl),
+    [data?.media]
+  );
 
   const handleHeartPress = () => {
     setHeartPressed(!heartPressed);
@@ -48,20 +55,18 @@ const CardById = ({ route }: CardByIdProps) => {
 
   const getCardData = useCallback(async () => {
     const response = await dispatch(AsyncThunks.getAccommodation(acccomodationId));
-    if (response.payload?.success) {
-      setCardData(response.payload?.data);
-    } else {
-      return null;
+    if (!response.payload?.success) {
+      navigation.goBack();
     }
-  }, [dispatch, acccomodationId]);
+  }, [dispatch, acccomodationId, navigation]);
 
   const AmenitiesBadges = useMemo(() => {
-    const { otherAmenities, id, accommodationId, ...rest } = cardData.amenities[0];
+    const { otherAmenities, id, accommodationId, ...rest }: AccommodationAmenitiesResponse =
+      data?.amenities[0];
     const amenities = Object.keys(rest);
     return amenities.map((amenity) => {
       if (rest[amenity as keyof typeof rest]) {
-        const { icon, text, iconSet } =
-          AMENITIES_CHIP_DATA[amenity as keyof typeof AMENITIES_CHIP_DATA];
+        const { icon, text, iconSet } = AMENITIES_CHIP_DATA[amenity as keyof typeof rest];
         return (
           <ThemedView key={amenity} style={styles.badge}>
             <Icon name={icon} size={20} iconSet={iconSet} />
@@ -70,12 +75,12 @@ const CardById = ({ route }: CardByIdProps) => {
         );
       }
     });
-  }, [cardData.amenities]);
+  }, [data?.amenities]);
 
   const otherAmenitiesBadgesMemo = useMemo(() => {
     const separator = ', ';
-    if (cardData.amenities[0].otherAmenities) {
-      return cardData.amenities[0]['otherAmenities'].split(separator).map((amenity) => {
+    if (data?.amenities[0]?.otherAmenities) {
+      return data?.amenities[0]['otherAmenities'].split(separator).map((amenity) => {
         return (
           <ThemedView key={amenity} style={styles.badge}>
             <Icon name={IconName.Check} size={20} />
@@ -84,12 +89,10 @@ const CardById = ({ route }: CardByIdProps) => {
         );
       });
     }
-  }, [cardData.amenities]);
+  }, [data?.amenities]);
 
   const refreshCardData = useCallback(async () => {
-    setRefreshing(true);
-    await getCardData();
-    setRefreshing(false);
+    getCardData();
   }, [getCardData]);
 
   useEffect(() => {
@@ -139,41 +142,41 @@ const CardById = ({ route }: CardByIdProps) => {
           </TouchableOpacity>
         </View>
         {/* Main Content */}
-        <ScreenTemplate>
-          <Image source={{ uri: cardData.thumbnailUrl }} style={styles.imagePlaceholder} />
-          <ThemedView style={styles.container}>
-            <Text style={styles.headTitle}>{cardData.title}</Text>
+        <ThemedView>
+          <Image source={{ uri: data?.thumbnailUrl }} style={styles.imagePlaceholder} />
+          <View style={styles.container}>
+            <Text style={styles.headTitle}>{data?.title}</Text>
             <View style={styles.titleContainer}>
               <View>
-                <Text style={styles.title}>{`${cardData.address.city}`}</Text>
-                <Text style={styles.title}>{`(${cardData.address.country})`}</Text>
+                <Text style={styles.title}>{`${data?.address?.city}`}</Text>
+                <Text style={styles.title}>{`(${data?.address?.country})`}</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-                {cardData.available && <Text>Available</Text>}
+                {data?.available && <Text>Available</Text>}
                 <Icon
-                  name={cardData.available ? IconName.Check : IconName.Ellipse}
-                  color={cardData.available && 'green'}
+                  name={data?.available ? IconName.Check : IconName.Ellipse}
+                  color={data?.available && 'green'}
                 />
               </View>
             </View>
-            <Text style={styles.subtitle}>{`Full accomodation, ${cardData.address.street}`}</Text>
+            <Text style={styles.subtitle}>{`Full accomodation, ${data?.address?.street}`}</Text>
             <Text style={styles.subtitle}>
-              {`${cardData.allowedNumberOfPeople} guests · ${cardData.numberOfRooms} rooms · ${cardData.squareMeters} sq. meters`}
+              {`${data?.allowedNumberOfPeople} guests · ${data?.numberOfRooms} rooms · ${data?.squareMeters} sq. meters`}
             </Text>
             <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>{cardData.description}</Text>
+              <Text style={styles.description}>{data?.description}</Text>
             </View>
             <View style={styles.profileContainer}>
-              {cardData.owner && (
+              {data?.owner && (
                 <>
-                  <Image source={{ uri: cardData.owner.profile.imageUrl }} style={styles.avatar} />
+                  <Image source={{ uri: data?.owner?.profile?.imageUrl }} style={styles.avatar} />
                   <View>
                     <Text style={styles.profileText}>
-                      {cardData.owner.firstName} {cardData.owner.lastName}
+                      {data?.owner?.firstName ?? ''} {data?.owner?.lastName ?? ''}
                     </Text>
-                    <Text>{cardData.owner.profile.country}</Text>
+                    <Text>{data?.owner?.profile?.country ?? ''}</Text>
                   </View>
-                  {cardData.owner.isVerified && (
+                  {data?.owner?.isVerified && (
                     <>
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
                         <Icon name={IconName.Check} color="green" />
@@ -194,18 +197,18 @@ const CardById = ({ route }: CardByIdProps) => {
             </View>
             <View style={{ marginVertical: 30 }}>
               <Text>Available</Text>
-              <Text>From: {formatDate(cardData.availableFrom)}</Text>
-              <Text>Till: {formatDate(cardData.availableTo)}</Text>
+              <Text>From: {formatDate(data?.availableFrom ?? '')}</Text>
+              <Text>Till: {formatDate(data?.availableTo ?? '')}</Text>
             </View>
-          </ThemedView>
-        </ScreenTemplate>
+          </View>
+        </ThemedView>
       </ScrollView>
       <ThemedView style={styles.footer}>
-        <Text style={{ fontSize: 20 }}>Total price: ${cardData.price / 100}</Text>
+        <Text style={{ fontSize: 20 }}>Total price: ${data?.price ?? 0 / 100}</Text>
         <Button
           title="Book"
           onPress={() => {}}
-          disabled={!cardData.available}
+          disabled={!data?.available}
           size={BUTTON_SIZES.MD}
           type={ButtonType.PRIMARY}
         />
@@ -214,4 +217,4 @@ const CardById = ({ route }: CardByIdProps) => {
   );
 };
 
-export default CardById;
+export default AccommodationDetails;

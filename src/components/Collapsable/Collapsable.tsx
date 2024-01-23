@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
 import { Animated, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Text } from 'src/components';
+import Text from 'src/components/Text/Text';
 import { getIsDarkMode } from 'src/store/selectors';
 import { LEVEL_1, WHITE } from 'src/styles';
 

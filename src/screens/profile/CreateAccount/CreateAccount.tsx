@@ -5,9 +5,7 @@ import { Country } from 'react-native-country-picker-modal';
 import { useSelector } from 'react-redux';
 import {
   Icon,
-  ProfileImageUploader,
   Text,
-  showAlert,
   Input,
   PhoneNumberInput,
   LanguageSelector,
@@ -29,9 +27,9 @@ import { genderOptions, validateForm } from './CreateAccount.utils';
 
 const CreateAccountForm = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const loading = useSelector(getAccountLoader);
   const colors = useSelector(getColors);
+  const loading = useSelector(getAccountLoader);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
@@ -62,10 +60,6 @@ const CreateAccountForm = () => {
     setSelectedCountry(country.name as string);
   };
 
-  const handlePhotoSelect = (imageUrl: string) => {
-    setFormValues({ ...formValues, imageUrl });
-  };
-
   const handleLanguageSelect = (language: string) => {
     setFormValues({ ...formValues, language });
   };
@@ -79,13 +73,10 @@ const CreateAccountForm = () => {
       const response = await dispatch(AsyncThunks.createAccount(formValues));
 
       if (response.meta.requestStatus === 'fulfilled') {
-        showAlert('success', {
-          message: 'Successfully created!',
-          onOkPressed: () => navigation.navigate('Profile'),
-        });
+        navigation.navigate('ProfileImage');
+      } else {
+        setValidationErrors(errors);
       }
-    } else {
-      setValidationErrors(errors);
     }
   };
 
@@ -103,10 +94,6 @@ const CreateAccountForm = () => {
   return (
     <ScreenTemplate>
       <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
-        <View style={styles.header}>
-          <ProfileImageUploader onPhotoSelect={handlePhotoSelect} />
-        </View>
-
         <View style={{ gap: 10 }}>
           <Text style={styles.title}>Profile</Text>
           <Text>

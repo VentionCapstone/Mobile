@@ -1,4 +1,4 @@
-import { NavigationProp, Route, useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -9,20 +9,17 @@ import { useAppDispatch } from 'src/store';
 import { getMyAccommodationsLoader } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { Accommodation, UpdateAccommodationValues } from 'src/types';
+import { UpdateAccommodationValues } from 'src/types';
 import { AREA_MAX_LENGTH, PEOPLE_MAX_LENGTH, PRICE_MAX_LENGTH, ROOMS_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './UpdateAccommodation.style';
 import { validateForm } from './UpdateAccommodation.utils';
 
-interface Props {
-  route: Route<'UpdateAccommodation', { accommodation: Accommodation }>;
-}
+type Props = NativeStackScreenProps<RootStackParamList, 'UpdateAccommodation'>;
 
-const UpdateAccommodation = ({ route }: Props) => {
+const UpdateAccommodation = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
   const loading = useSelector(getMyAccommodationsLoader);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const existingAccommodation = route.params.accommodation;
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
@@ -81,9 +78,6 @@ const UpdateAccommodation = ({ route }: Props) => {
       );
 
       if (response.payload?.success) {
-        showAlert('success', {
-          message: 'Accommodation updated successfully!',
-        });
         navigation.navigate('MyAccommodations');
       }
     } else {

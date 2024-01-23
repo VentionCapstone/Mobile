@@ -4,12 +4,11 @@ export interface SignInResponse {
     access_token: string;
     refresh_token: string;
   };
-  statusCode: number;
 }
 
 export interface AuthResponse {
-  message: string;
-  statusCode: number;
+  success: boolean;
+  message: number;
 }
 
 export interface AuthParams {
