@@ -12,7 +12,6 @@ import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
 import ThemedView from '../ThemedView/ThemedView';
 import SearchModal from '../modals/ExploreModals/SearchModal/SearchModal';
-import { getStayDuration } from './ExploreHeader.utils';
 
 const ExploreHeader = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
