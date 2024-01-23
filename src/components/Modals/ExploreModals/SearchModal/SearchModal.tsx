@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FlatList, Modal, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import DatePicker, { getToday } from 'react-native-modern-datepicker';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
 import { getColors, getFilterSettings } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, GREY_200, LEVEL_1, TOMATO, WHITE, WHITE_100 } from 'src/styles';
-import { IconName } from 'src/types';
+import { IconName, OrderOptions, SearchValues } from 'src/types';
 import { styles } from './SearchModal.styles';
 import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
 import { useAppDispatch } from 'src/store';
@@ -28,9 +28,11 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
   const colors = useSelector(getColors);
   const dispatch = useAppDispatch();
   const filter = useSelector(getFilterSettings);
-  const [location, setLocation] = useState("")
-  const [checkInDate, setcheckInDate] = useState("")
-  const [checkOutDate, setcheckOutDate] = useState("")
+  const [location, setLocation] = useState(filter.location ? filter.location : "")
+  const [checkInDate, setcheckInDate] = useState(filter.checkInDate ? filter.checkInDate : "")
+  const [checkOutDate, setcheckOutDate] = useState(filter.checkOutDate ? filter.checkOutDate : "")
+
+  const [formValues, setFormValues] = useState<SearchValues>({ ...filter, location, checkInDate, checkOutDate });
 
   const handleGooglePlacesSearch = useCallback(
     async (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
@@ -47,6 +49,10 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
     },
     [getPlaceDetails, formatLocationString, setLocation]
   );
+
+  useEffect(() => {
+    setFormValues({ ...filter, location, checkInDate, checkOutDate });
+  }, [filter, location, checkInDate, checkOutDate]);
 
   const handleCheckInChange = useCallback(
     (newDate: string) => {
@@ -86,15 +92,14 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
   }, [setLocation]);
 
   const handleSearch = useCallback(() => {
-
     if (isInvalidDateRange(checkInDate, checkOutDate)) {
       showAlert('error', { message: 'Date range is invalid' });
       return;
     }
-    dispatch(accommodationListActions.setFilter({...filter, location, checkInDate, checkOutDate}));
+    dispatch(accommodationListActions.setFilter(formValues));
     changeOpen();
     return;
-  }, [filter, isInvalidDateRange, dispatch, changeOpen]);
+  }, [isInvalidDateRange, dispatch, changeOpen, formValues]);
 
   const handleResetSearch = useCallback(() => {
     setLocation('');
