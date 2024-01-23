@@ -1,95 +1,65 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { FlatList, RefreshControl } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Card } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { useAppDispatch } from 'src/store';
-import {
-  getAccommodationList,
-  getAccommodationListLoading,
-  getFilterSettings,
-} from 'src/store/selectors';
+import { getAccommodationList, getAccommodationListLoading } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
-import { ExploreListItem } from 'src/types';
 
-interface CardProps extends ExploreListItem {}
+import styles from './Explore.style';
 
 const Explore = () => {
   const dispatch = useAppDispatch();
-  const filter = useSelector(getFilterSettings);
-  const data = useSelector(getAccommodationList);
-  const pending = useSelector(getAccommodationListLoading);
-  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [page, setPage] = useState(1);
+  const accommodationsList = useSelector(getAccommodationList);
+  const isLoading = useSelector(getAccommodationListLoading);
 
-  const renderItem = useMemo(
-    () =>
-      ({ item }: { item: CardProps }) => (
-        <Card
-          id={item.id}
-          thumbnailUrl={item.thumbnailUrl}
-          squareMeters={item.squareMeters}
-          numberOfRooms={item.numberOfRooms}
-          allowedNumberOfPeople={item.allowedNumberOfPeople}
-          price={item.price}
-          address={item.address}
-        />
-      ),
-    []
-  );
+  const fetchAccommodationList = useCallback(async () => {
+    await dispatch(AsyncThunks.getListOfAccommodations({ page, limit: 10 }));
+  }, [page, dispatch]);
 
-  const fetchData = useCallback(async () => {
-    await dispatch(AsyncThunks.getListOfAccommodations({ ...filter, page: pageNumber }));
-  }, [filter, pageNumber, dispatch]);
+  const handleRefresh = () => {
+    setPage(1);
+  };
 
-  const handleRefresh = useCallback(() => {
-    setPageNumber(1);
-    fetchData();
-  }, [fetchData]);
+  const handleLoadMore = () => {
+    setPage((prev) => prev + 1);
+  };
 
-  const handleLoadMore = useCallback(() => {
-    if (!pending) {
-      setPageNumber((prevPage) => prevPage + 1);
-      dispatch(AsyncThunks.getUpdatedListOfAccommodations({ ...filter, page: pageNumber }));
-    }
-  }, [pending, filter, pageNumber, dispatch]);
+  const handleAddToWishlist = async (accommodationId: string) => {
+    const response = await dispatch(AsyncThunks.addToWishlist(accommodationId));
+
+    console.log(response);
+  };
+
+  const handleRemoveFromWishlist = async (accommodationId: string) => {
+    await dispatch(AsyncThunks.removeFromWishlist(accommodationId));
+  };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    handleRefresh();
-  }, [filter, handleRefresh]);
+    fetchAccommodationList();
+  }, [page, fetchAccommodationList]);
 
   return (
     <ScreenTemplate>
       <FlatList
-        style={[styles.container]}
-        data={data}
-        keyExtractor={(item: CardProps) => item.id}
-        renderItem={renderItem}
+        contentContainerStyle={styles.container}
+        data={accommodationsList?.data}
+        keyExtractor={(item, index) => item.id + index}
+        renderItem={({ item }) => (
+          <Card
+            item={item}
+            onAddedToWishlist={handleAddToWishlist}
+            onRemoveFromWishlist={handleRemoveFromWishlist}
+          />
+        )}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.2}
-        refreshControl={<RefreshControl refreshing={pending} onRefresh={handleRefresh} />}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}
       />
     </ScreenTemplate>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    height: 800,
-    alignSelf: 'center',
-    width: '95%',
-    padding: 10,
-  },
-  loading: {
-    marginVertical: 20,
-  },
-  emptySpace: {
-    height: 80,
-  },
-});
 
 export default Explore;

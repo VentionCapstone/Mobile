@@ -51,14 +51,15 @@ export interface SearchValues {
   page?: number;
 }
 
-export interface ExploreListItem {
+export interface AccommodationListItem {
   id: string;
+  price: number;
   thumbnailUrl: string;
   squareMeters: number;
   numberOfRooms: number;
-  allowedNumberOfPeople: number;
-  price: number;
+  isInWishlist: boolean;
   address: AdressListingValues;
+  allowedNumberOfPeople: number;
 }
 
 export interface Media {
@@ -97,4 +98,18 @@ interface Owner {
     imageUrl: string;
     language: string;
   };
+}
+
+export type AccommodationListPriceRange = {
+  currMaxPrice: number;
+  curMinPrice: number;
+  totalMaxPrice: number;
+  totalMinPrice: number;
+};
+
+export interface AccommodationsListResponse {
+  data: AccommodationListItem[];
+  success: boolean;
+  priceRange: AccommodationListPriceRange;
+  totalCount: number;
 }

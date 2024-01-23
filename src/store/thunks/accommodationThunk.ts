@@ -77,7 +77,7 @@ export const uploadAccommodationImagesThunk: AsyncThunkPayloadCreator<
 };
 
 export const getAccommodationThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AccommodationDetailsParams>,
+  ApiSuccessResponseType<Accommodation>,
   string,
   { rejectValue: ApiErrorResponseType }
 > = async (accommodationId, { rejectWithValue }) => {

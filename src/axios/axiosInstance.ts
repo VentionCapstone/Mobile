@@ -4,8 +4,10 @@ import { SecureStorageKey } from 'src/constants/storage';
 
 import { silentTokenRefresh } from './api';
 import ENDPOINTS from './endpoints';
+import { store } from '../store';
+import { accountActions } from '../store/slices/accountSlice';
 
-const BASE_URL = 'https://dev.vention-booking.taksifon.uz/api';
+const BASE_URL = 'http://192.168.43.83:3000/api';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -18,16 +20,9 @@ const endpointsWithoutToken = [ENDPOINTS.signin, ENDPOINTS.signup];
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const accessToken = await SecureStore.getItemAsync(SecureStorageKey.ACCESS_TOKEN);
-    const refreshToken = await SecureStore.getItemAsync(SecureStorageKey.ACCESS_TOKEN);
 
     if (config.url && accessToken && !endpointsWithoutToken.includes(config.url)) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-
-    if (config.url === ENDPOINTS.signout && refreshToken) {
-      if (config.headers) {
-        config.headers['refresh-token'] = refreshToken;
-      }
     }
 
     return config;
@@ -50,6 +45,7 @@ axiosInstance.interceptors.response.use(
 
     if (config.url === ENDPOINTS.refresh(userId) && data?.error?.statusCode === 401) {
       await SecureStore.deleteItemAsync(SecureStorageKey.REFRESH_TOKEN);
+      store.dispatch(accountActions.reset());
 
       return;
     }

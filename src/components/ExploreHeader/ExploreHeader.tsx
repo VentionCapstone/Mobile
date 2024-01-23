@@ -25,15 +25,16 @@ const ExploreHeader = () => {
   return (
     <ThemedView>
       <SafeAreaView style={styles.container}>
-        <TouchableOpacity onPress={() => setSearchModalVisible(true)}>
-          <ThemedView style={[styles.searchBar, LEVEL_1, colors && styles.darkModeShadow]}>
+        <TouchableOpacity onPress={() => setSearchModalVisible(true)} style={{ width: '75%' }}>
+          <View style={[styles.searchBar, LEVEL_1, colors && styles.darkModeShadow]}>
             <Icon name={IconName.Search} size={26} />
             <View style={styles.searchContent}>
               <Text style={styles.searchHeader}>Where to go?</Text>
               <Text>anywhere · week · 1 person</Text>
             </View>
-          </ThemedView>
+          </View>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate('FilterModal')}>
           <ThemedView style={[styles.filter, colors && styles.darkModeBorder]}>
             <Icon name={IconName.Options} size={26} />

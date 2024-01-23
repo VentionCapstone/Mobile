@@ -1,9 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { WHITE_200 } from 'src/styles';
+import { WHITE_200, paragraph1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
     height: 480,
     marginVertical: 5,
     padding: 16,
@@ -23,12 +22,21 @@ export const styles = StyleSheet.create({
   },
   bodyContent: {
     padding: 10,
-    gap: 3,
+  },
+  address: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
-  text: { fontSize: 18 },
+  description: {
+    ...paragraph1,
+  },
+  price: {
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
 });

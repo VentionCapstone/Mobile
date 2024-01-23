@@ -1,4 +1,4 @@
-import CardById from './AccommodationDetails/AccommodationDetails.tsx';
-import ExploreList from './ExploreList/ExploreList';
+import AccommodationAvailability from './AccommodationAvailability/AccommodationAvailability';
+import AccommodationDetails from './AccommodationDetails/AccommodationDetails';
 
-export { ExploreList, CardById };
+export { AccommodationAvailability, AccommodationDetails };

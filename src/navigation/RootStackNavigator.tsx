@@ -27,7 +27,7 @@ import {
   CreateAmenities,
   ProfileImage,
 } from 'src/screens';
-import AccommodationDetails from 'src/screens/explore/AccommodationDetails/AccommodationDetails.tsx';
+import { AccommodationDetails } from 'src/screens/explore';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
 

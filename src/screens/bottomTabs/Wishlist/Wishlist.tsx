@@ -28,7 +28,7 @@ const Wishlist = ({ navigation }: Props) => {
   const isLoggedIn = useSelector(getIsLoggedIn);
   const [errorVisible, setErrorVisible] = useState<boolean>(false);
 
-  const handleDelete = async (accommodationId: string) => {
+  const handleRemoveFromWishlist = async (accommodationId: string) => {
     await dispatch(AsyncThunks.removeFromWishlist(accommodationId));
   };
 
@@ -50,7 +50,7 @@ const Wishlist = ({ navigation }: Props) => {
           renderItem={({ item }) => (
             <WishlistItem
               wishlistDetails={item}
-              onDelete={() => handleDelete(item.accommodation.id)}
+              onDelete={() => handleRemoveFromWishlist(item.accommodation.id)}
             />
           )}
           refreshControl={

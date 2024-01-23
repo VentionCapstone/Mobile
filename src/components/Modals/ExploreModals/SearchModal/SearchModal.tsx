@@ -16,12 +16,12 @@ import { IconName } from 'src/types';
 import { styles } from './SearchModal.styles';
 import { COLLAPSABLE_CARDS_POSITIONS } from './SearchModal.utils';
 
-type ExploreModalProps = {
+type Props = {
   modalOpen: boolean;
   changeOpen: () => void;
 };
 
-const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
+const SearchModal = ({ modalOpen, changeOpen }: Props) => {
   const colors = useSelector(getIsDarkMode);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -51,17 +51,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
           alignItems: 'center',
         }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            width: '100%',
-            height: 50,
-            marginBottom: 20,
-            paddingHorizontal: 15,
-          }}
-        >
+        <View style={styles.innerContainer}>
           <TouchableOpacity
             style={[
               styles.icon,

@@ -28,7 +28,7 @@ export type RootStackParamList = {
   CreateAmenities: { accomodationId: string; isNew: boolean };
   UpdateAmenities: { accomodationId: string };
 
-  AccommodationDetails: { accomodationId: string };
+  AccommodationDetails: { accommodationId: string };
   FilterModal: undefined;
   Wishlist: undefined;
 };

@@ -1,38 +1,36 @@
 import { AsyncThunkPayloadCreator } from '@reduxjs/toolkit';
 import { ENDPOINTS, axiosInstance } from 'src/axios';
-import {
-  ApiErrorResponseType,
-  ApiSuccessResponseType,
-  ExploreListItem,
-  SearchValues,
-} from 'src/types';
-import { adaptParamsToURLEncoded } from 'src/utils';
+import { AccommodationsListResponse, ApiErrorResponseType } from 'src/types';
+
+export enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
+interface GetAccommodationQueryParams {
+  orderByPrice?: SortOrder;
+  orderByRoom?: SortOrder;
+  orderByPeople?: SortOrder;
+  minPrice?: number;
+  maxPrice?: number;
+  minRooms?: number;
+  maxRooms?: number;
+  minPeople?: number;
+  maxPeople?: number;
+  location?: string;
+  checkInDate?: Date;
+  checkOutDate?: Date;
+  page?: number;
+  limit?: number;
+}
 
 export const getListOfAccommodationsThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<ExploreListItem[]>,
-  SearchValues,
+  AccommodationsListResponse,
+  GetAccommodationQueryParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get(
-      `${ENDPOINTS.getAllAccomodations}?${adaptParamsToURLEncoded(params)}`
-    );
-
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.response.data);
-  }
-};
-
-export const getUpdatedListOfAccommodationsThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<ExploreListItem[]>,
-  SearchValues,
-  { rejectValue: ApiErrorResponseType }
-> = async (params, { rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.get(
-      `${ENDPOINTS.getAllAccomodations}?${adaptParamsToURLEncoded(params)}`
-    );
+    const response = await axiosInstance.get(ENDPOINTS.getAllAccomodations, { params });
 
     return response.data;
   } catch (error: any) {
