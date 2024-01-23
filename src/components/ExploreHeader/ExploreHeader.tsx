@@ -1,9 +1,9 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
-import { getIsDarkMode } from 'src/store/selectors';
+import { getFilterSettings, getIsDarkMode } from 'src/store/selectors';
 import { LEVEL_1 } from 'src/styles';
 import { IconName } from 'src/types';
 
@@ -12,15 +12,29 @@ import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
 import ThemedView from '../ThemedView/ThemedView';
 import SearchModal from '../modals/ExploreModals/SearchModal/SearchModal';
+import { getStayDuration } from './ExploreHeader.utils';
 
 const ExploreHeader = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getIsDarkMode);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
 
+  const filter = useSelector(getFilterSettings);
+
+  const DEFAULT_LOCATION = "Anywhere";
+  const DEFAULT_DURATION = "Anytime";
+
+  const [locationText, setLocationText] = useState(filter.location ? filter.location : DEFAULT_LOCATION)
+  const [durationText, setDurationText] = useState((filter.checkInDate && filter.checkOutDate) ? getStayDuration(filter.checkInDate, filter.checkOutDate) : DEFAULT_DURATION)
+
   function handleSearchModalChange() {
     setSearchModalVisible(!searchModalVisible);
   }
+
+  useEffect(() => {
+    setLocationText(filter.location ? filter.location : DEFAULT_LOCATION);
+    setDurationText((filter.checkInDate && filter.checkOutDate) ? getStayDuration(filter.checkInDate, filter.checkOutDate) : DEFAULT_DURATION)
+  }, [filter, filter.location, filter.checkInDate, filter.checkOutDate]);
 
   return (
     <ThemedView>
@@ -30,6 +44,7 @@ const ExploreHeader = () => {
             <Icon name={IconName.Search} size={26} />
             <View style={styles.searchContent}>
               <Text style={styles.searchHeader}>Where to go?</Text>
+              <Text>{ locationText} · { durationText}</Text>
             </View>
           </ThemedView>
         </TouchableOpacity>
