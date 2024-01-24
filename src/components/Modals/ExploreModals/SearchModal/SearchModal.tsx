@@ -9,7 +9,7 @@ import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
 import { getColors, getFilterSettings } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, GREY_200, LEVEL_1, TOMATO, WHITE, WHITE_100 } from 'src/styles';
-import { IconName, OrderOptions, SearchValues } from 'src/types';
+import { IconName, SearchValues } from 'src/types';
 import { styles } from './SearchModal.styles';
 import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
 import { useAppDispatch } from 'src/store';
@@ -99,14 +99,13 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
     return today;
   }, [getToday]);
 
-
   const clearCheckin = useCallback(() => {
       setcheckInDate('');
     }, [setcheckInDate]);
   
   const clearCheckout = useCallback(() => {
     setcheckOutDate('');
-  },[setcheckOutDate])
+  }, [setcheckOutDate]);
 
   const clearLocation = useCallback(() => {
     setLocation('');

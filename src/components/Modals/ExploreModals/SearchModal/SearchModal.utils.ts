@@ -1,5 +1,7 @@
 import showAlert from "src/components/alert";
 import { GOOGLE_API_KEY } from "../../bottomModals/AddressSelector/AddressSelector.utils";
+import { getToday } from "react-native-modern-datepicker";
+import { stringToDateFormat } from "src/utils";
 
 export type SelectedCards = {
   [key: string]: boolean;
@@ -82,13 +84,12 @@ export const formatLocationString = (locationString: string) => {
 
 export const isInvalidDateRange = (checkin: string, checkout: string) => {
   if (checkin === '' && checkout === '') return false;
-  const today = new Date().setHours(0, 0, 0, 0);;
-  const checkInTime = new Date(checkin.replace(/\//g, '-')).setHours(0, 0, 0, 0);
-  const checkOutTime = new Date(checkout.replace(/\//g, '-')).setHours(0, 0, 0, 0);
+  const today = stringToDateFormat(getToday());
+  const checkInTime = stringToDateFormat(checkin);
+  const checkOutTime = stringToDateFormat(checkout);
   return (
     (checkin === '' || checkout === '') || 
-    (checkInTime > checkOutTime) || 
-    (checkInTime === checkOutTime) || 
+    (checkInTime >= checkOutTime) || 
     (checkInTime < today) ||
     (checkOutTime <= today)
   )
