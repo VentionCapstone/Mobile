@@ -2,18 +2,17 @@ import { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-modern-datepicker';
 import { useSelector } from 'react-redux';
+import Icon from 'src/components/Icon/Icon';
 import { getColors } from 'src/store/selectors';
-import { RED_200, WHITE_100 } from 'src/styles';
+import { WHITE_100 } from 'src/styles';
+import { IconName } from 'src/types';
+import { getFormattedDate, getInitialDate } from 'src/utils';
 
 import { styles } from './DatePicker.style';
-import { getFormattedDate, getInitialDate } from './DatePicker.utils';
 import Text from '../../../Text/Text';
 import ModalContainer from '../../ModalContainer/ModalContainer';
-import Icon from 'src/components/Icon/Icon';
-import { IconName } from 'src/types';
 
 type Props = {
-  error?: string;
   initialValue?: string;
   label?: string;
   minDate?: string;
@@ -21,41 +20,37 @@ type Props = {
   onDateChange: (selectedDate: string) => void;
 };
 
-const DateTimePicker = ({ error, initialValue, label, minDate, maxDate, onDateChange }: Props) => {
+const DateTimePicker = ({ initialValue, label, minDate, maxDate, onDateChange }: Props) => {
   const colors = useSelector(getColors);
-  const initialDate = getInitialDate({ initialValue });
+  const initialDate = getInitialDate(initialValue);
 
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [selectedDate, setSelectedDate] = useState<string>(initialDate);
+  const [selectedDate, setSelectedDate] = useState<string | undefined>(initialDate);
 
   const handleOnDateChange = (value: string) => {
-    const formattedDate = getFormattedDate({ value });
+    const formattedDate = getFormattedDate(value);
 
     setSelectedDate(value);
     onDateChange(formattedDate);
     setShowDatePicker(false);
   };
 
+  const handleOpenDatePicker = () => {
+    setShowDatePicker(true);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.labelText}>{label}</Text>
       <TouchableOpacity
-        style={[
-          styles.openDateButton,
-          {
-            backgroundColor: colors.secondaryBackground,
-            borderColor: error ? RED_200 : 'transparent',
-          },
-        ]}
-        onPress={() => setShowDatePicker(true)}
+        style={[styles.openDateButton, { backgroundColor: colors.secondaryBackground }]}
+        onPress={handleOpenDatePicker}
       >
         <Icon name={IconName.Calendar} size={20} />
-        <Text style={[styles.placeholder, { color: error ? RED_200 : colors.placeholder }]}>
+        <Text style={[styles.placeholder, { color: colors.placeholder }]}>
           {selectedDate || 'yyyy-mm-dd'}
         </Text>
       </TouchableOpacity>
-
-      {error && <Text style={styles.errorText}>{error}</Text>}
 
       <ModalContainer visible={showDatePicker} onClose={() => setShowDatePicker(false)}>
         <DatePicker

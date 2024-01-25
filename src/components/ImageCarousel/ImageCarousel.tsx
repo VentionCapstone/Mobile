@@ -1,12 +1,13 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 
-interface ImageCarouselProps {
+import { styles } from './ImageCarousel.style';
+
+interface Props {
   images: string[];
 }
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
+const ImageCarousel = ({ images }: Props) => {
   return (
     <Swiper
       style={styles.wrapper}
@@ -23,23 +24,5 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
     </Swiper>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: { height: 250 },
-  slide: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  dotStyle: {
-    backgroundColor: 'rgba(0,0,0,0)',
-  },
-  activeDotStyle: {
-    backgroundColor: 'rgba(0,0,0,0)',
-  },
-});
 
 export default ImageCarousel;

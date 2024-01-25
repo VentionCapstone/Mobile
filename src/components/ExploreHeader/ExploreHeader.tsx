@@ -1,47 +1,47 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
-import { getIsDarkMode } from 'src/store/selectors';
-import { LEVEL_1 } from 'src/styles';
+import { getColors } from 'src/store/selectors';
 import { IconName } from 'src/types';
 
-import styles from './ExploreHeader.styles';
+import { styles } from './ExploreHeader.styles';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
 import ThemedView from '../ThemedView/ThemedView';
-import SearchModal from '../modals/ExploreModals/SearchModal/SearchModal';
 
-const ExploreHeader = () => {
+type Props = {
+  onOpenSearchModal: () => void;
+};
+
+const ExploreHeader = ({ onOpenSearchModal }: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const colors = useSelector(getIsDarkMode);
-  const [searchModalVisible, setSearchModalVisible] = useState(false);
+  const colors = useSelector(getColors);
 
-  function handleSearchModalChange() {
-    setSearchModalVisible(!searchModalVisible);
-  }
+  const handleNavigateToFilter = () => {
+    navigation.navigate('FilterModal');
+  };
 
   return (
-    <ThemedView>
-      <SafeAreaView style={styles.container}>
-        <TouchableOpacity onPress={() => setSearchModalVisible(true)} style={{ width: '75%' }}>
-          <View style={[styles.searchBar, LEVEL_1, colors && styles.darkModeShadow]}>
-            <Icon name={IconName.Search} size={26} />
-            <View style={styles.searchContent}>
-              <Text style={styles.searchHeader}>Where to go?</Text>
-              <Text>anywhere · week · 1 person</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+    <ThemedView style={styles.container}>
+      <TouchableOpacity
+        onPress={onOpenSearchModal}
+        style={[styles.searchBarInput, { backgroundColor: colors.background }]}
+      >
+        <Icon name={IconName.Search} size={26} />
 
-        <TouchableOpacity onPress={() => navigation.navigate('FilterModal')}>
-          <ThemedView style={[styles.filter, colors && styles.darkModeBorder]}>
-            <Icon name={IconName.Options} size={26} />
-          </ThemedView>
-        </TouchableOpacity>
-      </SafeAreaView>
-      <SearchModal modalOpen={searchModalVisible} changeOpen={handleSearchModalChange} />
+        <View style={styles.searchContent}>
+          <Text style={styles.searchHeader}>Where to go?</Text>
+          <Text>anywhere · week · 1 person</Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handleNavigateToFilter}
+        style={[styles.filter, { backgroundColor: colors.background }]}
+      >
+        <Icon name={IconName.Options} size={26} />
+      </TouchableOpacity>
     </ThemedView>
   );
 };

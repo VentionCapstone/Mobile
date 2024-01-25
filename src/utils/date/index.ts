@@ -1,4 +1,4 @@
-const getFormattedDate = ({ value }: { value: string }) => {
+const getFormattedDate = (value: string) => {
   const [year, month, day] = value.split('/').map(Number);
   const currentDate = new Date();
   const formattedDate = new Date(
@@ -15,10 +15,10 @@ const getFormattedDate = ({ value }: { value: string }) => {
   return formattedDate;
 };
 
-const getInitialDate = ({ initialValue }: { initialValue: string | undefined }) => {
-  const result = initialValue
-    ? new Date(initialValue).toISOString().split('T')[0].replace(/-/g, '/')
-    : '';
+const getInitialDate = (date: string | undefined) => {
+  if (!date) return;
+
+  const result = date ? new Date(date).toISOString().split('T')[0].replace(/-/g, '-') : '';
 
   return result; // yyyy-mm-dd
 };

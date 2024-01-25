@@ -104,14 +104,12 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
             label="Available from"
             initialValue={existingAccommodation.availableFrom}
             onDateChange={handleSelectAvailableFrom}
-            error={validationErrors.availableFrom}
           />
 
           <DateTimePicker
             label="Available to"
             initialValue={existingAccommodation.availableTo}
             onDateChange={handleSelectAvailableTo}
-            error={validationErrors.availableTo}
           />
         </View>
 

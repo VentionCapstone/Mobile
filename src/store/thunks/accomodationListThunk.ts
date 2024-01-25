@@ -18,8 +18,8 @@ interface GetAccommodationQueryParams {
   minPeople?: number;
   maxPeople?: number;
   location?: string;
-  checkInDate?: Date;
-  checkOutDate?: Date;
+  checkInDate?: string;
+  checkOutDate?: string;
   page?: number;
   limit?: number;
 }

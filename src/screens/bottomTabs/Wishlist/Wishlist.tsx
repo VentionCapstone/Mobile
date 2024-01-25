@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ErrorAlert, Text, WishlistItem } from 'src/components';
@@ -32,16 +32,22 @@ const Wishlist = ({ navigation }: Props) => {
     await dispatch(AsyncThunks.removeFromWishlist(accommodationId));
   };
 
-  const fetchWishlists = async () => {
+  const fetchWishlists = useCallback(async () => {
     await dispatch(AsyncThunks.getWishlists());
+  }, [dispatch]);
+
+  const handleNavigateToAccommodationDetails = (accommodationId: string) => {
+    navigation.navigate('AccommodationDetails', { accommodationId });
   };
 
   useEffect(() => {
-    fetchWishlists();
-  }, []);
+    if (isLoggedIn) {
+      fetchWishlists();
+    }
+  }, [dispatch, isLoggedIn, fetchWishlists]);
 
   return (
-    <ScreenTemplate>
+    <ScreenTemplate headerShown={false}>
       {isLoggedIn && (
         <FlatList
           data={wishlists}
@@ -51,6 +57,7 @@ const Wishlist = ({ navigation }: Props) => {
             <WishlistItem
               wishlistDetails={item}
               onDelete={() => handleRemoveFromWishlist(item.accommodation.id)}
+              onNavigateToAccommodationDetails={handleNavigateToAccommodationDetails}
             />
           )}
           refreshControl={

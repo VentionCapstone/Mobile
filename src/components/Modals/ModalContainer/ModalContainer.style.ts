@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { WHITE } from 'src/styles';
+import { WHITE, LEVEL_1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   centralModalContainer: {
@@ -16,14 +16,18 @@ export const styles = StyleSheet.create({
     width: '90%',
   },
   closeButton: {
-    position: 'absolute',
-    right: 10,
-    padding: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...LEVEL_1,
   },
 
   bottomModalContainer: {
     flex: 1,
     width: '100%',
+    height: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

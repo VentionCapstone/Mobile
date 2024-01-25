@@ -15,11 +15,9 @@ const styles = StyleSheet.create({
   columnWrapper: {
     justifyContent: 'space-between',
     paddingHorizontal: HORIZONTAL_20_PERCENT,
-    paddingVertical: 10,
   },
   container: {
     paddingHorizontal: HORIZONTAL_20_PERCENT,
-    paddingVertical: 20,
   },
   signInFirst: {
     ...title3,

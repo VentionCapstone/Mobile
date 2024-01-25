@@ -6,13 +6,6 @@ export const styles = StyleSheet.create({
   container: {
     height: 400,
   },
-  placesInputListView: {
-    position: 'absolute',
-    top: 60,
-    width: '100%',
-    zIndex: 999,
-    maxHeight: 400,
-  },
   mapContainer: {
     width: '100%',
     height: 260,
@@ -26,10 +19,6 @@ export const styles = StyleSheet.create({
   searchText: {
     ...title2,
     alignSelf: 'center',
-  },
-  searchInput: {
-    marginTop: 10,
-    borderRadius: 30,
   },
   addressContainer: {
     paddingHorizontal: HORIZONTAL_20_PERCENT,

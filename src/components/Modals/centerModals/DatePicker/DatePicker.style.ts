@@ -12,7 +12,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
-    borderWidth: 1,
     marginTop: 5,
     gap: 5,
   },

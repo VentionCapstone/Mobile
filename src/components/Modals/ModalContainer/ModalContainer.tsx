@@ -22,7 +22,10 @@ const ModalContainer = ({ visible, onClose, children, bottomModal }: ModalContai
       {!bottomModal && (
         <View style={styles.centralModalContainer}>
           <View style={[styles.modalContent, { backgroundColor: colors.secondaryBackground }]}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <TouchableOpacity
+              style={[styles.closeButton, { backgroundColor: colors.background }]}
+              onPress={onClose}
+            >
               <Icon name={IconName.Close} size={30} />
             </TouchableOpacity>
             {children}
@@ -33,7 +36,10 @@ const ModalContainer = ({ visible, onClose, children, bottomModal }: ModalContai
       {bottomModal && (
         <View style={styles.bottomModalContainer}>
           <View style={[styles.bottomModalContent, { backgroundColor: colors.background }]}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <TouchableOpacity
+              style={[styles.closeButton, { backgroundColor: colors.background }]}
+              onPress={onClose}
+            >
               <Icon name={IconName.Close} size={30} />
             </TouchableOpacity>
             {children}

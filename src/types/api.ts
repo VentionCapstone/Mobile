@@ -147,6 +147,29 @@ export interface Accommodation {
   owner: AccommodationOwner;
 }
 
+export interface MyAccommodation {
+  id: string;
+  title: string;
+  addressId: string;
+  thumbnailUrl: string;
+  previewImgUrl: string;
+  ownerId: string;
+  squareMeters: number;
+  numberOfRooms: number;
+  price: number;
+  allowedNumberOfPeople: number;
+  available: boolean;
+  availableFrom: string;
+  availableTo: string;
+  description: string;
+  timezoneOffset: number;
+  isDeleted: boolean;
+  address: AccommodationAddressResponse;
+  isInWishlist: boolean;
+  media?: AccommodationMedia[];
+  amenities?: Amenities;
+}
+
 export interface Wishlist {
   id: string;
   createdAt: string;

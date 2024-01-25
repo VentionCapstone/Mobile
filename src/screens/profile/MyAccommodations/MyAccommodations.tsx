@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
@@ -16,7 +16,7 @@ import {
 } from 'src/store/selectors';
 import { accommodationActions, myAccommodationsListActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { Accommodation } from 'src/types';
+import { MyAccommodation } from 'src/types';
 
 import { styles } from './MyAccommodations.style';
 
@@ -38,7 +38,7 @@ const MyAccommodations = ({ navigation }: Props) => {
     [myAccommodations]
   );
 
-  const handleEdit = (accommodation: Accommodation) => {
+  const handleEdit = (accommodation: MyAccommodation) => {
     navigation.navigate('UpdateAccommodation', { accommodation });
   };
 

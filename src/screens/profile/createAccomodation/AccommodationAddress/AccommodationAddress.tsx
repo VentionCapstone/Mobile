@@ -10,14 +10,11 @@ import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import { Icon, Text } from 'src/components';
 import showAlert from 'src/components/alert';
-import {
-  getAddressInfo,
-  getPlaceDetails,
-} from 'src/components/modals/bottomModals/AddressSelector/AddressSelector.utils';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { getColors } from 'src/store/selectors';
 import { AddressValues, IconName } from 'src/types';
+import { getAddressInfo, getPlaceDetails } from 'src/utils';
 
 import { styles } from './AccommodationAddress.style';
 import { GOOGLE_API_KEY, INITIAL_COORDINATES } from './AccommodationAddress.utils';
@@ -55,7 +52,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
           return;
         }
 
-        const { city, country, latitude, longitude } = getAddressInfo({ placeDetails });
+        const { city, country, latitude, longitude } = getAddressInfo(placeDetails);
         setSelectedCoordinates({ latitude, longitude });
         setAddressValues({ ...addressValues, city, country, longitude, latitude });
         setAddressSelected(true);

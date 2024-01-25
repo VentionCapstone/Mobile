@@ -3,10 +3,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   createAccommodationThunk,
   deleteAccommodationThunk,
-  updateAccommodationThunk,
-  uploadAccommodationImagesThunk,
   getAccommodationThunk,
   getMyAccommodationsThunk,
+  updateAccommodationThunk,
+  uploadAccommodationImagesThunk,
 } from './accommodationThunk';
 import { getListOfAccommodationsThunk } from './accomodationListThunk';
 import {
@@ -24,7 +24,7 @@ import {
 } from './amenitiesThunk';
 import { signInThunk, signOutThunk, signUpThunk } from './authThunk';
 import { getUserDetailsThunk } from './userThunk';
-import { addToWishlistThunk, removeFromWishlistThunk, getWishlistsThunk } from './wishlistThunk';
+import { addToWishlistThunk, getWishlistsThunk, removeFromWishlistThunk } from './wishlistThunk';
 
 export const AsyncThunks = {
   signUp: createAsyncThunk('signUpThunk', signUpThunk),

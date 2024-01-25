@@ -1,15 +1,15 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
+import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
+import { getIsLoggedIn } from 'src/store/selectors';
 import { TOMATO } from 'src/styles';
 import { AccommodationListItem, IconName } from 'src/types';
 
 import { styles } from './Card.styles';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
-import { useSelector } from 'react-redux';
-import { getIsLoggedIn } from 'src/store/selectors';
 import showAlert from '../alert';
 
 type Props = {

@@ -222,10 +222,7 @@ const UpdateAccount = ({ navigation }: Props) => {
         />
       </FormTemplate>
 
-      <Loader
-        visible={loading}
-        message="Your accommodation details are being updated. This won't take long..."
-      />
+      <Loader visible={loading} message="Your details are being updated. This won't take long..." />
     </ScreenTemplate>
   );
 };
