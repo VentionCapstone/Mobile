@@ -11,43 +11,19 @@ import { getColors, getFilterSettings } from 'src/store/selectors';
 import { BLACK, BUTTON_SIZES, GREY_200, LEVEL_1, TOMATO, WHITE, WHITE_100 } from 'src/styles';
 import { IconName, SearchValues } from 'src/types';
 import { styles } from './SearchModal.styles';
-import { COLLAPSABLE_CARDS_POSITIONS, formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
+import { formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
 import { useAppDispatch } from 'src/store';
 import { accommodationListActions } from 'src/store/slices';
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import showAlert from 'src/components/alert';
 import Collapsable from 'src/components/Collapsable/Collapsable';
 import { DEFAULT_DURATION, DEFAULT_LOCATION } from 'src/constants/constantLabels';
+import { searchSlice } from 'src/store/slices/searchSlice';
 
 type ExploreModalProps = {
   modalOpen: boolean;
   changeOpen: () => void;
 };
-
-const ActionTypes = {
-  TOGGLE_LOCATION_SECTION: 'TOGGLE_LOCATION_SECTION',
-  TOGGLE_CHECKIN_SECTION: 'TOGGLE_CHECKIN_SECTION',
-  TOGGLE_CHECKOUT_SECTION: 'TOGGLE_CHECKOUT_SECTION',
-}
-
-const reducer = (state: any, action: any) => {
-  switch (action.type) {
-    case ActionTypes.TOGGLE_LOCATION_SECTION:
-      return { ...state, isCollapsed: { ...state.isCollapsed.location ? 
-        COLLAPSABLE_CARDS_POSITIONS.locationPressed :
-        COLLAPSABLE_CARDS_POSITIONS.allClosed } };
-    case ActionTypes.TOGGLE_CHECKIN_SECTION:
-      return { ...state, isCollapsed: {  ...state.isCollapsed.checkin ? 
-        COLLAPSABLE_CARDS_POSITIONS.checkInPressed :
-        COLLAPSABLE_CARDS_POSITIONS.allClosed  } };
-    case ActionTypes.TOGGLE_CHECKOUT_SECTION:
-      return { ...state, isCollapsed: { ...state.isCollapsed.checkout ? 
-        COLLAPSABLE_CARDS_POSITIONS.checkOutPressed :
-        COLLAPSABLE_CARDS_POSITIONS.allClosed  } };
-    default:
-      return state;
-  }
-}
 
 const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
   const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
@@ -152,11 +128,19 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
     setcheckOutDate('');
   }, [setLocation, setcheckOutDate, setcheckInDate]);
 
-  const [stateToggle, dispatchToggle] = useReducer(reducer, { isCollapsed: COLLAPSABLE_CARDS_POSITIONS.allClosed })
-  
-  const toggleCollapse = useCallback((section: string) => {
-    dispatchToggle({ type: section });
-  }, [dispatchToggle])
+  const [stateToggle, dispatchToggle] = useReducer(searchSlice.reducer, searchSlice.getInitialState())
+
+  const toggleLocationCollapse = useCallback(() => {
+    dispatchToggle(searchSlice.actions.toggleLocationCollapse);
+  }, [searchSlice, dispatchToggle])
+
+  const toggleCheckinCollapse = useCallback(() => {
+    dispatchToggle(searchSlice.actions.toggleCheckinCollapse);
+  }, [searchSlice, dispatchToggle])
+
+  const toggleCheckoutCollapse = useCallback(() => {
+    dispatchToggle(searchSlice.actions.toggleCheckoutCollapse);
+  }, [searchSlice, dispatchToggle])
 
   const sections = [
     { type: 'location', title: 'Destination' },
@@ -219,7 +203,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
                   subtitle={location ? location : DEFAULT_LOCATION}
                   contentTitle="Pick your next destination"
                   collapsed={stateToggle.isCollapsed.location}
-                  onTouch={ () => toggleCollapse(ActionTypes.TOGGLE_LOCATION_SECTION)}>
+                  onTouch={toggleLocationCollapse}>
                   <View>
                     <GooglePlacesAutocomplete
                       styles={{
@@ -253,7 +237,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
                   subtitle={checkInDate ? checkInDate : DEFAULT_DURATION}
                   contentTitle={item.title}
                   collapsed={stateToggle.isCollapsed.checkin}
-                  onTouch={ () => toggleCollapse(ActionTypes.TOGGLE_CHECKIN_SECTION)}
+                  onTouch={toggleCheckinCollapse}
                 >
                   <DatePicker
                     options={DatePickerStyles}
@@ -275,7 +259,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
                   subtitle={checkOutDate ? checkOutDate : DEFAULT_DURATION}
                   contentTitle={item.title}
                   collapsed={stateToggle.isCollapsed.checkout}
-                  onTouch={() => toggleCollapse(ActionTypes.TOGGLE_CHECKOUT_SECTION)}
+                  onTouch={toggleCheckoutCollapse}
                 >
                   <DatePicker
                     options={DatePickerStyles}
