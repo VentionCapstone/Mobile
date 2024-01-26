@@ -62,13 +62,14 @@ export const AMENITIES_DEFAULT_VALUES = {
   otherAmenities: null,
 } as const;
 
-export type AmenityChipData = {
-  [key: string]: {
+export type AmenityChipData = Record<
+  string,
+  {
     text: string;
     icon: IconName | 'Add';
     iconSet: 'ionicons' | 'material';
-  };
-};
+  }
+>;
 
 export const AMENITIES_CHIP_DATA = {
   hasWifi: {
@@ -147,3 +148,7 @@ export const AMENITIES_CHIP_DATA = {
     iconSet: 'ionicons',
   },
 } as const;
+
+export type RestAmenities = {
+  [key: string]: boolean;
+};

@@ -1,8 +1,10 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
+import { RootStackParamList } from 'src/navigation';
 import { getColors } from 'src/store/selectors';
 import { RED_200 } from 'src/styles';
 import { IconName, Wishlist } from 'src/types';
@@ -16,12 +18,18 @@ type Props = {
 
 const WishlistItem = ({ wishlistDetails, onDelete }: Props) => {
   const colors = useSelector(getColors);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [imageLoading, setImageLoading] = useState(true);
 
   const { accommodation } = wishlistDetails;
 
   return (
-    <TouchableOpacity style={[styles.card, { backgroundColor: colors.background }]}>
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: colors.background }]}
+      onPress={() =>
+        navigation.navigate('AccommodationDetails', { accommodationId: accommodation.id })
+      }
+    >
       <TouchableOpacity style={styles.likeButton} onPress={onDelete}>
         <Icon name={IconName.Heart} size={30} color={RED_200} />
       </TouchableOpacity>
