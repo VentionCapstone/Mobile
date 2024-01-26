@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { DateTimePicker, Input, NumericInput, showAlert } from 'src/components';
+import { DateTimePicker, Input, NumericInput } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -94,7 +94,7 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
-  }, []);
+  }, [dispatch]);
 
   return (
     <ScreenTemplate>

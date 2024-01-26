@@ -70,7 +70,7 @@ const AccommodationImage = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
-  }, []);
+  }, [dispatch]);
 
   const isNextButtonDisabled = selectedImages.length < 5;
 

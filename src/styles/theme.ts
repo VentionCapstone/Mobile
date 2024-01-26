@@ -1,6 +1,4 @@
 import {
-  BLACK,
-  GREY_200,
   GREY_300,
   GREY_400,
   GREY_500,

@@ -72,7 +72,7 @@ const MyAccommodations = ({ navigation }: Props) => {
     dispatch(accommodationActions.clearError());
     dispatch(myAccommodationsListActions.clearError());
     fetchMyAccommodations();
-  }, []);
+  }, [dispatch]);
 
   return (
     <ScreenTemplate style={styles.container}>

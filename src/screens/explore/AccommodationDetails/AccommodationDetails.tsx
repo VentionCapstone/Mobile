@@ -83,7 +83,7 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     fetchAccommodation();
-  }, []);
+  }, [fetchAccommodation]);
 
   return (
     <ScreenTemplate>

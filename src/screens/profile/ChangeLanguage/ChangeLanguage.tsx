@@ -44,7 +44,7 @@ const ChangeLanguage = () => {
         );
       }
     },
-    [dispatch, formValues, userId]
+    [dispatch, formValues, userId, userDetails?.profile?.id]
   );
 
   const handleLanguagePress = (key: Language) => {

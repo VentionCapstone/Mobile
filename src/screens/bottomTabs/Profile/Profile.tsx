@@ -18,7 +18,6 @@ import { AppDispatch } from 'src/store';
 import {
   getAccommodationError,
   getAccountError,
-  getAccountInfos,
   getColors,
   getIsGuestAccount,
   getIsLoggedIn,
@@ -44,7 +43,6 @@ const Profile = ({ navigation }: Props) => {
   const userId = useSelector(getUserId);
   const isLoggedIn = useSelector(getIsLoggedIn);
   const isGuestUser = useSelector(getIsGuestAccount);
-  const accountDetails = useSelector(getAccountInfos);
   const userError = useSelector(getAccountError);
   const accommodationError = useSelector(getAccommodationError);
   const myAccommodationsError = useSelector(getMyAccommodationsError);
