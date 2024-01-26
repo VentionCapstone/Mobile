@@ -19,6 +19,7 @@ import showAlert from 'src/components/alert';
 import { searchSlice } from 'src/store/slices/searchSlice';
 import { CollapsableLocationItem } from 'src/components/CollapsableLocationItem/CollapsableLocationItem';
 import { CollapsableDatePicker } from 'src/components/CollapsableDatePicker/CollapsableDatePicker';
+import { ScreenTemplate } from 'src/components/templates';
 
 type ExploreModalProps = {
   modalOpen: boolean;
@@ -127,6 +128,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
   ];
 
   return (
+    <ScreenTemplate headerShown={false}>
     <Modal
       animationType="fade"
       visible={modalOpen}
@@ -197,7 +199,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
             return null;
           } } 
           />
-    </SafeAreaView>
+        </SafeAreaView>
       <ThemedView
         style={[styles.searchModalFooter, LEVEL_1]}>
         <TouchableOpacity onPress={handleResetSearch}>
@@ -206,6 +208,7 @@ const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
         <Button onPress={handleSearch} title="Search" size={BUTTON_SIZES.MD} />
       </ThemedView>
     </Modal>
+    </ScreenTemplate>
   );
 };
 
