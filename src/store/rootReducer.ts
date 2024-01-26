@@ -4,6 +4,7 @@ import {
   accommodationListReducer,
   accommodationReducer,
   accountReducer,
+  languageReducer,
   myAccommodationsListReducer,
   themeReducer,
   userReducer,
@@ -11,11 +12,12 @@ import {
 } from './slices';
 
 const rootReducer = combineReducers({
-  account: accountReducer,
-  theme: themeReducer,
-  accommodation: accommodationReducer,
-  myAccommodationsList: myAccommodationsListReducer,
   accommodationList: accommodationListReducer,
+  accommodation: accommodationReducer,
+  account: accountReducer,
+  language: languageReducer,
+  myAccommodationsList: myAccommodationsListReducer,
+  theme: themeReducer,
   user: userReducer,
   wishlist: wishlistReducer,
 });

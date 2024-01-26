@@ -1,5 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { Country } from 'react-native-country-picker-modal';
 import { useSelector } from 'react-redux';
@@ -29,6 +30,7 @@ const CreateAccountForm = () => {
   const dispatch = useAppDispatch();
   const colors = useSelector(getColors);
   const loading = useSelector(getAccountLoader);
+  const { t } = useTranslation();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [selectedCountry, setSelectedCountry] = useState<string>('');
@@ -95,10 +97,11 @@ const CreateAccountForm = () => {
     <ScreenTemplate>
       <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
         <View style={{ gap: 10 }}>
-          <Text style={styles.title}>Profile</Text>
+          <Text style={styles.title}>{t('Profile')}</Text>
           <Text>
-            The information you share will be used across Airbnb to help other guests and Hosts get
-            to know you.
+            {t(
+              'The information you share will be used across Airbnb to help other guests and Hosts get to know you.'
+            )}
           </Text>
         </View>
 
@@ -107,7 +110,7 @@ const CreateAccountForm = () => {
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
           onChangeText={(text: string) => handleInputChange('firstName', text)}
-          placeholder="Enter your firstname"
+          placeholder={t('Enter your firstname')}
           value={formValues.firstName}
         />
 
@@ -116,18 +119,18 @@ const CreateAccountForm = () => {
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
           onChangeText={(text: string) => handleInputChange('lastName', text)}
-          placeholder="Enter your lastname"
+          placeholder={t('Enter your lastname')}
           value={formValues.lastName}
         />
 
         <PhoneNumberInput
-          label="Phone number"
+          label={t('Phone number')}
           error={validationErrors.phoneNumber}
           onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           value={formValues.phoneNumber}
         />
 
-        <Text style={styles.label}>Select your gender</Text>
+        <Text style={styles.label}>{t('Select your gender')}</Text>
         {genderOptions.map((option: GenderOptionsProps) => (
           <TouchableOpacity
             key={option.value}
@@ -145,13 +148,13 @@ const CreateAccountForm = () => {
           </TouchableOpacity>
         ))}
 
-        <Text style={styles.label}>Select your country</Text>
+        <Text style={styles.label}>{t('Select your country')}</Text>
         <TouchableOpacity
           onPress={() => setCountrySelectorVisible(true)}
           style={[styles.selectorButton, { backgroundColor: colors.secondaryBackground }]}
         >
           <Text style={styles.selectedCountry}>
-            {selectedCountry ? selectedCountry : 'Select country'}
+            {selectedCountry ? selectedCountry : t('Select country')}
           </Text>
           <Icon name={IconName.ChevronDown} size={20} />
         </TouchableOpacity>
@@ -161,14 +164,14 @@ const CreateAccountForm = () => {
           onSelect={handleCountrySelect}
         />
 
-        <Text style={styles.label}>Select preffered language</Text>
+        <Text style={styles.label}>{t('Select preffered language')}</Text>
         <LanguageSelector onSelect={handleLanguageSelect} />
 
-        <Text style={styles.label}>Tell about yourself</Text>
+        <Text style={styles.label}>{t('Tell about yourself')}</Text>
         <Input
           multiline
           numberOfLines={4}
-          placeholder="Enter your description"
+          placeholder={t('Enter your description')}
           value={formValues.description}
           onChangeText={(text: string) => handleInputChange('description', text)}
           innerStyle={styles.textAreaStyles}

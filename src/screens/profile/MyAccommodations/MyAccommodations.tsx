@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
@@ -30,6 +31,7 @@ const MyAccommodations = ({ navigation }: Props) => {
   const myAccommodationsLoader = useSelector(getMyAccommodationsLoader);
   const userId = useSelector(getUserId);
   const colors = useSelector(getColors);
+  const { t } = useTranslation();
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -44,7 +46,7 @@ const MyAccommodations = ({ navigation }: Props) => {
 
   const handleDelete = async (accommodationId: string) => {
     showAlert('warning', {
-      message: 'Are you sure to delete this accommodation?',
+      message: t('Are you sure to delete this accommodation?'),
       onOkPressed: async () => {
         await dispatch(AsyncThunks.deleteAccommodation(accommodationId));
       },
@@ -78,8 +80,8 @@ const MyAccommodations = ({ navigation }: Props) => {
     <ScreenTemplate style={styles.container}>
       {isGuestAccount && (
         <View style={styles.createAccountContainer}>
-          <Text style={styles.createAccountTitle}>You haven't created your account yet</Text>
-          <Button title="Create Account" onPress={navigateToCreateAccount} />
+          <Text style={styles.createAccountTitle}>{t("You haven't created your account yet")}</Text>
+          <Button title={t('Create Account')} onPress={navigateToCreateAccount} />
         </View>
       )}
 
@@ -100,7 +102,9 @@ const MyAccommodations = ({ navigation }: Props) => {
                 />
               }
               ListEmptyComponent={() => (
-                <Text style={styles.noAccommodationsText}>You don't have any accommodations!</Text>
+                <Text style={styles.noAccommodationsText}>
+                  {t("You don't have any accommodations!")}
+                </Text>
               )}
               renderItem={({ item }) => (
                 <MyAccommodationListItem

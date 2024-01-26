@@ -1,4 +1,5 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, Image, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
@@ -14,6 +15,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const colors = useSelector(getColors);
   const user = useSelector(getUserDetails);
   const isGuestAccount = useSelector(getIsGuestAccount);
+  const { t } = useTranslation();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const navigateToCreateOrUpdate = () => {
@@ -29,29 +31,29 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       {!isLoggedIn && (
         <View style={styles.header}>
           <View style={{ gap: 4 }}>
-            <Text style={[styles.title, { color: colors.text }]}>Your Profile</Text>
+            <Text style={[styles.title, { color: colors.text }]}>{t('Your Profile')}</Text>
             <Text style={styles.subTitle}>
-              Sign in to your account and start your journey with us today.
+              {t('Sign in to your account and start your journey with us today.')}
             </Text>
           </View>
 
           <View style={styles.redirectAuthContainer}>
             <Button
-              title="Sign In"
+              title={t('Sign In')}
               onPress={() => {
                 navigation.navigate('Signin');
               }}
             />
             <View style={styles.redirectAuthContainer}>
               <Text>
-                Don't have an account yet?{' '}
+                {t("Don't have an account yet?")}{' '}
                 <Text
                   style={styles.underline}
                   onPress={() => {
                     navigation.navigate('Signup');
                   }}
                 >
-                  Sign up
+                  {t('Sign up')}
                 </Text>
               </Text>
             </View>
@@ -62,7 +64,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       {isLoggedIn && (
         <View style={styles.loggedInHeader}>
           <View style={styles.titleContainer}>
-            <Text style={[styles.title, { color: colors.text }]}>Profile</Text>
+            <Text style={[styles.title, { color: colors.text }]}>{t('Profile')}</Text>
 
             <TouchableOpacity
               style={styles.notificationIcon}
@@ -95,7 +97,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                   {user?.profile ? `${user.firstName} ${user.lastName}` : user?.email}
                 </Text>
                 <Text style={styles.description}>
-                  {isGuestAccount ? 'tap to create' : 'edit profile'}
+                  {isGuestAccount ? t('tap to create') : t('edit profile')}
                 </Text>
               </View>
             </View>

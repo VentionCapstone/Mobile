@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Text, Input } from 'src/components';
@@ -20,6 +21,8 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Signin'>;
 const Signin = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const loading = useSelector(getAccountLoader);
+  const { t } = useTranslation();
+
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<SignInParams>({
@@ -62,35 +65,35 @@ const Signin = ({ navigation }: Props) => {
   return (
     <ScreenTemplate>
       <FormTemplate loading={loading} onSubmit={handleSignIn} formIsValid={formIsValid}>
-        <Text style={styles.head}>Welcome back!</Text>
+        <Text style={styles.head}>{t('Welcome back!')}</Text>
         <Text style={styles.description}>
-          Sign in to your account and plan your next journey with us
+          {t('Sign in to your account and plan your next journey with us')}
         </Text>
         <Input
           style={styles.input}
           value={formValues.email}
           maxLength={EMAIL_MAX_LENGTH}
-          placeholder="Enter your email"
+          placeholder={t('Enter your email')}
           onChangeText={(text: string) => handleInputChange('email', text)}
           error={validationErrors.email}
         />
         <Input
           style={styles.input}
           value={formValues.password}
-          placeholder="Enter your password"
+          placeholder={t('Enter your password')}
           onChangeText={(text: string) => handleInputChange('password', text)}
           error={validationErrors.password}
           secureTextEntry
         />
         <View style={styles.container}>
-          <Text style={styles.toggleText}>Don't have an account yet?</Text>
+          <Text style={styles.toggleText}>{t("Don't have an account yet?")}</Text>
           <Text
             style={styles.link}
             onPress={() => {
               navigation.navigate('Signup');
             }}
           >
-            Sign Up
+            {t('Sign Up')}
           </Text>
         </View>
       </FormTemplate>

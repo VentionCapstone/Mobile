@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Asset, ImagePicker } from 'expo-image-multiple-picker';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, Image, View, ScrollView, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ButtonType, Icon, Text, showAlert } from 'src/components';
@@ -24,6 +25,8 @@ const AccommodationImage = ({ route, navigation }: Props) => {
   const colors = useSelector(getColors);
   const loader = useSelector(getAccommodationLoader);
   const { width } = useWindowDimensions();
+  const { t } = useTranslation();
+
   const [openPicker, setOpenPicker] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<Asset[]>([]);
 
@@ -77,7 +80,7 @@ const AccommodationImage = ({ route, navigation }: Props) => {
   return (
     <StepperTemplate
       onNext={handleSubmit}
-      nextButtonTitle="finish"
+      nextButtonTitle="Finish"
       disableNextButton={isNextButtonDisabled}
       loader={loader}
     >
@@ -85,9 +88,9 @@ const AccommodationImage = ({ route, navigation }: Props) => {
         {!selectedImages.length && (
           <>
             <View style={styles.titleContainer}>
-              <Text style={styles.title}>Add some photos of your house</Text>
+              <Text style={styles.title}>{t('Add some photos of your house')}</Text>
               <Text style={styles.subTitle}>
-                You'll need 5 photos to get started, You can add more and make changes later.
+                {t("You'll need 5 photos to get started, You can add more and make changes later.")}
               </Text>
             </View>
 
@@ -96,8 +99,8 @@ const AccommodationImage = ({ route, navigation }: Props) => {
               onPress={handleOpenGallery}
             >
               <Icon name={IconName.ImagesOutline} size={40} />
-              <Text style={styles.uploadTitle}>Upload at least 5 photos</Text>
-              <Text style={styles.uploadText}>Upload from your device</Text>
+              <Text style={styles.uploadTitle}>{t('Upload at least 5 photos')}</Text>
+              <Text style={styles.uploadText}>{t('Upload from your device')}</Text>
             </TouchableOpacity>
           </>
         )}
@@ -105,11 +108,11 @@ const AccommodationImage = ({ route, navigation }: Props) => {
         {selectedImages.length !== 0 && (
           <>
             <View style={styles.addButtonContainer}>
-              <Text style={styles.addButtonTitle}>Choose at least 5 photos</Text>
+              <Text style={styles.addButtonTitle}>{t('Choose at least 5 photos')}</Text>
 
               <Button
                 width={120}
-                title="Add more"
+                title={t('Add more')}
                 leftIcon={IconName.Add}
                 size={BUTTON_SIZES.SM}
                 type={ButtonType.SECONDARY}
@@ -135,7 +138,7 @@ const AccommodationImage = ({ route, navigation }: Props) => {
               onPress={handleOpenGallery}
             >
               <Icon name={IconName.Add} />
-              <Text>Add more</Text>
+              <Text>{t('Add more')}</Text>
             </TouchableOpacity>
           </>
         )}

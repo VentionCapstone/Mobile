@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Text, Input, showAlert } from 'src/components';
@@ -20,6 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 const Signup = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const loading = useSelector(getAccountLoader);
+  const { t } = useTranslation();
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<SignUpParams>({
@@ -65,20 +67,22 @@ const Signup = ({ navigation }: Props) => {
   return (
     <ScreenTemplate>
       <FormTemplate loading={loading} onSubmit={handleSignup} formIsValid={formIsValid}>
-        <Text style={styles.head}>Hello, stranger!</Text>
-        <Text style={styles.description}>Discover new places and start your next journey</Text>
+        <Text style={styles.head}>{t('Hello, stranger!')}</Text>
+        <Text style={styles.description}>
+          {t('Discover new places and start your next journey')}
+        </Text>
 
         <Input
           style={styles.input}
           value={formValues.email}
           maxLength={EMAIL_MAX_LENGTH}
-          placeholder="Enter your email"
+          placeholder={t('Enter your email')}
           onChangeText={(text: string) => handleInputChange('email', text)}
           error={validationErrors.email}
         />
         <Input
           style={styles.input}
-          placeholder="Enter Password"
+          placeholder={t('Enter Password')}
           secureTextEntry
           value={formValues.password}
           onChangeText={(text: string) => handleInputChange('password', text)}
@@ -86,21 +90,21 @@ const Signup = ({ navigation }: Props) => {
         />
         <Input
           style={styles.input}
-          placeholder="Confirm Password"
+          placeholder={t('Confirm Password')}
           secureTextEntry
           value={formValues.confirm_password}
           onChangeText={(text: string) => handleInputChange('confirm_password', text)}
           error={validationErrors.confirm_password}
         />
         <View style={styles.container}>
-          <Text style={styles.toggleText}>Already have an account?</Text>
+          <Text style={styles.toggleText}>{t('Already have an account?')}</Text>
           <Text
             style={styles.link}
             onPress={() => {
               navigation.navigate('Signin');
             }}
           >
-            Sign In
+            {t('Sign In')}
           </Text>
         </View>
       </FormTemplate>

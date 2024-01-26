@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import Text from 'src/components/Text/Text';
 import { Input } from 'src/components/inputs';
@@ -12,6 +13,7 @@ import { styles } from './AccommodationDescription.style';
 type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDescription'>;
 
 const AccommodationDescription = ({ route, navigation }: Props) => {
+  const { t } = useTranslation();
   const [description, setDescription] = useState<string>('');
   const [descriptionLength, setDescriptionLength] = useState<number>(0);
 
@@ -31,13 +33,13 @@ const AccommodationDescription = ({ route, navigation }: Props) => {
   return (
     <StepperTemplate onNext={handleNext} disableNextButton={isNextButtonDisabled}>
       <View style={styles.container}>
-        <Text style={styles.title}>Create your description</Text>
-        <Text style={styles.subtitle}>Share what makes your place special </Text>
+        <Text style={styles.title}>{t('Create your description')}</Text>
+        <Text style={styles.subtitle}>{t('Share what makes your place special')}</Text>
 
         <Input
           multiline
           numberOfLines={6}
-          placeholder="describe your accommodation"
+          placeholder={t('describe your accommodation')}
           onChangeText={handleTextChange}
           value={description}
           maxLength={ACCOMMODATION_DESCRIPTION_MAX_LENGTH}

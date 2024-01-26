@@ -1,5 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { RootStackParamList } from 'src/navigation';
 import { TOMATO } from 'src/styles';
@@ -29,6 +30,7 @@ const Card = ({
   address,
 }: CardProps) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { t } = useTranslation();
   const [pressed, setPressed] = useState<boolean>(false);
 
   const handlePressed = () => {
@@ -57,9 +59,11 @@ const Card = ({
         <Text style={styles.text}>{squareMeters} sq.m.</Text>
         <Text style={styles.text}>
           {allowedNumberOfPeople > 1 && '1 - '}
-          {allowedNumberOfPeople} guests
+          {allowedNumberOfPeople} {t('guests')}
         </Text>
-        <Text style={styles.text}>{numberOfRooms} rooms</Text>
+        <Text style={styles.text}>
+          {numberOfRooms} {t('rooms')}
+        </Text>
         <Text style={[styles.text, { fontWeight: 'bold' }]}>${price / 100}</Text>
       </View>
     </TouchableOpacity>

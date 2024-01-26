@@ -5,7 +5,7 @@ import { Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ButtonType, Icon, Input, Text, ThemedView } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
-import { DEFAULT_FILTER_VALUES, DEFAULT_SEARCH_VALUES } from 'src/constants/defaultSearchVelues';
+import { DEFAULT_FILTER_VALUES } from 'src/constants/defaultSearchVelues';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getFilterSettings, getIsDarkMode } from 'src/store/selectors';
@@ -38,12 +38,11 @@ const FilterModal = () => {
   };
 
   const saveFilterValues = () => {
-    dispatch(accommodationListActions.setFilter(formValues));
+    dispatch(accommodationListActions.setFilter({...formValues, location, checkInDate, checkOutDate}));
     navigation.goBack();
   };
 
   const setFilterToDefault = () => {
-    dispatch(accommodationListActions.setFilter(DEFAULT_SEARCH_VALUES));
     setFormValues(DEFAULT_FILTER_VALUES);
   };
 
@@ -195,7 +194,7 @@ const FilterModal = () => {
             />
           </View>
         </View>
-      </ThemedView>
+        </ThemedView>
       <ThemedView style={[styles.footer, colors && { borderColor: WHITE_200 }]}>
         <TouchableOpacity onPress={setFilterToDefault}>
           <Text style={{ fontSize: 20, textDecorationLine: 'underline' }}>Default</Text>

@@ -29,6 +29,7 @@ import { ACCOUNT_NAME_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './UpdateAccount.style';
 import { validateForm } from './UpdateAccount.utils';
+import { useTranslation } from 'react-i18next';
 
 const genderOptions = [
   { label: 'Male', value: Gender.Male },
@@ -42,6 +43,7 @@ const UpdateAccount = ({ navigation }: Props) => {
   const loading = useSelector(getAccountLoader);
   const userDetails = useSelector(getUserDetails);
   const colors = useSelector(getColors);
+  const { t } = useTranslation();
 
   const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
   const [selectedCountry, setSelectedCountry] = useState<string>(
@@ -104,7 +106,7 @@ const UpdateAccount = ({ navigation }: Props) => {
 
       if (response.meta.requestStatus === 'fulfilled') {
         showAlert('success', {
-          message: 'Account details updated successfully!',
+          message: t('Account details updated successfully!'),
           onOkPressed: () => navigation.navigate('Profile'),
         });
         const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
@@ -143,38 +145,38 @@ const UpdateAccount = ({ navigation }: Props) => {
             style={[styles.editButton, { backgroundColor: colors.secondaryBackground }]}
             onPress={handlePhotoSelect}
           >
-            <Text>edit image</Text>
+            <Text>{t('edit image')}</Text>
           </Pressable>
         </View>
 
         <Input
           error={validationErrors.firstName}
-          label="Firstname"
+          label={t('Firstname')}
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
           onChangeText={(text: string) => handleInputChange('firstName', text)}
-          placeholder="Enter your firstname"
+          placeholder={t('Enter your firstname')}
           value={formValues.firstName}
         />
 
         <Input
           error={validationErrors.lastName}
-          label="Lastname"
+          label={t('Lastname')}
           leftIcon={IconName.Person}
           maxLength={ACCOUNT_NAME_MAX_LENGTH}
           onChangeText={(text: string) => handleInputChange('lastName', text)}
-          placeholder="Enter your lastname"
+          placeholder={t('Enter your lastname')}
           value={formValues.lastName}
         />
 
         <PhoneNumberInput
-          label="Phone number"
+          label={t('Phone number')}
           error={validationErrors.phoneNumber}
           onChangeText={(text: string) => handleInputChange('phoneNumber', text)}
           value={formValues.phoneNumber}
         />
 
-        <Text style={styles.label}>Select your gender</Text>
+        <Text style={styles.label}>{t('Select your gender')}</Text>
         {genderOptions.map((option: GenderOptionsProps) => (
           <TouchableOpacity
             key={option.value}
@@ -192,13 +194,13 @@ const UpdateAccount = ({ navigation }: Props) => {
           </TouchableOpacity>
         ))}
 
-        <Text style={styles.label}>Select your country</Text>
+        <Text style={styles.label}>{t('Select your country')}</Text>
         <TouchableOpacity
           onPress={() => setCountrySelectorVisible(true)}
           style={[styles.selectorButton, { backgroundColor: colors.secondaryBackground }]}
         >
           <Text style={styles.selectedCountry}>
-            {selectedCountry ? selectedCountry : 'Select country'}
+            {selectedCountry ? selectedCountry : t('Select country')}
           </Text>
           <Icon name={IconName.ChevronDown} size={20} />
         </TouchableOpacity>
@@ -208,14 +210,14 @@ const UpdateAccount = ({ navigation }: Props) => {
           onSelect={handleCountrySelect}
         />
 
-        <Text style={styles.label}>Select preffered language</Text>
+        <Text style={styles.label}>{t('Select preffered language')}</Text>
         <LanguageSelector onSelect={handleLanguageSelect} value={formValues.language} />
 
-        <Text style={styles.label}>Tell about yourself</Text>
+        <Text style={styles.label}>{t('Tell about yourself')}</Text>
         <Input
           multiline
           numberOfLines={4}
-          placeholder="Enter your description"
+          placeholder={t('Enter your description')}
           value={formValues.description}
           onChangeText={(text: string) => handleInputChange('description', text)}
           innerStyle={styles.textAreaStyles}
@@ -224,7 +226,7 @@ const UpdateAccount = ({ navigation }: Props) => {
 
       <Loader
         visible={loading}
-        message="Your accommodation details are being updated. This won't take long..."
+        message={t("Your accommodation details are being updated. This won't take long...")}
       />
     </ScreenTemplate>
   );

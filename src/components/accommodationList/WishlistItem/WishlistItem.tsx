@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -16,6 +17,7 @@ type Props = {
 
 const WishlistItem = ({ wishlistDetails, onDelete }: Props) => {
   const colors = useSelector(getColors);
+  const { t } = useTranslation();
   const [imageLoading, setImageLoading] = useState(true);
 
   const { accommodation } = wishlistDetails;
@@ -47,7 +49,7 @@ const WishlistItem = ({ wishlistDetails, onDelete }: Props) => {
         </View>
 
         <Text style={styles.baseInfos}>
-          {accommodation.numberOfRooms} guests
+          {accommodation.numberOfRooms} {t('guests')}
           {', '}
           {accommodation.squareMeters}m2
         </Text>

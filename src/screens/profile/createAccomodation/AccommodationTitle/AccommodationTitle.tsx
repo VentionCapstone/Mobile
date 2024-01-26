@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import Text from 'src/components/Text/Text';
 import { Input } from 'src/components/inputs';
@@ -12,6 +13,8 @@ import { styles } from './AccommodationTitle.style';
 type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationTitle'>;
 
 const AccommodationTitle = ({ route, navigation }: Props) => {
+  const { t } = useTranslation();
+
   const [title, setTitle] = useState<string>('');
   const [titleLength, setTitleLength] = useState<number>(0);
 
@@ -31,15 +34,15 @@ const AccommodationTitle = ({ route, navigation }: Props) => {
   return (
     <StepperTemplate onNext={handleNext} disableNextButton={isNextButtonDisabled}>
       <View style={styles.container}>
-        <Text style={styles.title}>Now, let's give your house a title</Text>
+        <Text style={styles.title}>{t("Now, let's give your house a title")}</Text>
         <Text style={styles.subtitle}>
-          Short titles work best. Have fun with it - you can always change it later
+          {t('Short titles work best. Have fun with it - you can always change it later')}
         </Text>
 
         <Input
           multiline
           numberOfLines={3}
-          placeholder="enter title"
+          placeholder={t('enter title')}
           onChangeText={handleTextChange}
           value={title}
           maxLength={ACCOMMODATION_TITLE_MAX_LENGTH}

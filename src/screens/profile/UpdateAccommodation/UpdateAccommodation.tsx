@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { DateTimePicker, Input, NumericInput, showAlert } from 'src/components';
@@ -20,6 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'UpdateAccommodation'>;
 const UpdateAccommodation = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
   const loading = useSelector(getMyAccommodationsLoader);
+  const { t } = useTranslation();
   const existingAccommodation = route.params.accommodation;
 
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
@@ -101,14 +103,14 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
       <FormTemplate onSubmit={handleOnSubmit} formIsValid={formIsValid} loading={loading}>
         <View style={styles.inputColumn}>
           <DateTimePicker
-            label="Available from"
+            label={t('Available from')}
             initialValue={existingAccommodation.availableFrom}
             onDateChange={handleSelectAvailableFrom}
             error={validationErrors.availableFrom}
           />
 
           <DateTimePicker
-            label="Available to"
+            label={t('Available to')}
             initialValue={existingAccommodation.availableTo}
             onDateChange={handleSelectAvailableTo}
             error={validationErrors.availableTo}
@@ -116,7 +118,7 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
         </View>
 
         <NumericInput
-          label="Price [$]"
+          label={t('Price [$]')}
           maxLength={PRICE_MAX_LENGTH}
           value={formValues.price}
           onChangeText={(value: number | null) => handleInputChange('price', value)}
@@ -124,7 +126,7 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
         />
 
         <NumericInput
-          label="Rooms"
+          label={t('Rooms')}
           maxLength={ROOMS_MAX_LENGTH}
           value={formValues.numberOfRooms}
           onChangeText={(value: number | null) => handleInputChange('numberOfRooms', value)}
@@ -132,7 +134,7 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
         />
 
         <NumericInput
-          label="Area [m²]"
+          label={t('Area [m²]')}
           maxLength={AREA_MAX_LENGTH}
           value={formValues.squareMeters}
           onChangeText={(value: number | null) => handleInputChange('squareMeters', value)}
@@ -140,7 +142,7 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
         />
 
         <NumericInput
-          label="Number of people"
+          label={t('Number of people')}
           maxLength={PEOPLE_MAX_LENGTH}
           value={formValues.allowedNumberOfPeople}
           onChangeText={(value: number | null) => handleInputChange('allowedNumberOfPeople', value)}
@@ -150,8 +152,8 @@ const UpdateAccommodation = ({ route, navigation }: Props) => {
         <Input
           multiline
           numberOfLines={4}
-          label="Description"
-          placeholder="describe your accommodation"
+          label={t('Description')}
+          placeholder={t('describe your accommodation')}
           innerStyle={styles.textArea}
           onChangeText={(value: string) => handleInputChange('description', value)}
           error={validationErrors.description}

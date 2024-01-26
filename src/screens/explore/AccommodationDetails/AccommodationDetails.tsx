@@ -2,6 +2,7 @@ import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/nati
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   RefreshControl,
   SafeAreaView,
@@ -42,6 +43,7 @@ const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
   const theme = useSelector(getIsDarkMode);
   const data = useSelector(getAccommodation);
   const refreshing = useSelector(getAccommodationLoader);
+  const { t } = useTranslation();
   const [heartPressed, setHeartPressed] = useState<boolean>(false);
 
   const mappedMedia = useMemo(
@@ -152,7 +154,7 @@ const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
                 <Text style={styles.title}>{`(${data?.address?.country})`}</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-                {data?.available && <Text>Available</Text>}
+                {data?.available && <Text>{t('Available')}</Text>}
                 <Icon
                   name={data?.available ? IconName.Check : IconName.Ellipse}
                   color={data?.available && 'green'}
@@ -192,21 +194,27 @@ const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
               {otherAmenitiesBadgesMemo}
             </View>
             <View style={{ marginVertical: 30 }}>
-              <Text style={styles.amenitiesTitle}>More photos</Text>
+              <Text style={styles.amenitiesTitle}>{t('More photos')}</Text>
               <ImageCarousel images={mappedMedia} />
             </View>
             <View style={{ marginVertical: 30 }}>
-              <Text>Available</Text>
-              <Text>From: {formatDate(data?.availableFrom ?? '')}</Text>
-              <Text>Till: {formatDate(data?.availableTo ?? '')}</Text>
+              <Text>{t('Available')}</Text>
+              <Text>
+                {t('From:')} {formatDate(data?.availableFrom ?? '')}
+              </Text>
+              <Text>
+                {t('Till:')} {formatDate(data?.availableTo ?? '')}
+              </Text>
             </View>
           </View>
         </ThemedView>
       </ScrollView>
       <ThemedView style={styles.footer}>
-        <Text style={{ fontSize: 20 }}>Total price: ${data?.price ?? 0 / 100}</Text>
+        <Text style={{ fontSize: 20 }}>
+          {t('Total price:')} ${data?.price ?? 0 / 100}
+        </Text>
         <Button
-          title="Book"
+          title={t('Book')}
           onPress={() => {}}
           disabled={!data?.available}
           size={BUTTON_SIZES.MD}

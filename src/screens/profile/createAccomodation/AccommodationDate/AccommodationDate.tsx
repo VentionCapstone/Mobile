@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Text from 'src/components/Text/Text';
@@ -23,6 +24,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDate'>;
 
 const AccommodationDate = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const accommodationLoader = useSelector(getMyAccommodationsLoader);
   const [dateValues, setDateValues] = useState<FormValues>({
     availableFrom: '',
@@ -65,16 +67,16 @@ const AccommodationDate = ({ route, navigation }: Props) => {
       disableNextButton={isNextButtonDisabled}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Select your house available dates</Text>
+        <Text style={styles.title}>{t('Select your house available dates')}</Text>
 
         <View style={styles.inputRow}>
           <DateTimePicker
-            label="Available from"
+            label={t('Available from')}
             onDateChange={handleSelectAvailableFrom}
             maxDate={dateValues.availableTo || undefined}
           />
           <DateTimePicker
-            label="Available to"
+            label={t('Available to')}
             onDateChange={handleSelectAvailableTo}
             minDate={dateValues.availableFrom || undefined}
           />

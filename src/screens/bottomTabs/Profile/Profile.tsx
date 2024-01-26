@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -50,13 +51,14 @@ const Profile = ({ navigation }: Props) => {
   const myAccommodationsError = useSelector(getMyAccommodationsError);
   const colors = useSelector(getColors);
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation();
 
   const [errorVisible, setErrorVisible] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const handleLogOut = async () => {
     showAlert('warning', {
-      message: 'Are you sure you want to log out?',
+      message: t('Are you sure you want to log out?'),
       onOkPressed: async () => {
         const response = await dispatch(AsyncThunks.signOut());
 
@@ -133,9 +135,9 @@ const Profile = ({ navigation }: Props) => {
             onPress={navigateToCreateAccommodation}
           >
             <View style={styles.createAirBnbTitleContainer}>
-              <Text style={styles.createAirBnbTitle}>AirBnb your place</Text>
+              <Text style={styles.createAirBnbTitle}>{t('Create Your Place')}</Text>
               <Text style={styles.createAirBnbSubTitle}>
-                It's simple to get set up and start earning
+                {t("It's simple to get set up and start earning")}
               </Text>
             </View>
 
@@ -152,7 +154,7 @@ const Profile = ({ navigation }: Props) => {
           <>
             <NavigationList sections={ACCOUNT_SECTIONS} />
             <Button
-              title="Log out"
+              title={t('Log out')}
               marginVertical={30}
               type={ButtonType.SECONDARY}
               onPress={handleLogOut}

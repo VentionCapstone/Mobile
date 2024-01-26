@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import Icon from 'src/components/Icon/Icon';
 import { RED_100, RED_200 } from 'src/styles';
@@ -14,6 +15,7 @@ interface Props {
 
 const ErrorAlert = ({ visible, message, onClose }: Props) => {
   const [modalVisible, setModalVisible] = useState(visible);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setModalVisible(visible);
@@ -36,7 +38,7 @@ const ErrorAlert = ({ visible, message, onClose }: Props) => {
           </TouchableOpacity>
           <View style={styles.titleContainer}>
             <Icon name={IconName.Error} iconSet="material" size={22} color={RED_200} />
-            <Text style={styles.title}>Error occured!</Text>
+            <Text style={styles.title}>{t('Error occured!')}</Text>
           </View>
 
           <Text style={styles.message}>{message}</Text>

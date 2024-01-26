@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -18,6 +19,7 @@ type Props = {
 
 const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loader }: Props) => {
   const colors = useSelector(getColors);
+  const { t } = useTranslation();
   const { id, price, thumbnailUrl, address } = accommodationDetails;
 
   const locationName = getLocationName(address);
@@ -49,7 +51,7 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loade
         <View style={styles.priceContainer}>
           <Text style={styles.priceText}>$</Text>
           <Text style={styles.price}>{price}</Text>
-          <Text>/night</Text>
+          <Text>/{t('night')}</Text>
         </View>
 
         <View style={styles.buttonsContainer}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Icon, Text } from 'src/components';
@@ -17,6 +18,7 @@ const ChangeTheme = () => {
   const userDetails = useSelector(getUserDetails);
   const userId = useSelector(getUserId);
   const colors = useSelector(getColors);
+  const { t } = useTranslation();
 
   const formValues = {
     firstName: userDetails?.firstName,
@@ -58,7 +60,7 @@ const ChangeTheme = () => {
           onPress={enableDarkTheme}
         >
           <Icon name={isDark ? IconName.RadioButtonsOn : IconName.RadioButtonsOff} />
-          <Text style={styles.radioLabel}>Dark theme</Text>
+          <Text style={styles.radioLabel}>{t('Dark theme')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -66,7 +68,7 @@ const ChangeTheme = () => {
           onPress={enableLightTheme}
         >
           <Icon name={isDark ? IconName.RadioButtonsOff : IconName.RadioButtonsOn} />
-          <Text style={styles.radioLabel}>Light theme</Text>
+          <Text style={styles.radioLabel}>{t('Light theme')}</Text>
         </TouchableOpacity>
       </View>
     </ScreenTemplate>

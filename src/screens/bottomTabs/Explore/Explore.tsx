@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet, RefreshControl } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Card } from 'src/components';
@@ -19,6 +20,8 @@ const Explore = () => {
   const filter = useSelector(getFilterSettings);
   const data = useSelector(getAccommodationList);
   const pending = useSelector(getAccommodationListLoading);
+  const { t } = useTranslation();
+
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   const renderItem = useMemo(
