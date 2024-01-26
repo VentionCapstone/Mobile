@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { title1, title2, LEVEL_1 } from 'src/styles';
-import { HORIZONTAL_12_PERCENT, HORIZONTAL_16_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_12, PADDING_HORIZONTAL_16 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
     paddingVertical: 20,
     gap: 20,
   },
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   filterContainer: {
     paddingVertical: 15,
     borderRadius: 10,
-    paddingHorizontal: HORIZONTAL_16_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_16,
     ...LEVEL_1,
   },
   filterTitle: {
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
     paddingVertical: 10,
   },
 });

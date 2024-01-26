@@ -106,15 +106,15 @@ export interface GetAccommodationQueryParams {
   orderByPrice?: SortOrder | null;
   orderByRoom?: SortOrder | null;
   orderByPeople?: SortOrder | null;
-  minPrice?: number;
-  maxPrice?: number;
-  minRooms?: number;
-  maxRooms?: number;
-  minPeople?: number;
-  maxPeople?: number;
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  minRooms?: number | null;
+  maxRooms?: number | null;
+  minPeople?: number | null;
+  maxPeople?: number | null;
+  checkInDate?: string | null;
+  checkOutDate?: string | null;
   location?: string;
-  checkInDate?: string;
-  checkOutDate?: string;
   page?: number;
   limit?: number;
 }

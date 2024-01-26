@@ -13,7 +13,7 @@ import Text from '../../../Text/Text';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
 type Props = {
-  initialValue?: string;
+  initialValue?: string | null;
   label?: string;
   minDate?: string;
   maxDate?: string;

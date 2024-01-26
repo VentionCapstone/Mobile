@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { LEVEL_1 } from 'src/styles';
+import { LEVEL_1, title3 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     borderRadius: 10,
     justifyContent: 'space-between',
+    alignItems: 'center',
     flexDirection: 'row',
     ...LEVEL_1,
   },
@@ -18,7 +19,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 18,
+    ...title3,
+    fontSize: 14,
   },
   contentTitle: {
     fontSize: 24,

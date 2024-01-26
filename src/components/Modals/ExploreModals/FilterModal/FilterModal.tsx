@@ -2,7 +2,10 @@ import { useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ButtonType, NumericInput, Text } from 'src/components';
-import { getColors } from 'src/store/selectors';
+import { DEFAULT_FILTER_VALUES } from 'src/constants/filter';
+import { useAppDispatch } from 'src/store';
+import { getColors, getFilterParams } from 'src/store/selectors';
+import { accommodationListActions } from 'src/store/slices';
 import { BUTTON_SIZES } from 'src/styles';
 import { GetAccommodationQueryParams, SortOrder } from 'src/types';
 
@@ -13,24 +16,23 @@ import ModalContainer from '../../ModalContainer/ModalContainer';
 type Props = {
   visible: boolean;
   onClose: () => void;
-  onSelect: (values: GetAccommodationQueryParams) => void;
 };
 
-const FilterModal = ({ visible, onClose, onSelect }: Props) => {
+const FilterModal = ({ visible, onClose }: Props) => {
   const colors = useSelector(getColors);
-  const [selectedOrderPeople, setSelectedOrderPeople] = useState<SortOrder>(SortOrder.ASC);
-  const [selectedOrderRoom, setSelectedOrderRooms] = useState<SortOrder>(SortOrder.ASC);
-  const [selectedOrderPrice, setSelectedOrderPrice] = useState<SortOrder>(SortOrder.ASC);
+  const dispatch = useAppDispatch();
+  const filterParams = useSelector(getFilterParams);
+
   const [filterValues, setFilterValues] = useState<GetAccommodationQueryParams>({
-    minPrice: 0,
-    maxPrice: 0,
-    minPeople: 0,
-    maxPeople: 0,
-    minRooms: 0,
-    maxRooms: 0,
-    orderByPeople: selectedOrderPeople,
-    orderByRoom: selectedOrderRoom,
-    orderByPrice: selectedOrderPrice,
+    minPrice: filterParams.minPrice,
+    maxPrice: filterParams.maxPrice,
+    minPeople: filterParams.minPeople,
+    maxPeople: filterParams.maxPeople,
+    minRooms: filterParams.minRooms,
+    maxRooms: filterParams.maxRooms,
+    orderByPeople: filterParams.orderByPeople,
+    orderByRoom: filterParams.orderByRoom,
+    orderByPrice: filterParams.orderByPrice,
   });
 
   const handleInputChange = useCallback(
@@ -43,11 +45,35 @@ const FilterModal = ({ visible, onClose, onSelect }: Props) => {
     []
   );
 
-  console.log(filterValues);
+  const handlePriceOrderChange = useCallback((priceOrder: SortOrder | null) => {
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      orderByPrice: priceOrder,
+    }));
+  }, []);
+
+  const handlePeopleOrderChange = useCallback((peopleOrder: SortOrder | null) => {
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      orderByPeople: peopleOrder,
+    }));
+  }, []);
+
+  const handleRoomOrderChange = useCallback((roomOrder: SortOrder | null) => {
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      orderByRoom: roomOrder,
+    }));
+  }, []);
 
   const handleApply = () => {
-    onSelect(filterValues);
+    dispatch(accommodationListActions.setFilterParams({ ...filterParams, ...filterValues }));
     onClose();
+  };
+
+  const handleResetFilters = () => {
+    dispatch(accommodationListActions.resetFilters());
+    setFilterValues(DEFAULT_FILTER_VALUES);
   };
 
   return (
@@ -74,8 +100,8 @@ const FilterModal = ({ visible, onClose, onSelect }: Props) => {
           </View>
 
           <FilterOrderButtons
-            setOrderState={setSelectedOrderPrice}
-            orderState={selectedOrderPrice}
+            onOrderStateChange={handlePriceOrderChange}
+            orderState={filterValues.orderByPrice}
           />
         </View>
 
@@ -98,8 +124,8 @@ const FilterModal = ({ visible, onClose, onSelect }: Props) => {
           </View>
 
           <FilterOrderButtons
-            setOrderState={setSelectedOrderRooms}
-            orderState={selectedOrderRoom}
+            onOrderStateChange={handleRoomOrderChange}
+            orderState={filterValues.orderByRoom}
           />
         </View>
 
@@ -122,8 +148,8 @@ const FilterModal = ({ visible, onClose, onSelect }: Props) => {
           </View>
 
           <FilterOrderButtons
-            setOrderState={setSelectedOrderPeople}
-            orderState={selectedOrderPeople}
+            onOrderStateChange={handlePeopleOrderChange}
+            orderState={filterValues.orderByPeople}
           />
         </View>
       </ScrollView>
@@ -133,8 +159,9 @@ const FilterModal = ({ visible, onClose, onSelect }: Props) => {
           title="Default"
           type={ButtonType.TERTIARY}
           size={BUTTON_SIZES.SM}
-          onPress={() => {}}
+          onPress={handleResetFilters}
         />
+
         <Button title="Apply" size={BUTTON_SIZES.SM} onPress={handleApply} />
       </View>
     </ModalContainer>

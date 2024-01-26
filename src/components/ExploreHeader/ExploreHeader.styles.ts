@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { LEVEL_1 } from 'src/styles';
-import { HORIZONTAL_20_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     gap: 10,
     padding: 10,
     width: '75%',
-    paddingHorizontal: HORIZONTAL_20_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
     borderRadius: 40,
     ...LEVEL_1,
   },

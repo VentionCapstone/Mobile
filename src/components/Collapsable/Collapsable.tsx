@@ -9,7 +9,7 @@ import Text from '../Text/Text';
 type Props = {
   children: ReactNode;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   contentTitle: string;
   isCollapsed?: boolean;
 };
@@ -57,7 +57,14 @@ const Collapsable = ({ children, title, subtitle, contentTitle, isCollapsed = tr
         <Animated.View style={{ opacity: fadeAnimContent }}>
           <TouchableOpacity
             onPress={handleCollapse}
-            style={[styles.card, { flexDirection: 'column', backgroundColor: colors.background }]}
+            style={[
+              styles.card,
+              {
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                backgroundColor: colors.background,
+              },
+            ]}
           >
             <Text style={styles.contentTitle}>{contentTitle}</Text>
 

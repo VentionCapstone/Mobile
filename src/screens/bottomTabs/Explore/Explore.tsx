@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Card, ExploreHeader, FilterModal, SearchModal, showAlert } from 'src/components';
+import { Card, ExploreHeader, FilterModal, SearchModal, Text, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { useAppDispatch } from 'src/store';
-import { getAccommodationList, getAccommodationListLoading } from 'src/store/selectors';
+import {
+  getAccommodationList,
+  getAccommodationListLoading,
+  getFilterParams,
+  getSearchParams,
+} from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
-import { GetAccommodationQueryParams } from 'src/types';
 
 import styles from './Explore.style';
 
@@ -14,14 +18,20 @@ const Explore = () => {
   const dispatch = useAppDispatch();
   const accommodationsList = useSelector(getAccommodationList);
   const isLoading = useSelector(getAccommodationListLoading);
+  const filterParams = useSelector(getFilterParams);
+  const searchParams = useSelector(getSearchParams);
 
   const [page, setPage] = useState(1);
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
 
   const fetchAccommodationList = useCallback(async () => {
-    await dispatch(AsyncThunks.getListOfAccommodations({ page, limit: 10 }));
-  }, [page, dispatch]);
+    const res = await dispatch(
+      AsyncThunks.getListOfAccommodations({ page, ...filterParams, ...searchParams })
+    );
+
+    console.log(res);
+  }, [page, dispatch, filterParams, searchParams]);
 
   const handleRefresh = () => {
     setPage(1);
@@ -38,14 +48,6 @@ const Explore = () => {
   const handleRemoveFromWishlist = async (accommodationId: string) => {
     await dispatch(AsyncThunks.removeFromWishlist(accommodationId));
   };
-
-  const handleGetSearchValues = useCallback(async (searchValues: GetAccommodationQueryParams) => {
-    console.log(searchValues);
-  }, []);
-
-  const handleGetFilterValues = useCallback(async (filterValues: GetAccommodationQueryParams) => {
-    console.log(filterValues);
-  }, []);
 
   const handleCloseSearchModal = () => {
     setIsSearchVisible(false);
@@ -78,16 +80,8 @@ const Explore = () => {
         onOpenFilterModal={handleOpenFilterModal}
       />
 
-      <FilterModal
-        visible={isFilterVisible}
-        onClose={handleCloseFilterModal}
-        onSelect={handleGetFilterValues}
-      />
-      <SearchModal
-        visible={isSearchVisible}
-        onClose={handleCloseSearchModal}
-        onSelect={handleGetSearchValues}
-      />
+      <SearchModal visible={isSearchVisible} onClose={handleCloseSearchModal} />
+      <FilterModal visible={isFilterVisible} onClose={handleCloseFilterModal} />
 
       <FlatList
         contentContainerStyle={styles.container}
@@ -104,6 +98,11 @@ const Explore = () => {
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.2}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No accommodations found!</Text>
+          </View>
+        }
       />
     </ScreenTemplate>
   );

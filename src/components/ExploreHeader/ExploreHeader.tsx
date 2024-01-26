@@ -1,6 +1,6 @@
 import { View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
-import { getColors } from 'src/store/selectors';
+import { getColors, getSearchParams } from 'src/store/selectors';
 import { IconName } from 'src/types';
 
 import { styles } from './ExploreHeader.styles';
@@ -14,6 +14,7 @@ type Props = {
 
 const ExploreHeader = ({ onOpenSearchModal, onOpenFilterModal }: Props) => {
   const colors = useSelector(getColors);
+  const { location } = useSelector(getSearchParams);
 
   return (
     <View style={styles.container}>
@@ -24,7 +25,9 @@ const ExploreHeader = ({ onOpenSearchModal, onOpenFilterModal }: Props) => {
         <Icon name={IconName.Search} size={26} />
 
         <View style={styles.searchContent}>
-          <Text style={styles.searchHeader}>Where to go?</Text>
+          <Text style={styles.searchHeader} ellipsizeMode="tail" numberOfLines={1}>
+            {location ? location : 'Where to go?'}
+          </Text>
           <Text>anywhere · week · 1 person</Text>
         </View>
       </TouchableOpacity>

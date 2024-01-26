@@ -7,6 +7,8 @@ export const getIsGuestAccount = (state: RootState) => state.account.isGuest;
 export const getIsLoggedIn = (state: RootState) => state.account.isLoggedIn;
 export const getUserId = (state: RootState) => state.account.user_id;
 
+export const getUserDetails = (state: RootState) => state.user.result;
+
 export const getColors = (state: RootState) => state.theme.colors;
 export const getIsDarkMode = (state: RootState) => state.theme.isDark;
 
@@ -18,7 +20,8 @@ export const getMyAccommodations = (state: RootState) => state.myAccommodationsL
 export const getMyAccommodationsError = (state: RootState) => state.myAccommodationsList.error;
 export const getMyAccommodationsLoader = (state: RootState) => state.myAccommodationsList.pending;
 
-export const getUserDetails = (state: RootState) => state.user.result;
+export const getFilterParams = (state: RootState) => state.accommodationList.filters;
+export const getSearchParams = (state: RootState) => state.accommodationList.search;
 export const getAccommodationList = (state: RootState) => state.accommodationList.result;
 export const getAccommodationListLoading = (state: RootState) => state.accommodationList.pending;
 

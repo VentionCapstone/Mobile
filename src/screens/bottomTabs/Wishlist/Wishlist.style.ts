@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { title1, title3, paragraph2 } from 'src/styles';
-import { HORIZONTAL_20_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 const styles = StyleSheet.create({
   emptyComponent: {
@@ -14,10 +14,10 @@ const styles = StyleSheet.create({
   },
   columnWrapper: {
     justifyContent: 'space-between',
-    paddingHorizontal: HORIZONTAL_20_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
   },
   container: {
-    paddingHorizontal: HORIZONTAL_20_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
   },
   signInFirst: {
     ...title3,

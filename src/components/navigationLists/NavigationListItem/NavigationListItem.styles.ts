@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { paragraph2 } from 'src/styles';
-import { HORIZONTAL_16_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_16 } from 'src/utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: HORIZONTAL_16_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_16,
     paddingVertical: 12,
     borderRadius: 12,
     marginTop: 8,

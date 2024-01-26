@@ -15,7 +15,7 @@ const getFormattedDate = (value: string) => {
   return formattedDate;
 };
 
-const getInitialDate = (date: string | undefined) => {
+const getInitialDate = (date?: string | null) => {
   if (!date) return;
 
   const result = date ? new Date(date).toISOString().split('T')[0].replace(/-/g, '-') : '';

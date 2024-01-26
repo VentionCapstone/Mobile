@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { title2, paragraph1 } from 'src/styles';
-import { HORIZONTAL_20_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   addressContainer: {
-    paddingHorizontal: HORIZONTAL_20_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
   },
   addressDescriptionContainer: {
     marginTop: 20,

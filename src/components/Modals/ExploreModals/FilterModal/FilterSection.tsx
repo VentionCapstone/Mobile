@@ -6,24 +6,30 @@ import { SortOrder } from 'src/types';
 import { styles } from './FilterModal.styles';
 
 type Props = {
-  orderState: SortOrder;
-  setOrderState: React.Dispatch<React.SetStateAction<SortOrder>>;
+  onOrderStateChange: (order: SortOrder | null) => void;
+  orderState?: SortOrder | null;
 };
 
-const FilterOrderButtons = ({ orderState, setOrderState }: Props) => {
+const FilterOrderButtons = ({ onOrderStateChange, orderState }: Props) => {
   return (
     <View style={styles.buttonContainer}>
+      <Button
+        title="Any"
+        size={BUTTON_SIZES.SM}
+        type={orderState === null ? ButtonType.PRIMARY : ButtonType.SECONDARY}
+        onPress={() => onOrderStateChange(null)}
+      />
       <Button
         title="Asc"
         size={BUTTON_SIZES.SM}
         type={orderState === SortOrder.ASC ? ButtonType.PRIMARY : ButtonType.SECONDARY}
-        onPress={() => setOrderState(SortOrder.ASC)}
+        onPress={() => onOrderStateChange(SortOrder.ASC)}
       />
       <Button
         title="Desc"
         size={BUTTON_SIZES.SM}
         type={orderState === SortOrder.DESC ? ButtonType.PRIMARY : ButtonType.SECONDARY}
-        onPress={() => setOrderState(SortOrder.DESC)}
+        onPress={() => onOrderStateChange(SortOrder.DESC)}
       />
     </View>
   );
