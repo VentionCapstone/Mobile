@@ -34,23 +34,6 @@ export interface AdressListingValues {
 
 export type OrderOptions = null | 'asc' | 'desc';
 
-export interface SearchValues {
-  location?: string;
-  checkInDate?: string;
-  checkOutDate?: string;
-  orderByPrice?: OrderOptions;
-  orderByRooms?: OrderOptions;
-  orderByPeople?: OrderOptions;
-  minPrice?: number;
-  maxPrice?: number;
-  minRooms?: number;
-  maxRooms?: number;
-  minPeople?: number;
-  maxPeople?: number;
-  limit?: number;
-  page?: number;
-}
-
 export interface AccommodationListItem {
   id: string;
   price: number;
@@ -112,4 +95,26 @@ export interface AccommodationsListResponse {
   success: boolean;
   priceRange: AccommodationListPriceRange;
   totalCount: number;
+}
+
+export enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
+export interface GetAccommodationQueryParams {
+  orderByPrice?: SortOrder | null;
+  orderByRoom?: SortOrder | null;
+  orderByPeople?: SortOrder | null;
+  minPrice?: number;
+  maxPrice?: number;
+  minRooms?: number;
+  maxRooms?: number;
+  minPeople?: number;
+  maxPeople?: number;
+  location?: string;
+  checkInDate?: string;
+  checkOutDate?: string;
+  page?: number;
+  limit?: number;
 }

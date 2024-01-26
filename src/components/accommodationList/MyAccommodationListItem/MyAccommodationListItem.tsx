@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -68,4 +69,4 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loade
   );
 };
 
-export default MyAccommodationListItem;
+export default memo(MyAccommodationListItem);

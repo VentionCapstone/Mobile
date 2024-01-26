@@ -18,7 +18,9 @@ export const styles = StyleSheet.create({
   closeButton: {
     width: 40,
     height: 40,
+    marginLeft: 15,
     borderRadius: 20,
+    marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
     ...LEVEL_1,
@@ -34,7 +36,6 @@ export const styles = StyleSheet.create({
   },
   bottomModalContent: {
     backgroundColor: WHITE,
-    padding: 10,
     paddingVertical: 20,
     borderRadius: 10,
     width: '100%',

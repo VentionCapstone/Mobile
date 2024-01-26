@@ -10,31 +10,32 @@ import { AccommodationListItem, IconName } from 'src/types';
 import { styles } from './Card.styles';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
-import showAlert from '../alert';
 
 type Props = {
   item: AccommodationListItem;
   onAddedToWishlist: (accommodationId: string) => void;
   onRemoveFromWishlist: (accommodationId: string) => void;
+  onLoginRequired: () => void;
 };
 
-const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist }: Props) => {
+const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist, onLoginRequired }: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const isLoggedIn = useSelector(getIsLoggedIn);
   const [pressed, setPressed] = useState<boolean>(false);
 
   const handleToggleWishlist = () => {
     if (!isLoggedIn) {
-      showAlert('warning', { message: 'You should login first!' });
+      onLoginRequired();
       return;
     }
 
-    setPressed(!pressed);
     if (pressed) {
       onRemoveFromWishlist(item.id);
-    } else {
-      onAddedToWishlist(item.id);
+      return;
     }
+
+    onAddedToWishlist(item.id);
+    setPressed(!pressed);
   };
 
   return (

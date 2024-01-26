@@ -61,7 +61,7 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
 
   const handleToggleWishlist = () => {
     if (!isLoggedIn) {
-      showAlert('warning', { message: 'You should login first!' });
+      showAlert('warning', { message: 'You should be logged in to add your wishlists' });
       return;
     }
 

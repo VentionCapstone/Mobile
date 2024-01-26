@@ -35,8 +35,6 @@ const getPlaceDetails = async (placeId: string) => {
 
     if (data.status === 'OK') {
       return data.result;
-    } else {
-      return null;
     }
   } catch (error) {
     showAlert('error', { message: `Error fetching places, ${error}` });

@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {},
   searchInput: {
     width: '100%',
     paddingLeft: 40,

@@ -56,7 +56,7 @@ const Wishlist = ({ navigation }: Props) => {
           renderItem={({ item }) => (
             <WishlistItem
               wishlistDetails={item}
-              onDelete={() => handleRemoveFromWishlist(item.accommodation.id)}
+              onDelete={(accommodationId: string) => handleRemoveFromWishlist(accommodationId)}
               onNavigateToAccommodationDetails={handleNavigateToAccommodationDetails}
             />
           )}

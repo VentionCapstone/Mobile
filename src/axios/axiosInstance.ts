@@ -43,7 +43,6 @@ axiosInstance.interceptors.response.use(
 
     if (config.url === ENDPOINTS.refresh(userId) && data?.error?.statusCode === 401) {
       await SecureStore.deleteItemAsync(SecureStorageKey.REFRESH_TOKEN);
-      // store.dispatch(accountActions.reset());
 
       return;
     }

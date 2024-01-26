@@ -3,11 +3,11 @@ import Swiper from 'react-native-swiper';
 
 import { styles } from './ImageCarousel.style';
 
-interface Props {
+interface ImageCarouselProps {
   images: string[];
 }
 
-const ImageCarousel = ({ images }: Props) => {
+const ImageCarousel = ({ images }: ImageCarouselProps) => {
   return (
     <Swiper
       style={styles.wrapper}

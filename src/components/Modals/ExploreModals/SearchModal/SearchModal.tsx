@@ -10,7 +10,7 @@ import ThemedView from 'src/components/ThemedView/ThemedView';
 import { PlacesInput } from 'src/components/inputs';
 import { getColors } from 'src/store/selectors';
 import { BUTTON_SIZES } from 'src/styles';
-import { SearchValues } from 'src/types';
+import { GetAccommodationQueryParams } from 'src/types';
 import { getInitialDate } from 'src/utils';
 
 import { styles } from './SearchModal.styles';
@@ -20,12 +20,12 @@ import { DateTimePicker } from '../../centerModals';
 type Props = {
   visible: boolean;
   onClose: () => void;
-  onSelect: (values: SearchValues) => void;
+  onSelect: (values: GetAccommodationQueryParams) => void;
 };
 
 const SearchModal = ({ visible, onClose, onSelect }: Props) => {
   const colors = useSelector(getColors);
-  const [searchValues, setSearchValues] = useState<SearchValues>({
+  const [searchValues, setSearchValues] = useState<GetAccommodationQueryParams>({
     location: '',
     checkInDate: '',
     checkOutDate: '',

@@ -21,7 +21,7 @@ const PlacesInput = ({ onSearch }: Props) => {
   const colors = useSelector(getColors);
 
   return (
-    <View style={styles.container}>
+    <View>
       <Icon name={IconName.Search} style={styles.searchIcon} />
 
       <GooglePlacesAutocomplete

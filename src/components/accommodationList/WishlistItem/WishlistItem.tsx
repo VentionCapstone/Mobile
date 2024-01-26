@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -12,10 +12,10 @@ import { styles } from './WishlistItem.style';
 type Props = {
   onNavigateToAccommodationDetails: (accommodationId: string) => void;
   wishlistDetails: Wishlist;
-  onDelete: () => void;
+  onRemove: (accommodationId: string) => void;
 };
 
-const WishlistItem = ({ onNavigateToAccommodationDetails, wishlistDetails, onDelete }: Props) => {
+const WishlistItem = ({ onNavigateToAccommodationDetails, wishlistDetails, onRemove }: Props) => {
   const colors = useSelector(getColors);
   const [imageLoading, setImageLoading] = useState(true);
 
@@ -26,7 +26,7 @@ const WishlistItem = ({ onNavigateToAccommodationDetails, wishlistDetails, onDel
       style={[styles.card, { backgroundColor: colors.secondaryBackground }]}
       onPress={() => onNavigateToAccommodationDetails(accommodation.id)}
     >
-      <TouchableOpacity style={styles.likeButton} onPress={onDelete}>
+      <TouchableOpacity style={styles.likeButton} onPress={() => onRemove(accommodation.id)}>
         <Icon name={IconName.Heart} size={30} color={RED_200} />
       </TouchableOpacity>
 
@@ -59,4 +59,4 @@ const WishlistItem = ({ onNavigateToAccommodationDetails, wishlistDetails, onDel
   );
 };
 
-export default WishlistItem;
+export default memo(WishlistItem);
