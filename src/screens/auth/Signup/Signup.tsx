@@ -1,8 +1,8 @@
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Text, Input } from 'src/components';
+import { Text, Input, showAlert } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
@@ -15,9 +15,10 @@ import { EMAIL_MAX_LENGTH } from 'src/utils';
 import { validateForm } from './Signup.utils';
 import styles from '../auth.styles';
 
-const Signup = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
+
+const Signup = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const loading = useSelector(getAccountLoader);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
@@ -45,7 +46,8 @@ const Signup = () => {
     const response = await dispatch(AsyncThunks.signUp(formValues));
 
     if (response.payload?.success) {
-      navigation.navigate('VerifyEmail', { email: formValues.email });
+      showAlert('success', { message: response.payload.message });
+      navigation.navigate('Signin');
     }
   };
 
@@ -58,7 +60,7 @@ const Signup = () => {
 
   useEffect(() => {
     dispatch(accountActions.clearError());
-  }, []);
+  }, [dispatch]);
 
   return (
     <ScreenTemplate>

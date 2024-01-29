@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
-import { LEVEL_1, title2, title3 } from 'src/styles';
-import { HORIZONTAL_12_PERCENT } from 'src/utils';
+import { LEVEL_1, title2, paragraph1 } from 'src/styles';
+import { PADDING_HORIZONTAL_12 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
     justifyContent: 'space-between',
     paddingVertical: 20,
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
   },
   imageContainer: {
     width: 200,
@@ -46,9 +46,14 @@ export const styles = StyleSheet.create({
   title: {
     ...title2,
     marginTop: 20,
+    fontWeight: '600',
     textAlign: 'left',
   },
   subTitle: {
-    ...title3,
+    ...paragraph1,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
   },
 });

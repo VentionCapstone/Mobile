@@ -3,11 +3,12 @@ import { LEVEL_1, paragraph3 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   card: {
-    width: '45%',
+    width: '46%',
     height: 220,
     backgroundColor: 'gray',
     borderRadius: 8,
     gap: 5,
+    marginBottom: 20,
     ...LEVEL_1,
   },
   imageContainer: {

@@ -1,17 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { title2, paragraph1 } from 'src/styles';
-import { HORIZONTAL_20_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
     height: 400,
-  },
-  placesInputListView: {
-    position: 'absolute',
-    top: 60,
-    width: '100%',
-    zIndex: 999,
-    maxHeight: 400,
   },
   mapContainer: {
     width: '100%',
@@ -27,12 +20,8 @@ export const styles = StyleSheet.create({
     ...title2,
     alignSelf: 'center',
   },
-  searchInput: {
-    marginTop: 10,
-    borderRadius: 30,
-  },
   addressContainer: {
-    paddingHorizontal: HORIZONTAL_20_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
   },
   addressDescriptionContainer: {
     marginTop: 20,

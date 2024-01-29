@@ -1,5 +1,5 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
@@ -8,6 +8,7 @@ import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import {
   getAccommodationLoader,
+  getColors,
   getIsGuestAccount,
   getMyAccommodations,
   getMyAccommodationsLoader,
@@ -15,19 +16,20 @@ import {
 } from 'src/store/selectors';
 import { accommodationActions, myAccommodationsListActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { GREY_300 } from 'src/styles';
-import { Accommodation } from 'src/types';
+import { MyAccommodation } from 'src/types';
 
 import { styles } from './MyAccommodations.style';
 
-const MyAccommodations = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'MyAccommodations'>;
+
+const MyAccommodations = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const myAccommodations = useSelector(getMyAccommodations);
   const isGuestAccount = useSelector(getIsGuestAccount);
   const accommodationLoader = useSelector(getAccommodationLoader);
   const myAccommodationsLoader = useSelector(getMyAccommodationsLoader);
   const userId = useSelector(getUserId);
+  const colors = useSelector(getColors);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -36,7 +38,7 @@ const MyAccommodations = () => {
     [myAccommodations]
   );
 
-  const handleEdit = (accommodation: Accommodation) => {
+  const handleEdit = (accommodation: MyAccommodation) => {
     navigation.navigate('UpdateAccommodation', { accommodation });
   };
 
@@ -60,7 +62,7 @@ const MyAccommodations = () => {
     }
   };
 
-  const onRefresh = async () => {
+  const handleRefresh = async () => {
     setRefreshing(true);
     await fetchMyAccommodations();
     setRefreshing(false);
@@ -70,7 +72,7 @@ const MyAccommodations = () => {
     dispatch(accommodationActions.clearError());
     dispatch(myAccommodationsListActions.clearError());
     fetchMyAccommodations();
-  }, []);
+  }, [dispatch]);
 
   return (
     <ScreenTemplate style={styles.container}>
@@ -84,13 +86,18 @@ const MyAccommodations = () => {
       {!isGuestAccount && (
         <>
           {myAccommodationsLoader ? (
-            <ActivityIndicator size="large" color={GREY_300} style={styles.loader} />
+            <ActivityIndicator size="large" color={colors.tint} style={styles.loader} />
           ) : (
             <FlatList
               data={filteredAccommodations}
               keyExtractor={(item) => item.id}
               refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[GREY_300]} />
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={handleRefresh}
+                  progressBackgroundColor={colors.background}
+                  colors={[colors.tint]}
+                />
               }
               ListEmptyComponent={() => (
                 <Text style={styles.noAccommodationsText}>You don't have any accommodations!</Text>

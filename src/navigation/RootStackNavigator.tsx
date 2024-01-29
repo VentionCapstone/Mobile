@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, NavigationHeader } from 'src/components';
+import { Button, ButtonType, FilterModal, NavigationHeader } from 'src/components';
 import {
   Account,
   CreateProfile,
@@ -14,7 +14,6 @@ import {
   Signup,
   UpdateAccommodation,
   UpdateProfile,
-  VerifyEmail,
   NotificationSettings,
   Notifications,
   AccommodationAddress,
@@ -27,8 +26,9 @@ import {
   CreateAmenities,
   ProfileImage,
 } from 'src/screens';
+import { AccommodationDetails } from 'src/screens/explore';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
-import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
+import { BUTTON_SIZES, GREY_500, WHITE } from 'src/styles';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
 import { RootStackParamList } from './RootStackNavigator.types';
@@ -42,7 +42,7 @@ const RootStackNavigator = () => {
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
-    StatusBar.setBackgroundColor(isDark ? BLACK : WHITE);
+    StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
   }, [isDark]);
 
   return (
@@ -62,12 +62,6 @@ const RootStackNavigator = () => {
         name="Signup"
         component={Signup}
         options={{ header: () => <NavigationHeader title="Sign Up" /> }}
-      />
-      <RootRouterStack.Screen
-        name="VerifyEmail"
-        component={VerifyEmail}
-        initialParams={{ email: '' }}
-        options={{ header: () => <NavigationHeader title="Verification" /> }}
       />
       <RootRouterStack.Screen
         name="UpdateProfile"
@@ -177,6 +171,16 @@ const RootStackNavigator = () => {
             />
           ),
         }}
+      />
+      <RootRouterStack.Screen
+        name="AccommodationDetails"
+        component={AccommodationDetails}
+        options={{ headerShown: false }}
+      />
+      <RootRouterStack.Screen
+        name="FilterModal"
+        component={FilterModal}
+        options={{ headerShown: false }}
       />
     </RootRouterStack.Navigator>
   );

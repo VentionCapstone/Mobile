@@ -1,28 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
-import {
-  GooglePlaceData,
-  GooglePlaceDetail,
-  GooglePlacesAutocomplete,
-} from 'react-native-google-places-autocomplete';
+import { ScrollView, View } from 'react-native';
+import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import MapView, { LatLng, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { useSelector } from 'react-redux';
-import { getColors } from 'src/store/selectors';
-import { AddressValues, IconName } from 'src/types';
+import { AddressValues } from 'src/types';
+import { getAddressInfo, getPlaceDetails } from 'src/utils';
 
 import { styles } from './AddressSelector.style';
-import {
-  GOOGLE_API_KEY,
-  REGION_DELTA,
-  getAddressInfo,
-  getPlaceDetails,
-  validateForm,
-} from './AddressSelector.utils';
+import { REGION_DELTA, validateForm } from './AddressSelector.utils';
 import AddressSelectorForm from './AddressSelectorForm';
-import Icon from '../../../Icon/Icon';
-import Text from '../../../Text/Text';
 import ThemedView from '../../../ThemedView/ThemedView';
 import showAlert from '../../../alert';
+import PlacesInput from '../../../inputs/PlacesInput/PlacesInput';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
 interface Props {
@@ -40,8 +28,6 @@ const initialAddressValues: AddressValues = {
 };
 
 const AddressSelector = ({ onSelect, existingAddress }: Props) => {
-  const colors = useSelector(getColors);
-
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -77,9 +63,7 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
           return;
         }
 
-        const { city, country, latitude, longitude } = getAddressInfo({
-          placeDetails,
-        });
+        const { city, country, latitude, longitude } = getAddressInfo(placeDetails);
 
         setSelectedCoordinates({ latitude, longitude });
         setMapRegion({
@@ -138,26 +122,7 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
             { height: addressSelected || existingAddress ? 80 : 300 },
           ]}
         >
-          <GooglePlacesAutocomplete
-            styles={{
-              textInput: [
-                styles.searchInput,
-                { backgroundColor: colors.secondaryBackground, color: colors.text },
-              ],
-              listView: [styles.placesInputListView, { backgroundColor: colors.background }],
-            }}
-            textInputProps={{
-              placeholderTextColor: colors.placeholder,
-            }}
-            placeholder="Search for address..."
-            onPress={handleSearch}
-            query={{
-              key: GOOGLE_API_KEY,
-              language: 'en',
-              components: 'country:uz|country:kz|country:ru',
-              types: ['(cities)'],
-            }}
-          />
+          <PlacesInput onSearch={handleSearch} />
         </View>
 
         <ScrollView>

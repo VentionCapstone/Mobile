@@ -28,7 +28,7 @@ const BottomTabNavigator = () => {
         name="Explore"
         component={Explore}
         options={{
-          header: () => <NavigationHeader title="Explore" showBackButton={false} />,
+          headerShown: false,
         }}
       />
       <BottomTab.Screen

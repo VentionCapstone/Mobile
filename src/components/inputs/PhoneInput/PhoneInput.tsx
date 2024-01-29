@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { Country } from 'react-native-country-picker-modal';
 import PhoneInput from 'react-native-phone-input';
@@ -28,11 +28,11 @@ const PhoneNumberInput = ({ label, error, onChangeText, value }: Props) => {
     onChangeText(formattedNumber);
   };
 
-  const handleOnChangeCountry = () => {
+  const handleOnChangeCountry = useCallback(() => {
     if (countryCode) {
       setInitialCountry(countryCode);
     }
-  };
+  }, [countryCode]);
 
   const handleOnCountrySelect = (country: Country) => {
     if (country.callingCode && phoneInputRef.current) {
@@ -46,7 +46,7 @@ const PhoneNumberInput = ({ label, error, onChangeText, value }: Props) => {
     setCountryCode(countryCode);
 
     handleOnChangeCountry();
-  }, [value]);
+  }, [value, handleOnChangeCountry]);
 
   return (
     <View style={styles.container}>

@@ -1,17 +1,18 @@
+import { memo } from 'react';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
 import { RED_100, TOMATO, WHITE_200 } from 'src/styles';
-import { Accommodation, IconName } from 'src/types';
+import { MyAccommodation, IconName } from 'src/types';
 
 import { styles } from './MyAccommodationListItem.style';
 import { getLocationName } from './MyAccommodationListItem.utils';
 
 type Props = {
-  accommodationDetails: Accommodation;
-  onEdit: (accommodation: Accommodation) => void;
+  accommodationDetails: MyAccommodation;
+  onEdit: (accommodation: MyAccommodation) => void;
   onDelete: (accommodationId: string) => void;
   loader: boolean;
 };
@@ -41,7 +42,9 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loade
       <View style={styles.descriptionContainer}>
         <View style={styles.titleContainer}>
           <Icon name={IconName.Location} size={20} />
-          <Text style={styles.city}>{locationName}</Text>
+          <Text style={styles.city} numberOfLines={1} ellipsizeMode="tail">
+            {locationName}
+          </Text>
         </View>
 
         <View style={styles.priceContainer}>
@@ -66,4 +69,4 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loade
   );
 };
 
-export default MyAccommodationListItem;
+export default memo(MyAccommodationListItem);

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { title1, title2, title3, LEVEL_1 } from 'src/styles';
-import { HORIZONTAL_12_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_12 } from 'src/utils';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingVertical: 10,
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
   },
   createAirBnbCard: {
     width: '95%',

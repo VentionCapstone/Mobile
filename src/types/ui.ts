@@ -55,6 +55,9 @@ export enum IconName {
   RemoveCircle = 'remove-circle-outline',
   Ellipse = 'ellipse-outline',
   Check = 'checkmark-circle-outline',
+
+  Options = 'options-outline',
+  Star = 'star',
 }
 
 export type IconSet = 'ionicons' | 'material';

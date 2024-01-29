@@ -1,9 +1,9 @@
-import { NavigationProp, useNavigation, Route } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Asset, ImagePicker } from 'expo-image-multiple-picker';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, View, ScrollView, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Icon, Text, showAlert } from 'src/components';
+import { Button, ButtonType, Icon, Text } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -15,15 +15,12 @@ import { IconName } from 'src/types';
 
 import { styles } from './AccommodationImage.style';
 
-type Props = {
-  route: Route<'AccommodationImage', { accommodationId: string }>;
-};
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationImage'>;
 
-const AccommodationImage = ({ route }: Props) => {
+const AccommodationImage = ({ route, navigation }: Props) => {
   const { accommodationId } = route.params;
 
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const colors = useSelector(getColors);
   const loader = useSelector(getAccommodationLoader);
   const { width } = useWindowDimensions();
@@ -73,7 +70,7 @@ const AccommodationImage = ({ route }: Props) => {
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
-  }, []);
+  }, [dispatch]);
 
   const isNextButtonDisabled = selectedImages.length < 5;
 
@@ -95,7 +92,7 @@ const AccommodationImage = ({ route }: Props) => {
             </View>
 
             <TouchableOpacity
-              style={[styles.uploaderContainer, { backgroundColor: colors.background }]}
+              style={[styles.uploaderContainer, { backgroundColor: colors.secondaryBackground }]}
               onPress={handleOpenGallery}
             >
               <Icon name={IconName.ImagesOutline} size={40} />
@@ -148,7 +145,6 @@ const AccommodationImage = ({ route }: Props) => {
         <View style={[styles.imagePickerContainer, { width }]}>
           <ImagePicker
             onSave={(assets) => handleSaveImages(assets)}
-            onCancel={() => showAlert('warning', { message: 'no permissions or user go back' })}
             galleryColumns={4}
             limit={10}
             timeSlider

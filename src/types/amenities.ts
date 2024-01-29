@@ -24,15 +24,15 @@ export interface Amenities {
   isCloseToCenter: boolean;
   hasHospitalNearby: boolean;
   hasAirportTransfer: boolean;
-  otherAmenities: string;
+  otherAmenities: string | string[] | null;
 }
 export interface AccommodationAmenitiesResponse extends Amenities {
   id: string;
-  accomodationId: string;
+  accommodationId: string;
 }
 
 export type AmenitiesParams = {
-  accomodationId: string;
+  accommodationId: string;
 };
 
 export interface UpdateAmenitiesParams {

@@ -1,11 +1,10 @@
-import { Accommodation, CreateAccommodationValues } from 'src/types';
+import { CreateAccommodationValues, MyAccommodation } from 'src/types';
 
 export type RootStackParamList = {
   Main: undefined;
 
   Signin: undefined;
   Signup: undefined;
-  VerifyEmail: { email: string };
 
   Account: undefined;
   AccommodationImage: { accommodationId: string };
@@ -24,8 +23,12 @@ export type RootStackParamList = {
   Profile: undefined;
   ProfileImage: undefined;
   UpdateProfile: undefined;
-  UpdateAccommodation: { accommodation: Accommodation };
+  UpdateAccommodation: { accommodation: MyAccommodation };
 
-  CreateAmenities: { accomodationId: string; isNew: boolean } | undefined;
+  CreateAmenities: { accomodationId: string; isNew: boolean };
   UpdateAmenities: { accomodationId: string };
+
+  AccommodationDetails: { accommodationId: string };
+  FilterModal: undefined;
+  Wishlist: undefined;
 };
