@@ -1,207 +1,170 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { ScrollView, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Icon, Input, Text, ThemedView } from 'src/components';
-import { ScreenTemplate } from 'src/components/templates';
-import { DEFAULT_FILTER_VALUES } from 'src/constants/defaultSearchVelues';
-import { RootStackParamList } from 'src/navigation';
+import { Button, ButtonType, NumericInput, Text } from 'src/components';
+import { DEFAULT_FILTER_VALUES } from 'src/constants/filter';
 import { useAppDispatch } from 'src/store';
-import { getFilterSettings, getIsDarkMode } from 'src/store/selectors';
+import { getColors, getFilterParams } from 'src/store/selectors';
 import { accommodationListActions } from 'src/store/slices';
-import { BLACK, BUTTON_SIZES, WHITE_100, WHITE_200 } from 'src/styles';
-import { IconName, OrderOptions, SearchValues } from 'src/types';
+import { BUTTON_SIZES } from 'src/styles';
+import { GetAccommodationQueryParams, SortOrder } from 'src/types';
 
 import { styles } from './FilterModal.styles';
+import FilterOrderButtons from './FilterSection';
+import ModalContainer from '../../ModalContainer/ModalContainer';
 
-const FilterModal = () => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const colors = useSelector(getIsDarkMode);
-  const filter = useSelector(getFilterSettings);
+type Props = {
+  visible: boolean;
+  onClose: () => void;
+};
+
+const FilterModal = ({ visible, onClose }: Props) => {
+  const colors = useSelector(getColors);
   const dispatch = useAppDispatch();
-  const { location, checkInDate, checkOutDate, ...rest } = filter;
-  const [formValues, setFormValues] = useState<SearchValues>(rest);
+  const filterParams = useSelector(getFilterParams);
 
-  const changeOrder = (key: keyof typeof formValues, val: OrderOptions) => {
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
-      [key]: val,
+  const [filterValues, setFilterValues] = useState<GetAccommodationQueryParams>({
+    minPrice: filterParams.minPrice,
+    maxPrice: filterParams.maxPrice,
+    minPeople: filterParams.minPeople,
+    maxPeople: filterParams.maxPeople,
+    minRooms: filterParams.minRooms,
+    maxRooms: filterParams.maxRooms,
+    orderByPeople: filterParams.orderByPeople,
+    orderByRoom: filterParams.orderByRoom,
+    orderByPrice: filterParams.orderByPrice,
+  });
+
+  const handleInputChange = useCallback(
+    (fieldName: keyof GetAccommodationQueryParams) => (value: number | null) => {
+      setFilterValues((prevValues) => ({
+        ...prevValues,
+        [fieldName]: value,
+      }));
+    },
+    []
+  );
+
+  const handlePriceOrderChange = useCallback((priceOrder: SortOrder | null) => {
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      orderByPrice: priceOrder,
     }));
-  };
+  }, []);
 
-  const handleInputChange = (key: keyof typeof formValues, value: number) => {
-    setFormValues((prevFormValues) => ({
-      ...prevFormValues,
-      [key]: value,
+  const handlePeopleOrderChange = useCallback((peopleOrder: SortOrder | null) => {
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      orderByPeople: peopleOrder,
     }));
+  }, []);
+
+  const handleRoomOrderChange = useCallback((roomOrder: SortOrder | null) => {
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      orderByRoom: roomOrder,
+    }));
+  }, []);
+
+  const handleApply = () => {
+    dispatch(accommodationListActions.setFilterParams({ ...filterParams, ...filterValues }));
+    onClose();
   };
 
-  const saveFilterValues = () => {
-    dispatch(accommodationListActions.setFilter({...formValues, location, checkInDate, checkOutDate}));
-    navigation.goBack();
-  };
-
-  const setFilterToDefault = () => {
-    setFormValues(DEFAULT_FILTER_VALUES);
+  const handleResetFilters = () => {
+    dispatch(accommodationListActions.resetFilters());
+    setFilterValues(DEFAULT_FILTER_VALUES);
   };
 
   return (
-    <ScreenTemplate
-      headerShown={false}
-      style={{
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: colors ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.5)',
-        marginTop: Platform.OS === 'android' ? 30 : undefined,
-      }}
-    >
-      <ThemedView style={styles.container}>
-        <View style={styles.modalHeader}>
-          <StatusBar backgroundColor={colors ? BLACK : WHITE_100} />
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name={IconName.Close} size={30} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Search options</Text>
-          <View style={{ width: 30 }} />
+    <ModalContainer bottomModal visible={visible} onClose={onClose}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.headerText}>Search options</Text>
+
+        <View style={[styles.filterContainer, { backgroundColor: colors.background }]}>
+          <Text style={styles.filterTitle}>Price</Text>
+
+          <View style={styles.inputRow}>
+            <NumericInput
+              label="Minimum"
+              value={filterValues.minPrice!}
+              onChangeText={handleInputChange('minPrice')}
+              style={styles.numericInput}
+            />
+            <NumericInput
+              label="Maximum"
+              value={filterValues.maxPrice!}
+              onChangeText={handleInputChange('maxPrice')}
+              style={styles.numericInput}
+            />
+          </View>
+
+          <FilterOrderButtons
+            onOrderStateChange={handlePriceOrderChange}
+            orderState={filterValues.orderByPrice}
+          />
         </View>
 
-        {/* Price */}
-        <View style={[styles.filterContainer, colors && styles.darkColorBackground]}>
-          <View style={styles.filterContentContent}>
-            <Text style={styles.filterTitle}>Order by Price</Text>
-          </View>
-          <View style={styles.filterContentContent}>
-            <Input
-              style={styles.input}
-              value={formValues.minPrice?.toString()}
-              placeholder="Min"
-              keyboardType="numeric"
-              onChangeText={(value) => handleInputChange('minPrice', Number(value))}
+        <View style={[styles.filterContainer, { backgroundColor: colors.background }]}>
+          <Text style={styles.filterTitle}>Rooms</Text>
+
+          <View style={styles.inputRow}>
+            <NumericInput
+              label="Minimum"
+              value={filterValues.minRooms!}
+              onChangeText={handleInputChange('minRooms')}
+              style={styles.numericInput}
             />
-            <Input
-              style={styles.input}
-              value={formValues.maxPrice?.toString()}
-              placeholder="Max"
-              keyboardType="numeric"
-              onChangeText={(value) => handleInputChange('maxPrice', Number(value))}
+            <NumericInput
+              label="Maximum"
+              value={filterValues.maxRooms!}
+              onChangeText={handleInputChange('maxRooms')}
+              style={styles.numericInput}
             />
           </View>
-          <View style={styles.filterContentContent}>
-            <Button
-              title="none"
-              size={BUTTON_SIZES.MD}
-              type={formValues.orderByPrice === null ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-              onPress={() => changeOrder('orderByPrice', null)}
-            />
-            <Button
-              title="Asc"
-              size={BUTTON_SIZES.MD}
-              type={formValues.orderByPrice === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-              onPress={() => changeOrder('orderByPrice', 'asc')}
-            />
-            <Button
-              title="Desc"
-              size={BUTTON_SIZES.MD}
-              type={formValues.orderByPrice === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-              onPress={() => changeOrder('orderByPrice', 'desc')}
-            />
-          </View>
+
+          <FilterOrderButtons
+            onOrderStateChange={handleRoomOrderChange}
+            orderState={filterValues.orderByRoom}
+          />
         </View>
-        {/* Rooms */}
-        <View style={[styles.filterContainer, colors && styles.darkColorBackground]}>
-          <View style={styles.filterContentContent}>
-            <Text style={styles.filterTitle}>Order by number of rooms</Text>
-          </View>
-          <View style={styles.filterContentContent}>
-            <Input
-              style={styles.input}
-              value={formValues.minRooms?.toString()}
-              placeholder="Min"
-              keyboardType="numeric"
-              onChangeText={(value) => handleInputChange('minRooms', Number(value))}
+
+        <View style={[styles.filterContainer, { backgroundColor: colors.background }]}>
+          <Text style={styles.filterTitle}>People</Text>
+
+          <View style={styles.inputRow}>
+            <NumericInput
+              label="Minimum"
+              value={filterValues.minPeople!}
+              onChangeText={handleInputChange('minPeople')}
+              style={styles.numericInput}
             />
-            <Input
-              style={styles.input}
-              value={formValues.maxRooms?.toString()}
-              placeholder="Max"
-              keyboardType="numeric"
-              onChangeText={(value) => handleInputChange('maxRooms', Number(value))}
+            <NumericInput
+              label="Maximum"
+              value={filterValues.maxPeople!}
+              onChangeText={handleInputChange('maxPeople')}
+              style={styles.numericInput}
             />
           </View>
-          <View style={styles.filterContentContent}>
-            <Button
-              title="none"
-              size={BUTTON_SIZES.MD}
-              type={formValues.orderByRooms === null ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-              onPress={() => changeOrder('orderByRooms', null)}
-            />
-            <Button
-              title="Asc"
-              size={BUTTON_SIZES.MD}
-              type={formValues.orderByRooms === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-              onPress={() => changeOrder('orderByRooms', 'asc')}
-            />
-            <Button
-              title="Desc"
-              size={BUTTON_SIZES.MD}
-              type={formValues.orderByRooms === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-              onPress={() => changeOrder('orderByRooms', 'desc')}
-            />
-          </View>
+
+          <FilterOrderButtons
+            onOrderStateChange={handlePeopleOrderChange}
+            orderState={filterValues.orderByPeople}
+          />
         </View>
-        {/* People */}
-        <View style={[styles.filterContainer, colors && styles.darkColorBackground]}>
-          <View style={styles.filterContentContent}>
-            <Text style={styles.filterTitle}>Order by number of people</Text>
-          </View>
-          <View style={styles.filterContentContent}>
-            <Input
-              style={styles.input}
-              value={formValues.minPeople?.toString()}
-              placeholder="Min"
-              keyboardType="numeric"
-              onChangeText={(value) => handleInputChange('minPeople', Number(value))}
-            />
-            <Input
-              style={styles.input}
-              value={formValues.maxPeople?.toString()}
-              placeholder="Max"
-              keyboardType="numeric"
-              onChangeText={(value) => handleInputChange('maxPeople', Number(value))}
-            />
-          </View>
-          <View style={styles.filterContentContent}>
-            <Button
-              title="none"
-              size={BUTTON_SIZES.MD}
-              type={formValues.orderByPeople === null ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-              onPress={() => changeOrder('orderByPeople', null)}
-            />
-            <Button
-              title="Asc"
-              size={BUTTON_SIZES.MD}
-              type={formValues.orderByPeople === 'asc' ? ButtonType.SECONDARY : ButtonType.TERTIARY}
-              onPress={() => changeOrder('orderByPeople', 'asc')}
-            />
-            <Button
-              title="Desc"
-              size={BUTTON_SIZES.MD}
-              type={
-                formValues.orderByPeople === 'desc' ? ButtonType.SECONDARY : ButtonType.TERTIARY
-              }
-              onPress={() => changeOrder('orderByPeople', 'desc')}
-            />
-          </View>
-        </View>
-        </ThemedView>
-      <ThemedView style={[styles.footer, colors && { borderColor: WHITE_200 }]}>
-        <TouchableOpacity onPress={setFilterToDefault}>
-          <Text style={{ fontSize: 20, textDecorationLine: 'underline' }}>Default</Text>
-        </TouchableOpacity>
-        <Button title="Apply" size={BUTTON_SIZES.MD} onPress={saveFilterValues} />
-      </ThemedView>
-    </ScreenTemplate>
+      </ScrollView>
+
+      <View style={styles.footer}>
+        <Button
+          title="Default"
+          type={ButtonType.TERTIARY}
+          size={BUTTON_SIZES.SM}
+          onPress={handleResetFilters}
+        />
+
+        <Button title="Apply" size={BUTTON_SIZES.SM} onPress={handleApply} />
+      </View>
+    </ModalContainer>
   );
 };
 

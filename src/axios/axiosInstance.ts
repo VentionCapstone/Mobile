@@ -18,16 +18,9 @@ const endpointsWithoutToken = [ENDPOINTS.signin, ENDPOINTS.signup];
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const accessToken = await SecureStore.getItemAsync(SecureStorageKey.ACCESS_TOKEN);
-    const refreshToken = await SecureStore.getItemAsync(SecureStorageKey.ACCESS_TOKEN);
 
     if (config.url && accessToken && !endpointsWithoutToken.includes(config.url)) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-
-    if (config.url === ENDPOINTS.signout && refreshToken) {
-      if (config.headers) {
-        config.headers['refresh-token'] = refreshToken;
-      }
     }
 
     return config;

@@ -1,95 +1,111 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Card } from 'src/components';
+import { Card, ExploreHeader, FilterModal, SearchModal, Text, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { useAppDispatch } from 'src/store';
 import {
   getAccommodationList,
   getAccommodationListLoading,
-  getFilterSettings,
+  getFilterParams,
+  getSearchParams,
 } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
-import { ExploreListItem } from 'src/types';
 
-interface CardProps extends ExploreListItem {}
+import styles from './Explore.style';
 
 const Explore = () => {
   const dispatch = useAppDispatch();
-  const filter = useSelector(getFilterSettings);
-  const data = useSelector(getAccommodationList);
-  const pending = useSelector(getAccommodationListLoading);
-  const [pageNumber, setPageNumber] = useState<number>(1);
+  const accommodationsList = useSelector(getAccommodationList);
+  const isLoading = useSelector(getAccommodationListLoading);
+  const filterParams = useSelector(getFilterParams);
+  const searchParams = useSelector(getSearchParams);
 
-  const renderItem = useMemo(
-    () =>
-      ({ item }: { item: CardProps }) => (
-        <Card
-          id={item.id}
-          thumbnailUrl={item.thumbnailUrl}
-          squareMeters={item.squareMeters}
-          numberOfRooms={item.numberOfRooms}
-          allowedNumberOfPeople={item.allowedNumberOfPeople}
-          price={item.price}
-          address={item.address}
-        />
-      ),
-    []
-  );
+  const [page, setPage] = useState(1);
+  const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
+  const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
 
-  const fetchData = useCallback(async () => {
-    await dispatch(AsyncThunks.getListOfAccommodations({ ...filter, page: pageNumber }));
-  }, [filter, pageNumber, dispatch]);
+  const fetchAccommodationList = useCallback(async () => {
+    const res = await dispatch(
+      AsyncThunks.getListOfAccommodations({ page, ...filterParams, ...searchParams })
+    );
 
-  const handleRefresh = useCallback(() => {
-    setPageNumber(1);
-    fetchData();
-  }, [fetchData]);
+    console.log(res);
+  }, [page, dispatch, filterParams, searchParams]);
 
-  const handleLoadMore = useCallback(() => {
-    if (!pending) {
-      setPageNumber((prevPage) => prevPage + 1);
-      dispatch(AsyncThunks.getUpdatedListOfAccommodations({ ...filter, page: pageNumber }));
-    }
-  }, [pending, filter, pageNumber, dispatch]);
+  const handleRefresh = () => {
+    setPage(1);
+  };
 
-  useEffect(() => {
-    fetchData();
+  const handleLoadMore = () => {
+    setPage((prev) => prev + 1);
+  };
+
+  const handleAddToWishlist = async (accommodationId: string) => {
+    await dispatch(AsyncThunks.addToWishlist(accommodationId));
+  };
+
+  const handleRemoveFromWishlist = async (accommodationId: string) => {
+    await dispatch(AsyncThunks.removeFromWishlist(accommodationId));
+  };
+
+  const handleCloseSearchModal = () => {
+    setIsSearchVisible(false);
+  };
+
+  const handleCloseFilterModal = () => {
+    setIsFilterVisible(false);
+  };
+
+  const handleOpenSearchModal = () => {
+    setIsSearchVisible(true);
+  };
+
+  const handleOpenFilterModal = () => {
+    setIsFilterVisible(true);
+  };
+
+  const handleLoginRequired = useCallback(() => {
+    showAlert('warning', { message: 'You should be logged in to add your wishlists' });
   }, []);
 
   useEffect(() => {
-    handleRefresh();
-  }, [filter, handleRefresh]);
+    fetchAccommodationList();
+  }, [page, fetchAccommodationList]);
 
   return (
     <ScreenTemplate>
+      <ExploreHeader
+        onOpenSearchModal={handleOpenSearchModal}
+        onOpenFilterModal={handleOpenFilterModal}
+      />
+
+      <SearchModal visible={isSearchVisible} onClose={handleCloseSearchModal} />
+      <FilterModal visible={isFilterVisible} onClose={handleCloseFilterModal} />
+
       <FlatList
-        style={[styles.container]}
-        data={data}
-        keyExtractor={(item: CardProps) => item.id}
-        renderItem={renderItem}
+        contentContainerStyle={styles.container}
+        data={accommodationsList?.data}
+        keyExtractor={(item, index) => item.id + index}
+        renderItem={({ item }) => (
+          <Card
+            item={item}
+            onLoginRequired={handleLoginRequired}
+            onAddedToWishlist={handleAddToWishlist}
+            onRemoveFromWishlist={handleRemoveFromWishlist}
+          />
+        )}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.2}
-        refreshControl={<RefreshControl refreshing={pending} onRefresh={handleRefresh} />}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No accommodations found!</Text>
+          </View>
+        }
       />
     </ScreenTemplate>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    height: 800,
-    alignSelf: 'center',
-    width: '95%',
-    padding: 10,
-  },
-  loading: {
-    marginVertical: 20,
-  },
-  emptySpace: {
-    height: 80,
-  },
-});
 
 export default Explore;

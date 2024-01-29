@@ -1,60 +1,45 @@
 import { StyleSheet } from 'react-native';
-import { GREY_500, WHITE } from 'src/styles';
+import { title1, title2, LEVEL_1 } from 'src/styles';
+import { PADDING_HORIZONTAL_12, PADDING_HORIZONTAL_16 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 10,
-  },
-  modalHeader: {
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '101%',
+    paddingHorizontal: PADDING_HORIZONTAL_12,
+    paddingVertical: 20,
+    gap: 20,
   },
   headerText: {
-    fontSize: 30,
+    ...title1,
+    marginTop: 10,
     marginLeft: 20,
-    fontWeight: 'bold',
   },
   filterContainer: {
-    flex: 2,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    marginVertical: 5,
-    marginHorizontal: 10,
-    backgroundColor: WHITE,
-    borderRadius: 20,
-    gap: 5,
-    width: '95%',
-  },
-  filterContentContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 10,
-  },
-  input: {
-    width: 140,
-    height: 45,
-    fontSize: 16,
-  },
-  darkColorBackground: {
-    backgroundColor: GREY_500,
+    paddingVertical: 15,
+    borderRadius: 10,
+    paddingHorizontal: PADDING_HORIZONTAL_16,
+    ...LEVEL_1,
   },
   filterTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    ...title2,
+    fontWeight: '400',
+  },
+  inputRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  numericInput: {
+    width: 150,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 30,
-    borderTopWidth: 1,
-    width: '100%',
+    paddingHorizontal: PADDING_HORIZONTAL_12,
+    paddingVertical: 10,
   },
 });

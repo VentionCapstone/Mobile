@@ -1,13 +1,23 @@
 import { StyleSheet } from 'react-native';
-import { GREY_500, WHITE_100 } from 'src/styles';
+import { title3 } from 'src/styles';
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignContent: 'center',
+    paddingBottom: 40,
+  },
+  loading: {
+    marginVertical: 20,
+  },
+  emptySpace: {
+    height: 80,
+  },
+  emptyContainer: {
     alignItems: 'center',
-    gap: 10,
+    justifyContent: 'center',
+  },
+  emptyText: {
+    ...title3,
+    marginTop: 10,
   },
 });
 

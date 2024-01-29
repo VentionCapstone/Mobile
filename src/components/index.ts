@@ -13,24 +13,25 @@ import ThemedView from './ThemedView/ThemedView';
 import showAlert from './alert';
 
 export {
-  ImageCarousel,
-  Button,
   ButtonType,
+  Button,
+  Card,
+  Chip,
+  Collapsable,
+  ExploreHeader,
   Icon,
+  ImageCarousel,
   NavigationHeader,
   ProfileFooter,
   ProfileHeader,
-  ExploreHeader,
   Text,
   ThemedView,
   showAlert,
-  Chip,
-  Card,
-  Collapsable,
 };
 
 export * from './navigationLists';
 export * from './inputs';
 export * from './modals/bottomModals';
 export * from './modals/centerModals';
+export * from './modals/ExploreModals';
 export * from './accommodationList';

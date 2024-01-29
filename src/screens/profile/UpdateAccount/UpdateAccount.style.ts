@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   editButton: {
     width: '100%',
-    height: 50,
+    height: 40,
     bottom: 0,
     alignSelf: 'center',
     position: 'absolute',

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -19,27 +19,22 @@ const ModalContainer = ({ visible, onClose, children, bottomModal }: ModalContai
 
   return (
     <Modal animationType="fade" transparent visible={visible} onRequestClose={onClose}>
-      {!bottomModal && (
-        <View style={styles.centralModalContainer}>
-          <View style={[styles.modalContent, { backgroundColor: colors.secondaryBackground }]}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Icon name={IconName.Close} size={30} />
-            </TouchableOpacity>
-            {children}
-          </View>
+      <View style={bottomModal ? styles.bottomModalContainer : styles.centralModalContainer}>
+        <View
+          style={[
+            bottomModal ? styles.bottomModalContent : styles.modalContent,
+            { backgroundColor: colors.background },
+          ]}
+        >
+          <TouchableOpacity
+            style={[styles.closeButton, { backgroundColor: colors.background }]}
+            onPress={onClose}
+          >
+            <Icon name={IconName.Close} size={30} color={colors.tint} />
+          </TouchableOpacity>
+          {children}
         </View>
-      )}
-
-      {bottomModal && (
-        <View style={styles.bottomModalContainer}>
-          <View style={[styles.bottomModalContent, { backgroundColor: colors.background }]}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Icon name={IconName.Close} size={30} />
-            </TouchableOpacity>
-            {children}
-          </View>
-        </View>
-      )}
+      </View>
     </Modal>
   );
 };

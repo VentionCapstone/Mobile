@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native';
-import { BLACK, GREY_300 } from 'src/styles';
+import { BLACK, GREY_300, LEVEL_1, WHITE_100, paragraph2, title3 } from 'src/styles';
+import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
+    paddingVertical: 20,
   },
   header: {
     width: '100%',
-    height: 60,
-    backgroundColor: 'rgba(0,0,0,0)',
+    height: 80,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -32,6 +33,8 @@ export const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: WHITE_100,
+    ...LEVEL_1,
   },
   imageContainer: {
     width: '100%',
@@ -39,45 +42,53 @@ export const styles = StyleSheet.create({
     backgroundColor: BLACK,
   },
   titleContainer: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 28,
+    marginBottom: 20,
   },
-  title: {
-    fontSize: 25,
+  availabilityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    gap: 5,
   },
-  headTitle: {
-    fontSize: 35,
-    marginBottom: 15,
-    fontWeight: 'bold',
-  },
-  subtitle: { fontSize: 16 },
-  description: {
+  address: {
     fontSize: 18,
   },
-  descriptionContainer: {
-    marginTop: 20,
-    marginBottom: 10,
+  headTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    ...paragraph2,
+  },
+  description: {
+    ...title3,
+    fontWeight: '500',
+    marginTop: 10,
   },
   profileContainer: {
     flexDirection: 'row',
-    padding: 20,
-    gap: 30,
     alignItems: 'center',
     marginBottom: 20,
+    marginTop: 20,
+    borderRadius: 10,
+    padding: 20,
+    gap: 30,
+    ...LEVEL_1,
   },
   avatar: {
     width: 50,
     height: 50,
-    borderRadius: 100,
+    borderRadius: 25,
   },
   profileText: {
     fontSize: 18,
     fontWeight: 'bold',
   },
   amenitiesTitle: {
-    fontSize: 25,
-    marginVertical: 15,
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
   badgesContainer: {
     flexDirection: 'row',
@@ -99,6 +110,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
     paddingHorizontal: 20,
-    height: 120,
+    height: 100,
   },
 });

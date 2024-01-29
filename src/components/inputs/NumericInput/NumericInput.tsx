@@ -30,10 +30,10 @@ const NumericInput = ({
   return (
     <Input
       label={label}
-      placeholder={placeholder || '0'}
+      placeholder={placeholder ? placeholder : '0'}
       keyboardType="numeric"
-      maxLength={maxLength}
-      value={value !== null ? value.toString() : ''}
+      maxLength={maxLength ? maxLength : 10}
+      value={value !== null ? value?.toString() : ''}
       onChangeText={handleTextChange}
       style={style}
       error={error}

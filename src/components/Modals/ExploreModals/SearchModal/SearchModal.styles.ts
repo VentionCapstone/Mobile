@@ -1,55 +1,54 @@
 import { StyleSheet } from 'react-native';
+import { LEVEL_1, title2 } from 'src/styles';
+import { PADDING_HORIZONTAL_12, PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      width: '100%',
-      height: 40,
-      marginBottom: 20,
-      paddingHorizontal: 15,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
+    height: '100%',
+    paddingBottom: 50,
   },
-  icon: {
-    borderRadius: 100,
-    borderWidth: 0.5,
-    width: 34,
-    height: 34,
+  headerTitle: {
+    ...title2,
+    padding: 20,
+  },
+  inputsContainer: {
+    alignItems: 'center',
+    gap: 20,
+  },
+  where: {
+    width: '100%',
+    height: 160,
+    borderRadius: 10,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
+    paddingVertical: 20,
+    zIndex: 999,
+    gap: 30,
+    ...LEVEL_1,
+  },
+  whereTitle: {
+    ...title2,
+  },
+  closeIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    ...LEVEL_1,
   },
-  datePicker: {
-    marginVertical: 10,
-  },
-  title: {
+  footerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
   },
-  buttonText: {
-    fontSize: 15,
-    padding: 5,
-    justifyContent: 'flex-end',
-    textAlign:'right'
-  },
-  searchInput: {
+  footer: {
+    position: 'absolute',
+    bottom: 0,
     width: '100%',
-    borderRadius: 15,
-    height: 40,
-    fontSize: 18,
+    height: 80,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: PADDING_HORIZONTAL_12,
   },
-  placesInputListView: {
-    width: '100%',
-    zIndex: 999,
-    maxHeight: 400,
-  },
-  searchModalFooter: {
-      height: 85,
-      position: 'absolute',
-      bottom: 0,
-      flexDirection: 'row',
-      width: '100%',
-      padding: 20,
-      justifyContent: 'space-between',
-      alignItems: 'center',
-  }
 });

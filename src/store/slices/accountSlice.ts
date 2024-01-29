@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { onError, onPending } from 'src/store/stateResults';
 import { ProfileResponseType, StateType } from 'src/types';
 
+import { onError, onPending } from '../stateResults';
 import { AsyncThunks } from '../thunks';
 
 type AccountStateType = StateType<ProfileResponseType | any> & {

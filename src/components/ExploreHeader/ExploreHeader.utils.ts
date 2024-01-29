@@ -1,4 +1,4 @@
-import { stringToDateFormat } from "src/utils";
+import { stringToDateFormat } from 'src/utils';
 
 export const getStayDuration = (checkin: string | undefined, checkout: string | undefined) => {
   if (!checkin || !checkout) return;
@@ -7,7 +7,7 @@ export const getStayDuration = (checkin: string | undefined, checkout: string | 
   if (checkinDate >= checkoutDate) return;
   const diffInTime = checkoutDate.getTime() - checkinDate.getTime();
   const diffInDays = Math.round(diffInTime / (1000 * 3600 * 24));
-  const dayOrDays = diffInDays > 1 ? 'days' : 'day'
+  const dayOrDays = diffInDays > 1 ? 'days' : 'day';
   const durationText = `${diffInDays} ${dayOrDays}`;
   return durationText;
-}
+};

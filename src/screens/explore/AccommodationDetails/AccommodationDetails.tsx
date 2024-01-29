@@ -1,5 +1,4 @@
-import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -11,129 +10,96 @@ import {
   Image,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Icon, ImageCarousel, Text, ThemedView } from 'src/components';
+import {
+  Button,
+  ButtonType,
+  Icon,
+  ImageCarousel,
+  Text,
+  ThemedView,
+  showAlert,
+} from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccommodation, getAccommodationLoader, getIsDarkMode } from 'src/store/selectors';
+import {
+  getAccommodation,
+  getAccommodationLoader,
+  getColors,
+  getIsLoggedIn,
+} from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
-import { BLACK, BUTTON_SIZES, LEVEL_1, TOMATO, WHITE } from 'src/styles';
-import { IconName, Media } from 'src/types';
-import { AccommodationAmenitiesResponse } from 'src/types/amenities';
+import { BUTTON_SIZES, GREY_200, TOMATO } from 'src/styles';
+import { IconName } from 'src/types';
 
 import { styles } from './AccommodationDetails.styles';
-import { AMENITIES_CHIP_DATA, formatDate } from './AccommodationDetails.utils.ts';
+import { formatDate } from './AccommodationDetails.utils.ts';
 
-type AccommodationDetailsNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'AccommodationDetails'
->;
-type AccommodationDetailsRouteProp = RouteProp<RootStackParamList, 'AccommodationDetails'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDetails'>;
 
-type AccommodationDetailsProps = {
-  navigation: AccommodationDetailsNavigationProp;
-  route: AccommodationDetailsRouteProp;
-};
-
-const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
-  const acccomodationId = route.params?.accomodationId;
+const AccommodationDetails = ({ route, navigation }: Props) => {
+  const acccomodationId = route.params.accommodationId;
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const theme = useSelector(getIsDarkMode);
-  const data = useSelector(getAccommodation);
+  const colors = useSelector(getColors);
+  const accommodation = useSelector(getAccommodation);
   const refreshing = useSelector(getAccommodationLoader);
+  const isLoggedIn = useSelector(getIsLoggedIn);
   const [heartPressed, setHeartPressed] = useState<boolean>(false);
 
-  const mappedMedia = useMemo(
-    () => data?.media.map((media: Media) => media?.imageUrl),
-    [data?.media]
+  const accommodationMedia = useMemo(
+    () => accommodation?.media?.map((media) => media.imageUrl) || [],
+    [accommodation]
   );
 
-  const handleHeartPress = () => {
-    setHeartPressed(!heartPressed);
+  const handleAddToWishlist = async (acccomodationId: string) => {
+    await dispatch(AsyncThunks.addToWishlist(acccomodationId));
   };
 
-  const getCardData = useCallback(async () => {
+  const handleRemoveFromWishlist = async (accommodationId: string) => {
+    await dispatch(AsyncThunks.removeFromWishlist(accommodationId));
+  };
+
+  const handleToggleWishlist = () => {
+    if (!isLoggedIn) {
+      showAlert('warning', { message: 'You should be logged in to add your wishlists' });
+      return;
+    }
+
+    setHeartPressed(!heartPressed);
+    if (heartPressed) {
+      handleRemoveFromWishlist(acccomodationId);
+    } else {
+      handleAddToWishlist(acccomodationId);
+    }
+  };
+
+  const fetchAccommodation = useCallback(async () => {
     const response = await dispatch(AsyncThunks.getAccommodation(acccomodationId));
+
     if (!response.payload?.success) {
       navigation.goBack();
     }
   }, [dispatch, acccomodationId, navigation]);
 
-  const AmenitiesBadges = useMemo(() => {
-    const { otherAmenities, id, accommodationId, ...rest }: AccommodationAmenitiesResponse =
-      data?.amenities[0];
-    const amenities = Object.keys(rest);
-    return amenities.map((amenity) => {
-      if (rest[amenity as keyof typeof rest]) {
-        const { icon, text, iconSet } = AMENITIES_CHIP_DATA[amenity as keyof typeof rest];
-        return (
-          <ThemedView key={amenity} style={styles.badge}>
-            <Icon name={icon} size={20} iconSet={iconSet} />
-            <Text style={styles.badgeText}>{text}</Text>
-          </ThemedView>
-        );
-      }
-    });
-  }, [data?.amenities]);
-
-  const otherAmenitiesBadgesMemo = useMemo(() => {
-    const separator = ', ';
-    if (data?.amenities[0]?.otherAmenities) {
-      return data?.amenities[0]['otherAmenities'].split(separator).map((amenity) => {
-        return (
-          <ThemedView key={amenity} style={styles.badge}>
-            <Icon name={IconName.Check} size={20} />
-            <Text style={styles.badgeText}>{amenity}</Text>
-          </ThemedView>
-        );
-      });
-    }
-  }, [data?.amenities]);
-
-  const refreshCardData = useCallback(async () => {
-    getCardData();
-  }, [getCardData]);
-
   useEffect(() => {
-    getCardData();
-  }, []);
+    fetchAccommodation();
+  }, [fetchAccommodation]);
 
   return (
     <ScreenTemplate>
       <SafeAreaView>
         <StatusBar />
       </SafeAreaView>
+
       <ScrollView
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshCardData} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchAccommodation} />}
       >
         <View style={styles.header}>
-          <TouchableOpacity
-            style={[
-              styles.icon,
-              LEVEL_1,
-              {
-                backgroundColor: theme ? BLACK : WHITE,
-                borderColor: theme ? WHITE : BLACK,
-                shadowColor: theme ? WHITE : BLACK,
-              },
-            ]}
-            onPress={() => navigation.goBack()}
-          >
+          <TouchableOpacity style={styles.icon} onPress={() => navigation.goBack()}>
             <Icon name={IconName.BackChevron} size={24} />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.icon,
-              LEVEL_1,
-              {
-                backgroundColor: theme ? BLACK : WHITE,
-                borderColor: theme ? WHITE : BLACK,
-                shadowColor: theme ? WHITE : BLACK,
-              },
-            ]}
-            onPress={handleHeartPress}
-          >
+
+          <TouchableOpacity style={styles.icon} onPress={handleToggleWishlist}>
             {heartPressed ? (
               <Icon name={IconName.Heart} color={TOMATO} size={24} />
             ) : (
@@ -141,42 +107,52 @@ const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
             )}
           </TouchableOpacity>
         </View>
-        {/* Main Content */}
+
         <ThemedView>
-          <Image source={{ uri: data?.thumbnailUrl }} style={styles.imagePlaceholder} />
+          <Image source={{ uri: accommodation?.thumbnailUrl }} style={styles.imagePlaceholder} />
           <View style={styles.container}>
-            <Text style={styles.headTitle}>{data?.title}</Text>
+            <Text style={styles.headTitle}>{accommodation?.title}</Text>
             <View style={styles.titleContainer}>
-              <View>
-                <Text style={styles.title}>{`${data?.address?.city}`}</Text>
-                <Text style={styles.title}>{`(${data?.address?.country})`}</Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-                {data?.available && <Text>Available</Text>}
+              <Text style={styles.address}>
+                {accommodation?.address?.city}
+                {', '}
+                {accommodation?.address.country}
+              </Text>
+              <View style={styles.availabilityContainer}>
+                {accommodation?.available && <Text>Available</Text>}
                 <Icon
-                  name={data?.available ? IconName.Check : IconName.Ellipse}
-                  color={data?.available && 'green'}
+                  name={accommodation?.available ? IconName.Check : IconName.Ellipse}
+                  color={accommodation?.available ? 'green' : GREY_200}
+                  size={20}
                 />
               </View>
             </View>
-            <Text style={styles.subtitle}>{`Full accomodation, ${data?.address?.street}`}</Text>
+
+            <Text
+              style={styles.subtitle}
+            >{`Full accomodation, ${accommodation?.address?.street}`}</Text>
             <Text style={styles.subtitle}>
-              {`${data?.allowedNumberOfPeople} guests · ${data?.numberOfRooms} rooms · ${data?.squareMeters} sq. meters`}
+              {`${accommodation?.allowedNumberOfPeople} guests · ${accommodation?.numberOfRooms} rooms · ${accommodation?.squareMeters} sq. meters`}
             </Text>
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.description}>{data?.description}</Text>
-            </View>
-            <View style={styles.profileContainer}>
-              {data?.owner && (
+
+            <Text style={styles.description}>{accommodation?.description}</Text>
+
+            <TouchableOpacity
+              style={[styles.profileContainer, { backgroundColor: colors.background }]}
+            >
+              {accommodation?.owner && (
                 <>
-                  <Image source={{ uri: data?.owner?.profile?.imageUrl }} style={styles.avatar} />
+                  <Image
+                    source={{ uri: accommodation?.owner?.profile?.imageUrl }}
+                    style={styles.avatar}
+                  />
                   <View>
                     <Text style={styles.profileText}>
-                      {data?.owner?.firstName ?? ''} {data?.owner?.lastName ?? ''}
+                      {accommodation?.owner?.firstName ?? ''} {accommodation?.owner?.lastName ?? ''}
                     </Text>
-                    <Text>{data?.owner?.profile?.country ?? ''}</Text>
+                    <Text>{accommodation?.owner.profile.country ?? ''}</Text>
                   </View>
-                  {data?.owner?.isVerified && (
+                  {accommodation?.owner && (
                     <>
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
                         <Icon name={IconName.Check} color="green" />
@@ -185,34 +161,32 @@ const AccommodationDetails = ({ route }: AccommodationDetailsProps) => {
                   )}
                 </>
               )}
-            </View>
-            <Text style={styles.amenitiesTitle}>What amenities will be waiting for you?</Text>
-            <View style={styles.badgesContainer}>
-              {AmenitiesBadges}
-              {otherAmenitiesBadgesMemo}
-            </View>
+            </TouchableOpacity>
+
             <View style={{ marginVertical: 30 }}>
               <Text style={styles.amenitiesTitle}>More photos</Text>
-              <ImageCarousel images={mappedMedia} />
+              <ImageCarousel images={accommodationMedia} />
             </View>
-            <View style={{ marginVertical: 30 }}>
+
+            <View style={{ marginVertical: 10 }}>
               <Text>Available</Text>
-              <Text>From: {formatDate(data?.availableFrom ?? '')}</Text>
-              <Text>Till: {formatDate(data?.availableTo ?? '')}</Text>
+              <Text>From: {formatDate(accommodation?.availableFrom ?? '')}</Text>
+              <Text>Till: {formatDate(accommodation?.availableTo ?? '')}</Text>
             </View>
           </View>
         </ThemedView>
       </ScrollView>
-      <ThemedView style={styles.footer}>
-        <Text style={{ fontSize: 20 }}>Total price: ${data?.price ?? 0 / 100}</Text>
+
+      <View style={styles.footer}>
+        <Text style={{ fontSize: 20 }}>Total price: ${accommodation?.price ?? 0 / 100}</Text>
         <Button
           title="Book"
           onPress={() => {}}
-          disabled={!data?.available}
           size={BUTTON_SIZES.MD}
           type={ButtonType.PRIMARY}
+          disabled
         />
-      </ThemedView>
+      </View>
     </ScreenTemplate>
   );
 };

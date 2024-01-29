@@ -1,30 +1,26 @@
 import { StyleSheet } from 'react-native';
+import { LEVEL_1, title3 } from 'src/styles';
 
 export const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
   card: {
-    borderRadius: 14,
-    margin: 10,
-    width: 350,
-  },
-  cardHeader: {
+    padding: 20,
     fontSize: 24,
-    padding: 20,
+    borderRadius: 10,
     justifyContent: 'space-between',
+    alignItems: 'center',
     flexDirection: 'row',
-  },
-  cardBody: {
-    padding: 20,
-  },
-  header: {
-    backgroundColor: '#f0f0f0',
-    padding: 10,
+    ...LEVEL_1,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 18,
+    ...title3,
+    fontSize: 14,
   },
   contentTitle: {
     fontSize: 24,

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -65,4 +65,4 @@ const LanguageSelector = ({ onSelect, value }: Props) => {
   );
 };
 
-export default React.memo(LanguageSelector);
+export default memo(LanguageSelector);

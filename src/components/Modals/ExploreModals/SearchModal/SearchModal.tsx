@@ -1,214 +1,130 @@
-import { StatusBar } from 'expo-status-bar';
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { FlatList, Modal, SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { getToday } from 'react-native-modern-datepicker';
+import { useState } from 'react';
+import { View } from 'react-native';
+import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { useSelector } from 'react-redux';
+import { ButtonType } from 'src/components/Button';
 import Button from 'src/components/Button/Button';
-import Icon from 'src/components/Icon/Icon';
+import Collapsable from 'src/components/Collapsable/Collapsable';
 import Text from 'src/components/Text/Text';
 import ThemedView from 'src/components/ThemedView/ThemedView';
-import { getColors, getFilterSettings } from 'src/store/selectors';
-import { BLACK, BUTTON_SIZES, LEVEL_1, WHITE, WHITE_100 } from 'src/styles';
-import { IconName, SearchValues } from 'src/types';
-import { styles } from './SearchModal.styles';
-import { formatLocationString, getNextDay, getPlaceDetails, isInvalidDateRange } from './SearchModal.utils';
+import { PlacesInput } from 'src/components/inputs';
+import { DEFAULT_FILTER_VALUES } from 'src/constants/filter';
 import { useAppDispatch } from 'src/store';
+import { getColors, getSearchParams } from 'src/store/selectors';
 import { accommodationListActions } from 'src/store/slices';
-import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
-import showAlert from 'src/components/alert';
-import { searchSlice } from 'src/store/slices/searchSlice';
-import { CollapsableLocationItem } from 'src/components/CollapsableLocationItem/CollapsableLocationItem';
-import { CollapsableDatePicker } from 'src/components/CollapsableDatePicker/CollapsableDatePicker';
-import { ScreenTemplate } from 'src/components/templates';
+import { BUTTON_SIZES } from 'src/styles';
+import { GetAccommodationQueryParams } from 'src/types';
+import { getInitialDate } from 'src/utils';
 
-type ExploreModalProps = {
-  modalOpen: boolean;
-  changeOpen: () => void;
+import { styles } from './SearchModal.styles';
+import ModalContainer from '../../ModalContainer/ModalContainer';
+import { DateTimePicker } from '../../centerModals';
+
+type Props = {
+  visible: boolean;
+  onClose: () => void;
 };
 
-const SearchModal = ({ modalOpen, changeOpen }: ExploreModalProps) => {
+const SearchModal = ({ visible, onClose }: Props) => {
   const colors = useSelector(getColors);
   const dispatch = useAppDispatch();
-  const filter = useSelector(getFilterSettings);
-  const [location, setLocation] = useState(filter.location ? filter.location : "")
-  const [checkInDate, setcheckInDate] = useState(filter.checkInDate ? filter.checkInDate : "")
-  const [checkOutDate, setcheckOutDate] = useState(filter.checkOutDate ? filter.checkOutDate : "")
-  const [formValues, setFormValues] = useState<SearchValues>({ ...filter, location, checkInDate, checkOutDate });
+  const searchParams = useSelector(getSearchParams);
 
-  useEffect(() => {
-    setFormValues({ ...filter, location, checkInDate, checkOutDate });
-  }, [filter, location, checkInDate, checkOutDate]);
+  const [searchValues, setSearchValues] = useState<GetAccommodationQueryParams>({
+    location: searchParams.location,
+    checkInDate: searchParams.checkInDate,
+    checkOutDate: searchParams.checkOutDate,
+  });
 
-  const handleGooglePlacesSearch = useCallback(
-    async (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
-      if (details) {
-        const placeDetails = await getPlaceDetails(details.place_id);
-
-        if (!placeDetails) {
-          showAlert('error', { message: 'Something went wrong!' });
-          return;
-        }
-        const formattedLocation = formatLocationString(placeDetails.formatted_address);
-        setLocation(formattedLocation)
-      }
-    },
-    [getPlaceDetails, formatLocationString, setLocation]
-  );
-
-  const handleCheckInChange = useCallback(
-    (newDate: string) => {
-      setcheckInDate(newDate);
-    },
-    [setcheckInDate]
-  );
-
-  const handleCheckOutChange = useCallback(
-    (newDate: string) => {
-      setcheckOutDate(newDate);
-    },
-    [setcheckOutDate]
-  );
-
-  const getCheckOutMinDate = useCallback(() => {
-    const checkoutMin = checkInDate ? getNextDay(checkInDate) : getNextDay(getToday());
-    return checkoutMin;
-  }, [checkInDate, getNextDay, getToday]);
-
-  const getCheckInMinDate = useCallback(() => {
-    const today = getToday();
-    return today;
-  }, [getToday]);
-
-  const clearCheckin = useCallback(() => {
-    setcheckInDate('');
-    }, [setcheckInDate]);
-  
-  const clearCheckout = useCallback(() => {
-    setcheckOutDate('');
-  }, [setcheckOutDate]);
-
-  const clearLocation = useCallback(() => {
-    setLocation('');
-  }, [setLocation]);
-
-  const handleSearch = useCallback(() => {
-    if (isInvalidDateRange(checkInDate, checkOutDate)) {
-      showAlert('error', { message: 'Date range is invalid' });
-      return;
+  const handleSearch = async (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
+    if (data) {
+      setSearchValues((prevValues) => ({
+        ...prevValues,
+        location: data.description,
+      }));
     }
-    dispatch(accommodationListActions.setFilter(formValues));
-    changeOpen();
-    return;
-  }, [isInvalidDateRange, dispatch, changeOpen, formValues]);
+  };
 
-  const handleResetSearch = useCallback(() => {
-    setLocation('');
-    setcheckInDate('');
-    setcheckOutDate('');
-  }, [setLocation, setcheckOutDate, setcheckInDate]);
+  const handleSelectFromWhen = (checkInDate: string) => {
+    const formattedDate = getInitialDate(checkInDate);
 
-  const [stateToggle, dispatchToggle] = useReducer(searchSlice.reducer, searchSlice.getInitialState())
+    setSearchValues((prevValues) => ({
+      ...prevValues,
+      checkInDate: formattedDate,
+    }));
+  };
 
-  const toggleLocationCollapse = useCallback(() => {
-    dispatchToggle(searchSlice.actions.toggleLocationCollapse);
-  }, [searchSlice, dispatchToggle])
+  const handleSelectToWhen = (checkOutDate: string) => {
+    const formattedDate = getInitialDate(checkOutDate);
 
-  const toggleCheckinCollapse = useCallback(() => {
-    dispatchToggle(searchSlice.actions.toggleCheckinCollapse);
-  }, [searchSlice, dispatchToggle])
+    setSearchValues((prevValues) => ({
+      ...prevValues,
+      checkOutDate: formattedDate,
+    }));
+  };
 
-  const toggleCheckoutCollapse = useCallback(() => {
-    dispatchToggle(searchSlice.actions.toggleCheckoutCollapse);
-  }, [searchSlice, dispatchToggle])
+  const handleSubmit = () => {
+    dispatch(
+      accommodationListActions.setSearchParams({
+        ...searchParams,
+        ...searchValues,
+      })
+    );
+    onClose();
+  };
 
-  const sections = [
-    { type: 'location', title: 'Destination' },
-    { type: 'checkin', title: 'Check-in' },
-    { type: 'checkout', title: 'Check-out' },
-  ];
+  const handleResetSearch = () => {
+    dispatch(accommodationListActions.resetSearch());
+    setSearchValues(DEFAULT_FILTER_VALUES);
+  };
 
   return (
-    <ScreenTemplate headerShown={false}>
-    <Modal
-      animationType="fade"
-      visible={modalOpen}
-      onRequestClose={changeOpen}>
-      <StatusBar backgroundColor={colors ? BLACK : WHITE_100} />
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: colors ? BLACK : WHITE_100,
-          alignItems: 'center',
-          maxHeight: '90%',
-        }}>
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={[
-              styles.icon,
-              LEVEL_1,
-              { backgroundColor: colors ? BLACK : WHITE,
-                borderColor: colors ? WHITE : BLACK,
-                shadowColor: colors ? WHITE : BLACK, }]}
-            onPress={() => changeOpen()}
+    <ModalContainer bottomModal visible={visible} onClose={onClose}>
+      <ThemedView style={styles.container}>
+        <Text style={styles.headerTitle}>Search for Accomodations</Text>
+
+        <View style={styles.inputsContainer}>
+          <View style={[styles.where, { backgroundColor: colors.background }]}>
+            <View>
+              <Text style={styles.whereTitle}>Where?</Text>
+              <Text>{searchValues.location}</Text>
+            </View>
+
+            <PlacesInput onSearch={handleSearch} />
+          </View>
+
+          <Collapsable
+            title="From when"
+            subtitle={searchValues.checkInDate?.toString()}
+            contentTitle="From which date?"
           >
-            <Icon name={IconName.Close} size={30} />
-          </TouchableOpacity>
-          <Text style={{ fontSize: 20 }}>Accomodations</Text>
-          <View style={{ width: 34 }} />
+            <DateTimePicker
+              onDateChange={handleSelectFromWhen}
+              initialValue={searchValues.checkInDate}
+              maxDate={searchValues.checkOutDate || undefined}
+            />
+          </Collapsable>
+
+          <Collapsable
+            title="To when"
+            subtitle={searchValues.checkOutDate?.toString()}
+            contentTitle="To which date?"
+          >
+            <DateTimePicker
+              onDateChange={handleSelectToWhen}
+              initialValue={searchValues.checkOutDate}
+              minDate={searchValues.checkInDate || undefined}
+            />
+          </Collapsable>
         </View>
-        <FlatList
-          data={sections}
-          keyExtractor={(item) => item.type}
-          renderItem={({ item }) => {
-            if (item.type === 'location') {
-              return (
-                <CollapsableLocationItem
-                title={item.title}
-                location={location}
-                stateToggleCollapsed={stateToggle.isCollapsed.location}
-                toggleLocationCollapse={toggleLocationCollapse}
-                handleAutocompleteSearch={handleGooglePlacesSearch}
-                clearLocation={clearLocation}
-                />
-                )
-            }
-            if (item.type === 'checkin') {
-              return (
-                <CollapsableDatePicker
-                  title={item.title}
-                  date={checkInDate}
-                  stateToggleCollapsed={stateToggle.isCollapsed.checkin}
-                  toggleCollapse={toggleCheckinCollapse}
-                  minimumDate={getCheckInMinDate()}
-                  handleDateChange={handleCheckInChange}
-                  clearDate={clearCheckin}
-                />);
-            }
-            if (item.type === 'checkout') {
-              return (
-                <CollapsableDatePicker
-                  title={item.title}
-                  date={checkOutDate}
-                  stateToggleCollapsed={stateToggle.isCollapsed.checkout}
-                  toggleCollapse={toggleCheckoutCollapse}
-                  minimumDate={getCheckOutMinDate()}
-                  handleDateChange={handleCheckOutChange}
-                  clearDate={clearCheckout}
-                />)
-            }
-            return null;
-          } } 
-          />
-        </SafeAreaView>
-      <ThemedView
-        style={[styles.searchModalFooter, LEVEL_1]}>
-        <TouchableOpacity onPress={handleResetSearch}>
-          <Text style={styles.title}>Reset</Text>
-        </TouchableOpacity>
-        <Button onPress={handleSearch} title="Search" size={BUTTON_SIZES.MD} />
       </ThemedView>
-    </Modal>
-    </ScreenTemplate>
+
+      <View style={[styles.footer, { backgroundColor: colors.background }]}>
+        <Button title="Clear" type={ButtonType.TERTIARY} onPress={handleResetSearch} />
+
+        <Button title="Search" size={BUTTON_SIZES.MD} onPress={handleSubmit} />
+      </View>
+    </ModalContainer>
   );
 };
 

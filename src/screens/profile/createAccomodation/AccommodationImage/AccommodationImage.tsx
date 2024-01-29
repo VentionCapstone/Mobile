@@ -3,7 +3,7 @@ import { Asset, ImagePicker } from 'expo-image-multiple-picker';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, View, ScrollView, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Icon, Text, showAlert } from 'src/components';
+import { Button, ButtonType, Icon, Text } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -70,7 +70,7 @@ const AccommodationImage = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     dispatch(accommodationActions.clearError());
-  }, []);
+  }, [dispatch]);
 
   const isNextButtonDisabled = selectedImages.length < 5;
 
