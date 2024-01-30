@@ -3,7 +3,6 @@ import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
-import { RootStackParamList } from 'src/navigation';
 import { getColors } from 'src/store/selectors';
 import { RED_200 } from 'src/styles';
 import { IconName, Wishlist } from 'src/types';
@@ -18,7 +17,6 @@ type Props = {
 
 const WishlistItem = ({ onNavigateToAccommodationDetails, wishlistDetails, onRemove }: Props) => {
   const colors = useSelector(getColors);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [imageLoading, setImageLoading] = useState(true);
 
   const { accommodation } = wishlistDetails;

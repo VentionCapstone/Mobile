@@ -6,11 +6,11 @@ import { Button, ButtonType, Chip, Icon, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getIsDarkMode } from 'src/store/selectors';
+import { getAccommodation, getIsDarkMode } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES, GREY_500, WHITE, WHITE_100, WHITE_200 } from 'src/styles';
-import { ApiSuccessResponseType, IconName } from 'src/types';
-import { AccommodationAmenitiesResponse, UpdateAmenitiesParams } from 'src/types/amenities';
+import { IconName } from 'src/types';
+import { UpdateAmenitiesParams } from 'src/types/amenities';
 
 import { styles } from './CreateAmenities.styles';
 import {
@@ -36,6 +36,7 @@ const CreateAmenities = ({ route, navigation }: Props) => {
   const [inputValue, setInputValue] = useState('');
 
   const amenities: string[] = useMemo(() => Object.keys(selectedAmenities), [selectedAmenities]);
+  const accommodation = useSelector(getAccommodation);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const scrollToBottom = () => {
@@ -86,50 +87,55 @@ const CreateAmenities = ({ route, navigation }: Props) => {
     ));
   }, [otherAmenities, removeAdditionalChip]);
 
-  const onFormSubmit = async () => {
-    try {
-      const response = await dispatch(
-        AsyncThunks.addAmenitiesThunk({
-          accomodationId,
-          data: {
-            ...selectedAmenities,
-            otherAmenities: otherAmenities.join(', '),
-          },
-        } as UpdateAmenitiesParams)
-      );
-      if (response.meta.requestStatus === 'fulfilled') {
-        //Placeholder for navigation logic
-      }
-    } catch (error: any) {
+  const onFormSubmitNew = async () => {
+    const response = await dispatch(
+      AsyncThunks.addAmenitiesThunk({
+        accomodationId,
+        data: {
+          ...selectedAmenities,
+          otherAmenities: otherAmenities.join(', '),
+        },
+      } as UpdateAmenitiesParams)
+    );
+    if (response.meta.requestStatus === 'fulfilled') {
+      //Placeholder for navigation logic
+    }
+    if (!response.payload?.success) {
       scrollToBottom();
       setAmenityError({ error: true, message: 'Error adding amenities. Try again later' });
-      throw new Error(error);
     }
   };
 
-  const getSavedAmenities = useCallback(async () => {
+  const onFormSubmitUpdate = async () => {
     const response = await dispatch(
-      AsyncThunks.getAmenitiesThunk({ accomodationId: accomodationId ?? '' })
+      AsyncThunks.updateAmenitiesThunk({
+        accomodationId,
+        data: {
+          ...selectedAmenities,
+          otherAmenities: otherAmenities.join(', '),
+        },
+      } as UpdateAmenitiesParams)
     );
-    if (response.payload?.success) {
-      const { data } = response.payload as ApiSuccessResponseType<AccommodationAmenitiesResponse>;
-      const { otherAmenities, id, accomodationId, ...rest } = data;
-      setSelectedAmenities(rest);
-      const splitter = ', ';
-      const otherAmenitiesSeparated = otherAmenities.split(splitter);
-      setOtherAmenities(otherAmenitiesSeparated);
-    } else {
-      scrollToBottom();
-      setAmenityError({ error: true, message: 'Error getting accomodation amenities' });
-      throw new Error('Error while fetching amenities');
+    if (response.meta.requestStatus === 'fulfilled') {
+      //Placeholder for navigation logic
     }
-  }, [dispatch, accomodationId]);
+    if (!response.payload?.success) {
+      scrollToBottom();
+      setAmenityError({ error: true, message: 'Error adding amenities. Try again later' });
+    }
+  };
+
+  const fetchAmenities = useCallback(async () => {
+    if (!isNew && accommodation?.amenities) {
+      const { otherAmenities, id, accommodationId, ...rest } = accommodation?.amenities;
+      setSelectedAmenities(rest);
+      setOtherAmenities(otherAmenities ? otherAmenities.split(', ') : []);
+    }
+  }, [isNew, accommodation?.amenities]);
 
   useEffect(() => {
-    if (!isNew) {
-      getSavedAmenities();
-    }
-  }, [getSavedAmenities, isNew]);
+    fetchAmenities();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -196,7 +202,11 @@ const CreateAmenities = ({ route, navigation }: Props) => {
             size={BUTTON_SIZES.SM}
             type={ButtonType.SECONDARY}
             onPress={() => {
-              onFormSubmit();
+              if (isNew) {
+                onFormSubmitNew();
+              } else {
+                onFormSubmitUpdate();
+              }
             }}
           />
           <Button
