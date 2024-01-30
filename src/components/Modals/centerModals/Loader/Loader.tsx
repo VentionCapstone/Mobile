@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, ActivityIndicator, Modal } from 'react-native';
 import { useSelector } from 'react-redux';
 import Text from 'src/components/Text/Text';
@@ -8,8 +7,8 @@ import { styles } from './Loader.style';
 
 type Props = {
   visible: boolean;
-  size?: 'large' | 'small';
   message?: string;
+  size?: 'large' | 'small';
 };
 
 const Loader = ({ visible, size = 'large', message }: Props) => {
@@ -18,9 +17,9 @@ const Loader = ({ visible, size = 'large', message }: Props) => {
   return (
     <Modal transparent animationType="fade" visible={visible}>
       <View style={styles.modalContainer}>
-        <View style={styles.loaderContainer}>
+        <View style={[styles.loaderContainer, { backgroundColor: colors.secondaryBackground }]}>
           <ActivityIndicator size={size} color={colors.tint} />
-          <Text style={[styles.loaderMessage, { color: colors.border }]}>{message}</Text>
+          <Text style={styles.loaderMessage}>{message}</Text>
         </View>
       </View>
     </Modal>

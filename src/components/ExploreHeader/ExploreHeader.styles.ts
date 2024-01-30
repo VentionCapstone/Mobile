@@ -1,26 +1,26 @@
-import { Platform, StyleSheet } from 'react-native';
-import { GREY_500, WHITE_100 } from 'src/styles';
+import { StyleSheet } from 'react-native';
+import { LEVEL_1 } from 'src/styles';
+import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    marginTop: Platform.OS === 'android' ? 50 : undefined,
+    paddingTop: 40,
+    paddingBottom: 10,
     gap: 10,
   },
-  searchBar: {
+  searchBarInput: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
-    gap: 14,
-    height: 60,
-    width: '100%',
-    marginVertical: 10,
-    paddingHorizontal: 20,
+    gap: 10,
+    padding: 10,
+    width: '75%',
+    paddingHorizontal: PADDING_HORIZONTAL_20,
     borderRadius: 40,
-    backgroundColor: '#fff',
+    ...LEVEL_1,
   },
   searchContent: {
     justifyContent: 'flex-start',
@@ -32,22 +32,11 @@ const styles = StyleSheet.create({
   filter: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 45,
-    width: 45,
+    height: 50,
+    width: 50,
     marginVertical: 10,
     border: 'solid',
     borderRadius: 100,
-    borderColor: GREY_500,
-    borderWidth: 0.5,
-    backgroundColor: '#fff',
-  },
-  darkModeShadow: {
-    shadowColor: '#fff',
-  },
-  darkModeBorder: {
-    borderColor: WHITE_100,
-    borderWidth: 0.5,
+    ...LEVEL_1,
   },
 });
-
-export default styles;

@@ -1,33 +1,28 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
-import { Animated, TouchableOpacity } from 'react-native';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+import { Animated, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import Text from 'src/components/Text/Text';
-import { getIsDarkMode } from 'src/store/selectors';
-import { LEVEL_1, WHITE } from 'src/styles';
+import { getColors } from 'src/store/selectors';
 
 import { styles } from './Collapsable.styles';
-import ThemedView from '../ThemedView/ThemedView';
+import Text from '../Text/Text';
 
-type CollapsableProps = {
-  collapsed: boolean;
-  onTouch: () => void;
+type Props = {
   children: ReactNode;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   contentTitle: string;
+  isCollapsed?: boolean;
 };
 
-const Collapsable = ({
-  children,
-  title,
-  subtitle,
-  collapsed,
-  contentTitle,
-  onTouch,
-}: CollapsableProps) => {
-  const colors = useSelector(getIsDarkMode);
+const Collapsable = ({ children, title, subtitle, contentTitle, isCollapsed = true }: Props) => {
+  const colors = useSelector(getColors);
   const fadeAnimHeader = useRef(new Animated.Value(1)).current;
   const fadeAnimContent = useRef(new Animated.Value(0)).current;
+  const [collapsed, setCollapsed] = useState<boolean>(isCollapsed);
+
+  const handleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
 
   useEffect(() => {
     Animated.parallel([
@@ -45,40 +40,39 @@ const Collapsable = ({
   }, [collapsed, fadeAnimHeader, fadeAnimContent]);
 
   return (
-    <>
+    <View style={styles.container}>
       {collapsed && (
-        <Animated.View
-          style={{
-            opacity: fadeAnimHeader,
-          }}
-        >
-          <TouchableOpacity onPress={onTouch}>
-            <ThemedView
-              style={[styles.card, styles.cardHeader, LEVEL_1, colors && { shadowColor: WHITE }]}
-            >
-              <Text style={styles.title}>{title}</Text>
-              <Text style={styles.subtitle}>{subtitle}</Text>
-            </ThemedView>
+        <Animated.View style={{ opacity: fadeAnimHeader }}>
+          <TouchableOpacity
+            onPress={handleCollapse}
+            style={[styles.card, { backgroundColor: colors.background }]}
+          >
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.subtitle}>{subtitle}</Text>
           </TouchableOpacity>
         </Animated.View>
       )}
+
       {!collapsed && (
-        <Animated.View
-          style={{
-            opacity: fadeAnimContent,
-          }}
-        >
-          <ThemedView
-            style={[styles.card, styles.cardBody, LEVEL_1, colors && { shadowColor: WHITE }]}
+        <Animated.View style={{ opacity: fadeAnimContent }}>
+          <TouchableOpacity
+            onPress={handleCollapse}
+            style={[
+              styles.card,
+              {
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                backgroundColor: colors.background,
+              },
+            ]}
           >
-            <TouchableOpacity onPress={onTouch}>
-              <Text style={styles.contentTitle}>{contentTitle}</Text>
-            </TouchableOpacity>
+            <Text style={styles.contentTitle}>{contentTitle}</Text>
+
             {children}
-          </ThemedView>
+          </TouchableOpacity>
         </Animated.View>
       )}
-    </>
+    </View>
   );
 };
 

@@ -1,10 +1,9 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect } from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, NavigationHeader } from 'src/components';
-import FilterModal from 'src/components/modals/ExploreModals/FilterModal/FilterModal';
+import { Button, ButtonType, FilterModal, NavigationHeader } from 'src/components';
 import {
   Account,
   CreateProfile,
@@ -29,7 +28,7 @@ import {
 } from 'src/screens';
 import { AccommodationDetails } from 'src/screens/explore';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
-import { BLACK, BUTTON_SIZES, WHITE } from 'src/styles';
+import { BUTTON_SIZES, GREY_500, WHITE } from 'src/styles';
 
 import BottomTabNavigation from './BottomTabNavigator/BottomTabNavigator';
 import { RootStackParamList } from './RootStackNavigator.types';
@@ -43,7 +42,7 @@ const RootStackNavigator = () => {
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
-    Platform.OS === 'android' && StatusBar.setBackgroundColor(isDark ? BLACK : WHITE);
+    StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
   }, [isDark]);
 
   return (

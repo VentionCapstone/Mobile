@@ -89,7 +89,7 @@ const CreateAccountForm = () => {
 
   useEffect(() => {
     dispatch(accountActions.clearError());
-  }, []);
+  }, [dispatch]);
 
   return (
     <ScreenTemplate>

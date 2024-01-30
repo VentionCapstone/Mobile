@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { BLACK, GREY_300, LEVEL_1, WHITE_100, paragraph2, title3 } from 'src/styles';
-import { HORIZONTAL_12_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
     paddingVertical: 20,
   },
   header: {

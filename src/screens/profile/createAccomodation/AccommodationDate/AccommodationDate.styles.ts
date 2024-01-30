@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { HORIZONTAL_12_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_12 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
     paddingVertical: 10,
   },
   inputRow: {

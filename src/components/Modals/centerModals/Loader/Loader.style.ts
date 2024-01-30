@@ -9,8 +9,9 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   loaderContainer: {
-    borderRadius: 10,
+    width: '90%',
     padding: 20,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,

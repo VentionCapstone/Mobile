@@ -60,7 +60,7 @@ const Signup = ({ navigation }: Props) => {
 
   useEffect(() => {
     dispatch(accountActions.clearError());
-  }, []);
+  }, [dispatch]);
 
   return (
     <ScreenTemplate>

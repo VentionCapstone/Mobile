@@ -1,16 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { title1, title3, paragraph1 } from 'src/styles';
-import { HORIZONTAL_16_PERCENT, HORIZONTAL_24_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_16, PADDING_HORIZONTAL_24 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: HORIZONTAL_24_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_24,
   },
   redirectToCreateText: {
     ...title3,
   },
   redirectContainer: {
-    paddingHorizontal: HORIZONTAL_16_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_16,
     paddingVertical: 20,
     gap: 30,
     alignItems: 'center',

@@ -1,7 +1,7 @@
 import { ScreenTemplate } from 'src/components/templates';
 
 const NotificationSettings = () => {
-  return <ScreenTemplate></ScreenTemplate>;
+  return <ScreenTemplate />;
 };
 
 export default NotificationSettings;

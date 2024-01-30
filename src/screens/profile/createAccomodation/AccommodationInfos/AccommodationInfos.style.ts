@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { title1, title3, LEVEL_1 } from 'src/styles';
-import { HORIZONTAL_12_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_12 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   titleContainer: {
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
     paddingVertical: 10,
   },
   title: {

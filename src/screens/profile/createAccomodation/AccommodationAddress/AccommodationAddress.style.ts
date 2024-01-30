@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { title3 } from 'src/styles';
-import { HORIZONTAL_12_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_12 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   scrollContainer: {
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 110,
     justifyContent: 'center',
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
     paddingVertical: 10,
   },
   inputInnerContainer: {

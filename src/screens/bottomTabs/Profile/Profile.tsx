@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Image, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,7 +18,6 @@ import { AppDispatch } from 'src/store';
 import {
   getAccommodationError,
   getAccountError,
-  getAccountInfos,
   getColors,
   getIsGuestAccount,
   getIsLoggedIn,
@@ -44,7 +43,6 @@ const Profile = ({ navigation }: Props) => {
   const userId = useSelector(getUserId);
   const isLoggedIn = useSelector(getIsLoggedIn);
   const isGuestUser = useSelector(getIsGuestAccount);
-  const accountDetails = useSelector(getAccountInfos);
   const userError = useSelector(getAccountError);
   const accommodationError = useSelector(getAccommodationError);
   const myAccommodationsError = useSelector(getMyAccommodationsError);
@@ -71,7 +69,7 @@ const Profile = ({ navigation }: Props) => {
     });
   };
 
-  const getAccountDetails = async () => {
+  const getAccountDetails = useCallback(async () => {
     if (!userId) return;
     const user = await dispatch(AsyncThunks.getUserDetails(userId));
 
@@ -81,7 +79,7 @@ const Profile = ({ navigation }: Props) => {
       const profileId = userProfile.id;
       await dispatch(AsyncThunks.getAccountDetails(profileId));
     }
-  };
+  }, [dispatch, userId]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -94,10 +92,10 @@ const Profile = ({ navigation }: Props) => {
   };
 
   useEffect(() => {
-    if (!accountDetails && isLoggedIn) {
+    if (isLoggedIn) {
       getAccountDetails();
     }
-  }, [isLoggedIn, isGuestUser]);
+  }, [isLoggedIn, isGuestUser, getAccountDetails]);
 
   useEffect(() => {
     if (userError || accommodationError || myAccommodationsError) {
@@ -110,10 +108,10 @@ const Profile = ({ navigation }: Props) => {
     dispatch(myAccommodationsListActions.clearError());
     dispatch(accommodationActions.clearError());
     dispatch(userActions.clearError());
-  }, []);
+  }, [dispatch]);
 
   return (
-    <ScreenTemplate headerShown={false}>
+    <ScreenTemplate>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         refreshControl={

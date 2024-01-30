@@ -1,6 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
 import { showAlert } from 'src/components';
-import { ImageDataType } from 'src/types';
 
 export const pickImage = async (): Promise<ImagePicker.ImagePickerAsset | null> => {
   try {

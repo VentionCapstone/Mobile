@@ -1,6 +1,4 @@
 import {
-  BLACK,
-  GREY_200,
   GREY_300,
   GREY_400,
   GREY_500,
@@ -17,7 +15,7 @@ import {
 } from './colors';
 
 export const darkColors = {
-  background: BLACK,
+  background: GREY_500,
   border: GREY_300,
   borderTint: PRIMARY_BLUE_200,
   buttonBackground: WHITE_100,
@@ -27,7 +25,7 @@ export const darkColors = {
   errorBackground: RED_300,
   icon: WHITE_200,
   placeholder: GREY_300,
-  secondaryBackground: GREY_500,
+  secondaryBackground: GREY_400,
   secondaryButtonBackground: WHITE_300,
   shadowColor: WHITE_200,
   text: WHITE_100,

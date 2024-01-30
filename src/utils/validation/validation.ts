@@ -23,7 +23,7 @@ const isPasswordValid = (password: string): boolean => {
   if (password.length < PASSWORD_MIN_LENGTH) {
     return false;
   }
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])/;
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~/\\/-])/;
 
   return passwordRegex.test(password);
 };

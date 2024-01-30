@@ -1,26 +1,24 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { memo, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
+import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
-import { useAppDispatch } from 'src/store';
-import { AsyncThunks } from 'src/store/thunks';
+import { getIsLoggedIn } from 'src/store/selectors';
 import { TOMATO } from 'src/styles';
 import { AccommodationListItem, IconName } from 'src/types';
 
 import { styles } from './Card.styles';
 import Icon from '../Icon/Icon';
 import Text from '../Text/Text';
-import { useSelector } from 'react-redux';
-import { getIsLoggedIn } from 'src/store/selectors';
-import showAlert from '../alert';
 
 type Props = {
   item: AccommodationListItem;
   onAddedToWishlist: (accommodationId: string) => void;
   onRemoveFromWishlist: (accommodationId: string) => void;
+  onLoginRequired: () => void;
 };
 
-const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist }: Props) => {
+const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist, onLoginRequired }: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const isLoggedIn = useSelector(getIsLoggedIn);
   const [pressed, setPressed] = useState<boolean>(false);
@@ -28,10 +26,16 @@ const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist }: Props) => {
 
   const handleToggleWishlist = () => {
     if (!isLoggedIn) {
-      showAlert('warning', { message: 'You should login first!' });
+      onLoginRequired();
       return;
     }
 
+    if (pressed) {
+      onRemoveFromWishlist(item.id);
+      return;
+    }
+
+    onAddedToWishlist(item.id);
     setPressed(!pressed);
     if (pressed) {
       onRemoveFromWishlist(item.id);

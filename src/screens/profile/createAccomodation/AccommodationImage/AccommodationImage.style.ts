@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { GREY_300, title1, title2, title3, paragraph2, LEVEL_1 } from 'src/styles';
-import { HORIZONTAL_12_PERCENT } from 'src/utils';
+import { PADDING_HORIZONTAL_12 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   uploaderContainer: {
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     ...LEVEL_1,
   },
   titleContainer: {
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
   },
   title: {
     ...title1,
@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: HORIZONTAL_12_PERCENT,
+    paddingHorizontal: PADDING_HORIZONTAL_12,
   },
   addButton: {
     borderRadius: 30,

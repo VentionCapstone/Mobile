@@ -33,7 +33,7 @@ import { BUTTON_SIZES, GREY_200, TOMATO } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './AccommodationDetails.styles';
-import { AMENITIES_CHIP_DATA, formatDate } from './AccommodationDetails.utils.ts';
+import { formatDate } from './AccommodationDetails.utils.ts';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDetails'>;
 
@@ -51,41 +51,6 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
     [accommodation]
   );
 
-  const amenitiesBadges = useMemo(() => {
-    if (accommodation?.amenities) {
-      const { otherAmenities, id, accommodationId, ...rest } = accommodation?.amenities;
-      const amenities = Object.keys(rest);
-      return amenities.map((amenity) => {
-        if (rest[amenity as keyof typeof rest]) {
-          const { icon, text, iconSet } =
-            AMENITIES_CHIP_DATA[amenity as keyof typeof AMENITIES_CHIP_DATA];
-          return (
-            <ThemedView key={amenity} style={styles.badge}>
-              <Icon name={icon} size={20} iconSet={iconSet} />
-              <Text style={styles.badgeText}>{text}</Text>
-            </ThemedView>
-          );
-        }
-      });
-    }
-  }, [accommodation]);
-
-  const otherAmenitiesBadgesMemo = useMemo(() => {
-    if (accommodation?.amenities) {
-      const separator = ', ';
-      if (accommodation?.amenities?.otherAmenities) {
-        return accommodation.amenities.otherAmenities.split(separator).map((amenity) => {
-          return (
-            <ThemedView key={amenity} style={styles.badge}>
-              <Icon name={IconName.Check} size={20} />
-              <Text style={styles.badgeText}>{amenity}</Text>
-            </ThemedView>
-          );
-        });
-      }
-    }
-  }, [accommodation]);
-
   const handleAddToWishlist = async (acccomodationId: string) => {
     await dispatch(AsyncThunks.addToWishlist(acccomodationId));
   };
@@ -96,7 +61,7 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
 
   const handleToggleWishlist = () => {
     if (!isLoggedIn) {
-      showAlert('warning', { message: 'You should login first!' });
+      showAlert('warning', { message: 'You should be logged in to add your wishlists' });
       return;
     }
 
@@ -118,7 +83,7 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     fetchAccommodation();
-  }, []);
+  }, [fetchAccommodation]);
 
   return (
     <ScreenTemplate>
@@ -197,14 +162,6 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
                 </>
               )}
             </TouchableOpacity>
-
-            <View>
-              <Text style={styles.amenitiesTitle}>Amenities</Text>
-              <View style={styles.badgesContainer}>
-                {amenitiesBadges}
-                {otherAmenitiesBadgesMemo}
-              </View>
-            </View>
 
             <View style={{ marginVertical: 30 }}>
               <Text style={styles.amenitiesTitle}>More photos</Text>

@@ -1,5 +1,5 @@
 import { AddressValues } from './accommodation';
-import { AccommodationAmenitiesResponse } from './amenities';
+import { Amenities } from './amenities';
 import { Gender, Language } from './common';
 import { ThemeType } from './ui';
 import { WishlistAccommodationResponse } from './wishlist';
@@ -143,8 +143,31 @@ export interface Accommodation {
   isInWishlist: boolean;
   address: AccommodationAddressResponse;
   media?: AccommodationMedia[];
-  amenities?: AccommodationAmenitiesResponse;
+  amenities?: Amenities;
   owner: AccommodationOwner;
+}
+
+export interface MyAccommodation {
+  id: string;
+  title: string;
+  addressId: string;
+  thumbnailUrl: string;
+  previewImgUrl: string;
+  ownerId: string;
+  squareMeters: number;
+  numberOfRooms: number;
+  price: number;
+  allowedNumberOfPeople: number;
+  available: boolean;
+  availableFrom: string;
+  availableTo: string;
+  description: string;
+  timezoneOffset: number;
+  isDeleted: boolean;
+  address: AccommodationAddressResponse;
+  isInWishlist: boolean;
+  media?: AccommodationMedia[];
+  amenities?: Amenities;
 }
 
 export interface Wishlist {

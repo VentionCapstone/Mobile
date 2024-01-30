@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { title3 } from 'src/styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,6 +10,14 @@ const styles = StyleSheet.create({
   },
   emptySpace: {
     height: 80,
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    ...title3,
+    marginTop: 10,
   },
 });
 

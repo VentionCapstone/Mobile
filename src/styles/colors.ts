@@ -2,8 +2,8 @@ export const BLACK = '#000000';
 
 export const GREY_200 = '#969696';
 export const GREY_300 = '#737373';
-export const GREY_400 = '#3b3b3b';
-export const GREY_500 = '#141414';
+export const GREY_400 = '#292929';
+export const GREY_500 = '#242424';
 
 export const PRIMARY_BLUE_100 = '#C3E9FE';
 export const PRIMARY_BLUE_200 = '#4da0e8';
