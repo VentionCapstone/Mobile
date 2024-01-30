@@ -22,7 +22,6 @@ const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist, onLoginRequired }
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const isLoggedIn = useSelector(getIsLoggedIn);
   const [pressed, setPressed] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
 
   const handleToggleWishlist = () => {
     if (!isLoggedIn) {
