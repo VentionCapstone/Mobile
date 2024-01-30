@@ -1,5 +1,5 @@
 import { AddressValues } from './accommodation';
-import { Amenities } from './amenities';
+import { AccommodationAmenitiesResponse, Amenities } from './amenities';
 import { Gender, Language } from './common';
 import { ThemeType } from './ui';
 import { WishlistAccommodationResponse } from './wishlist';
@@ -143,7 +143,7 @@ export interface Accommodation {
   isInWishlist: boolean;
   address: AccommodationAddressResponse;
   media?: AccommodationMedia[];
-  amenities?: Amenities;
+  amenities?: AccommodationAmenitiesResponse;
   owner: AccommodationOwner;
 }
 

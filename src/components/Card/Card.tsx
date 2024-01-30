@@ -36,6 +36,11 @@ const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist, onLoginRequired }
 
     onAddedToWishlist(item.id);
     setPressed(!pressed);
+    if (pressed) {
+      onRemoveFromWishlist(item.id);
+    } else {
+      onAddedToWishlist(item.id);
+    }
   };
 
   return (

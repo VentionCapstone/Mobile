@@ -24,7 +24,7 @@ export interface Amenities {
   isCloseToCenter: boolean;
   hasHospitalNearby: boolean;
   hasAirportTransfer: boolean;
-  otherAmenities: string | string[] | null;
+  otherAmenities: string | null;
 }
 export interface AccommodationAmenitiesResponse extends Amenities {
   id: string;

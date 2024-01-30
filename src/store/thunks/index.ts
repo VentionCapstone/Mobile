@@ -55,9 +55,6 @@ export const AsyncThunks = {
   addToWishlist: createAsyncThunk('addToWishlistThunk', addToWishlistThunk),
   removeFromWishlist: createAsyncThunk('removeFromWishlistThunk', removeFromWishlistThunk),
 
-  getAmenitiesListThunk: createAsyncThunk('getAmenitiesListThunk', getAmenitiesListThunk),
-  getAmenitiesThunk: createAsyncThunk('getAmenitiesThunk', getAmenitiesThunk),
   updateAmenitiesThunk: createAsyncThunk('updateAmenitiesThunk', updateAmenitiesThunk),
   addAmenitiesThunk: createAsyncThunk('addAmenitiesThunk', addAmenitiesThunk),
-  deleteAmenitiesThunk: createAsyncThunk('deleteAmenitiesThunk', deleteAmenitiesThunk),
 };

@@ -33,7 +33,12 @@ import { BUTTON_SIZES, GREY_200, TOMATO } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './AccommodationDetails.styles';
-import { formatDate } from './AccommodationDetails.utils.ts';
+import {
+  AmenityChip,
+  formatDate,
+  getAmenitiesBadges,
+  getOtherAmenitiesBadges,
+} from './AccommodationDetails.utils.ts';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDetails'>;
 
@@ -72,6 +77,30 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
       handleAddToWishlist(acccomodationId);
     }
   };
+
+  const amenitiesBadges = useMemo(() => {
+    if (accommodation?.amenities) {
+      const amenitiesBadges = getAmenitiesBadges(accommodation?.amenities);
+      return amenitiesBadges.map(({ icon, text, iconSet }: AmenityChip) => (
+        <ThemedView key={text} style={styles.badge}>
+          <Icon name={icon} size={20} iconSet={iconSet} />
+          <Text style={styles.badgeText}>{text}</Text>
+        </ThemedView>
+      ));
+    }
+  }, [accommodation]);
+
+  const otherAmenitiesBadgesMemo = useMemo(() => {
+    if (accommodation?.amenities) {
+      const otherAmenitiesBadges = getOtherAmenitiesBadges(accommodation?.amenities);
+      return otherAmenitiesBadges.map((amenity) => (
+        <ThemedView key={amenity.text} style={styles.badge}>
+          <Icon name={IconName.Check} size={20} />
+          <Text style={styles.badgeText}>{amenity.text}</Text>
+        </ThemedView>
+      ));
+    }
+  }, [accommodation]);
 
   const fetchAccommodation = useCallback(async () => {
     const response = await dispatch(AsyncThunks.getAccommodation(acccomodationId));
@@ -162,6 +191,14 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
                 </>
               )}
             </TouchableOpacity>
+
+            <View>
+              <Text style={styles.amenitiesTitle}>Amenities</Text>
+              <View style={styles.badgesContainer}>
+                {amenitiesBadges}
+                {otherAmenitiesBadgesMemo}
+              </View>
+            </View>
 
             <View style={{ marginVertical: 30 }}>
               <Text style={styles.amenitiesTitle}>More photos</Text>

@@ -1,4 +1,5 @@
 import { IconName } from 'src/types';
+import { AccommodationAmenitiesResponse } from 'src/types/amenities';
 
 export function formatDate(inputDate: string, includeOrdinal: boolean = true): string {
   const months = [
@@ -40,6 +41,29 @@ function addOrdinalSuffix(day: number): string {
       return `${day}th`;
   }
 }
+
+export const AMENITIES_DEFAULT_VALUES = {
+  id: '',
+  accommodationId: '',
+  hasWifi: false,
+  hasTv: false,
+  hasAirConditioning: false,
+  hasKitchen: false,
+  hasLaundryService: false,
+  hasParking: false,
+  hasSmokingAllowance: false,
+  hasSwimmingPool: false,
+  hasBackyard: false,
+  isQuetArea: false,
+  isChildFriendly: false,
+  hasPetAllowance: false,
+  isCloseToCenter: false,
+  hasHospitalNearby: false,
+  hasAirportTransfer: false,
+  otherAmenities: null,
+} as const;
+
+export type AmenityChipData = Record<string, AmenityChip>;
 
 export const AMENITIES_CHIP_DATA = {
   hasWifi: {
@@ -118,3 +142,34 @@ export const AMENITIES_CHIP_DATA = {
     iconSet: 'ionicons',
   },
 } as const;
+
+export type RestAmenities = {
+  [key: string]: boolean;
+};
+
+export type AmenityChip = {
+  text: string;
+  icon: IconName;
+  iconSet: 'ionicons' | 'material';
+};
+
+export function getAmenitiesBadges(amenities: AccommodationAmenitiesResponse): AmenityChip[] {
+  const { otherAmenities, id, accommodationId, ...rest } = amenities;
+  const amenitiesKeys = Object.keys(rest);
+  return amenitiesKeys
+    .filter((amenity) => {
+      return rest[amenity as keyof typeof rest];
+    })
+    .map((amenity) => {
+      const { text, icon, iconSet } =
+        AMENITIES_CHIP_DATA[amenity as keyof typeof AMENITIES_CHIP_DATA];
+      return { text, icon, iconSet } as AmenityChip;
+    });
+}
+
+export function getOtherAmenitiesBadges(amenities: AccommodationAmenitiesResponse): AmenityChip[] {
+  const separator = ', ';
+  return (amenities.otherAmenities?.split(separator) || []).map((amenity) => {
+    return { icon: IconName.Add, text: amenity, iconSet: 'ionicons' };
+  });
+}
