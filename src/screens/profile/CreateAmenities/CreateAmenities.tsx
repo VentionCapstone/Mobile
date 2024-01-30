@@ -87,7 +87,7 @@ const CreateAmenities = ({ route, navigation }: Props) => {
     ));
   }, [otherAmenities, removeAdditionalChip]);
 
-  const onFormSubmitNew = async () => {
+  const onFormSubmit = async () => {
     const response = await dispatch(
       AsyncThunks.addAmenitiesThunk({
         accomodationId,
@@ -203,7 +203,7 @@ const CreateAmenities = ({ route, navigation }: Props) => {
             type={ButtonType.SECONDARY}
             onPress={() => {
               if (isNew) {
-                onFormSubmitNew();
+                onFormSubmit();
               } else {
                 onFormSubmitUpdate();
               }

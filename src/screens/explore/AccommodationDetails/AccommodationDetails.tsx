@@ -33,7 +33,12 @@ import { BUTTON_SIZES, GREY_200, TOMATO } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './AccommodationDetails.styles';
-import { AMENITIES_CHIP_DATA, formatDate } from './AccommodationDetails.utils.ts';
+import {
+  AmenityChip,
+  formatDate,
+  getAmenitiesBadges,
+  getOtherAmenitiesBadges,
+} from './AccommodationDetails.utils.ts';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDetails'>;
 
@@ -75,36 +80,25 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
 
   const amenitiesBadges = useMemo(() => {
     if (accommodation?.amenities) {
-      const { otherAmenities, id, accommodationId, ...rest } = accommodation?.amenities;
-      const amenities = Object.keys(rest);
-      return amenities.map((amenity) => {
-        if (rest[amenity as keyof typeof rest]) {
-          const { icon, text, iconSet } =
-            AMENITIES_CHIP_DATA[amenity as keyof typeof AMENITIES_CHIP_DATA];
-          return (
-            <ThemedView key={amenity} style={styles.badge}>
-              <Icon name={icon} size={20} iconSet={iconSet} />
-              <Text style={styles.badgeText}>{text}</Text>
-            </ThemedView>
-          );
-        }
-      });
+      const amenitiesBadges = getAmenitiesBadges(accommodation?.amenities);
+      return amenitiesBadges.map(({ icon, text, iconSet }: AmenityChip) => (
+        <ThemedView key={text} style={styles.badge}>
+          <Icon name={icon} size={20} iconSet={iconSet} />
+          <Text style={styles.badgeText}>{text}</Text>
+        </ThemedView>
+      ));
     }
   }, [accommodation]);
 
   const otherAmenitiesBadgesMemo = useMemo(() => {
     if (accommodation?.amenities) {
-      const separator = ', ';
-      if (accommodation?.amenities?.otherAmenities) {
-        return accommodation.amenities.otherAmenities.split(separator).map((amenity) => {
-          return (
-            <ThemedView key={amenity} style={styles.badge}>
-              <Icon name={IconName.Check} size={20} />
-              <Text style={styles.badgeText}>{amenity}</Text>
-            </ThemedView>
-          );
-        });
-      }
+      const otherAmenitiesBadges = getOtherAmenitiesBadges(accommodation?.amenities);
+      return otherAmenitiesBadges.map((amenity) => (
+        <ThemedView key={amenity.text} style={styles.badge}>
+          <Icon name={IconName.Check} size={20} />
+          <Text style={styles.badgeText}>{amenity.text}</Text>
+        </ThemedView>
+      ));
     }
   }, [accommodation]);
 
