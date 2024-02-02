@@ -1,4 +1,5 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -17,6 +18,7 @@ interface Props {
 const NavigationListItem = ({ item }: Props) => {
   const colors = useSelector(getColors);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { t } = useTranslation();
   const { onPress, screen, label, iconName, showIconRight = true } = item;
 
   const handlePress = () => {
@@ -32,7 +34,7 @@ const NavigationListItem = ({ item }: Props) => {
       <View style={styles.leftIconContainer}>{iconName && <Icon name={iconName} />}</View>
 
       <View style={styles.rightContainer}>
-        <Text style={[styles.label, { marginLeft: iconName ? 14 : 0 }]}>{label}</Text>
+        <Text style={[styles.label, { marginLeft: iconName ? 14 : 0 }]}>{t(label)}</Text>
         {showIconRight && <Icon name={IconName.ChevronForward} />}
       </View>
     </TouchableOpacity>

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { LEVEL_1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,6 +12,7 @@ export const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10,
     paddingHorizontal: 10,
+    ...LEVEL_1,
   },
   radioLabel: {
     marginLeft: 8,

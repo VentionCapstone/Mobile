@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
-import { title1, title3, paragraph2 } from 'src/styles';
+import { title2, title3, paragraph2 } from 'src/styles';
 import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 const styles = StyleSheet.create({
   emptyComponent: {
-    padding: 12,
+    paddingHorizontal: 10,
   },
   title: {
-    ...title1,
+    ...title2,
   },
   description: {
     ...paragraph2,

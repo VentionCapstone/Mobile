@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
@@ -14,17 +15,28 @@ type Props = {
   accommodationDetails: MyAccommodation;
   onEdit: (accommodation: MyAccommodation) => void;
   onDelete: (accommodationId: string) => void;
+  onNavigate: () => void;
   loader: boolean;
 };
 
-const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loader }: Props) => {
+const MyAccommodationListItem = ({
+  accommodationDetails,
+  onDelete,
+  onEdit,
+  onNavigate,
+  loader,
+}: Props) => {
   const colors = useSelector(getColors);
+  const { t } = useTranslation();
   const { id, price, thumbnailUrl, address } = accommodationDetails;
 
   const locationName = getLocationName(address);
 
   return (
-    <TouchableOpacity style={[styles.card, { backgroundColor: colors.secondaryBackground }]}>
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: colors.secondaryBackground }]}
+      onPress={onNavigate}
+    >
       <View style={styles.imageContainer}>
         {loader && <ActivityIndicator size="small" color={TOMATO} />}
 
@@ -50,7 +62,7 @@ const MyAccommodationListItem = ({ accommodationDetails, onDelete, onEdit, loade
         <View style={styles.priceContainer}>
           <Text style={styles.priceText}>$</Text>
           <Text style={styles.price}>{price}</Text>
-          <Text>/night</Text>
+          <Text>/{t('night')}</Text>
         </View>
 
         <View style={styles.buttonsContainer}>

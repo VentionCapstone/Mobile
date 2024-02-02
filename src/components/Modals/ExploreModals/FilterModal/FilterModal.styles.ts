@@ -5,13 +5,13 @@ import { PADDING_HORIZONTAL_12, PADDING_HORIZONTAL_16 } from 'src/utils';
 export const styles = StyleSheet.create({
   container: {
     paddingHorizontal: PADDING_HORIZONTAL_12,
-    paddingVertical: 20,
+    paddingBottom: 20,
     gap: 20,
   },
   headerText: {
     ...title1,
     marginTop: 10,
-    marginLeft: 20,
+    marginLeft: 10,
   },
   filterContainer: {
     paddingVertical: 15,
