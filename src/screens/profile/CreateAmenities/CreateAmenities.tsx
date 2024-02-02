@@ -135,7 +135,7 @@ const CreateAmenities = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     fetchAmenities();
-  }, []);
+  }, [fetchAmenities]);
 
   return (
     <View style={{ flex: 1 }}>

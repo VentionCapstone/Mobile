@@ -15,13 +15,7 @@ import {
   getAccountDetailsThunk,
   updateAccountThunk,
 } from './accountThunk';
-import {
-  addAmenitiesThunk,
-  deleteAmenitiesThunk,
-  getAmenitiesListThunk,
-  getAmenitiesThunk,
-  updateAmenitiesThunk,
-} from './amenitiesThunk';
+import { addAmenitiesThunk, updateAmenitiesThunk } from './amenitiesThunk';
 import { signInThunk, signOutThunk, signUpThunk } from './authThunk';
 import { getUserDetailsThunk } from './userThunk';
 import { addToWishlistThunk, getWishlistsThunk, removeFromWishlistThunk } from './wishlistThunk';

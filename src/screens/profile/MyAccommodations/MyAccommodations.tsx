@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
@@ -56,11 +56,11 @@ const MyAccommodations = ({ navigation }: Props) => {
     navigation.navigate('CreateProfile');
   };
 
-  const fetchMyAccommodations = async () => {
+  const fetchMyAccommodations = useCallback(async () => {
     if (userId) {
       await dispatch(AsyncThunks.getMyAccommodations(userId));
     }
-  };
+  }, [dispatch, userId]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -72,7 +72,7 @@ const MyAccommodations = ({ navigation }: Props) => {
     dispatch(accommodationActions.clearError());
     dispatch(myAccommodationsListActions.clearError());
     fetchMyAccommodations();
-  }, [dispatch]);
+  }, [dispatch, fetchMyAccommodations]);
 
   return (
     <ScreenTemplate style={styles.container}>
