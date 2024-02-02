@@ -26,7 +26,7 @@ import {
   CreateAmenities,
   ProfileImage,
 } from 'src/screens';
-import { AccommodationDetails } from 'src/screens/explore';
+import { AccommodationDetails, HostProfile } from 'src/screens/explore';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
 import { BUTTON_SIZES, GREY_500, WHITE } from 'src/styles';
 
@@ -181,6 +181,11 @@ const RootStackNavigator = () => {
         name="FilterModal"
         component={FilterModal}
         options={{ headerShown: false }}
+      />
+      <RootRouterStack.Screen
+        name="HostProfile"
+        component={HostProfile}
+        options={{ header: () => <NavigationHeader title="Host profile" /> }}
       />
     </RootRouterStack.Navigator>
   );
