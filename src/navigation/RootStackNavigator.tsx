@@ -187,7 +187,7 @@ const RootStackNavigator = () => {
       <RootRouterStack.Screen
         name="HostProfile"
         component={HostProfile}
-        options={{ header: () => <NavigationHeader title="Host profile" /> }}
+        options={{ headerShown: false }}
       />
     </RootRouterStack.Navigator>
   );
