@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ButtonType, FilterModal, NavigationHeader } from 'src/components';
 import {
@@ -42,7 +42,9 @@ const RootStackNavigator = () => {
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
-    StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
+    if (Platform.OS === 'android') StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
+    else if (Platform.OS === 'ios')
+      StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
   }, [isDark]);
 
   return (

@@ -26,11 +26,7 @@ const Explore = () => {
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
 
   const fetchAccommodationList = useCallback(async () => {
-    const res = await dispatch(
-      AsyncThunks.getListOfAccommodations({ page, ...filterParams, ...searchParams })
-    );
-
-    console.log(res);
+    await dispatch(AsyncThunks.getListOfAccommodations({ page, ...filterParams, ...searchParams }));
   }, [page, dispatch, filterParams, searchParams]);
 
   const handleRefresh = () => {
