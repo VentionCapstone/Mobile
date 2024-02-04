@@ -1,8 +1,10 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Text } from 'src/components';
-import { GREY_200, PRIMARY_BLUE_300, TOMATO, paragraph1, subtitle1 } from 'src/styles';
+import { PRIMARY_BLUE_300, TOMATO } from 'src/styles';
 import { HostProfile } from 'src/types';
+
+import styles from './HostVerifiedInfo.styles';
 
 interface Props {
   host: HostProfile;
@@ -39,36 +41,5 @@ const HostVerifiedInfo = ({ host }: Props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 22,
-    flex: 1,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: GREY_200,
-    padding: 20,
-    flexDirection: 'column',
-    marginTop: 10,
-    marginBottom: 28,
-  },
-  title: {
-    ...subtitle1,
-    fontWeight: '700',
-    marginBottom: 16,
-  },
-  infoContainer: {
-    flexDirection: 'column',
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  infoText: {
-    ...paragraph1,
-    marginLeft: 8,
-  },
-});
 
 export default HostVerifiedInfo;

@@ -31,7 +31,7 @@ export {
 
 export * from './navigationLists';
 export * from './inputs';
-export * from './Modals/bottomModals';
-export * from './Modals/centerModals';
-export * from './Modals/ExploreModals';
+export * from './modals/bottomModals';
+export * from './modals/centerModals';
+export * from './modals/ExploreModals';
 export * from './accommodationList';

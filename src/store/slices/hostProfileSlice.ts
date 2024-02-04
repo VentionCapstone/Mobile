@@ -32,5 +32,4 @@ const hostProfileSlice = createSlice({
   },
 });
 
-// export const hostProfileActions = hostProfileSlice.actions;
 export const hostProfileReducer = hostProfileSlice.reducer;
