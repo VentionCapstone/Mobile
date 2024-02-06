@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Card, ExploreHeader, FilterModal, SearchModal, Text, showAlert } from 'src/components';
@@ -27,8 +27,12 @@ const Explore = () => {
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
 
+  const flatListRef = useRef<FlatList | null>(null);
+
   const fetchAccommodationList = useCallback(async () => {
-    await dispatch(AsyncThunks.getListOfAccommodations({ page, ...filterParams, ...searchParams }));
+    await dispatch(
+      AsyncThunks.getListOfAccommodations({ page, limit: 10, ...filterParams, ...searchParams })
+    );
   }, [page, dispatch, filterParams, searchParams]);
 
   const handleRefresh = () => {
@@ -68,6 +72,11 @@ const Explore = () => {
   }, []);
 
   useEffect(() => {
+    setPage(1);
+    flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+  }, [filterParams, searchParams]);
+
+  useEffect(() => {
     fetchAccommodationList();
   }, [page, fetchAccommodationList]);
 
@@ -82,6 +91,7 @@ const Explore = () => {
       <FilterModal visible={isFilterVisible} onClose={handleCloseFilterModal} />
 
       <FlatList
+        ref={(ref) => (flatListRef.current = ref)}
         contentContainerStyle={styles.container}
         data={accommodationsList?.data}
         keyExtractor={(item, index) => item.id + index}
