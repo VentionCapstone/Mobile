@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { NavigationHeader } from 'src/components';
 import { Booking, Explore, Profile, Wishlist } from 'src/screens';
@@ -14,6 +15,7 @@ const BottomTabNavigator = () => {
   const colors = useSelector(getColors);
   const isDarkMode = useSelector(getIsDarkMode);
   const styles = getTabBarStyles({ colors, isDarkMode });
+  const { t } = useTranslation();
 
   return (
     <BottomTab.Navigator
@@ -35,14 +37,14 @@ const BottomTabNavigator = () => {
         name="Wishlist"
         component={Wishlist}
         options={{
-          header: () => <NavigationHeader title="Wishlist" showBackButton={false} />,
+          header: () => <NavigationHeader title={t('Wishlist')} showBackButton={false} />,
         }}
       />
       <BottomTab.Screen
         name="Booking"
         component={Booking}
         options={{
-          header: () => <NavigationHeader title="Booking" showBackButton={false} />,
+          header: () => <NavigationHeader title={t('Booking')} showBackButton={false} />,
         }}
       />
       <BottomTab.Screen

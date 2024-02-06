@@ -11,7 +11,7 @@ const ProfileFooter = () => {
         <Text style={styles.servicesText}>Terms of Service</Text>
         <Text style={styles.servicesText}>Privacy Police</Text>
       </View>
-      <Text style={styles.signature}>© 2024 Airbnb, Inc. All Rights Reserved.</Text>
+      <Text style={styles.signature}>© 2024 StayHop, Inc. All Rights Reserved.</Text>
     </View>
   );
 };

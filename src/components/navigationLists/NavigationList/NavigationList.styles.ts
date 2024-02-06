@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...title2,
+    width: '100%',
     alignSelf: 'flex-end',
     marginRight: 280,
   },

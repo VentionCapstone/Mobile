@@ -97,7 +97,7 @@ const CreateAccountForm = () => {
         <View style={{ gap: 10 }}>
           <Text style={styles.title}>Profile</Text>
           <Text>
-            The information you share will be used across Airbnb to help other guests and Hosts get
+            The information you share will be used across StayHop to help other guests and Hosts get
             to know you.
           </Text>
         </View>

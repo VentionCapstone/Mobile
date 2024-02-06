@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Text from 'src/components/Text/Text';
@@ -14,6 +15,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationInfos'>;
 
 const AccommodationInfos = ({ route, navigation }: Props) => {
   const colors = useSelector(getColors);
+  const { t } = useTranslation();
 
   const [formValues, setFormValues] = useState({
     allowedNumberOfPeople: 1,
@@ -43,12 +45,12 @@ const AccommodationInfos = ({ route, navigation }: Props) => {
   return (
     <StepperTemplate onNext={handleNext}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Share Some Basics About Your Place</Text>
-        <Text style={styles.subtitle}>You will add more details later</Text>
+        <Text style={styles.title}>{t('Share Some Basics About Your Place')}</Text>
+        <Text style={styles.subtitle}>{t('You will add more details later')}</Text>
       </View>
 
       <View style={[styles.counterContainer, { borderBottomColor: colors.border }]}>
-        <Text style={styles.counterTitle}>Rooms</Text>
+        <Text style={styles.counterTitle}>{t('Rooms')}</Text>
         <View style={styles.counterButtonContainer}>
           <CounterButton onPress={() => handleRoomsChange(-1)}>-</CounterButton>
           <Text>{formValues.numberOfRooms}</Text>
@@ -62,7 +64,7 @@ const AccommodationInfos = ({ route, navigation }: Props) => {
       </View>
 
       <View style={[styles.counterContainer, { borderBottomColor: colors.border }]}>
-        <Text style={styles.counterTitle}>Guests</Text>
+        <Text style={styles.counterTitle}>{t('Guests')}</Text>
         <View style={styles.counterButtonContainer}>
           <CounterButton onPress={() => handlePeopleChange(-1)}>-</CounterButton>
           <Text>{formValues.allowedNumberOfPeople}</Text>

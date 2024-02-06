@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ErrorAlert, Text, WishlistItem } from 'src/components';
@@ -26,6 +27,7 @@ const Wishlist = ({ navigation }: Props) => {
   const wishlistLoader = useSelector(getWishlistLoader);
   const colors = useSelector(getColors);
   const isLoggedIn = useSelector(getIsLoggedIn);
+  const { t } = useTranslation();
   const [errorVisible, setErrorVisible] = useState<boolean>(false);
 
   const handleRemoveFromWishlist = async (accommodationId: string) => {
@@ -70,9 +72,9 @@ const Wishlist = ({ navigation }: Props) => {
           }
           ListEmptyComponent={
             <View style={styles.emptyComponent}>
-              <Text style={styles.title}>Create Your first wishlist</Text>
+              <Text style={styles.title}>{t('Create Your first wishlist')}</Text>
               <Text style={styles.description}>
-                While exploring, click on the heart icon to bookmark your preferred locations
+                {t('While exploring, click on the heart icon to bookmark your preferred locations')}
               </Text>
             </View>
           }
@@ -82,8 +84,8 @@ const Wishlist = ({ navigation }: Props) => {
 
       {!isLoggedIn && (
         <View style={styles.container}>
-          <Text style={styles.signInFirst}>Please sign in first to view your wishlists</Text>
-          <Button title="Sign in first" onPress={() => navigation.navigate('Signin')} />
+          <Text style={styles.signInFirst}>{t('Please sign in first to view your wishlists')}</Text>
+          <Button title={t('Sign in first')} onPress={() => navigation.navigate('Signin')} />
         </View>
       )}
 

@@ -4,12 +4,12 @@ import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
+    width: '100%',
+    paddingTop: 30,
+    paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignContent: 'center',
     alignItems: 'center',
-    paddingTop: 50,
-    paddingBottom: 10,
     gap: 10,
   },
   searchBarInput: {

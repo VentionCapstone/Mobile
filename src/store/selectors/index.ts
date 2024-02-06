@@ -28,3 +28,5 @@ export const getAccommodationListLoading = (state: RootState) => state.accommoda
 export const getWishlists = (state: RootState) => state.wishlist.result;
 export const getWishlistLoader = (state: RootState) => state.wishlist.pending;
 export const getWishlistError = (state: RootState) => state.wishlist.error;
+
+export const getLanguage = (state: RootState) => state.language.language;

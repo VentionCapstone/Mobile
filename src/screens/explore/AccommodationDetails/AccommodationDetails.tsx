@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   RefreshControl,
   SafeAreaView,
@@ -49,6 +50,7 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
   const accommodation = useSelector(getAccommodation);
   const refreshing = useSelector(getAccommodationLoader);
   const isLoggedIn = useSelector(getIsLoggedIn);
+  const { t } = useTranslation();
   const [heartPressed, setHeartPressed] = useState<boolean>(false);
 
   const accommodationMedia = useMemo(
@@ -145,10 +147,10 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
               <Text style={styles.address}>
                 {accommodation?.address?.city}
                 {', '}
-                {accommodation?.address.country}
+                {accommodation?.address?.country}
               </Text>
               <View style={styles.availabilityContainer}>
-                {accommodation?.available && <Text>Available</Text>}
+                {accommodation?.available && <Text>{t('Available')}</Text>}
                 <Icon
                   name={accommodation?.available ? IconName.Check : IconName.Ellipse}
                   color={accommodation?.available ? 'green' : GREY_200}
@@ -179,7 +181,7 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
                     <Text style={styles.profileText}>
                       {accommodation?.owner?.firstName ?? ''} {accommodation?.owner?.lastName ?? ''}
                     </Text>
-                    <Text>{accommodation?.owner.profile.country ?? ''}</Text>
+                    <Text>{accommodation?.owner?.profile?.country ?? ''}</Text>
                   </View>
                   {accommodation?.owner && (
                     <>
@@ -193,31 +195,37 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
             </TouchableOpacity>
 
             <View>
-              <Text style={styles.amenitiesTitle}>Amenities</Text>
+              <Text style={styles.amenitiesTitle}>{t('Amenities')}</Text>
               <View style={styles.badgesContainer}>
-                {amenitiesBadges}
+                {amenitiesBadges ? amenitiesBadges : <Text>No Amenities Available</Text>}
                 {otherAmenitiesBadgesMemo}
               </View>
             </View>
 
             <View style={{ marginVertical: 30 }}>
-              <Text style={styles.amenitiesTitle}>More photos</Text>
+              <Text style={styles.amenitiesTitle}>{t('More photos')}</Text>
               <ImageCarousel images={accommodationMedia} />
             </View>
 
             <View style={{ marginVertical: 10 }}>
-              <Text>Available</Text>
-              <Text>From: {formatDate(accommodation?.availableFrom ?? '')}</Text>
-              <Text>Till: {formatDate(accommodation?.availableTo ?? '')}</Text>
+              <Text>{t('Available')}</Text>
+              <Text>
+                {t('From:')} {formatDate(accommodation?.availableFrom ?? '')}
+              </Text>
+              <Text>
+                {t('Till:')} {formatDate(accommodation?.availableTo ?? '')}
+              </Text>
             </View>
           </View>
         </ThemedView>
       </ScrollView>
 
       <View style={styles.footer}>
-        <Text style={{ fontSize: 20 }}>Total price: ${accommodation?.price ?? 0 / 100}</Text>
+        <Text style={{ fontSize: 20 }}>
+          {t('Total price:')} ${accommodation?.price ?? 0 / 100}
+        </Text>
         <Button
-          title="Book"
+          title={t('Book')}
           onPress={() => {}}
           size={BUTTON_SIZES.MD}
           type={ButtonType.PRIMARY}
