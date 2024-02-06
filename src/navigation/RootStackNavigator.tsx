@@ -180,11 +180,6 @@ const RootStackNavigator = () => {
         options={{ headerShown: false }}
       />
       <RootRouterStack.Screen
-        name="FilterModal"
-        component={FilterModal}
-        options={{ headerShown: false }}
-      />
-      <RootRouterStack.Screen
         name="HostProfile"
         component={HostProfile}
         options={{ headerShown: false }}
