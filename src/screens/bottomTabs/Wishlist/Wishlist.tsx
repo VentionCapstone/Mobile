@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ErrorAlert, Text, WishlistItem } from 'src/components';
+import { ErrorAlert, Text, WishlistItem } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -85,7 +85,9 @@ const Wishlist = ({ navigation }: Props) => {
       {!isLoggedIn && (
         <View style={styles.container}>
           <Text style={styles.signInFirst}>{t('Please sign in first to view your wishlists')}</Text>
-          <Button title={t('Sign in first')} onPress={() => navigation.navigate('Signin')} />
+          <Pressable onPress={() => navigation.navigate('Signin')}>
+            <Text style={styles.signInFirstButtonText}>Sign in</Text>
+          </Pressable>
         </View>
       )}
 

@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
+import { Button, Loader, MyAccommodationListItem, Text, showAlert } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -90,40 +90,36 @@ const MyAccommodations = ({ navigation }: Props) => {
       )}
 
       {!isGuestAccount && (
-        <>
-          {myAccommodationsLoader ? (
-            <ActivityIndicator size="large" color={colors.tint} style={styles.loader} />
-          ) : (
-            <FlatList
-              data={filteredAccommodations}
-              keyExtractor={(item) => item.id}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={handleRefresh}
-                  progressBackgroundColor={colors.background}
-                  colors={[colors.tint]}
-                />
-              }
-              ListEmptyComponent={() => (
-                <Text style={styles.noAccommodationsText}>
-                  {t("You don't have any accommodations!")}
-                </Text>
-              )}
-              renderItem={({ item }) => (
-                <MyAccommodationListItem
-                  accommodationDetails={item}
-                  onDelete={handleDelete}
-                  onEdit={handleEdit}
-                  onNavigate={() => handleNavigateToDetails(item.id)}
-                  loader={accommodationLoader}
-                />
-              )}
-              contentContainerStyle={styles.flatlist}
+        <FlatList
+          data={filteredAccommodations}
+          keyExtractor={(item) => item.id}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              progressBackgroundColor={colors.background}
+              colors={[colors.tint]}
+            />
+          }
+          ListEmptyComponent={() => (
+            <Text style={styles.noAccommodationsText}>
+              {t("You don't have any accommodations!")}
+            </Text>
+          )}
+          renderItem={({ item }) => (
+            <MyAccommodationListItem
+              accommodationDetails={item}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              onNavigate={() => handleNavigateToDetails(item.id)}
+              loader={accommodationLoader}
             />
           )}
-        </>
+          contentContainerStyle={styles.flatlist}
+        />
       )}
+
+      <Loader visible={myAccommodationsLoader} message="Loading" />
     </ScreenTemplate>
   );
 };

@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ImagePickerAsset } from 'expo-image-picker';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType } from 'src/components';
+import { Button, ButtonType, Loader } from 'src/components';
 import Icon from 'src/components/Icon/Icon';
 import { ScreenTemplate } from 'src/components/templates';
 import { pickImage } from 'src/helper/pickProfileImage';
@@ -33,7 +33,7 @@ const ProfileImage = ({ navigation }: Props) => {
     }
   };
 
-  const handleSaveImage = async () => {
+  const handleSaveImage = useCallback(async () => {
     const formData = new FormData();
 
     if (image) {
@@ -49,7 +49,7 @@ const ProfileImage = ({ navigation }: Props) => {
         navigation.navigate('Profile');
       }
     }
-  };
+  }, [dispatch, image, navigation]);
 
   const handleSkip = () => {
     navigation.navigate('Profile');
@@ -94,11 +94,12 @@ const ProfileImage = ({ navigation }: Props) => {
             size={BUTTON_SIZES.SM}
             type={ButtonType.SECONDARY}
             onPress={handleSkip}
-            isLoading={imageLoader}
             style={styles.saveButton}
           />
         </View>
       </View>
+
+      <Loader visible={imageLoader} message="Uploading..." />
     </ScreenTemplate>
   );
 };

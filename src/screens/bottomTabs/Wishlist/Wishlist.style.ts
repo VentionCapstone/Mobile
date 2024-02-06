@@ -18,11 +18,15 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: PADDING_HORIZONTAL_20,
+    flexDirection: 'row',
   },
   signInFirst: {
     ...title3,
+    marginRight: 10,
     textAlign: 'center',
-    marginBottom: 10,
+  },
+  signInFirstButtonText: {
+    textDecorationLine: 'underline',
   },
 });
 

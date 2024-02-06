@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
+import { getColors } from 'src/store/selectors';
 import { RED_100, RED_200 } from 'src/styles';
 import { IconName } from 'src/types';
 
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const ErrorAlert = ({ visible, message, onClose }: Props) => {
+  const colors = useSelector(getColors);
   const [modalVisible, setModalVisible] = useState(visible);
 
   useEffect(() => {
@@ -30,13 +33,13 @@ const ErrorAlert = ({ visible, message, onClose }: Props) => {
   return (
     <Modal transparent visible={modalVisible} animationType="slide" onRequestClose={onClose}>
       <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
+        <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
             <Icon name={IconName.Close} size={30} color={RED_100} />
           </TouchableOpacity>
           <View style={styles.titleContainer}>
             <Icon name={IconName.Error} iconSet="material" size={22} color={RED_200} />
-            <Text style={styles.title}>Error occured!</Text>
+            <Text style={styles.title}>Error!</Text>
           </View>
 
           <Text style={styles.message}>{message}</Text>

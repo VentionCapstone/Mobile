@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import Text from 'src/components/Text/Text';
-import { DateTimePicker } from 'src/components/modals/centerModals';
+import { DateTimePicker, Loader, Text } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -82,6 +81,8 @@ const AccommodationDate = ({ route, navigation }: Props) => {
           />
         </View>
       </View>
+
+      <Loader visible={accommodationLoader} message="Loading..." />
     </StepperTemplate>
   );
 };

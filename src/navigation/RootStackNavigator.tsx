@@ -26,6 +26,7 @@ import {
   AccommodationImage,
   CreateAmenities,
   ProfileImage,
+  VerifyEmail,
 } from 'src/screens';
 import { AccommodationDetails } from 'src/screens/explore';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
@@ -64,6 +65,11 @@ const RootStackNavigator = () => {
         name="Signup"
         component={Signup}
         options={{ header: () => <NavigationHeader title={t('Sign Up')} /> }}
+      />
+      <RootRouterStack.Screen
+        name="VerifyEmail"
+        component={VerifyEmail}
+        options={{ header: () => <NavigationHeader title={t('Verify Email')} /> }}
       />
       <RootRouterStack.Screen
         name="UpdateProfile"

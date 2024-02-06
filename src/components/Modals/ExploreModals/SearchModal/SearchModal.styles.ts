@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { LEVEL_1, title2 } from 'src/styles';
+import { LEVEL_1, LEVEL_2, title2 } from 'src/styles';
 import { PADDING_HORIZONTAL_12, PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -18,16 +18,17 @@ export const styles = StyleSheet.create({
   },
   where: {
     width: '100%',
-    height: 160,
+    height: 120,
     borderRadius: 10,
     paddingHorizontal: PADDING_HORIZONTAL_20,
-    paddingVertical: 20,
+    paddingVertical: 10,
     zIndex: 999,
-    gap: 30,
-    ...LEVEL_1,
+    gap: 10,
+    ...LEVEL_2,
   },
   whereTitle: {
-    ...title2,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   closeIcon: {
     width: 40,

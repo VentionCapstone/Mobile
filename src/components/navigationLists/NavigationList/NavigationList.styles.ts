@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     alignItems: 'center',
-    borderBottomWidth: 1,
   },
   sectionTitle: {
     ...title2,

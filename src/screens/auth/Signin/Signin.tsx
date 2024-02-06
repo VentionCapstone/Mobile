@@ -66,6 +66,7 @@ const Signin = ({ navigation }: Props) => {
         <Text style={styles.description}>
           Sign in to your account and plan your next journey with us
         </Text>
+
         <Input
           style={styles.input}
           value={formValues.email}

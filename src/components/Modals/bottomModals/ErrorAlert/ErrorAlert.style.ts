@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { RED_100, RED_200, WHITE, paragraph2, LEVEL_1 } from 'src/styles';
+import { RED_100, RED_200, paragraph2, LEVEL_1 } from 'src/styles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,12 +14,11 @@ export const styles = StyleSheet.create({
   },
   modalContent: {
     minWidth: '90%',
-    minHeight: 80,
+    minHeight: 60,
     justifyContent: 'flex-end',
-    backgroundColor: WHITE,
     padding: 15,
     borderRadius: 10,
-    marginBottom: 30,
+    marginBottom: 20,
     ...LEVEL_1,
   },
   titleContainer: {

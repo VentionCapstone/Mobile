@@ -9,7 +9,7 @@ export const PRIMARY_BLUE_100 = '#C3E9FE';
 export const PRIMARY_BLUE_200 = '#4da0e8';
 export const PRIMARY_BLUE_300 = '#188AEC';
 
-export const RED = '#f5e4e4';
+export const RED = '#fcfafa';
 export const RED_100 = '#FF9A9A';
 export const RED_200 = '#F57878';
 export const RED_300 = '#1f1b1b';

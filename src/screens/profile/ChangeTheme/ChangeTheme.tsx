@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Icon, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { useAppDispatch } from 'src/store';
-import { getColors, getUserDetails, getUserId } from 'src/store/selectors';
+import { getColors, getIsDarkMode, getUserDetails, getUserId } from 'src/store/selectors';
 import { themeActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { IconName, ThemeType } from 'src/types/ui';
@@ -13,6 +13,7 @@ import { styles } from './ChangeTheme.style';
 
 const ChangeTheme = () => {
   const dispatch = useAppDispatch();
+  const isDarkMode = useSelector(getIsDarkMode);
   const userDetails = useSelector(getUserDetails);
   const userId = useSelector(getUserId);
   const colors = useSelector(getColors);
@@ -57,16 +58,23 @@ const ChangeTheme = () => {
           style={[styles.radioContainer, { backgroundColor: colors.background }]}
           onPress={enableDarkTheme}
         >
-          <Icon name={IconName.Moon} />
-          <Text style={styles.radioLabel}>{t('Dark theme')}</Text>
+          <View style={styles.radioInnerContainer}>
+            <Icon name={IconName.Moon} />
+            <Text style={styles.radioLabel}>{t('Dark theme')}</Text>
+          </View>
+          {isDarkMode && <Icon name={IconName.Check} size={20} color={colors.tint} />}
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.radioContainer, { backgroundColor: colors.background }]}
           onPress={enableLightTheme}
         >
-          <Icon name={IconName.ThemeSun} />
-          <Text style={styles.radioLabel}>{t('Light theme')}</Text>
+          <View style={styles.radioInnerContainer}>
+            <Icon name={IconName.ThemeSun} />
+            <Text style={styles.radioLabel}>{t('Light theme')}</Text>
+          </View>
+
+          {!isDarkMode && <Icon name={IconName.Check} size={20} color={colors.tint} />}
         </TouchableOpacity>
       </View>
     </ScreenTemplate>

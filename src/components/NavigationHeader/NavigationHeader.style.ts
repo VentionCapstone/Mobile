@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import { Platform, StyleSheet } from 'react-native';
-import { title2, LEVEL_1 } from 'src/styles';
+import { title3, LEVEL_1 } from 'src/styles';
 import { PADDING_HORIZONTAL_12 } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   title: {
-    ...title2,
+    ...title3,
   },
   rightContainer: {
     justifyContent: 'flex-end',

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getColors, getSearchParams } from 'src/store/selectors';
+import { PRIMARY_BLUE_200 } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './ExploreHeader.styles';
@@ -40,7 +41,7 @@ const ExploreHeader = ({ onOpenSearchModal, onOpenFilterModal }: Props) => {
         onPress={onOpenFilterModal}
         style={[styles.filter, { backgroundColor: colors.background }]}
       >
-        <Icon name={IconName.Options} size={26} />
+        <Icon name={IconName.Options} size={24} />
       </TouchableOpacity>
     </View>
   );

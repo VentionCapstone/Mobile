@@ -8,6 +8,7 @@ export type NavigationListOption = {
   screen?: keyof RootStackParamList;
   onPress?: () => void;
   showIconRight?: boolean;
+  whenAccountCreated?: boolean;
 };
 
 export type NavigationListSection = {

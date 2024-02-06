@@ -32,7 +32,6 @@ import {
   userActions,
 } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { TOMATO } from 'src/styles';
 import { ApiSuccessResponseType, User } from 'src/types';
 
 import { ACCOUNT_SECTIONS, AIR_BNB_IMAGE_URL } from './Profile.constants';
@@ -120,7 +119,7 @@ const Profile = ({ navigation }: Props) => {
             refreshing={refreshing}
             onRefresh={handleRefresh}
             progressBackgroundColor={colors.background}
-            colors={[TOMATO]}
+            colors={[colors.tint]}
           />
         }
       >
@@ -151,7 +150,7 @@ const Profile = ({ navigation }: Props) => {
           <>
             <NavigationList sections={ACCOUNT_SECTIONS} />
             <Button
-              title={t('Log out')}
+              title={t('Sign out')}
               marginVertical={30}
               type={ButtonType.SECONDARY}
               onPress={handleLogOut}

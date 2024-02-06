@@ -35,7 +35,6 @@ import { IconName } from 'src/types';
 
 import { styles } from './AccommodationDetails.styles';
 import {
-  AmenityChip,
   formatDate,
   getAmenitiesBadges,
   getOtherAmenitiesBadges,
@@ -83,10 +82,10 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
   const amenitiesBadges = useMemo(() => {
     if (accommodation?.amenities) {
       const amenitiesBadges = getAmenitiesBadges(accommodation?.amenities);
-      return amenitiesBadges.map(({ icon, text, iconSet }: AmenityChip) => (
-        <ThemedView key={text} style={styles.badge}>
-          <Icon name={icon} size={20} iconSet={iconSet} />
-          <Text style={styles.badgeText}>{text}</Text>
+      return amenitiesBadges.map((item, index) => (
+        <ThemedView key={index} style={styles.badge}>
+          <Icon name={item.icon} size={20} iconSet={item.iconSet} />
+          <Text style={styles.badgeText}>{item?.text}</Text>
         </ThemedView>
       ));
     }
@@ -95,10 +94,10 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
   const otherAmenitiesBadgesMemo = useMemo(() => {
     if (accommodation?.amenities) {
       const otherAmenitiesBadges = getOtherAmenitiesBadges(accommodation?.amenities);
-      return otherAmenitiesBadges.map((amenity) => (
-        <ThemedView key={amenity.text} style={styles.badge}>
+      return otherAmenitiesBadges.map((amenity, index) => (
+        <ThemedView key={index} style={styles.badge}>
           <Icon name={IconName.Check} size={20} />
-          <Text style={styles.badgeText}>{amenity.text}</Text>
+          <Text style={styles.badgeText}>{amenity?.text}</Text>
         </ThemedView>
       ));
     }
@@ -194,13 +193,15 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
               )}
             </TouchableOpacity>
 
-            <View>
-              <Text style={styles.amenitiesTitle}>{t('Amenities')}</Text>
-              <View style={styles.badgesContainer}>
-                {amenitiesBadges ? amenitiesBadges : <Text>No Amenities Available</Text>}
-                {otherAmenitiesBadgesMemo}
+            {amenitiesBadges && (
+              <View>
+                <Text style={styles.amenitiesTitle}>{t('Amenities')}</Text>
+                <View style={styles.badgesContainer}>
+                  {amenitiesBadges}
+                  {otherAmenitiesBadgesMemo}
+                </View>
               </View>
-            </View>
+            )}
 
             <View style={{ marginVertical: 30 }}>
               <Text style={styles.amenitiesTitle}>{t('More photos')}</Text>

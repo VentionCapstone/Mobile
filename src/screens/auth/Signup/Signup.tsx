@@ -47,7 +47,7 @@ const Signup = ({ navigation }: Props) => {
 
     if (response.payload?.success) {
       showAlert('success', { message: response.payload.message });
-      navigation.navigate('Signin');
+      navigation.navigate('VerifyEmail');
     }
   };
 

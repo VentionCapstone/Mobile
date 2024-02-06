@@ -29,7 +29,7 @@ const NavigationListItem = ({ item }: Props) => {
   return (
     <TouchableOpacity
       onPress={handlePress}
-      style={[styles.container, { backgroundColor: colors.secondaryBackground }]}
+      style={[styles.container, { borderBottomColor: colors.border }]}
     >
       <View style={styles.leftIconContainer}>{iconName && <Icon name={iconName} />}</View>
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, Image, View, ScrollView, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Icon, Text } from 'src/components';
+import { Button, ButtonType, Icon, Loader, Text } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -155,6 +155,11 @@ const AccommodationImage = ({ route, navigation }: Props) => {
           />
         </View>
       )}
+
+      <Loader
+        visible={loader}
+        message="Uploading accommodation images... This process won't take long"
+      />
     </StepperTemplate>
   );
 };

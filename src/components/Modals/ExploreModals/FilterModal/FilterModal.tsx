@@ -82,10 +82,8 @@ const FilterModal = ({ visible, onClose }: Props) => {
   };
 
   return (
-    <ModalContainer bottomModal visible={visible} onClose={onClose}>
+    <ModalContainer bottomModal visible={visible} onClose={onClose} title={t('Search options')}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.headerText}>{t('Search options')}</Text>
-
         <View style={[styles.filterContainer, { backgroundColor: colors.background }]}>
           <Text style={styles.filterTitle}>{t('Price')}</Text>
 

@@ -7,6 +7,7 @@ import { useAppDispatch } from 'src/store';
 import {
   getAccommodationList,
   getAccommodationListLoading,
+  getColors,
   getFilterParams,
   getSearchParams,
 } from 'src/store/selectors';
@@ -16,6 +17,7 @@ import styles from './Explore.style';
 
 const Explore = () => {
   const dispatch = useAppDispatch();
+  const colors = useSelector(getColors);
   const accommodationsList = useSelector(getAccommodationList);
   const isLoading = useSelector(getAccommodationListLoading);
   const filterParams = useSelector(getFilterParams);
@@ -93,7 +95,14 @@ const Explore = () => {
         )}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.2}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
+            progressBackgroundColor={colors.background}
+            colors={[colors.tint]}
+          />
+        }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>No accommodations found!</Text>
