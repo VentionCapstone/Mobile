@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getColors, getSearchParams } from 'src/store/selectors';
@@ -14,7 +15,8 @@ type Props = {
 
 const ExploreHeader = ({ onOpenSearchModal, onOpenFilterModal }: Props) => {
   const colors = useSelector(getColors);
-  const { location } = useSelector(getSearchParams);
+  const searchParams = useSelector(getSearchParams);
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -26,9 +28,11 @@ const ExploreHeader = ({ onOpenSearchModal, onOpenFilterModal }: Props) => {
 
         <View style={styles.searchContent}>
           <Text style={styles.searchHeader} ellipsizeMode="tail" numberOfLines={1}>
-            {location ? location : 'Where to go?'}
+            {searchParams?.location ? searchParams?.location : t('Where to go?')}
           </Text>
-          <Text>anywhere · week · 1 person</Text>
+          <Text>
+            {t('Anywhere')} · {t('week')} · 1 {t('person')}
+          </Text>
         </View>
       </TouchableOpacity>
 

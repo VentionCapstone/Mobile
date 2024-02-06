@@ -70,7 +70,7 @@ const Explore = () => {
   }, [page, fetchAccommodationList]);
 
   return (
-    <ScreenTemplate>
+    <ScreenTemplate headerShown={false}>
       <ExploreHeader
         onOpenSearchModal={handleOpenSearchModal}
         onOpenFilterModal={handleOpenFilterModal}

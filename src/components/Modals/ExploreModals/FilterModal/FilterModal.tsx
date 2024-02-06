@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, NumericInput, Text } from 'src/components';
 import { DEFAULT_FILTER_VALUES } from 'src/constants/filter';
 import { useAppDispatch } from 'src/store';
 import { getColors, getFilterParams } from 'src/store/selectors';
@@ -11,6 +11,10 @@ import { GetAccommodationQueryParams, SortOrder } from 'src/types';
 
 import { styles } from './FilterModal.styles';
 import FilterOrderButtons from './FilterSection';
+import Button from '../../../Button/Button';
+import { ButtonType } from '../../../Button/Button.types';
+import Text from '../../../Text/Text';
+import NumericInput from '../../../inputs/NumericInput/NumericInput';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
 type Props = {
@@ -22,6 +26,7 @@ const FilterModal = ({ visible, onClose }: Props) => {
   const colors = useSelector(getColors);
   const dispatch = useAppDispatch();
   const filterParams = useSelector(getFilterParams);
+  const { t } = useTranslation();
 
   const [filterValues, setFilterValues] = useState<GetAccommodationQueryParams>({
     minPrice: filterParams.minPrice,
@@ -79,20 +84,20 @@ const FilterModal = ({ visible, onClose }: Props) => {
   return (
     <ModalContainer bottomModal visible={visible} onClose={onClose}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.headerText}>Search options</Text>
+        <Text style={styles.headerText}>{t('Search options')}</Text>
 
         <View style={[styles.filterContainer, { backgroundColor: colors.background }]}>
-          <Text style={styles.filterTitle}>Price</Text>
+          <Text style={styles.filterTitle}>{t('Price')}</Text>
 
           <View style={styles.inputRow}>
             <NumericInput
-              label="Minimum"
+              label={t('Minimum')}
               value={filterValues.minPrice!}
               onChangeText={handleInputChange('minPrice')}
               style={styles.numericInput}
             />
             <NumericInput
-              label="Maximum"
+              label={t('Maximum')}
               value={filterValues.maxPrice!}
               onChangeText={handleInputChange('maxPrice')}
               style={styles.numericInput}
@@ -106,17 +111,17 @@ const FilterModal = ({ visible, onClose }: Props) => {
         </View>
 
         <View style={[styles.filterContainer, { backgroundColor: colors.background }]}>
-          <Text style={styles.filterTitle}>Rooms</Text>
+          <Text style={styles.filterTitle}>{t('Rooms')}</Text>
 
           <View style={styles.inputRow}>
             <NumericInput
-              label="Minimum"
+              label={t('Minimum')}
               value={filterValues.minRooms!}
               onChangeText={handleInputChange('minRooms')}
               style={styles.numericInput}
             />
             <NumericInput
-              label="Maximum"
+              label={t('Maximum')}
               value={filterValues.maxRooms!}
               onChangeText={handleInputChange('maxRooms')}
               style={styles.numericInput}
@@ -130,17 +135,17 @@ const FilterModal = ({ visible, onClose }: Props) => {
         </View>
 
         <View style={[styles.filterContainer, { backgroundColor: colors.background }]}>
-          <Text style={styles.filterTitle}>People</Text>
+          <Text style={styles.filterTitle}>{t('People')}</Text>
 
           <View style={styles.inputRow}>
             <NumericInput
-              label="Minimum"
+              label={t('Minimum')}
               value={filterValues.minPeople!}
               onChangeText={handleInputChange('minPeople')}
               style={styles.numericInput}
             />
             <NumericInput
-              label="Maximum"
+              label={t('Maximum')}
               value={filterValues.maxPeople!}
               onChangeText={handleInputChange('maxPeople')}
               style={styles.numericInput}
@@ -156,13 +161,13 @@ const FilterModal = ({ visible, onClose }: Props) => {
 
       <View style={styles.footer}>
         <Button
-          title="Default"
+          title={t('Default')}
           type={ButtonType.TERTIARY}
           size={BUTTON_SIZES.SM}
           onPress={handleResetFilters}
         />
 
-        <Button title="Apply" size={BUTTON_SIZES.SM} onPress={handleApply} />
+        <Button title={t('Apply')} size={BUTTON_SIZES.SM} onPress={handleApply} />
       </View>
     </ModalContainer>
   );

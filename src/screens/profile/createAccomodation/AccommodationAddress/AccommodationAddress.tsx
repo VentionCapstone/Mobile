@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import {
   GooglePlaceData,
@@ -25,6 +26,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationAddress'>;
 const AccommodationAddress = ({ navigation }: Props) => {
   const colors = useSelector(getColors);
   const mapViewRef = useRef<MapView>(null);
+  const { t } = useTranslation();
   const [addressSelected, setAddressSelected] = useState(false);
   const [selectedCoordinates, setSelectedCoordinates] = useState<LatLng | undefined>(
     INITIAL_COORDINATES
@@ -48,7 +50,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
         const placeDetails = await getPlaceDetails(details.place_id);
 
         if (!placeDetails) {
-          showAlert('error', { message: 'Something went wrong!' });
+          showAlert('error', { message: t('Something went wrong!') });
           return;
         }
 
@@ -58,7 +60,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
         setAddressSelected(true);
       }
     },
-    [addressValues]
+    [addressValues, t]
   );
 
   const handleNext = useCallback(async () => {
@@ -92,9 +94,9 @@ const AccommodationAddress = ({ navigation }: Props) => {
       <View style={styles.placesInputContainer}>
         {!addressSelected && (
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Where is your house located?</Text>
+            <Text style={styles.title}>{t('Where is your house located?')}</Text>
             <Text style={styles.subtitle}>
-              Your address is only shared with guests after they've made a reservation
+              {t("Your address is only shared with guests after they've made a reservation")}
             </Text>
           </View>
         )}
@@ -114,7 +116,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
               scrollEnabled: true,
               editable: true,
             }}
-            placeholder="Enter your address"
+            placeholder={t('Enter your address')}
             onPress={handleSearch}
             query={{
               key: GOOGLE_API_KEY,

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { SectionList } from 'react-native';
 import { useSelector } from 'react-redux';
 import Text from 'src/components/Text/Text';
@@ -16,6 +17,7 @@ interface Props {
 const NavigationList = ({ options, sections }: Props) => {
   const originalData: NavigationListSection[] = getSections({ options, sections });
   const colors = useSelector(getColors);
+  const { t } = useTranslation();
 
   return (
     <SectionList
@@ -29,7 +31,7 @@ const NavigationList = ({ options, sections }: Props) => {
       }}
       renderSectionHeader={({ section: { title } }) => {
         if (!title) return null;
-        return <Text style={styles.sectionTitle}>{title}</Text>;
+        return <Text style={styles.sectionTitle}>{t(title)}</Text>;
       }}
     />
   );

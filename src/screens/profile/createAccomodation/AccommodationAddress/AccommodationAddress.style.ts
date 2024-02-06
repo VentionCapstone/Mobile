@@ -41,12 +41,12 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     height: 50,
     paddingHorizontal: 40,
-    marginTop: 20,
+    marginTop: 35,
   },
   locationIcon: {
     position: 'absolute',
     left: 10,
-    top: 30,
+    top: 45,
   },
 
   mapContainer: {

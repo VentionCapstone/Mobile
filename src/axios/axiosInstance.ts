@@ -4,8 +4,6 @@ import { SecureStorageKey } from 'src/constants/storage';
 
 import { silentTokenRefresh } from './api';
 import ENDPOINTS from './endpoints';
-import { store } from '../store';
-import { accountActions } from '../store/slices/accountSlice';
 
 const BASE_URL = 'https://dev.vention-booking.taksifon.uz/api';
 
@@ -45,7 +43,6 @@ axiosInstance.interceptors.response.use(
 
     if (config.url === ENDPOINTS.refresh(userId) && data?.error?.statusCode === 401) {
       await SecureStore.deleteItemAsync(SecureStorageKey.REFRESH_TOKEN);
-      store.dispatch(accountActions.reset());
 
       return;
     }

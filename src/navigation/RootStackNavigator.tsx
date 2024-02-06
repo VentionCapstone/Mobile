@@ -1,9 +1,10 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StatusBar, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, FilterModal, NavigationHeader } from 'src/components';
+import { Button, ButtonType, NavigationHeader } from 'src/components';
 import {
   Account,
   CreateProfile,
@@ -39,6 +40,7 @@ const RootStackNavigator = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const isDark = useSelector(getIsDarkMode);
   const isGuestAccount = useSelector(getIsGuestAccount);
+  const { t } = useTranslation();
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
@@ -56,42 +58,42 @@ const RootStackNavigator = () => {
       <RootRouterStack.Screen
         name="Signin"
         component={Signin}
-        options={{ header: () => <NavigationHeader title="Sign In" /> }}
+        options={{ header: () => <NavigationHeader title={t('Sign In')} /> }}
       />
       <RootRouterStack.Screen
         name="Signup"
         component={Signup}
-        options={{ header: () => <NavigationHeader title="Sign Up" /> }}
+        options={{ header: () => <NavigationHeader title={t('Sign Up')} /> }}
       />
       <RootRouterStack.Screen
         name="UpdateProfile"
         component={UpdateProfile}
-        options={{ header: () => <NavigationHeader title="Edit Profile" /> }}
+        options={{ header: () => <NavigationHeader title={t('Edit Profile')} /> }}
       />
       <RootRouterStack.Screen
         name="CreateProfile"
         component={CreateProfile}
-        options={{ header: () => <NavigationHeader title="Create Profile" /> }}
+        options={{ header: () => <NavigationHeader title={t('Create Profile')} /> }}
       />
       <RootRouterStack.Screen
         name="ProfileImage"
         component={ProfileImage}
-        options={{ header: () => <NavigationHeader title="Create Profile" /> }}
+        options={{ header: () => <NavigationHeader title={t('Create Profile')} /> }}
       />
       <RootRouterStack.Screen
         name="Account"
         component={Account}
-        options={{ header: () => <NavigationHeader title="Account Information" /> }}
+        options={{ header: () => <NavigationHeader title={t('Account Information')} /> }}
       />
       <RootRouterStack.Screen
         name="ChangeTheme"
         component={ChangeTheme}
-        options={{ header: () => <NavigationHeader title="Theme" /> }}
+        options={{ header: () => <NavigationHeader title={t('Theme')} /> }}
       />
       <RootRouterStack.Screen
         name="ChangeLanguage"
         component={ChangeLanguage}
-        options={{ header: () => <NavigationHeader title="Language" /> }}
+        options={{ header: () => <NavigationHeader title={t('Language')} /> }}
       />
       <RootRouterStack.Screen
         name="MyAccommodations"
@@ -99,12 +101,12 @@ const RootStackNavigator = () => {
         options={{
           header: () => (
             <NavigationHeader
-              title="My Accommodations"
+              title={t('My Accommodations')}
               rightComponent={
                 <>
                   {!isGuestAccount && (
                     <Button
-                      title="create"
+                      title={t('create')}
                       height={35}
                       size={BUTTON_SIZES.SM}
                       type={ButtonType.SECONDARY}
@@ -120,17 +122,17 @@ const RootStackNavigator = () => {
       <RootRouterStack.Screen
         name="UpdateAccommodation"
         component={UpdateAccommodation}
-        options={{ header: () => <NavigationHeader title="Edit Accommodation" /> }}
+        options={{ header: () => <NavigationHeader title={t('Edit Accommodation')} /> }}
       />
       <RootRouterStack.Screen
         name="NotificationSettings"
         component={NotificationSettings}
-        options={{ header: () => <NavigationHeader title="Notification Settings" /> }}
+        options={{ header: () => <NavigationHeader title={t('Notification Settings')} /> }}
       />
       <RootRouterStack.Screen
         name="Notifications"
         component={Notifications}
-        options={{ header: () => <NavigationHeader title="Notifications" /> }}
+        options={{ header: () => <NavigationHeader title={t('Notifications')} /> }}
       />
 
       <RootRouterStack.Group screenOptions={{ headerShown: false }}>
@@ -156,10 +158,10 @@ const RootStackNavigator = () => {
         options={{
           header: () => (
             <NavigationHeader
-              title="Add Amenities"
+              title={t('Add Amenities')}
               rightComponent={
                 <Button
-                  title="Close"
+                  title={t('Close')}
                   height={35}
                   size={BUTTON_SIZES.SM}
                   type={ButtonType.PRIMARY}

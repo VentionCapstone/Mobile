@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import Text from 'src/components/Text/Text';
 import { NumericInput } from 'src/components/inputs';
@@ -17,6 +18,8 @@ interface FormValues {
 type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationPriceAndArea'>;
 
 const AccommodationPriceAndArea = ({ route, navigation }: Props) => {
+  const { t } = useTranslation();
+
   const [formValues, setFormValues] = useState<FormValues>({
     squareMeters: null,
     price: null,
@@ -43,19 +46,19 @@ const AccommodationPriceAndArea = ({ route, navigation }: Props) => {
   return (
     <StepperTemplate onNext={handleNext} disableNextButton={isNextButtonDisabled}>
       <View style={styles.container}>
-        <Text style={styles.title}>Share Some Informations About Your Place</Text>
-        <Text style={styles.subtitle}>You will add more details later</Text>
+        <Text style={styles.title}>{t('Share Some Informations About Your Place')}</Text>
+        <Text style={styles.subtitle}>{t('You will add more details later')}</Text>
 
         <View>
           <NumericInput
-            label="Area [m²]"
+            label={t('Area [m²]')}
             maxLength={AREA_MAX_LENGTH}
             value={formValues.squareMeters}
             onChangeText={handleInputChange('squareMeters')}
           />
 
           <NumericInput
-            label="Price [$]"
+            label={t('Price [$]')}
             maxLength={PRICE_MAX_LENGTH}
             value={formValues.price}
             onChangeText={handleInputChange('price')}
