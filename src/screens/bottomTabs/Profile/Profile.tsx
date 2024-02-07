@@ -5,8 +5,6 @@ import { Image, RefreshControl, ScrollView, TouchableOpacity, View } from 'react
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ErrorAlert,
-  Button,
-  ButtonType,
   NavigationList,
   ProfileFooter,
   ProfileHeader,
@@ -149,12 +147,10 @@ const Profile = ({ navigation }: Props) => {
         {isLoggedIn && (
           <>
             <NavigationList sections={ACCOUNT_SECTIONS} />
-            <Button
-              title={t('Sign out')}
-              marginVertical={30}
-              type={ButtonType.SECONDARY}
-              onPress={handleLogOut}
-            />
+
+            <TouchableOpacity onPress={handleLogOut} style={styles.signOutBtn}>
+              <Text style={styles.signOutBtnText}>Sign out</Text>
+            </TouchableOpacity>
           </>
         )}
 

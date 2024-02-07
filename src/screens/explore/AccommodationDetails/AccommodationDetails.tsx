@@ -1,15 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  View,
-  Image,
-} from 'react-native';
+import { RefreshControl, ScrollView, TouchableOpacity, View, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import {
   Button,
@@ -30,7 +22,7 @@ import {
   getIsLoggedIn,
 } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
-import { BUTTON_SIZES, GREY_200, TOMATO } from 'src/styles';
+import { BUTTON_SIZES, GREY_200 } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './AccommodationDetails.styles';
@@ -43,7 +35,7 @@ import {
 type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationDetails'>;
 
 const AccommodationDetails = ({ route, navigation }: Props) => {
-  const acccomodationId = route.params.accommodationId;
+  const { accommodationId } = route.params;
   const dispatch = useAppDispatch();
   const colors = useSelector(getColors);
   const accommodation = useSelector(getAccommodation);
@@ -71,11 +63,12 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
       return;
     }
 
-    setHeartPressed(!heartPressed);
     if (heartPressed) {
-      handleRemoveFromWishlist(acccomodationId);
+      handleRemoveFromWishlist(accommodationId);
+      setHeartPressed(false);
     } else {
-      handleAddToWishlist(acccomodationId);
+      handleAddToWishlist(accommodationId);
+      setHeartPressed(true);
     }
   };
 
@@ -104,12 +97,12 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
   }, [accommodation]);
 
   const fetchAccommodation = useCallback(async () => {
-    const response = await dispatch(AsyncThunks.getAccommodation(acccomodationId));
+    const response = await dispatch(AsyncThunks.getAccommodation(accommodationId));
 
     if (!response.payload?.success) {
       navigation.goBack();
     }
-  }, [dispatch, acccomodationId, navigation]);
+  }, [dispatch, accommodationId, navigation]);
 
   useEffect(() => {
     fetchAccommodation();
@@ -117,28 +110,30 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
 
   return (
     <ScreenTemplate>
-      <SafeAreaView>
-        <StatusBar />
-      </SafeAreaView>
-
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchAccommodation} />}
       >
         <View style={styles.header}>
-          <TouchableOpacity style={styles.icon} onPress={() => navigation.goBack()}>
-            <Icon name={IconName.BackChevron} size={24} />
+          <TouchableOpacity
+            style={[styles.icon, { backgroundColor: colors.background }]}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name={IconName.Back} size={20} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.icon} onPress={handleToggleWishlist}>
-            {heartPressed ? (
-              <Icon name={IconName.Heart} color={TOMATO} size={24} />
-            ) : (
-              <Icon name={IconName.HeartOutline} size={24} />
-            )}
+          <TouchableOpacity
+            style={[styles.icon, { backgroundColor: colors.background }]}
+            onPress={handleToggleWishlist}
+          >
+            <Icon
+              name={heartPressed ? IconName.Heart : IconName.HeartOutline}
+              size={20}
+              color={colors.tint}
+            />
           </TouchableOpacity>
         </View>
 
-        <ThemedView>
+        <View>
           <Image source={{ uri: accommodation?.thumbnailUrl }} style={styles.imagePlaceholder} />
           <View style={styles.container}>
             <Text style={styles.headTitle}>{accommodation?.title}</Text>
@@ -218,17 +213,18 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
               </Text>
             </View>
           </View>
-        </ThemedView>
+        </View>
       </ScrollView>
 
       <View style={styles.footer}>
-        <Text style={{ fontSize: 20 }}>
-          {t('Total price:')} ${accommodation?.price ?? 0 / 100}
+        <Text style={{ fontSize: 16 }}>
+          {t('Total price:')} ${accommodation?.price}
         </Text>
+
         <Button
           title={t('Book')}
           onPress={() => {}}
-          size={BUTTON_SIZES.MD}
+          size={BUTTON_SIZES.SM}
           type={ButtonType.PRIMARY}
           disabled
         />

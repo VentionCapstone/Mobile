@@ -51,6 +51,18 @@ const styles = StyleSheet.create({
     width: 120,
     height: 100,
   },
+  signOutBtn: {
+    height: 30,
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    borderRadius: 10,
+  },
+  signOutBtnText: {
+    fontSize: 16,
+    textDecorationLine: 'underline',
+  },
 });
 
 export default styles;

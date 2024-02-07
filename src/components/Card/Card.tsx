@@ -21,7 +21,7 @@ type Props = {
 const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist, onLoginRequired }: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const isLoggedIn = useSelector(getIsLoggedIn);
-  const [pressed, setPressed] = useState<boolean>(false);
+  const [pressed, setPressed] = useState<boolean>(item.isInWishlist);
 
   const handleToggleWishlist = () => {
     if (!isLoggedIn) {
@@ -31,15 +31,10 @@ const Card = ({ item, onAddedToWishlist, onRemoveFromWishlist, onLoginRequired }
 
     if (pressed) {
       onRemoveFromWishlist(item.id);
-      return;
-    }
-
-    onAddedToWishlist(item.id);
-    setPressed(!pressed);
-    if (pressed) {
-      onRemoveFromWishlist(item.id);
+      setPressed(false);
     } else {
       onAddedToWishlist(item.id);
+      setPressed(true);
     }
   };
 

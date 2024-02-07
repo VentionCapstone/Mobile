@@ -18,10 +18,11 @@ import {
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { SecureStorageKey } from 'src/constants/storage';
 import { pickImage } from 'src/helper/pickProfileImage';
+import i18n from 'src/i18n/i18n';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
 import { getAccountLoader, getColors, getUserDetails } from 'src/store/selectors';
-import { accountActions } from 'src/store/slices';
+import { accountActions, changeLanguage } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
 import { Gender, GenderOptionsProps } from 'src/types/common';
@@ -114,6 +115,9 @@ const UpdateAccount = ({ navigation }: Props) => {
         if (userId) {
           await dispatch(AsyncThunks.getUserDetails(userId));
         }
+
+        dispatch(changeLanguage(formValues.language));
+        i18n.changeLanguage(formValues.language);
       }
     } else {
       setValidationErrors(errors);

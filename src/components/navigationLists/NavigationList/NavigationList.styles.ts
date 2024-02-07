@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
     ...title2,
     width: '100%',
     alignSelf: 'flex-end',
-    marginRight: 280,
+    marginRight: 260,
+    fontSize: 22,
   },
   titleContainer: {
     backgroundColor: 'red',

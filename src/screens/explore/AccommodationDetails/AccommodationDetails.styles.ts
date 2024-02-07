@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BLACK, GREY_300, LEVEL_1, WHITE_100, paragraph2, title3 } from 'src/styles';
+import { GREY_300, LEVEL_1, paragraph2, title3 } from 'src/styles';
 import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 export const styles = StyleSheet.create({
@@ -29,17 +29,15 @@ export const styles = StyleSheet.create({
   icon: {
     flexDirection: 'row',
     borderRadius: 100,
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: WHITE_100,
     ...LEVEL_1,
   },
   imageContainer: {
     width: '100%',
     height: 250,
-    backgroundColor: BLACK,
   },
   titleContainer: {
     justifyContent: 'space-between',
@@ -52,7 +50,7 @@ export const styles = StyleSheet.create({
     gap: 5,
   },
   address: {
-    fontSize: 18,
+    fontSize: 16,
   },
   headTitle: {
     fontSize: 24,
@@ -108,8 +106,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 12,
     paddingHorizontal: 20,
-    height: 100,
+    height: 80,
   },
 });
