@@ -3,7 +3,7 @@ import { ImagePickerAsset } from 'expo-image-picker';
 import { useCallback, useState } from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType, Loader } from 'src/components';
+import { Alert, Button, ButtonType, Loader } from 'src/components';
 import Icon from 'src/components/Icon/Icon';
 import { ScreenTemplate } from 'src/components/templates';
 import { pickImage } from 'src/helper/pickProfileImage';
@@ -12,7 +12,7 @@ import { useAppDispatch } from 'src/store';
 import { getAccountLoader, getColors } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
-import { IconName } from 'src/types/ui';
+import { AlertType, IconName } from 'src/types/ui';
 
 import { styles } from './ProfileImage.style';
 
@@ -24,6 +24,7 @@ const ProfileImage = ({ navigation }: Props) => {
   const imageLoader = useSelector(getAccountLoader);
 
   const [image, setImage] = useState<ImagePickerAsset>();
+  const [successVisible, setSuccessVisible] = useState<boolean>(false);
 
   const handlePickImage = async () => {
     const selectedPhoto = await pickImage();
@@ -46,12 +47,14 @@ const ProfileImage = ({ navigation }: Props) => {
       const response = await dispatch(AsyncThunks.addProfileImage(formData));
 
       if (response.meta.requestStatus === 'fulfilled') {
+        setSuccessVisible(true);
         navigation.navigate('Profile');
       }
     }
   }, [dispatch, image, navigation]);
 
   const handleSkip = () => {
+    setSuccessVisible(true);
     navigation.navigate('Profile');
   };
 
@@ -85,7 +88,6 @@ const ProfileImage = ({ navigation }: Props) => {
             title="Save"
             size={BUTTON_SIZES.SM}
             onPress={handleSaveImage}
-            isLoading={imageLoader}
             style={styles.saveButton}
             disabled={!image}
           />
@@ -100,6 +102,12 @@ const ProfileImage = ({ navigation }: Props) => {
       </View>
 
       <Loader visible={imageLoader} message="Uploading..." />
+      <Alert
+        type={AlertType.Success}
+        visible={successVisible}
+        message="Profile created successfully"
+        onClose={() => setSuccessVisible(false)}
+      />
     </ScreenTemplate>
   );
 };

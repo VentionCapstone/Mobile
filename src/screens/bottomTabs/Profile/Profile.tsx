@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Image, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  ErrorAlert,
+  Alert,
   NavigationList,
   ProfileFooter,
   ProfileHeader,
@@ -40,7 +40,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 const Profile = ({ navigation }: Props) => {
   const userId = useSelector(getUserId);
   const isLoggedIn = useSelector(getIsLoggedIn);
-  const isGuestUser = useSelector(getIsGuestAccount);
+  const isGuestAccount = useSelector(getIsGuestAccount);
   const userError = useSelector(getAccountError);
   const accommodationError = useSelector(getAccommodationError);
   const myAccommodationsError = useSelector(getMyAccommodationsError);
@@ -80,6 +80,8 @@ const Profile = ({ navigation }: Props) => {
   }, [dispatch, userId]);
 
   const handleRefresh = async () => {
+    if (isGuestAccount) return;
+
     setRefreshing(true);
     await getAccountDetails();
     setRefreshing(false);
@@ -93,7 +95,7 @@ const Profile = ({ navigation }: Props) => {
     if (isLoggedIn) {
       getAccountDetails();
     }
-  }, [isLoggedIn, isGuestUser, getAccountDetails]);
+  }, [isLoggedIn, isGuestAccount, getAccountDetails]);
 
   useEffect(() => {
     if (userError || accommodationError || myAccommodationsError) {
@@ -123,7 +125,7 @@ const Profile = ({ navigation }: Props) => {
       >
         <ProfileHeader isLoggedIn={isLoggedIn} />
 
-        {isLoggedIn && !isGuestUser && (
+        {isLoggedIn && !isGuestAccount && (
           <TouchableOpacity
             style={[styles.createAirBnbCard, { backgroundColor: colors.secondaryBackground }]}
             onPress={navigateToCreateAccommodation}
@@ -157,7 +159,7 @@ const Profile = ({ navigation }: Props) => {
         <ProfileFooter />
       </ScrollView>
 
-      <ErrorAlert
+      <Alert
         visible={errorVisible}
         message={
           userError?.error?.message ||

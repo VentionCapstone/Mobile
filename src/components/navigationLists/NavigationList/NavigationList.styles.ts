@@ -4,7 +4,7 @@ import { title2, paragraph1 } from 'src/styles';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 30,
     alignItems: 'center',
   },
   sectionTitle: {

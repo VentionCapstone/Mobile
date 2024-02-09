@@ -2,14 +2,14 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, Icon, Text } from 'src/components';
+import { Alert, Button, Icon, Text } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import i18n from 'src/i18n/i18n';
 import { useAppDispatch } from 'src/store';
 import { getAccountLoader, getColors, getUserDetails, getUserId } from 'src/store/selectors';
 import { changeLanguage } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { IconName, Language } from 'src/types';
+import { AlertType, IconName, Language } from 'src/types';
 import { LANGUAGES } from 'src/utils';
 
 import { styles } from './ChangeLanguage.style';
@@ -21,6 +21,7 @@ const ChangeLanguage = () => {
   const loader = useSelector(getAccountLoader);
   const userDetails = useSelector(getUserDetails);
   const userId = useSelector(getUserId);
+  const [successVisible, setSuccessVisible] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
     userDetails?.profile?.language
   );
@@ -50,6 +51,7 @@ const ChangeLanguage = () => {
     );
 
     if (response?.meta.requestStatus === 'fulfilled') {
+      setSuccessVisible(true);
       dispatch(changeLanguage(selectedLanguage));
       i18n.changeLanguage(selectedLanguage);
     }
@@ -80,6 +82,12 @@ const ChangeLanguage = () => {
           marginVertical={30}
           isLoading={loader}
           onPress={handleChangeLanguage}
+        />
+        <Alert
+          type={AlertType.Success}
+          visible={successVisible}
+          title="Updated successfully"
+          onClose={() => setSuccessVisible(false)}
         />
       </View>
     </ScreenTemplate>

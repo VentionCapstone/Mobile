@@ -17,7 +17,8 @@ export enum IconName {
   EyeOutline = 'eye-outline',
   EyeOffOutline = 'eye-off-outline',
   ChevronDown = 'chevron-down-outline',
-  Close = 'close-outline',
+  Close = 'close',
+  CloseOutline = 'close-outline',
   ImagesOutline = 'images-outline',
   Camera = 'camera',
   Phone = 'local-phone',
@@ -65,4 +66,9 @@ export type IconSet = 'ionicons' | 'material';
 export enum ThemeType {
   Light = 'light',
   Dark = 'dark',
+}
+
+export enum AlertType {
+  Error = 'error',
+  Success = 'success',
 }

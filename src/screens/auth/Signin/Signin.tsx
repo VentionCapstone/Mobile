@@ -2,14 +2,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Text, Input } from 'src/components';
+import { Text, Input, Alert } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
 import { getAccountLoader } from 'src/store/selectors';
 import { accountActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
-import { SignInParams } from 'src/types';
+import { AlertType, SignInParams } from 'src/types';
 import { EMAIL_MAX_LENGTH } from 'src/utils';
 
 import { validateForm } from './Signin.utils';
@@ -22,6 +22,7 @@ const Signin = ({ navigation }: Props) => {
   const loading = useSelector(getAccountLoader);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
+  const [successVisible, setSuccessVisible] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<SignInParams>({
     email: '',
     password: '',
@@ -41,7 +42,8 @@ const Signin = ({ navigation }: Props) => {
       const response = await dispatch(AsyncThunks.signIn(formValues));
 
       if (response.meta.requestStatus === 'fulfilled') {
-        navigation.navigate('Main');
+        setSuccessVisible(true);
+        navigation.navigate('Profile');
       }
     } else {
       setValidationErrors(errors);
@@ -66,7 +68,6 @@ const Signin = ({ navigation }: Props) => {
         <Text style={styles.description}>
           Sign in to your account and plan your next journey with us
         </Text>
-
         <Input
           style={styles.input}
           value={formValues.email}
@@ -94,6 +95,13 @@ const Signin = ({ navigation }: Props) => {
             Sign Up
           </Text>
         </View>
+
+        <Alert
+          type={AlertType.Success}
+          visible={successVisible}
+          title="Login successfully"
+          onClose={() => setSuccessVisible(false)}
+        />
       </FormTemplate>
     </ScreenTemplate>
   );

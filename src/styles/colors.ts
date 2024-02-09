@@ -9,10 +9,10 @@ export const PRIMARY_BLUE_100 = '#C3E9FE';
 export const PRIMARY_BLUE_200 = '#4da0e8';
 export const PRIMARY_BLUE_300 = '#188AEC';
 
-export const RED = '#fcfafa';
+export const RED = '#fcedee';
 export const RED_100 = '#FF9A9A';
 export const RED_200 = '#F57878';
-export const RED_300 = '#1f1b1b';
+export const RED_300 = '#302929';
 
 export const TOMATO = '#f77159';
 export const TOMATO_100 = '#FF6347';
@@ -21,3 +21,6 @@ export const WHITE = '#FFFFFF';
 export const WHITE_100 = '#f5f5f5';
 export const WHITE_200 = '#c9c9c9';
 export const WHITE_300 = '#a8a8a8';
+
+export const GREEN = '#def5dc';
+export const GREEN_100 = '#73d66b';

@@ -1,4 +1,6 @@
 import {
+  GREEN,
+  GREEN_100,
   GREY_300,
   GREY_400,
   GREY_500,
@@ -6,6 +8,7 @@ import {
   PRIMARY_BLUE_200,
   RED,
   RED_100,
+  RED_300,
   TOMATO,
   WHITE,
   WHITE_100,
@@ -21,7 +24,7 @@ export const darkColors = {
   buttonTextColor: WHITE_100,
   buttonBorder: WHITE_200,
   error: RED_100,
-  errorBackground: RED,
+  errorBackground: RED_300,
   icon: WHITE_200,
   placeholder: GREY_300,
   secondaryBackground: GREY_400,
@@ -30,6 +33,8 @@ export const darkColors = {
   text: WHITE_100,
   title: WHITE,
   tint: TOMATO,
+  success: GREEN_100,
+  successBackground: GREEN,
 };
 
 export const lightColors = {
@@ -49,4 +54,6 @@ export const lightColors = {
   text: GREY_400,
   title: GREY_500,
   tint: TOMATO,
+  success: GREEN_100,
+  successBackground: GREEN,
 };

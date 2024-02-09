@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { ErrorAlert, Text, WishlistItem } from 'src/components';
+import { Alert, Text, WishlistItem } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -91,7 +91,7 @@ const Wishlist = ({ navigation }: Props) => {
         </View>
       )}
 
-      <ErrorAlert
+      <Alert
         visible={errorVisible}
         message={wishlistError?.error.message}
         onClose={() => setErrorVisible(false)}

@@ -10,10 +10,10 @@ import {
   Icon,
   Input,
   LanguageSelector,
-  showAlert,
   Text,
   PhoneNumberInput,
   Loader,
+  Alert,
 } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { SecureStorageKey } from 'src/constants/storage';
@@ -26,7 +26,7 @@ import { accountActions, changeLanguage } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
 import { Gender, GenderOptionsProps } from 'src/types/common';
-import { IconName, ThemeType } from 'src/types/ui';
+import { AlertType, IconName, ThemeType } from 'src/types/ui';
 import { ACCOUNT_NAME_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './UpdateAccount.style';
@@ -52,6 +52,7 @@ const UpdateAccount = ({ navigation }: Props) => {
   );
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [successVisible, setSuccessVisible] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<UpdateAccountFormValues>({
     firstName: userDetails?.firstName || '',
     lastName: userDetails?.lastName || '',
@@ -94,7 +95,11 @@ const UpdateAccount = ({ navigation }: Props) => {
       type: 'image/jpeg',
     } as any);
 
-    await dispatch(AsyncThunks.addProfileImage(formData));
+    const response = await dispatch(AsyncThunks.addProfileImage(formData));
+    if (response.meta.requestStatus === 'fulfilled') {
+      setSuccessVisible(true);
+      navigation.navigate('Profile');
+    }
   };
 
   const handleOnSubmit = useCallback(async () => {
@@ -106,12 +111,10 @@ const UpdateAccount = ({ navigation }: Props) => {
       const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
 
       if (response.meta.requestStatus === 'fulfilled') {
-        showAlert('success', {
-          message: t('Account details updated successfully!'),
-          onOkPressed: () => navigation.navigate('Profile'),
-        });
-        const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
+        setSuccessVisible(true);
+        navigation.navigate('Profile');
 
+        const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
         if (userId) {
           await dispatch(AsyncThunks.getUserDetails(userId));
         }
@@ -122,7 +125,7 @@ const UpdateAccount = ({ navigation }: Props) => {
     } else {
       setValidationErrors(errors);
     }
-  }, [formValues, profileId, dispatch, navigation, t]);
+  }, [formValues, profileId, dispatch, navigation]);
 
   useEffect(() => {
     if (formInteracted) {
@@ -231,6 +234,12 @@ const UpdateAccount = ({ navigation }: Props) => {
       <Loader
         visible={loading}
         message={t("Your details are being updated. This won't take long...")}
+      />
+      <Alert
+        type={AlertType.Success}
+        visible={successVisible}
+        title="Updated successfully"
+        onClose={() => setSuccessVisible(false)}
       />
     </ScreenTemplate>
   );

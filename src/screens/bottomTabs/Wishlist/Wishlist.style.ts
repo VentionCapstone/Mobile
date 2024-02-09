@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   signInFirst: {
     ...title3,
-    marginRight: 10,
+    marginRight: 6,
     textAlign: 'center',
   },
   signInFirstButtonText: {
