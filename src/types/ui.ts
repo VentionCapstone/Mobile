@@ -8,7 +8,7 @@ export enum IconName {
   PersonCircle = 'person-circle',
   Language = 'language-outline',
   Notifications = 'notifications-outline',
-  ThemeSun = 'md-sunny-outline',
+  ThemeSun = 'sunny-outline',
   Chat = 'chatbubble-ellipses-outline',
   RadioButtonsOn = 'radio-button-on',
   RadioButtonsOff = 'radio-button-off',
@@ -27,11 +27,11 @@ export enum IconName {
   BackChevron = 'chevron-back',
   Edit = 'edit',
   Error = 'error-outline',
-  List = 'ios-list',
+  List = 'list',
   Location = 'location',
   Delete = 'delete-outline',
   Image = 'images-outline',
-  Login = 'ios-log-in-outline',
+  Login = 'log-in-outline',
   Logout = 'ios-log-out-outline',
   Calendar = 'calendar-outline',
   Wifi = 'wifi-outline',
@@ -66,9 +66,4 @@ export type IconSet = 'ionicons' | 'material';
 export enum ThemeType {
   Light = 'light',
   Dark = 'dark',
-}
-
-export enum AlertType {
-  Error = 'error',
-  Success = 'success',
 }

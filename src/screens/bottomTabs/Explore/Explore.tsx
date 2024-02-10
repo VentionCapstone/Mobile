@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Card, ExploreHeader, FilterModal, SearchModal, Text, showAlert } from 'src/components';
+import { Card, ExploreHeader, FilterModal, SearchModal, Text, showToast } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { useAppDispatch } from 'src/store';
 import {
@@ -68,7 +68,7 @@ const Explore = () => {
   };
 
   const handleLoginRequired = useCallback(() => {
-    showAlert('warning', { message: 'You should be logged in to add your wishlists' });
+    showToast({ type: 'info', text1: 'You should be logged in to add your wishlists' });
   }, []);
 
   useEffect(() => {

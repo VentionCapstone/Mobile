@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { View } from 'react-native';
 import { Text } from 'src/components';
-import { PRIMARY_BLUE_300, TOMATO } from 'src/styles';
+import { PRIMARY_BLUE_200, PRIMARY_BLUE_300 } from 'src/styles';
 import { HostProfile } from 'src/types';
 
 import styles from './HostVerifiedInfo.styles';
@@ -21,7 +21,7 @@ const HostVerifiedInfo = ({ host }: Props) => {
           <MaterialIcons
             name={isVerified ? 'check' : 'close'}
             size={24}
-            color={isVerified ? PRIMARY_BLUE_300 : TOMATO}
+            color={isVerified ? PRIMARY_BLUE_300 : PRIMARY_BLUE_200}
           />
           <Text style={styles.infoText}>Identity Verification</Text>
         </View>
@@ -29,12 +29,12 @@ const HostVerifiedInfo = ({ host }: Props) => {
           <MaterialIcons
             name={isEmailVerified ? 'check' : 'close'}
             size={24}
-            color={isEmailVerified ? PRIMARY_BLUE_300 : TOMATO}
+            color={isEmailVerified ? PRIMARY_BLUE_300 : PRIMARY_BLUE_200}
           />
           <Text style={styles.infoText}>Email Verification</Text>
         </View>
         <View style={styles.infoItem}>
-          <MaterialIcons name="close" size={24} color={TOMATO} />
+          <MaterialIcons name="close" size={24} color={PRIMARY_BLUE_200} />
           <Text style={styles.infoText}>Phone Verification</Text>
         </View>
       </View>

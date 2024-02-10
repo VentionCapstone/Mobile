@@ -60,11 +60,7 @@ const AccommodationDate = ({ route, navigation }: Props) => {
   const isNextButtonDisabled = Object.values(dateValues).some((value) => value === '');
 
   return (
-    <StepperTemplate
-      onNext={handleNext}
-      loader={accommodationLoader}
-      disableNextButton={isNextButtonDisabled}
-    >
+    <StepperTemplate onNext={handleNext} disableNextButton={isNextButtonDisabled}>
       <View style={styles.container}>
         <Text style={styles.title}>{t('Select your house available dates')}</Text>
 

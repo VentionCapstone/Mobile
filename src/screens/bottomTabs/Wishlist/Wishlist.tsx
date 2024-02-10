@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Alert, Text, WishlistItem } from 'src/components';
+import { Text, WishlistItem, showToast } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -28,7 +28,6 @@ const Wishlist = ({ navigation }: Props) => {
   const colors = useSelector(getColors);
   const isLoggedIn = useSelector(getIsLoggedIn);
   const { t } = useTranslation();
-  const [errorVisible, setErrorVisible] = useState<boolean>(false);
 
   const handleRemoveFromWishlist = async (accommodationId: string) => {
     await dispatch(AsyncThunks.removeFromWishlist(accommodationId));
@@ -47,6 +46,16 @@ const Wishlist = ({ navigation }: Props) => {
       fetchWishlists();
     }
   }, [dispatch, isLoggedIn, fetchWishlists]);
+
+  useEffect(() => {
+    if (wishlistError) {
+      showToast({
+        type: 'error',
+        text1: 'Error occured!',
+        text2: wishlistError.error.message as string,
+      });
+    }
+  }, [wishlistError]);
 
   return (
     <ScreenTemplate headerShown={false}>
@@ -90,12 +99,6 @@ const Wishlist = ({ navigation }: Props) => {
           </Pressable>
         </View>
       )}
-
-      <Alert
-        visible={errorVisible}
-        message={wishlistError?.error.message}
-        onClose={() => setErrorVisible(false)}
-      />
     </ScreenTemplate>
   );
 };

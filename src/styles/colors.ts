@@ -6,7 +6,7 @@ export const GREY_400 = '#292929';
 export const GREY_500 = '#242424';
 
 export const PRIMARY_BLUE_100 = '#C3E9FE';
-export const PRIMARY_BLUE_200 = '#4da0e8';
+export const PRIMARY_BLUE_200 = '#82A6EE';
 export const PRIMARY_BLUE_300 = '#188AEC';
 
 export const RED = '#fcedee';
@@ -15,7 +15,6 @@ export const RED_200 = '#F57878';
 export const RED_300 = '#302929';
 
 export const TOMATO = '#f77159';
-export const TOMATO_100 = '#FF6347';
 
 export const WHITE = '#FFFFFF';
 export const WHITE_100 = '#f5f5f5';

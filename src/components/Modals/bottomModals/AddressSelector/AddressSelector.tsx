@@ -9,7 +9,7 @@ import { styles } from './AddressSelector.style';
 import { REGION_DELTA, validateForm } from './AddressSelector.utils';
 import AddressSelectorForm from './AddressSelectorForm';
 import ThemedView from '../../../ThemedView/ThemedView';
-import showAlert from '../../../alert';
+import showToast from '../../../alert';
 import PlacesInput from '../../../inputs/PlacesInput/PlacesInput';
 import ModalContainer from '../../ModalContainer/ModalContainer';
 
@@ -57,9 +57,7 @@ const AddressSelector = ({ onSelect, existingAddress }: Props) => {
         const placeDetails = await getPlaceDetails(details.place_id);
 
         if (!placeDetails) {
-          showAlert('error', {
-            message: 'Something went wrong!',
-          });
+          showToast({ type: 'error', text1: 'Something wnet wrong!' });
           return;
         }
 

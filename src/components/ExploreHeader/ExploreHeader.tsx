@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getColors, getSearchParams } from 'src/store/selectors';
-import { PRIMARY_BLUE_200 } from 'src/styles';
 import { IconName } from 'src/types';
 
 import { styles } from './ExploreHeader.styles';

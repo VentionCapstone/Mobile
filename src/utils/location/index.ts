@@ -1,5 +1,7 @@
 import { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 
+import showToast from '../../components/alert';
+
 const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
 
 const getAddressInfo = (placeDetails: GooglePlaceDetail | null) => {
@@ -36,9 +38,13 @@ const getPlaceDetails = async (placeId: string) => {
       return data.result;
     }
   } catch (error) {
-    console.log(`Error fetching places, ${error}`);
+    showToast({
+      type: 'error',
+      text1: `Error occured while fetching place details`,
+      text2: `${error}`,
+    });
     return null;
   }
 };
 
-export { getAddressInfo, getPlaceDetails };
+export { getAddressInfo, getPlaceDetails, GOOGLE_API_KEY };

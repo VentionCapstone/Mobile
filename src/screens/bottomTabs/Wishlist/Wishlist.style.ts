@@ -3,22 +3,22 @@ import { title2, title3, paragraph2 } from 'src/styles';
 import { PADDING_HORIZONTAL_20 } from 'src/utils';
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: PADDING_HORIZONTAL_20,
+    flexDirection: 'row',
+  },
   emptyComponent: {
-    paddingHorizontal: 10,
+    paddingHorizontal: PADDING_HORIZONTAL_20,
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+    paddingHorizontal: PADDING_HORIZONTAL_20,
   },
   title: {
     ...title2,
   },
   description: {
     ...paragraph2,
-  },
-  columnWrapper: {
-    justifyContent: 'space-between',
-    paddingHorizontal: PADDING_HORIZONTAL_20,
-  },
-  container: {
-    paddingHorizontal: PADDING_HORIZONTAL_20,
-    flexDirection: 'row',
   },
   signInFirst: {
     ...title3,

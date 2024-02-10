@@ -11,8 +11,8 @@ export const styles = StyleSheet.create({
   },
   redirectContainer: {
     paddingHorizontal: PADDING_HORIZONTAL_16,
-    paddingVertical: 20,
-    gap: 30,
+    paddingTop: 20,
+    gap: 10,
     alignItems: 'center',
   },
   card: {

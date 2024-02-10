@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   scrollContainer: {
-    paddingVertical: 10,
     paddingHorizontal: PADDING_HORIZONTAL_16,
   },
   createAirBnbCard: {

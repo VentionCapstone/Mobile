@@ -5,8 +5,8 @@ import { PADDING_HORIZONTAL_20 } from 'src/utils';
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingTop: 15,
-    paddingBottom: 8,
+    paddingTop: 20,
+    paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -35,7 +35,6 @@ export const styles = StyleSheet.create({
     height: 40,
     width: 40,
     marginVertical: 10,
-    border: 'solid',
     borderRadius: 100,
     ...LEVEL_1,
   },

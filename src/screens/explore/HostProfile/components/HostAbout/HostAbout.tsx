@@ -15,7 +15,7 @@ interface Props {
 const HostAbout = ({ host }: Props) => {
   const colors = useSelector(getColors);
 
-  const { firstName, joinedAt, language, country, description } = host;
+  const { firstName, createdAt, language, country, description } = host;
 
   return (
     <View style={styles.container}>
@@ -23,7 +23,7 @@ const HostAbout = ({ host }: Props) => {
       <View style={styles.infoContainer}>
         <View style={styles.infoItem}>
           <MaterialIcons name="person-add" size={24} color={colors.icon} />
-          <Text style={styles.infoText}>{`Joined: ${dayjs(joinedAt).format('MMM YYYY')}`}</Text>
+          <Text style={styles.infoText}>{`Joined: ${dayjs(createdAt).format('MMM YYYY')}`}</Text>
         </View>
         <View style={styles.infoItem}>
           <MaterialIcons name="language" size={24} color={colors.icon} />

@@ -9,9 +9,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Constants.statusBarHeight,
   },
-  scrollContainer: {
-    flexGrow: 1,
-  },
 });
 
 export default styles;

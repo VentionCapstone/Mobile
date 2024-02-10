@@ -2,9 +2,6 @@ import { StyleSheet } from 'react-native';
 import { paragraph1, paragraph2, title2 } from 'src/styles';
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 20,
-  },
   header: {
     justifyContent: 'center',
     paddingVertical: 20,
@@ -76,6 +73,9 @@ const styles = StyleSheet.create({
   },
   underline: {
     textDecorationLine: 'underline',
+  },
+  loader: {
+    position: 'absolute',
   },
 });
 

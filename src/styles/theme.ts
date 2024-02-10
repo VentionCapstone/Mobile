@@ -9,7 +9,6 @@ import {
   RED,
   RED_100,
   RED_300,
-  TOMATO,
   WHITE,
   WHITE_100,
   WHITE_200,
@@ -32,7 +31,7 @@ export const darkColors = {
   shadowColor: WHITE_200,
   text: WHITE_100,
   title: WHITE,
-  tint: TOMATO,
+  tint: PRIMARY_BLUE_200,
   success: GREEN_100,
   successBackground: GREEN,
 };
@@ -53,7 +52,7 @@ export const lightColors = {
   shadowColor: GREY_500,
   text: GREY_400,
   title: GREY_500,
-  tint: TOMATO,
+  tint: PRIMARY_BLUE_200,
   success: GREEN_100,
   successBackground: GREEN,
 };

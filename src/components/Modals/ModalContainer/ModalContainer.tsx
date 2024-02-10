@@ -42,7 +42,7 @@ const ModalContainer = ({
               style={[styles.closeButton, { backgroundColor: colors.background }]}
               onPress={onClose}
             >
-              <Icon name={IconName.Close} size={30} />
+              <Icon name={IconName.CloseOutline} size={24} />
             </TouchableOpacity>
 
             {title && <Text style={styles.title}>{title}</Text>}

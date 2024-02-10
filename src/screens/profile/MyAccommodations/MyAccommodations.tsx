@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
+import { Button, MyAccommodationListItem, Text, showToast } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -43,17 +43,11 @@ const MyAccommodations = ({ navigation }: Props) => {
   };
 
   const handleDelete = async (accommodationId: string) => {
-    showAlert('warning', {
-      message: t('Are you sure to delete this accommodation?'),
-      onOkPressed: async () => {
-        await dispatch(AsyncThunks.deleteAccommodation(accommodationId));
-      },
-      onCancelPressed: () => {},
-    });
-  };
+    const response = await dispatch(AsyncThunks.deleteAccommodation(accommodationId));
 
-  const navigateToCreateAccount = () => {
-    navigation.navigate('CreateProfile');
+    if (response.meta.requestStatus === 'fulfilled') {
+      showToast({ text1: 'Deleted successfully' });
+    }
   };
 
   const fetchMyAccommodations = useCallback(async () => {
@@ -83,9 +77,14 @@ const MyAccommodations = ({ navigation }: Props) => {
   return (
     <ScreenTemplate style={styles.container}>
       {isGuestAccount && (
-        <View style={styles.createAccountContainer}>
-          <Text style={styles.createAccountTitle}>{t("You haven't created your account yet")}</Text>
-          <Button title={t('Create Account')} onPress={navigateToCreateAccount} />
+        <View style={styles.redirectContainer}>
+          <Text style={styles.redirectToCreateText}>{t("You didn't create your account yet")}</Text>
+
+          <Button
+            width="100%"
+            title={t('Create Account')}
+            onPress={() => navigation.navigate('CreateProfile')}
+          />
         </View>
       )}
 

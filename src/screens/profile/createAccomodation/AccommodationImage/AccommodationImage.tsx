@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, Image, View, ScrollView, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Alert, Button, ButtonType, Icon, Loader, Text } from 'src/components';
+import { Button, ButtonType, Icon, Loader, Text, showToast } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -12,7 +12,7 @@ import { getAccommodationLoader, getColors } from 'src/store/selectors';
 import { accommodationActions } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES, GREY_400, WHITE } from 'src/styles';
-import { AlertType, IconName } from 'src/types';
+import { IconName } from 'src/types';
 
 import { styles } from './AccommodationImage.style';
 
@@ -28,7 +28,6 @@ const AccommodationImage = ({ route, navigation }: Props) => {
   const { width } = useWindowDimensions();
   const [openPicker, setOpenPicker] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<Asset[]>([]);
-  const [successVisible, setSuccessVisible] = useState<boolean>(false);
 
   const handleOpenGallery = async () => {
     setOpenPicker(true);
@@ -67,7 +66,7 @@ const AccommodationImage = ({ route, navigation }: Props) => {
     );
 
     if (response.payload?.success) {
-      setSuccessVisible(true);
+      showToast({ text1: 'Accommodation created successfully' });
       navigation.navigate('MyAccommodations');
     }
   };
@@ -160,12 +159,6 @@ const AccommodationImage = ({ route, navigation }: Props) => {
       <Loader
         visible={loader}
         message="Uploading accommodation images. This process won't take long..."
-      />
-      <Alert
-        type={AlertType.Success}
-        visible={successVisible}
-        message="Accommodation created successfully!"
-        onClose={() => setSuccessVisible(false)}
       />
     </StepperTemplate>
   );

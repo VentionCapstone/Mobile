@@ -1,5 +1,4 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import * as SecureStore from 'expo-secure-store';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Pressable, TouchableOpacity, View } from 'react-native';
@@ -13,20 +12,19 @@ import {
   Text,
   PhoneNumberInput,
   Loader,
-  Alert,
+  showToast,
 } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
-import { SecureStorageKey } from 'src/constants/storage';
 import { pickImage } from 'src/helper/pickProfileImage';
 import i18n from 'src/i18n/i18n';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountLoader, getColors, getUserDetails } from 'src/store/selectors';
+import { getAccountLoader, getColors, getUserDetails, getUserId } from 'src/store/selectors';
 import { accountActions, changeLanguage } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
 import { Gender, GenderOptionsProps } from 'src/types/common';
-import { AlertType, IconName, ThemeType } from 'src/types/ui';
+import { IconName, ThemeType } from 'src/types/ui';
 import { ACCOUNT_NAME_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './UpdateAccount.style';
@@ -44,6 +42,7 @@ const UpdateAccount = ({ navigation }: Props) => {
   const loading = useSelector(getAccountLoader);
   const userDetails = useSelector(getUserDetails);
   const colors = useSelector(getColors);
+  const userId = useSelector(getUserId);
   const { t } = useTranslation();
 
   const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
@@ -52,7 +51,6 @@ const UpdateAccount = ({ navigation }: Props) => {
   );
   const [formInteracted, setFormInteracted] = useState<boolean>(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [successVisible, setSuccessVisible] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<UpdateAccountFormValues>({
     firstName: userDetails?.firstName || '',
     lastName: userDetails?.lastName || '',
@@ -95,10 +93,14 @@ const UpdateAccount = ({ navigation }: Props) => {
       type: 'image/jpeg',
     } as any);
 
-    const response = await dispatch(AsyncThunks.addProfileImage(formData));
+    const response = await dispatch(AsyncThunks.addProfileImage({ profileId, image: formData }));
     if (response.meta.requestStatus === 'fulfilled') {
-      setSuccessVisible(true);
+      showToast({ text1: 'Your profile image has been updated' });
       navigation.navigate('Profile');
+
+      if (userId) {
+        await dispatch(AsyncThunks.getUserDetails(userId));
+      }
     }
   };
 
@@ -111,10 +113,9 @@ const UpdateAccount = ({ navigation }: Props) => {
       const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
 
       if (response.meta.requestStatus === 'fulfilled') {
-        setSuccessVisible(true);
+        showToast({ text1: 'Your profile has been updated' });
         navigation.navigate('Profile');
 
-        const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
         if (userId) {
           await dispatch(AsyncThunks.getUserDetails(userId));
         }
@@ -125,7 +126,7 @@ const UpdateAccount = ({ navigation }: Props) => {
     } else {
       setValidationErrors(errors);
     }
-  }, [formValues, profileId, dispatch, navigation]);
+  }, [formValues, profileId, dispatch, navigation, userId]);
 
   useEffect(() => {
     if (formInteracted) {
@@ -234,12 +235,6 @@ const UpdateAccount = ({ navigation }: Props) => {
       <Loader
         visible={loading}
         message={t("Your details are being updated. This won't take long...")}
-      />
-      <Alert
-        type={AlertType.Success}
-        visible={successVisible}
-        title="Updated successfully"
-        onClose={() => setSuccessVisible(false)}
       />
     </ScreenTemplate>
   );

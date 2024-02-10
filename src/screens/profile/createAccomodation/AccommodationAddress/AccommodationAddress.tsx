@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { PlacesInput, Text } from 'src/components';
-import showAlert from 'src/components/alert';
+import { PlacesInput, Text, showToast } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { AddressValues } from 'src/types';
@@ -43,7 +42,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
         const placeDetails = await getPlaceDetails(details.place_id);
 
         if (!placeDetails) {
-          showAlert('error', { message: t('Something went wrong!') });
+          showToast({ type: 'error', text1: 'Error occured!', text2: 'Please try again' });
           return;
         }
 
@@ -53,7 +52,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
         setAddressSelected(true);
       }
     },
-    [addressValues, t]
+    [addressValues]
   );
 
   const handleNext = useCallback(async () => {

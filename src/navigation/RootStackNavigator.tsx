@@ -45,7 +45,8 @@ const RootStackNavigator = () => {
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
-    if (Platform.OS === 'android') StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
+    Platform.OS === 'android' && StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
+    Platform.OS === 'android' && StatusBar.setTranslucent(true);
   }, [isDark]);
 
   return (

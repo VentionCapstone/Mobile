@@ -13,7 +13,7 @@ interface Props {
 }
 const HostReviews = ({ host }: Props) => {
   const colors = useSelector(getColors);
-  const { firstName, joinedAt, reviews } = host;
+  const { firstName, createdAt, reviews } = host;
 
   return (
     <View style={styles.container}>
@@ -26,7 +26,7 @@ const HostReviews = ({ host }: Props) => {
         activeDotColor={colors.icon}
         paginationStyle={styles.dotContainer}
       >
-        {reviews.list?.map((review, index) => (
+        {reviews?.list?.map((review, index) => (
           <View key={index} style={styles.slide}>
             <View style={styles.reviewContainer}>
               <View style={styles.reviewContent}>
@@ -40,7 +40,7 @@ const HostReviews = ({ host }: Props) => {
                   <Text
                     style={styles.userName}
                   >{`${review.user.firstName} ${review.user.lastName}`}</Text>
-                  <Text style={styles.joinedDate}>{dayjs(joinedAt).format('MMM YYYY')}</Text>
+                  <Text style={styles.joinedDate}>{dayjs(createdAt).format('MMM YYYY')}</Text>
                 </View>
               </View>
             </View>

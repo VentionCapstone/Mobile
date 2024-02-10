@@ -10,7 +10,7 @@ import ProfileFooter from './ProfileFooter/ProfileFooter';
 import ProfileHeader from './ProfileHeader/ProfileHeader';
 import Text from './Text/Text';
 import ThemedView from './ThemedView/ThemedView';
-import showAlert from './alert';
+import showToast from './alert';
 
 export {
   ButtonType,
@@ -26,7 +26,7 @@ export {
   ProfileHeader,
   Text,
   ThemedView,
-  showAlert,
+  showToast,
 };
 
 export * from './navigationLists';

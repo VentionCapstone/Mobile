@@ -1,8 +1,15 @@
 import * as ImagePicker from 'expo-image-picker';
-import { showAlert } from 'src/components';
+import { showToast } from 'src/components';
 
 export const pickImage = async (): Promise<ImagePicker.ImagePickerAsset | null> => {
   try {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      showToast({ type: 'error', text1: 'Permission to access image library denied!' });
+      return null;
+    }
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -14,7 +21,7 @@ export const pickImage = async (): Promise<ImagePicker.ImagePickerAsset | null> 
 
     return result.assets[0];
   } catch (error) {
-    showAlert('error', { message: `Error picking image:, ${error}` });
+    showToast({ type: 'error', text1: `Error picking image ${error}` });
     return null;
   }
 };

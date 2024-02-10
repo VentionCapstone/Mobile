@@ -1,18 +1,18 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ImagePickerAsset } from 'expo-image-picker';
 import { useCallback, useState } from 'react';
-import { Image, View, Text, Pressable } from 'react-native';
+import { Image, View, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Alert, Button, ButtonType, Loader } from 'src/components';
+import { Button, ButtonType, Loader, showToast, Text } from 'src/components';
 import Icon from 'src/components/Icon/Icon';
 import { ScreenTemplate } from 'src/components/templates';
 import { pickImage } from 'src/helper/pickProfileImage';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountLoader, getColors } from 'src/store/selectors';
+import { getAccountInfos, getAccountLoader, getColors } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
-import { AlertType, IconName } from 'src/types/ui';
+import { IconName } from 'src/types/ui';
 
 import { styles } from './ProfileImage.style';
 
@@ -22,9 +22,9 @@ const ProfileImage = ({ navigation }: Props) => {
   const colors = useSelector(getColors);
   const dispatch = useAppDispatch();
   const imageLoader = useSelector(getAccountLoader);
+  const accountDetails = useSelector(getAccountInfos);
 
   const [image, setImage] = useState<ImagePickerAsset>();
-  const [successVisible, setSuccessVisible] = useState<boolean>(false);
 
   const handlePickImage = async () => {
     const selectedPhoto = await pickImage();
@@ -35,6 +35,7 @@ const ProfileImage = ({ navigation }: Props) => {
   };
 
   const handleSaveImage = useCallback(async () => {
+    if (!accountDetails) return;
     const formData = new FormData();
 
     if (image) {
@@ -44,17 +45,19 @@ const ProfileImage = ({ navigation }: Props) => {
         type: 'image/jpeg',
       } as any);
 
-      const response = await dispatch(AsyncThunks.addProfileImage(formData));
+      const response = await dispatch(
+        AsyncThunks.addProfileImage({ profileId: accountDetails?.id, image: formData })
+      );
 
       if (response.meta.requestStatus === 'fulfilled') {
-        setSuccessVisible(true);
+        showToast({ text1: 'Your profile has been created successfully' });
         navigation.navigate('Profile');
       }
     }
-  }, [dispatch, image, navigation]);
+  }, [dispatch, image, navigation, accountDetails]);
 
   const handleSkip = () => {
-    setSuccessVisible(true);
+    showToast({ text1: 'Your profile has been created successfully' });
     navigation.navigate('Profile');
   };
 
@@ -102,12 +105,6 @@ const ProfileImage = ({ navigation }: Props) => {
       </View>
 
       <Loader visible={imageLoader} message="Uploading..." />
-      <Alert
-        type={AlertType.Success}
-        visible={successVisible}
-        message="Profile created successfully"
-        onClose={() => setSuccessVisible(false)}
-      />
     </ScreenTemplate>
   );
 };

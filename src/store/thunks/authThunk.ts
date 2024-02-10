@@ -4,8 +4,7 @@ import { ENDPOINTS, axiosInstance } from 'src/axios';
 import { SecureStorageKey } from 'src/constants/storage';
 import {
   ApiErrorResponseType,
-  ApiSuccessResponseType,
-  AuthResponse,
+  SignUpResponse,
   SignInParams,
   SignInResponse,
   SignUpParams,
@@ -39,7 +38,7 @@ export const signInThunk: AsyncThunkPayloadCreator<
 };
 
 export const signUpThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<AuthResponse>,
+  SignUpResponse,
   SignUpParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
@@ -65,6 +64,8 @@ export const signOutThunk: AsyncThunkPayloadCreator<
       {},
       { headers: { 'refresh-token': refreshToken } }
     );
+
+    console.log(response.data);
 
     await SecureStore.deleteItemAsync(SecureStorageKey.ACCESS_TOKEN);
     await SecureStore.deleteItemAsync(SecureStorageKey.REFRESH_TOKEN);

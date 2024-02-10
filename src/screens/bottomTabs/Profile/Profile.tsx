@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { Image, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Alert,
+  Loader,
   NavigationList,
   ProfileFooter,
   ProfileHeader,
   Text,
-  showAlert,
+  showToast,
 } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
@@ -47,25 +47,20 @@ const Profile = ({ navigation }: Props) => {
   const colors = useSelector(getColors);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
-  const [errorVisible, setErrorVisible] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [logoutLoading, setLogoutLoading] = useState<boolean>(false);
 
-  const handleLogOut = async () => {
-    showAlert('warning', {
-      message: t('Are you sure you want to log out?'),
-      onOkPressed: async () => {
-        const response = await dispatch(AsyncThunks.signOut());
+  const handleLogOut = useCallback(async () => {
+    setLogoutLoading(true);
+    const response = await dispatch(AsyncThunks.signOut());
 
-        if (response?.meta.requestStatus === 'fulfilled') {
-          dispatch(accountActions.reset());
-          dispatch(accommodationActions.reset());
-          dispatch(myAccommodationsListActions.reset());
-          dispatch(userActions.reset());
-        }
-      },
-      onCancelPressed: () => {},
-    });
-  };
+    if (response?.meta.requestStatus === 'fulfilled') {
+      setLogoutLoading(false);
+      dispatch(accountActions.reset());
+      dispatch(userActions.reset());
+      showToast({ text1: "You've been logged out" });
+    }
+  }, [dispatch]);
 
   const getAccountDetails = useCallback(async () => {
     if (!userId) return;
@@ -80,7 +75,7 @@ const Profile = ({ navigation }: Props) => {
   }, [dispatch, userId]);
 
   const handleRefresh = async () => {
-    if (isGuestAccount) return;
+    if (isGuestAccount || !isLoggedIn) return;
 
     setRefreshing(true);
     await getAccountDetails();
@@ -99,7 +94,14 @@ const Profile = ({ navigation }: Props) => {
 
   useEffect(() => {
     if (userError || accommodationError || myAccommodationsError) {
-      setErrorVisible(true);
+      showToast({
+        type: 'error',
+        text1: 'Error occured!',
+        text2:
+          `${userError?.error?.message}` ||
+          `${accommodationError?.error?.message}` ||
+          `${myAccommodationsError?.error?.message}`,
+      });
     }
   }, [userError, accommodationError, myAccommodationsError]);
 
@@ -111,14 +113,15 @@ const Profile = ({ navigation }: Props) => {
   }, [dispatch]);
 
   return (
-    <ScreenTemplate>
+    <ScreenTemplate headerShown={false}>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={handleRefresh}
-            progressBackgroundColor={colors.background}
+            progressBackgroundColor={colors.secondaryBackground}
             colors={[colors.tint]}
           />
         }
@@ -157,17 +160,8 @@ const Profile = ({ navigation }: Props) => {
         )}
 
         <ProfileFooter />
+        <Loader visible={logoutLoading} message="Signing user out..." />
       </ScrollView>
-
-      <Alert
-        visible={errorVisible}
-        message={
-          userError?.error?.message ||
-          accommodationError?.error?.message ||
-          myAccommodationsError?.error?.message
-        }
-        onClose={() => setErrorVisible(false)}
-      />
     </ScreenTemplate>
   );
 };

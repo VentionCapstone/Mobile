@@ -11,7 +11,7 @@ import {
 import type { RootState } from '..';
 
 export const createAccountThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<ProfileResponseType>,
+  ProfileResponseType,
   CreateProfileParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
@@ -25,7 +25,7 @@ export const createAccountThunk: AsyncThunkPayloadCreator<
 };
 
 export const updateAccountThunk: AsyncThunkPayloadCreator<
-  ApiSuccessResponseType<ProfileResponseType>,
+  ProfileResponseType,
   UpdateProfileParams,
   { rejectValue: ApiErrorResponseType }
 > = async (params, { rejectWithValue }) => {
@@ -46,6 +46,7 @@ export const getAccountDetailsThunk: AsyncThunkPayloadCreator<
 > = async (profileId, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get(ENDPOINTS.getProfile(profileId));
+
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);
@@ -54,17 +55,15 @@ export const getAccountDetailsThunk: AsyncThunkPayloadCreator<
 
 export const addProfileImageThunk: AsyncThunkPayloadCreator<
   ProfileResponseType,
-  FormData,
+  { profileId: string; image: FormData },
   { rejectValue: ApiErrorResponseType; state: RootState }
-> = async (image, { rejectWithValue, getState }) => {
+> = async ({ profileId, image }, { rejectWithValue, getState }) => {
   try {
-    const profileId = getState().account.result.id;
-
     const response = await axiosInstance.post(ENDPOINTS.addProfileImage(profileId), image, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
 
-    return response?.data;
+    return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response.data);
   }

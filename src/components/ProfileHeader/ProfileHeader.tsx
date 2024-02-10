@@ -1,6 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, Image, View } from 'react-native';
+import { TouchableOpacity, Image, View, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from 'src/navigation';
 import { getColors, getIsGuestAccount, getUserDetails } from 'src/store/selectors';
@@ -18,6 +19,8 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { t } = useTranslation();
 
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
+
   const navigateToCreateOrUpdate = () => {
     if (isGuestAccount) {
       navigation.navigate('CreateProfile');
@@ -27,7 +30,7 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       {!isLoggedIn && (
         <View style={styles.header}>
           <View style={{ gap: 4 }}>
@@ -86,9 +89,15 @@ const ProfileHeader = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                       uri: user.profile.imageUrl,
                     }}
                     style={styles.image}
+                    resizeMode="cover"
+                    onLoadStart={() => setImageLoading(true)}
+                    onLoadEnd={() => setImageLoading(false)}
                   />
                 )}
 
+                {imageLoading && (
+                  <ActivityIndicator size="small" color={colors.tint} style={styles.loader} />
+                )}
                 {!user?.profile?.imageUrl && <Icon name={IconName.Person} size={60} />}
               </View>
 

@@ -8,9 +8,7 @@ import { HostProfile } from 'src/types';
 
 import styles from './HostMainCard.styles';
 
-interface Props {
-  host: HostProfile;
-}
+type Props = { host: HostProfile };
 
 const HostProfileCard = ({ host }: Props) => {
   const colors = useSelector(getColors);
@@ -18,7 +16,7 @@ const HostProfileCard = ({ host }: Props) => {
   const { imageUrl, firstName, lastName, isVerified, rating, accommodations, reviews } = host;
 
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.userContainer}>
         <View style={styles.avatarContainer}>
           <Image source={{ uri: imageUrl }} style={styles.profileImage} />
@@ -36,7 +34,7 @@ const HostProfileCard = ({ host }: Props) => {
       </View>
       <View style={styles.statsContainer}>
         <View style={styles.statsItem}>
-          <Text style={styles.statsCount}>{reviews.count}</Text>
+          <Text style={styles.statsCount}>{reviews.count ?? 0}</Text>
           <Text style={styles.statsLabel}>Reviews</Text>
         </View>
         <View style={styles.statsItem}>
@@ -49,7 +47,7 @@ const HostProfileCard = ({ host }: Props) => {
           <Text style={styles.statsLabel}>Rating</Text>
         </View>
         <View style={styles.statsItem}>
-          <Text style={styles.statsCount}>{accommodations?.length}</Text>
+          <Text style={styles.statsCount}>{accommodations?.length ?? 1}</Text>
           <Text style={styles.statsLabel}>Listings</Text>
         </View>
       </View>

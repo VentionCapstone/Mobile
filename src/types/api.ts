@@ -187,7 +187,7 @@ export interface HostProfile {
   country: string;
   description: string;
   imageUrl: string;
-  joinedAt: string;
+  createdAt: string;
   rating: string | null;
   accommodations: HostAccommodation[] | null;
   reviews: {
