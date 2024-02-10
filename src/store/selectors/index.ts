@@ -29,4 +29,6 @@ export const getWishlists = (state: RootState) => state.wishlist.result;
 export const getWishlistLoader = (state: RootState) => state.wishlist.pending;
 export const getWishlistError = (state: RootState) => state.wishlist.error;
 
+export const getHostProfile = (state: RootState) => state.hostProfile.result;
+export const getHostProfileLoader = (state: RootState) => state.hostProfile.pending;
 export const getLanguage = (state: RootState) => state.language.language;

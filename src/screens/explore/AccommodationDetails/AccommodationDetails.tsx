@@ -163,6 +163,10 @@ const AccommodationDetails = ({ route, navigation }: Props) => {
             <Text style={styles.description}>{accommodation?.description}</Text>
 
             <TouchableOpacity
+              onPress={() =>
+                accommodation &&
+                navigation.navigate('HostProfile', { hostId: accommodation?.owner.id })
+              }
               style={[styles.profileContainer, { backgroundColor: colors.background }]}
             >
               {accommodation?.owner && (
