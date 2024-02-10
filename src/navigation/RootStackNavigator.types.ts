@@ -31,4 +31,5 @@ export type RootStackParamList = {
   AccommodationDetails: { accommodationId: string };
   FilterModal: undefined;
   Wishlist: undefined;
+  HostProfile: { hostId: string };
 };

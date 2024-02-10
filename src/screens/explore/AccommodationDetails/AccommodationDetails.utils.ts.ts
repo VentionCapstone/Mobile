@@ -111,7 +111,7 @@ export const AMENITIES_CHIP_DATA = {
     icon: IconName.Home,
     iconSet: 'ionicons',
   },
-  isQuetArea: {
+  isQuiteArea: {
     text: 'Is quet area',
     icon: IconName.Moon,
     iconSet: 'ionicons',

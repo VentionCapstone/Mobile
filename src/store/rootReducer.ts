@@ -11,6 +11,7 @@ import {
   userReducer,
   wishlistReducer,
 } from './slices';
+import { hostProfileReducer } from './slices/hostProfileSlice';
 
 const rootReducer = combineReducers({
   account: accountReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   wishlist: wishlistReducer,
   amenities: amenitiesReducer,
+  hostProfile: hostProfileReducer,
   language: languageReducer,
 });
 

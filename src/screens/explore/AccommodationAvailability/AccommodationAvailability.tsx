@@ -16,7 +16,6 @@ const AccommodationAvailability = () => {
           <DatePicker
             mode="range"
             options={dates}
-            onSelectedChange={(selectedDates) => console.log(selectedDates)}
             style={{ backgroundColor: 'lightgray', borderRadius: 5, padding: 10 }}
           />
         </View>

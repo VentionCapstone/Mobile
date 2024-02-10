@@ -2,7 +2,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StatusBar } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button, ButtonType, NavigationHeader } from 'src/components';
 import {
@@ -27,7 +27,7 @@ import {
   CreateAmenities,
   ProfileImage,
 } from 'src/screens';
-import { AccommodationDetails } from 'src/screens/explore';
+import { AccommodationDetails, HostProfile } from 'src/screens/explore';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
 import { BUTTON_SIZES, GREY_500, WHITE } from 'src/styles';
 
@@ -44,7 +44,7 @@ const RootStackNavigator = () => {
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
-    StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
+    if (Platform.OS === 'android') StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
   }, [isDark]);
 
   return (
@@ -177,6 +177,11 @@ const RootStackNavigator = () => {
       <RootRouterStack.Screen
         name="AccommodationDetails"
         component={AccommodationDetails}
+        options={{ headerShown: false }}
+      />
+      <RootRouterStack.Screen
+        name="HostProfile"
+        component={HostProfile}
         options={{ headerShown: false }}
       />
     </RootRouterStack.Navigator>

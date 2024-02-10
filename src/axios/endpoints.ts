@@ -26,6 +26,8 @@ const ENDPOINTS = {
 
   getAmenitiesList: '/amenities',
   accomodationAmenities: (accommodationId: string) => `/amenities/${accommodationId}`,
+
+  getHostProfile: (hostId: string) => `/users/host/${hostId}`,
 };
 
 export default ENDPOINTS;

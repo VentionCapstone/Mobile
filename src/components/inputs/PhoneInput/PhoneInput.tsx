@@ -7,8 +7,8 @@ import { getColors } from 'src/store/selectors';
 import { PHONE_NUMBER_MAX_LENGTH } from 'src/utils';
 
 import { styles } from './PhoneInput.style';
+import { CountryPicker } from '../../Modals/bottomModals';
 import Text from '../../Text/Text';
-import { CountryPicker } from '../../modals/bottomModals';
 
 type Props = {
   label?: string;

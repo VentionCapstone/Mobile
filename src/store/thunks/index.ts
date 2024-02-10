@@ -17,6 +17,7 @@ import {
 } from './accountThunk';
 import { addAmenitiesThunk, updateAmenitiesThunk } from './amenitiesThunk';
 import { signInThunk, signOutThunk, signUpThunk } from './authThunk';
+import { getHostProfileThunk } from './hostProfileThunk';
 import { getUserDetailsThunk } from './userThunk';
 import { addToWishlistThunk, getWishlistsThunk, removeFromWishlistThunk } from './wishlistThunk';
 
@@ -51,4 +52,6 @@ export const AsyncThunks = {
 
   updateAmenitiesThunk: createAsyncThunk('updateAmenitiesThunk', updateAmenitiesThunk),
   addAmenitiesThunk: createAsyncThunk('addAmenitiesThunk', addAmenitiesThunk),
+
+  getHostProfile: createAsyncThunk('getHostProfileThunk', getHostProfileThunk),
 };
