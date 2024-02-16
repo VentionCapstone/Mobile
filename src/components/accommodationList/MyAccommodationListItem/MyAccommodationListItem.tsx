@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
 import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
-import { RED_100, TOMATO, WHITE_200 } from 'src/styles';
+import { PRIMARY_BLUE_200, RED_100, WHITE_200 } from 'src/styles';
 import { MyAccommodation, IconName } from 'src/types';
 
 import { styles } from './MyAccommodationListItem.style';
@@ -38,7 +38,7 @@ const MyAccommodationListItem = ({
       onPress={onNavigate}
     >
       <View style={styles.imageContainer}>
-        {loader && <ActivityIndicator size="small" color={TOMATO} />}
+        {loader && <ActivityIndicator size="small" color={PRIMARY_BLUE_200} />}
 
         {!thumbnailUrl || thumbnailUrl === 'none' ? (
           <Icon name={IconName.Image} size={70} color={WHITE_200} />

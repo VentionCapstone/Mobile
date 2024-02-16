@@ -3,7 +3,6 @@ import { GREY_200, subtitle1, paragraph1, paragraph2 } from 'src/styles';
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
     marginBottom: 20,
   },
   wrapper: {
@@ -19,7 +18,6 @@ const styles = StyleSheet.create({
     bottom: -20,
   },
   titleContainer: {
-    marginBottom: 20,
     marginHorizontal: 20,
   },
   title: {

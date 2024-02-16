@@ -6,7 +6,6 @@ import { ButtonType } from 'src/components/Button';
 import Button from 'src/components/Button/Button';
 import Collapsable from 'src/components/Collapsable/Collapsable';
 import Text from 'src/components/Text/Text';
-import ThemedView from 'src/components/ThemedView/ThemedView';
 import { PlacesInput } from 'src/components/inputs';
 import { DEFAULT_FILTER_VALUES } from 'src/constants/filter';
 import { useAppDispatch } from 'src/store';
@@ -79,10 +78,13 @@ const SearchModal = ({ visible, onClose }: Props) => {
   };
 
   return (
-    <ModalContainer bottomModal visible={visible} onClose={onClose}>
-      <ThemedView style={styles.container}>
-        <Text style={styles.headerTitle}>Search for Accomodations</Text>
-
+    <ModalContainer
+      bottomModal
+      visible={visible}
+      onClose={onClose}
+      title="Search for Accomodations"
+    >
+      <View style={styles.container}>
         <View style={styles.inputsContainer}>
           <View style={[styles.where, { backgroundColor: colors.background }]}>
             <View>
@@ -96,7 +98,7 @@ const SearchModal = ({ visible, onClose }: Props) => {
           <Collapsable
             title="From when"
             subtitle={searchValues.checkInDate?.toString()}
-            contentTitle="From which date?"
+            contentTitle="From when?"
           >
             <DateTimePicker
               onDateChange={handleSelectFromWhen}
@@ -108,7 +110,7 @@ const SearchModal = ({ visible, onClose }: Props) => {
           <Collapsable
             title="To when"
             subtitle={searchValues.checkOutDate?.toString()}
-            contentTitle="To which date?"
+            contentTitle="To when?"
           >
             <DateTimePicker
               onDateChange={handleSelectToWhen}
@@ -117,7 +119,7 @@ const SearchModal = ({ visible, onClose }: Props) => {
             />
           </Collapsable>
         </View>
-      </ThemedView>
+      </View>
 
       <View style={[styles.footer, { backgroundColor: colors.background }]}>
         <Button title="Clear" type={ButtonType.TERTIARY} onPress={handleResetSearch} />

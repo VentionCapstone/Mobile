@@ -5,7 +5,7 @@ import { PADDING_HORIZONTAL_20 } from 'src/utils';
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingTop: 30,
+    paddingTop: 20,
     paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -13,12 +13,12 @@ export const styles = StyleSheet.create({
     gap: 10,
   },
   searchBarInput: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    padding: 10,
     width: '75%',
+    padding: 8,
     paddingHorizontal: PADDING_HORIZONTAL_20,
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10,
     borderRadius: 40,
     ...LEVEL_1,
   },
@@ -32,10 +32,9 @@ export const styles = StyleSheet.create({
   filter: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 40,
     marginVertical: 10,
-    border: 'solid',
     borderRadius: 100,
     ...LEVEL_1,
   },

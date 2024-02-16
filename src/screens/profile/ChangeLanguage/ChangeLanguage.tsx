@@ -1,12 +1,12 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, Icon, Text } from 'src/components';
+import { Button, Icon, Text, showToast } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import i18n from 'src/i18n/i18n';
 import { useAppDispatch } from 'src/store';
-import { getAccountLoader, getColors, getUserDetails, getUserId } from 'src/store/selectors';
+import { getAccountInfos, getAccountLoader, getColors, getUserId } from 'src/store/selectors';
 import { changeLanguage } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { IconName, Language } from 'src/types';
@@ -19,41 +19,29 @@ const ChangeLanguage = () => {
   const dispatch = useAppDispatch();
   const colors = useSelector(getColors);
   const loader = useSelector(getAccountLoader);
-  const userDetails = useSelector(getUserDetails);
+  const accountDetails = useSelector(getAccountInfos);
   const userId = useSelector(getUserId);
   const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(
-    userDetails?.profile?.language
+    accountDetails?.language
   );
 
-  const formValues = useMemo(
-    () => ({
-      firstName: userDetails?.firstName,
-      lastName: userDetails?.lastName,
-      phoneNumber: userDetails?.profile?.phoneNumber,
-      gender: userDetails?.profile?.gender,
-      description: userDetails?.profile?.description,
-      language: userDetails?.profile?.language,
-      imageUrl: userDetails?.profile?.imageUrl,
-      country: userDetails?.profile?.country,
-    }),
-    [userDetails]
-  );
-
-  const handleChangeLanguage = useCallback(async () => {
+  const handleChangeLanguage = async () => {
     if (!userId) return;
+    if (selectedLanguage === accountDetails?.language) return;
 
     const response = await dispatch(
       AsyncThunks.updateAccount({
-        id: userDetails?.profile?.id,
-        formValues: { ...formValues, language: selectedLanguage },
+        id: accountDetails?.id,
+        formValues: { language: selectedLanguage },
       })
     );
 
     if (response?.meta.requestStatus === 'fulfilled') {
+      showToast({ text1: t('Language changed successfully') });
       dispatch(changeLanguage(selectedLanguage));
       i18n.changeLanguage(selectedLanguage);
     }
-  }, [dispatch, formValues, userId, userDetails?.profile?.id, selectedLanguage]);
+  };
 
   const handleLanguagePress = (key: Language) => setSelectedLanguage(key);
 

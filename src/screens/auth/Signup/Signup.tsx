@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Text, Input, showAlert } from 'src/components';
+import { Text, Input, showToast } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
@@ -46,8 +46,10 @@ const Signup = ({ navigation }: Props) => {
     const response = await dispatch(AsyncThunks.signUp(formValues));
 
     if (response.payload?.success) {
-      showAlert('success', { message: response.payload.message });
-      navigation.navigate('Signin');
+      showToast({
+        text1: 'User created successfully, please check your email to verify your account!',
+      });
+      navigation.navigate('VerifyEmail');
     }
   };
 

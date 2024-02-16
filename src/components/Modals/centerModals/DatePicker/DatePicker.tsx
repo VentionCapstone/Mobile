@@ -58,7 +58,7 @@ const DateTimePicker = ({ initialValue, label, minDate, maxDate, onDateChange }:
             textSecondaryColor: colors.placeholder,
             selectedTextColor: WHITE_100,
             textDefaultColor: colors.text,
-            backgroundColor: colors.secondaryBackground,
+            backgroundColor: colors.background,
             textHeaderColor: colors.title,
             mainColor: colors.tint,
           }}

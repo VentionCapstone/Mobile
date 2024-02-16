@@ -5,7 +5,7 @@ import { PADDING_HORIZONTAL_12, PADDING_HORIZONTAL_16 } from 'src/utils';
 export const styles = StyleSheet.create({
   container: {
     paddingHorizontal: PADDING_HORIZONTAL_12,
-    paddingBottom: 20,
+    paddingVertical: 10,
     gap: 20,
   },
   headerText: {

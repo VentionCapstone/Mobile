@@ -11,7 +11,7 @@ type Props = {
   size?: 'large' | 'small';
 };
 
-const Loader = ({ visible, size = 'large', message }: Props) => {
+const Loader = ({ visible = false, size = 'large', message }: Props) => {
   const colors = useSelector(getColors);
 
   return (

@@ -2,7 +2,9 @@ import { ReactNode } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'src/components/Icon/Icon';
+import Text from 'src/components/Text/Text';
 import { getColors } from 'src/store/selectors';
+import { ThemeColors } from 'src/types';
 import { IconName } from 'src/types/ui';
 
 import { styles } from './ModalContainer.style';
@@ -12,9 +14,18 @@ interface ModalContainerProps {
   onClose: () => void;
   children: ReactNode;
   bottomModal?: boolean;
+  title?: string;
+  bgColor?: ThemeColors;
 }
 
-const ModalContainer = ({ visible, onClose, children, bottomModal }: ModalContainerProps) => {
+const ModalContainer = ({
+  visible,
+  onClose,
+  children,
+  bottomModal,
+  title,
+  bgColor,
+}: ModalContainerProps) => {
   const colors = useSelector(getColors);
 
   return (
@@ -26,12 +37,16 @@ const ModalContainer = ({ visible, onClose, children, bottomModal }: ModalContai
             { backgroundColor: colors.background },
           ]}
         >
-          <TouchableOpacity
-            style={[styles.closeButton, { backgroundColor: colors.background }]}
-            onPress={onClose}
-          >
-            <Icon name={IconName.Close} size={30} color={colors.tint} />
-          </TouchableOpacity>
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={[styles.closeButton, { backgroundColor: colors.background }]}
+              onPress={onClose}
+            >
+              <Icon name={IconName.CloseOutline} size={24} />
+            </TouchableOpacity>
+
+            {title && <Text style={styles.title}>{title}</Text>}
+          </View>
           {children}
         </View>
       </View>

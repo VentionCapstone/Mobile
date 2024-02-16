@@ -7,11 +7,10 @@ import {
 import { useSelector } from 'react-redux';
 import { getColors } from 'src/store/selectors';
 import { IconName } from 'src/types';
+import { GOOGLE_API_KEY } from 'src/utils';
 
 import { styles } from './PlacesInput.styles';
 import Icon from '../../Icon/Icon';
-
-const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? '';
 
 type Props = {
   onSearch: (data: GooglePlaceData, details: GooglePlaceDetail | null) => void;
@@ -40,7 +39,7 @@ const PlacesInput = ({ onSearch }: Props) => {
         query={{
           key: GOOGLE_API_KEY,
           language: 'en',
-          components: 'country:uz|country:kz|country:ru',
+          // components: 'country:uz|country:kz|country:ru',
           types: ['(cities)'],
         }}
         enablePoweredByContainer={false}

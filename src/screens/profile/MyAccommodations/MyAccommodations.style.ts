@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { title3 } from 'src/styles';
+import { PADDING_HORIZONTAL_16 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,10 +15,14 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '300',
   },
-  createAccountContainer: {
-    alignItems: 'center',
-    marginTop: 20,
+  redirectToCreateText: {
+    ...title3,
+  },
+  redirectContainer: {
+    paddingHorizontal: PADDING_HORIZONTAL_16,
+    paddingTop: 20,
     gap: 10,
+    alignItems: 'center',
   },
   loader: {
     marginTop: 10,

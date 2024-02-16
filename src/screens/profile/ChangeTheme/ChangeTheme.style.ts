@@ -9,10 +9,15 @@ export const styles = StyleSheet.create({
   radioContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     height: 60,
     borderRadius: 10,
     paddingHorizontal: 10,
     ...LEVEL_1,
+  },
+  radioInnerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   radioLabel: {
     marginLeft: 8,

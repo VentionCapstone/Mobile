@@ -72,9 +72,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: PADDING_HORIZONTAL_12,
+    paddingHorizontal: 8,
   },
   addButton: {
-    borderRadius: 30,
+    borderRadius: 20,
   },
 });

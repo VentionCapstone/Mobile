@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { title1, title2, title3, LEVEL_1 } from 'src/styles';
-import { PADDING_HORIZONTAL_12 } from 'src/utils';
+import { PADDING_HORIZONTAL_16 } from 'src/utils';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   scrollContainer: {
-    paddingVertical: 10,
-    paddingHorizontal: PADDING_HORIZONTAL_12,
+    paddingHorizontal: PADDING_HORIZONTAL_16,
   },
   createAirBnbCard: {
     width: '95%',
@@ -50,6 +49,18 @@ const styles = StyleSheet.create({
   image: {
     width: 120,
     height: 100,
+  },
+  signOutBtn: {
+    height: 30,
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    borderRadius: 10,
+  },
+  signOutBtnText: {
+    fontSize: 16,
+    textDecorationLine: 'underline',
   },
 });
 

@@ -40,7 +40,7 @@ const ExploreHeader = ({ onOpenSearchModal, onOpenFilterModal }: Props) => {
         onPress={onOpenFilterModal}
         style={[styles.filter, { backgroundColor: colors.background }]}
       >
-        <Icon name={IconName.Options} size={26} />
+        <Icon name={IconName.Options} size={24} />
       </TouchableOpacity>
     </View>
   );

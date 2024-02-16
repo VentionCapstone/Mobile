@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Text, Input } from 'src/components';
+import { Text, Input, showToast } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation/RootStackNavigator.types';
 import { useAppDispatch } from 'src/store';
@@ -41,7 +41,8 @@ const Signin = ({ navigation }: Props) => {
       const response = await dispatch(AsyncThunks.signIn(formValues));
 
       if (response.meta.requestStatus === 'fulfilled') {
-        navigation.navigate('Main');
+        showToast({ type: 'success', text1: 'You are logged in' });
+        navigation.navigate('Profile');
       }
     } else {
       setValidationErrors(errors);

@@ -162,7 +162,7 @@ const CreateAccountForm = () => {
         />
 
         <Text style={styles.label}>Select preffered language</Text>
-        <LanguageSelector onSelect={handleLanguageSelect} />
+        <LanguageSelector onSelect={handleLanguageSelect} value="en" />
 
         <Text style={styles.label}>Tell about yourself</Text>
         <Input

@@ -8,14 +8,14 @@ export const styles = StyleSheet.create({
   card: {
     padding: 20,
     fontSize: 24,
-    borderRadius: 10,
+    borderRadius: 15,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     ...LEVEL_1,
   },
   title: {
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   subtitle: {
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
   },
   contentTitle: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
     marginVertical: 10,
   },

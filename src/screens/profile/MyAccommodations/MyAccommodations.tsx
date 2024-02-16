@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, MyAccommodationListItem, Text, showAlert } from 'src/components';
+import { Button, MyAccommodationListItem, Text, showToast } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -12,7 +12,6 @@ import {
   getColors,
   getIsGuestAccount,
   getMyAccommodations,
-  getMyAccommodationsLoader,
   getUserId,
 } from 'src/store/selectors';
 import { accommodationActions, myAccommodationsListActions } from 'src/store/slices';
@@ -28,7 +27,6 @@ const MyAccommodations = ({ navigation }: Props) => {
   const myAccommodations = useSelector(getMyAccommodations);
   const isGuestAccount = useSelector(getIsGuestAccount);
   const accommodationLoader = useSelector(getAccommodationLoader);
-  const myAccommodationsLoader = useSelector(getMyAccommodationsLoader);
   const userId = useSelector(getUserId);
   const colors = useSelector(getColors);
   const { t } = useTranslation();
@@ -45,17 +43,11 @@ const MyAccommodations = ({ navigation }: Props) => {
   };
 
   const handleDelete = async (accommodationId: string) => {
-    showAlert('warning', {
-      message: t('Are you sure to delete this accommodation?'),
-      onOkPressed: async () => {
-        await dispatch(AsyncThunks.deleteAccommodation(accommodationId));
-      },
-      onCancelPressed: () => {},
-    });
-  };
+    const response = await dispatch(AsyncThunks.deleteAccommodation(accommodationId));
 
-  const navigateToCreateAccount = () => {
-    navigation.navigate('CreateProfile');
+    if (response.meta.requestStatus === 'fulfilled') {
+      showToast({ text1: 'Deleted successfully' });
+    }
   };
 
   const fetchMyAccommodations = useCallback(async () => {
@@ -64,65 +56,66 @@ const MyAccommodations = ({ navigation }: Props) => {
     }
   }, [dispatch, userId]);
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchMyAccommodations();
     setRefreshing(false);
-  };
+  }, [fetchMyAccommodations]);
 
   const handleNavigateToDetails = (accommodationId: string) => {
     navigation.navigate('AccommodationDetails', { accommodationId });
   };
 
   useEffect(() => {
+    if (isGuestAccount) return;
+
     dispatch(accommodationActions.clearError());
     dispatch(myAccommodationsListActions.clearError());
-    fetchMyAccommodations();
-  }, [dispatch, fetchMyAccommodations]);
+    handleRefresh();
+  }, [dispatch, handleRefresh, isGuestAccount]);
 
   return (
     <ScreenTemplate style={styles.container}>
       {isGuestAccount && (
-        <View style={styles.createAccountContainer}>
-          <Text style={styles.createAccountTitle}>{t("You haven't created your account yet")}</Text>
-          <Button title={t('Create Account')} onPress={navigateToCreateAccount} />
+        <View style={styles.redirectContainer}>
+          <Text style={styles.redirectToCreateText}>{t("You didn't create your account yet")}</Text>
+
+          <Button
+            width="100%"
+            title={t('Create Account')}
+            onPress={() => navigation.navigate('CreateProfile')}
+          />
         </View>
       )}
 
       {!isGuestAccount && (
-        <>
-          {myAccommodationsLoader ? (
-            <ActivityIndicator size="large" color={colors.tint} style={styles.loader} />
-          ) : (
-            <FlatList
-              data={filteredAccommodations}
-              keyExtractor={(item) => item.id}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={handleRefresh}
-                  progressBackgroundColor={colors.background}
-                  colors={[colors.tint]}
-                />
-              }
-              ListEmptyComponent={() => (
-                <Text style={styles.noAccommodationsText}>
-                  {t("You don't have any accommodations!")}
-                </Text>
-              )}
-              renderItem={({ item }) => (
-                <MyAccommodationListItem
-                  accommodationDetails={item}
-                  onDelete={handleDelete}
-                  onEdit={handleEdit}
-                  onNavigate={() => handleNavigateToDetails(item.id)}
-                  loader={accommodationLoader}
-                />
-              )}
-              contentContainerStyle={styles.flatlist}
+        <FlatList
+          data={filteredAccommodations}
+          keyExtractor={(item) => item.id}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              progressBackgroundColor={colors.background}
+              colors={[colors.tint]}
+            />
+          }
+          ListEmptyComponent={() => (
+            <Text style={styles.noAccommodationsText}>
+              {t("You don't have any accommodations!")}
+            </Text>
+          )}
+          renderItem={({ item }) => (
+            <MyAccommodationListItem
+              accommodationDetails={item}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              onNavigate={() => handleNavigateToDetails(item.id)}
+              loader={accommodationLoader}
             />
           )}
-        </>
+          contentContainerStyle={styles.flatlist}
+        />
       )}
     </ScreenTemplate>
   );

@@ -4,20 +4,17 @@ import { PADDING_HORIZONTAL_12 } from 'src/utils';
 
 export const styles = StyleSheet.create({
   scrollContainer: {
-    paddingBottom: 60,
+    paddingBottom: 100,
   },
   placesInputContainer: {
     width: '100%',
-    height: 110,
     justifyContent: 'center',
     paddingHorizontal: PADDING_HORIZONTAL_12,
-    paddingVertical: 10,
+    gap: 20,
+    paddingBottom: 50,
   },
   inputInnerContainer: {
     flexDirection: 'row',
-  },
-  titleContainer: {
-    marginTop: 50,
   },
   title: {
     fontSize: 28,

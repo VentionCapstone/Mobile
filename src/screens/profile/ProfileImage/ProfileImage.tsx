@@ -1,15 +1,15 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ImagePickerAsset } from 'expo-image-picker';
-import { useState } from 'react';
-import { Image, View, Text, Pressable } from 'react-native';
+import { useCallback, useState } from 'react';
+import { Image, View, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Button, ButtonType } from 'src/components';
+import { Button, ButtonType, Loader, showToast, Text } from 'src/components';
 import Icon from 'src/components/Icon/Icon';
 import { ScreenTemplate } from 'src/components/templates';
 import { pickImage } from 'src/helper/pickProfileImage';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountLoader, getColors } from 'src/store/selectors';
+import { getAccountInfos, getAccountLoader, getColors } from 'src/store/selectors';
 import { AsyncThunks } from 'src/store/thunks';
 import { BUTTON_SIZES } from 'src/styles';
 import { IconName } from 'src/types/ui';
@@ -22,6 +22,7 @@ const ProfileImage = ({ navigation }: Props) => {
   const colors = useSelector(getColors);
   const dispatch = useAppDispatch();
   const imageLoader = useSelector(getAccountLoader);
+  const accountDetails = useSelector(getAccountInfos);
 
   const [image, setImage] = useState<ImagePickerAsset>();
 
@@ -33,7 +34,8 @@ const ProfileImage = ({ navigation }: Props) => {
     }
   };
 
-  const handleSaveImage = async () => {
+  const handleSaveImage = useCallback(async () => {
+    if (!accountDetails) return;
     const formData = new FormData();
 
     if (image) {
@@ -43,15 +45,19 @@ const ProfileImage = ({ navigation }: Props) => {
         type: 'image/jpeg',
       } as any);
 
-      const response = await dispatch(AsyncThunks.addProfileImage(formData));
+      const response = await dispatch(
+        AsyncThunks.addProfileImage({ profileId: accountDetails?.id, image: formData })
+      );
 
       if (response.meta.requestStatus === 'fulfilled') {
+        showToast({ text1: 'Your profile has been created successfully' });
         navigation.navigate('Profile');
       }
     }
-  };
+  }, [dispatch, image, navigation, accountDetails]);
 
   const handleSkip = () => {
+    showToast({ text1: 'Your profile has been created successfully' });
     navigation.navigate('Profile');
   };
 
@@ -85,7 +91,6 @@ const ProfileImage = ({ navigation }: Props) => {
             title="Save"
             size={BUTTON_SIZES.SM}
             onPress={handleSaveImage}
-            isLoading={imageLoader}
             style={styles.saveButton}
             disabled={!image}
           />
@@ -94,11 +99,12 @@ const ProfileImage = ({ navigation }: Props) => {
             size={BUTTON_SIZES.SM}
             type={ButtonType.SECONDARY}
             onPress={handleSkip}
-            isLoading={imageLoader}
             style={styles.saveButton}
           />
         </View>
       </View>
+
+      <Loader visible={imageLoader} message="Uploading..." />
     </ScreenTemplate>
   );
 };

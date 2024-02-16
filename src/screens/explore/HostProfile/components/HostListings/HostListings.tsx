@@ -1,9 +1,11 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { AirbnbRating } from 'react-native-ratings';
 import Swiper from 'react-native-swiper';
 import { useSelector } from 'react-redux';
 import { Text } from 'src/components';
+import { RootStackParamList } from 'src/navigation';
 import { getColors } from 'src/store/selectors';
 import { HostProfile } from 'src/types';
 
@@ -11,13 +13,13 @@ import styles from './HostListings.styles';
 
 interface Props {
   host: HostProfile;
-  navigation: any;
 }
 
-const HostListings = ({ host, navigation }: Props) => {
+const HostListings = ({ host }: Props) => {
   const colors = useSelector(getColors);
 
   const { firstName, accommodations } = host;
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [sliderAccommodations] = useState(accommodations?.slice(0, 12));
 

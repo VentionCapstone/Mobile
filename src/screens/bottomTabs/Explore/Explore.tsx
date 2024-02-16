@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Card, ExploreHeader, FilterModal, SearchModal, Text, showAlert } from 'src/components';
+import { Card, ExploreHeader, FilterModal, SearchModal, Text, showToast } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { useAppDispatch } from 'src/store';
 import {
   getAccommodationList,
   getAccommodationListLoading,
+  getColors,
   getFilterParams,
   getSearchParams,
 } from 'src/store/selectors';
@@ -16,6 +17,7 @@ import styles from './Explore.style';
 
 const Explore = () => {
   const dispatch = useAppDispatch();
+  const colors = useSelector(getColors);
   const accommodationsList = useSelector(getAccommodationList);
   const isLoading = useSelector(getAccommodationListLoading);
   const filterParams = useSelector(getFilterParams);
@@ -25,8 +27,12 @@ const Explore = () => {
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
 
+  const flatListRef = useRef<FlatList | null>(null);
+
   const fetchAccommodationList = useCallback(async () => {
-    await dispatch(AsyncThunks.getListOfAccommodations({ page, ...filterParams, ...searchParams }));
+    await dispatch(
+      AsyncThunks.getListOfAccommodations({ page, limit: 10, ...filterParams, ...searchParams })
+    );
   }, [page, dispatch, filterParams, searchParams]);
 
   const handleRefresh = () => {
@@ -62,8 +68,13 @@ const Explore = () => {
   };
 
   const handleLoginRequired = useCallback(() => {
-    showAlert('warning', { message: 'You should be logged in to add your wishlists' });
+    showToast({ type: 'info', text1: 'You should be logged in to add your wishlists' });
   }, []);
+
+  useEffect(() => {
+    setPage(1);
+    flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+  }, [filterParams, searchParams]);
 
   useEffect(() => {
     fetchAccommodationList();
@@ -80,6 +91,7 @@ const Explore = () => {
       <FilterModal visible={isFilterVisible} onClose={handleCloseFilterModal} />
 
       <FlatList
+        ref={(ref) => (flatListRef.current = ref)}
         contentContainerStyle={styles.container}
         data={accommodationsList?.data}
         keyExtractor={(item, index) => item.id + index}
@@ -93,7 +105,14 @@ const Explore = () => {
         )}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.2}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
+            progressBackgroundColor={colors.background}
+            colors={[colors.tint]}
+          />
+        }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>No accommodations found!</Text>

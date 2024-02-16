@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useEffect } from 'react';
 import { RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Icon, Loader } from 'src/components';
+import { Icon } from 'src/components';
 import { ScreenTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -51,22 +51,21 @@ const HostProfile = ({ route, navigation }: Props) => {
           />
         }
       >
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.icon} onPress={() => navigation.goBack()}>
-            <Icon name={IconName.BackChevron} size={24} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[styles.icon, { backgroundColor: colors.secondaryBackground }]}
+          onPress={() => navigation.goBack()}
+        >
+          <Icon name={IconName.BackChevron} />
+        </TouchableOpacity>
 
-        {host && host.id === hostId ? (
+        {host && (
           <View>
             <HostMainCard host={host} />
             <HostAbout host={host} />
             <HostVerifiedInfo host={host} />
-            <HostReviews host={host} />
-            <HostListings host={host} navigation={navigation} />
+            {host?.reviews.count !== 0 && <HostReviews host={host} />}
+            {host.accommodations && <HostListings host={host} />}
           </View>
-        ) : (
-          <Loader visible={loading} message="Loading host profile" />
         )}
       </ScrollView>
     </ScreenTemplate>

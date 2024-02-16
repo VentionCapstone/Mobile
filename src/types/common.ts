@@ -48,4 +48,6 @@ export type ThemeColors = {
   text: string;
   tint: string;
   title: string;
+  success: string;
+  successBackground: string;
 };

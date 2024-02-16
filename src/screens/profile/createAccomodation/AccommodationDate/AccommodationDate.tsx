@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { DateTimePicker } from 'src/components/Modals/centerModals';
-import Text from 'src/components/Text/Text';
+import { DateTimePicker, Loader, Text } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
@@ -61,11 +60,7 @@ const AccommodationDate = ({ route, navigation }: Props) => {
   const isNextButtonDisabled = Object.values(dateValues).some((value) => value === '');
 
   return (
-    <StepperTemplate
-      onNext={handleNext}
-      loader={accommodationLoader}
-      disableNextButton={isNextButtonDisabled}
-    >
+    <StepperTemplate onNext={handleNext} disableNextButton={isNextButtonDisabled}>
       <View style={styles.container}>
         <Text style={styles.title}>{t('Select your house available dates')}</Text>
 
@@ -82,6 +77,8 @@ const AccommodationDate = ({ route, navigation }: Props) => {
           />
         </View>
       </View>
+
+      <Loader visible={accommodationLoader} message="Loading..." />
     </StepperTemplate>
   );
 };

@@ -1,5 +1,4 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import * as SecureStore from 'expo-secure-store';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Pressable, TouchableOpacity, View } from 'react-native';
@@ -10,18 +9,18 @@ import {
   Icon,
   Input,
   LanguageSelector,
-  showAlert,
   Text,
   PhoneNumberInput,
   Loader,
+  showToast,
 } from 'src/components';
 import { FormTemplate, ScreenTemplate } from 'src/components/templates';
-import { SecureStorageKey } from 'src/constants/storage';
 import { pickImage } from 'src/helper/pickProfileImage';
+import i18n from 'src/i18n/i18n';
 import { RootStackParamList } from 'src/navigation';
 import { useAppDispatch } from 'src/store';
-import { getAccountLoader, getColors, getUserDetails } from 'src/store/selectors';
-import { accountActions } from 'src/store/slices';
+import { getAccountLoader, getColors, getUserDetails, getUserId } from 'src/store/selectors';
+import { accountActions, changeLanguage } from 'src/store/slices';
 import { AsyncThunks } from 'src/store/thunks';
 import { UpdateAccountFormValues } from 'src/types';
 import { Gender, GenderOptionsProps } from 'src/types/common';
@@ -43,6 +42,7 @@ const UpdateAccount = ({ navigation }: Props) => {
   const loading = useSelector(getAccountLoader);
   const userDetails = useSelector(getUserDetails);
   const colors = useSelector(getColors);
+  const userId = useSelector(getUserId);
   const { t } = useTranslation();
 
   const [countrySelectorVisible, setCountrySelectorVisible] = useState<boolean>(false);
@@ -93,7 +93,15 @@ const UpdateAccount = ({ navigation }: Props) => {
       type: 'image/jpeg',
     } as any);
 
-    await dispatch(AsyncThunks.addProfileImage(formData));
+    const response = await dispatch(AsyncThunks.addProfileImage({ profileId, image: formData }));
+    if (response.meta.requestStatus === 'fulfilled') {
+      showToast({ text1: 'Your profile image has been updated' });
+      navigation.navigate('Profile');
+
+      if (userId) {
+        await dispatch(AsyncThunks.getUserDetails(userId));
+      }
+    }
   };
 
   const handleOnSubmit = useCallback(async () => {
@@ -105,20 +113,20 @@ const UpdateAccount = ({ navigation }: Props) => {
       const response = await dispatch(AsyncThunks.updateAccount({ id: profileId, formValues }));
 
       if (response.meta.requestStatus === 'fulfilled') {
-        showAlert('success', {
-          message: t('Account details updated successfully!'),
-          onOkPressed: () => navigation.navigate('Profile'),
-        });
-        const userId = await SecureStore.getItemAsync(SecureStorageKey.USER_ID);
+        showToast({ text1: 'Your profile has been updated' });
+        navigation.navigate('Profile');
 
         if (userId) {
           await dispatch(AsyncThunks.getUserDetails(userId));
         }
+
+        dispatch(changeLanguage(formValues.language));
+        i18n.changeLanguage(formValues.language);
       }
     } else {
       setValidationErrors(errors);
     }
-  }, [formValues, profileId, dispatch, navigation, t]);
+  }, [formValues, profileId, dispatch, navigation, userId]);
 
   useEffect(() => {
     if (formInteracted) {

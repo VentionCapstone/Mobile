@@ -5,7 +5,8 @@ export const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     gap: 5,
-    paddingBottom: 40,
+    paddingBottom: 30,
+    marginTop: 30,
   },
   servicesTextContainer: {
     flexDirection: 'row',

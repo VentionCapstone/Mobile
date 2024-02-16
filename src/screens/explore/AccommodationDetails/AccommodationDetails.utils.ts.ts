@@ -156,14 +156,19 @@ export type AmenityChip = {
 export function getAmenitiesBadges(amenities: AccommodationAmenitiesResponse): AmenityChip[] {
   const { otherAmenities, id, accommodationId, ...rest } = amenities;
   const amenitiesKeys = Object.keys(rest);
+
   return amenitiesKeys
     .filter((amenity) => {
       return rest[amenity as keyof typeof rest];
     })
     .map((amenity) => {
-      const { text, icon, iconSet } =
-        AMENITIES_CHIP_DATA[amenity as keyof typeof AMENITIES_CHIP_DATA];
-      return { text, icon, iconSet } as AmenityChip;
+      const amenityData = AMENITIES_CHIP_DATA[amenity as keyof typeof AMENITIES_CHIP_DATA];
+      if (amenityData) {
+        const { text, icon, iconSet } = amenityData;
+        return { text, icon, iconSet } as AmenityChip;
+      } else {
+        return { text: 'Amenity', icon: IconName.Add, iconSet: 'ionicons' };
+      }
     });
 }
 

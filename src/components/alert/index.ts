@@ -1,36 +1,19 @@
-import { Alert, AlertButton } from 'react-native';
+import Toast, { ToastType } from 'react-native-toast-message';
 
-type AlertType = 'error' | 'success' | 'warning';
-
-interface AlertOptions {
-  title?: string;
-  message: string;
-  onOkPressed?: () => void;
-  onCancelPressed?: () => void;
-}
-
-const showAlert = (type: AlertType, options: AlertOptions): void => {
-  const { title, message, onOkPressed, onCancelPressed } = options;
-
-  const buttons: AlertButton[] = [{ text: 'OK', onPress: onOkPressed }];
-
-  if (onCancelPressed) {
-    buttons.push({ text: 'Cancel', onPress: onCancelPressed, style: 'cancel' });
-  }
-
-  switch (type) {
-    case 'error':
-      Alert.alert(title || 'Error!', message, buttons);
-      break;
-    case 'success':
-      Alert.alert(title || 'Success!', message, buttons);
-      break;
-    case 'warning':
-      Alert.alert(title || 'Warning!', message, buttons);
-      break;
-    default:
-      break;
-  }
+type ToastProps = {
+  type?: ToastType;
+  text1?: string;
+  text2?: string;
 };
 
-export default showAlert;
+const showToast = ({ type = 'success', text1, text2 }: ToastProps): void => {
+  Toast.show({
+    type,
+    text1,
+    text2,
+    swipeable: true,
+    visibilityTime: 3000,
+  });
+};
+
+export default showToast;

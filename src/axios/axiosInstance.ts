@@ -5,10 +5,10 @@ import { SecureStorageKey } from 'src/constants/storage';
 import { silentTokenRefresh } from './api';
 import ENDPOINTS from './endpoints';
 
-const BASE_URL = 'https://dev.vention-booking.taksifon.uz/api';
+const baseURL = process.env.EXPO_PUBLIC_API_URL;
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL,
   withCredentials: true,
   timeout: 10000,
 });

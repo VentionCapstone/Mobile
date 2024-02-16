@@ -2,29 +2,21 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useCallback, useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import {
-  GooglePlaceData,
-  GooglePlaceDetail,
-  GooglePlacesAutocomplete,
-} from 'react-native-google-places-autocomplete';
+import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useSelector } from 'react-redux';
-import { Icon, Text } from 'src/components';
-import showAlert from 'src/components/alert';
+import { PlacesInput, Text, showToast } from 'src/components';
 import { StepperTemplate } from 'src/components/templates';
 import { RootStackParamList } from 'src/navigation';
-import { getColors } from 'src/store/selectors';
-import { AddressValues, IconName } from 'src/types';
+import { AddressValues } from 'src/types';
 import { getAddressInfo, getPlaceDetails } from 'src/utils';
 
 import { styles } from './AccommodationAddress.style';
-import { GOOGLE_API_KEY, INITIAL_COORDINATES } from './AccommodationAddress.utils';
+import { INITIAL_COORDINATES } from './AccommodationAddress.utils';
 import AccommodationAddressForm from './AccommodationAddressForm';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AccommodationAddress'>;
 
 const AccommodationAddress = ({ navigation }: Props) => {
-  const colors = useSelector(getColors);
   const mapViewRef = useRef<MapView>(null);
   const { t } = useTranslation();
   const [addressSelected, setAddressSelected] = useState(false);
@@ -50,7 +42,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
         const placeDetails = await getPlaceDetails(details.place_id);
 
         if (!placeDetails) {
-          showAlert('error', { message: t('Something went wrong!') });
+          showToast({ type: 'error', text1: 'Error occured!', text2: 'Please try again' });
           return;
         }
 
@@ -60,7 +52,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
         setAddressSelected(true);
       }
     },
-    [addressValues, t]
+    [addressValues]
   );
 
   const handleNext = useCallback(async () => {
@@ -93,7 +85,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
     >
       <View style={styles.placesInputContainer}>
         {!addressSelected && (
-          <View style={styles.titleContainer}>
+          <View>
             <Text style={styles.title}>{t('Where is your house located?')}</Text>
             <Text style={styles.subtitle}>
               {t("Your address is only shared with guests after they've made a reservation")}
@@ -101,33 +93,7 @@ const AccommodationAddress = ({ navigation }: Props) => {
           </View>
         )}
 
-        <View style={styles.inputInnerContainer}>
-          <GooglePlacesAutocomplete
-            styles={{
-              textInput: [
-                styles.searchInput,
-                { backgroundColor: colors.secondaryBackground, color: colors.text },
-              ],
-              listView: [styles.placesInputListView, { backgroundColor: colors.background }],
-            }}
-            textInputProps={{
-              placeholderTextColor: colors.placeholder,
-              selectionColor: colors.tint,
-              scrollEnabled: true,
-              editable: true,
-            }}
-            placeholder={t('Enter your address')}
-            onPress={handleSearch}
-            query={{
-              key: GOOGLE_API_KEY,
-              language: 'en',
-              components: 'country:uz|country:kz|country:ru',
-              types: ['(cities)'],
-            }}
-          />
-
-          <Icon name={IconName.SearchOutline} style={styles.locationIcon} />
-        </View>
+        <PlacesInput onSearch={handleSearch} />
       </View>
 
       {addressSelected && (

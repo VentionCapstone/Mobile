@@ -6,16 +6,13 @@ export interface SignInResponse {
   };
 }
 
-export interface AuthResponse {
+export interface SignUpResponse {
+  message: string;
   success: boolean;
-  message: number;
 }
 
-export interface AuthParams {
+export interface SignInParams {
   email: string;
-}
-
-export interface SignInParams extends AuthParams {
   password: string;
 }
 

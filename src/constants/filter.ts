@@ -13,8 +13,6 @@ const DEFAULT_FILTER_VALUES: GetAccommodationQueryParams = {
   checkInDate: null,
   checkOutDate: null,
   location: '',
-  page: 1,
-  limit: 10,
 };
 
 const DEFAULT_SEARCH_VALUES: GetAccommodationQueryParams = {

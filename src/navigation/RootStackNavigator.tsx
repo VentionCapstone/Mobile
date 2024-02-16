@@ -26,6 +26,7 @@ import {
   AccommodationImage,
   CreateAmenities,
   ProfileImage,
+  VerifyEmail,
 } from 'src/screens';
 import { AccommodationDetails, HostProfile } from 'src/screens/explore';
 import { getIsDarkMode, getIsGuestAccount } from 'src/store/selectors';
@@ -44,7 +45,8 @@ const RootStackNavigator = () => {
 
   useEffect(() => {
     StatusBar.setBarStyle(isDark ? 'light-content' : 'dark-content');
-    if (Platform.OS === 'android') StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
+    Platform.OS === 'android' && StatusBar.setBackgroundColor(isDark ? GREY_500 : WHITE);
+    Platform.OS === 'android' && StatusBar.setTranslucent(true);
   }, [isDark]);
 
   return (
@@ -64,6 +66,11 @@ const RootStackNavigator = () => {
         name="Signup"
         component={Signup}
         options={{ header: () => <NavigationHeader title={t('Sign Up')} /> }}
+      />
+      <RootRouterStack.Screen
+        name="VerifyEmail"
+        component={VerifyEmail}
+        options={{ header: () => <NavigationHeader title={t('Verify Email')} /> }}
       />
       <RootRouterStack.Screen
         name="UpdateProfile"
